@@ -1,0 +1,9 @@
+Reference for commit codes:
+M = Major
+I = Important
+F = Feature
+m = minor
+T = Test
+O = other
+
+commits are in numerical order starting at 1 no matter what kind of commit it was.
