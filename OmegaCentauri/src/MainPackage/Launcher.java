@@ -1,6 +1,7 @@
 // @author Michael Kieburtz
 package MainPackage;
 import javax.swing.*;
+import javax.swing.JPanel;
 
 public class Launcher {
     
@@ -9,7 +10,11 @@ public class Launcher {
     public static void main(String args[])
     {
         launcherFrame.setVisible(true);
-        launcherFrame.setSize(100, 100);
+        launcherFrame.setSize(1000, 600);
         launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        DrawingPanel panel = new DrawingPanel();
+        launcherFrame.add(panel);
+        panel.setVisible(true);
+        panel.setSize(launcherFrame.getSize());
     }
 }
