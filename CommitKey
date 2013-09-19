@@ -2,6 +2,8 @@ Reference for commit codes:
 M = Major
 I = Important
 F = Feature
+B = bugfix
+E = Enhancement
 m = minor
 T = Test
 O = other (includes adding files)
