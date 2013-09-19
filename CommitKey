@@ -4,6 +4,6 @@ I = Important
 F = Feature
 m = minor
 T = Test
-O = other
+O = other (includes adding files)
 
 commits are in numerical order starting at 1 no matter what kind of commit it was.
