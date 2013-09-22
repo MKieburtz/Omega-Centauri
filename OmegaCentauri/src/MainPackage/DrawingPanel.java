@@ -10,13 +10,13 @@ import java.util.*;
 public class DrawingPanel extends JPanel{
     
     private BufferedImage testImage;
-    private ArrayList<BufferedImage> images = new ArrayList<>();
+    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     Renderer renderer = new Renderer();
 
     public DrawingPanel()
     {
         try {
-            testImage = ImageIO.read(new File("C:/Users/543021/Documents/OmegaCentauriImages/ball.png"));
+            testImage = ImageIO.read(this.getClass().getResourceAsStream("resources/FighterGrey.png")); // :)
             images.add(testImage);
         } catch (IOException ex) {
             System.err.println("IOException, cannot read file");

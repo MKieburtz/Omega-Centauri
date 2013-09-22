@@ -1,7 +1,6 @@
 // @author Michael Kieburtz
 package MainPackage;
 import javax.swing.*;
-import javax.swing.JPanel;
 
 public class Launcher {
     
