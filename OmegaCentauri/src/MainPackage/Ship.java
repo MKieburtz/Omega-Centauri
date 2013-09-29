@@ -4,6 +4,7 @@ package MainPackage;
 
 public abstract class Ship 
 {
-    
-
+  int hull;
+  int fuel;
+  int power;  
 }
