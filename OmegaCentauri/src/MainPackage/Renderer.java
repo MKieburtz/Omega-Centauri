@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Renderer {
     
+    @SuppressWarnings("empty-statement")
     public Renderer()
     {
     ;

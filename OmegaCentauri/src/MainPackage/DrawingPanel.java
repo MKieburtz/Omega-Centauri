@@ -10,6 +10,7 @@ import java.util.*;
 public class DrawingPanel extends JPanel{
     
     private BufferedImage testImage;
+    private boolean launcher = true;
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     Renderer renderer = new Renderer();
     // File -> FileInputStream -> ImageIO -> buffered image
@@ -17,8 +18,9 @@ public class DrawingPanel extends JPanel{
     ArrayList<FileInputStream> resourceStreams = new ArrayList<FileInputStream>();
     
 
-    public DrawingPanel()
+    public DrawingPanel(boolean launcher)
     {
+        this.launcher = launcher;
         shipFiles.add(new File("resources/FighterGrey.png"));
         shipFiles.add(new File("resources/LargeFighter.jpg"));
         try {
@@ -36,6 +38,9 @@ public class DrawingPanel extends JPanel{
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        renderer.drawScreen(g, images);
+        if (!launcher)
+            renderer.drawScreen(g, images);
+        Random random = new Random();
+        
     }
 }
