@@ -2,6 +2,8 @@ package MainPackage;
 
 // @author Michael Kieburtz
 
-public abstract class Ship {
+public abstract class Ship 
+{
+    
 
 }

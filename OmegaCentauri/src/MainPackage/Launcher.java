@@ -3,7 +3,7 @@ import javax.swing.*;
 // @author Michael Kieburtz
 public class Launcher {
     
-    static JFrame launcherFrame = new JFrame("test");
+    static JFrame launcherFrame = new JFrame("Omega Centauri");
     
     public static void main(String args[])
     {
