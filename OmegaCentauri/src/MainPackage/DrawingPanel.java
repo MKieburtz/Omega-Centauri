@@ -40,7 +40,6 @@ public class DrawingPanel extends JPanel{
         super.paintComponent(g);
         if (!launcher)
             renderer.drawScreen(g, images);
-        Random random = new Random();
         
     }
 }

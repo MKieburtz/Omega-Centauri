@@ -12,16 +12,11 @@ public class Launcher {
         launcherFrame.setVisible(true);
         launcherFrame.setSize(1000, 600);
         launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        DrawingPanel panel = new DrawingPanel(true);
-//        launcherFrame.add(panel);
-//        panel.setVisible(true);
-//        panel.setSize(launcherFrame.getSize());
+
         
         JButton goButton = new JButton("GO!");
-//        goButton.setText("GO!");
-//        goButton.setVisible(true);
-//        goButton.setLocation(0, 0);
-//        goButton.setSize(100, 50);
+        goButton.setText("GO!");
+        goButton.setSize(100, 50);
         
         goButton.addActionListener(new ActionListener() {
             
@@ -35,6 +30,7 @@ public class Launcher {
             }
         });
         
+        launcherFrame.getContentPane().setLayout(null);
         launcherFrame.add(goButton);
         
     }

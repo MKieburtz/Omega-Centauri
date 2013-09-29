@@ -10,14 +10,13 @@ public class GameWindow {
     
     public GameWindow()
     {
-       gameFrame = new JFrame("");
+       gameFrame = new JFrame("Omega Centauri");
        gameFrame.setVisible(true);
        gameFrame.setSize(1000, 600);
        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       DrawingPanel gamePanel = new DrawingPanel(false);
+       DrawingPanel gamePanel = new DrawingPanel(false); // not the launcher
        gameFrame.add(gamePanel);
        gamePanel.setSize(gameFrame.getSize());
        gamePanel.setVisible(true);
     }
-    
 }
