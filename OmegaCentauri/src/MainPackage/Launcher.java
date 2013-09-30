@@ -26,7 +26,7 @@ public class Launcher {
                 launcherFrame.setVisible(false);
                 launcherFrame.dispose();
                 Game game = new Game();
-                GameWindow gameWindow = new GameWindow();
+                GameWindow gameWindow = new GameWindow(1000, 600);
             }
         });
         
