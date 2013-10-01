@@ -1,12 +1,15 @@
 package MainPackage;
+import java.awt.*;
 
-// @author Michael Kieburtz
-// @author Davis Freeman
+// @author Davis Freeman and Michael Kieburtz
 
 public abstract class Ship 
 {
-  int hull;
-  int fuel;
-  int power;
-  Type type;
+  protected int hull;
+  protected int fuel;
+  protected int power;
+  protected Type type;
+  protected Point location;
+  
 }
+  

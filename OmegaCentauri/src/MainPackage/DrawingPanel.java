@@ -24,7 +24,10 @@ public class DrawingPanel extends JPanel{
         shipFiles.add(new File("resources/FighterGrey.png"));
         shipFiles.add(new File("resources/LargeFighter.jpg"));
         try {
-            resourceStreams.add(new FileInputStream(shipFiles.get(0)));
+            for (int i = 0; i < shipFiles.size(); i++)
+            {
+            resourceStreams.add(new FileInputStream(shipFiles.get(i)));
+            }
             testImage = ImageIO.read(resourceStreams.get(0));
             images.add(testImage);
         } catch (IOException ex) {

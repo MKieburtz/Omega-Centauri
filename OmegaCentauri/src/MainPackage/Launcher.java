@@ -13,7 +13,6 @@ public class Launcher {
         launcherFrame.setSize(1000, 600);
         launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        
         JButton goButton = new JButton("GO!");
         goButton.setText("GO!");
         goButton.setSize(100, 50);
