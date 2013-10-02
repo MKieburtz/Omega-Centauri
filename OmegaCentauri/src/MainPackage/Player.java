@@ -1,5 +1,6 @@
 package MainPackage;
 import java.awt.*;
+import java.io.File;
 import java.util.*;
 
 // @author Michael Kieburtz
@@ -11,5 +12,8 @@ public class Player extends Ship {
     {
         location = new Point(x, y);
         type = shipType;
+        imageFile = new File("resources/FighterGrey.png");
+        setUpShipImage();
     }
+    
 }
