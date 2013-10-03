@@ -6,7 +6,12 @@ import java.util.*;
 // @author Michael Kieburtz
 // might refractor to playerShip
 public class Player extends Ship {
-
+    
+    private String name;
+    public String getName()
+    {
+        return this.name;
+    }
     
     public Player(int x, int y, Type shipType)
     {
@@ -14,6 +19,11 @@ public class Player extends Ship {
         type = shipType;
         imageFile = new File("resources/FighterGrey.png");
         setUpShipImage();
+    }
+    
+    public Point getLocation()
+    {
+        return location;
     }
     
 }

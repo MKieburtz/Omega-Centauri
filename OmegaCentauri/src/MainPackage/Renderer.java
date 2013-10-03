@@ -1,7 +1,5 @@
 package MainPackage;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.*;
 // @author Michael Kieburtz
 
 public class Renderer {
@@ -12,12 +10,9 @@ public class Renderer {
     ;
     }
     
-    public void drawScreen(Graphics g, ArrayList<BufferedImage> images)
+    public void drawScreen(Graphics g, Player player)
     {
-        for (int i = 0; i < images.size(); i++)
-        {
-            g.drawImage(images.get(i), 0, 0, null);
-        }
+        g.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y, null);
     }
     
 }
