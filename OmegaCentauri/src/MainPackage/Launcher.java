@@ -9,6 +9,7 @@ public class Launcher {
     
     public static void main(String args[])
     {
+        // Launcher -> game -> gamewindow -> gamepanel -> renderer
         launcherFrame.setVisible(true);
         launcherFrame.setSize(1000, 600);
         launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
