@@ -2,15 +2,19 @@ package MainPackage;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
+import java.awt.*;
 // @author Michael Kieburtz
 public class Launcher {
     
     static JFrame launcherFrame = new JFrame("Omega Centauri Launcher");
-    
+    // Launcher -> game -> gamewindow -> gamepanel -> renderer
     public static void main(String args[])
     {
-        // Launcher -> game -> gamewindow -> gamepanel -> renderer
-        launcherFrame.setVisible(true);
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+
         launcherFrame.setSize(1000, 600);
         launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -31,6 +35,9 @@ public class Launcher {
         
         launcherFrame.getContentPane().setLayout(null);
         launcherFrame.add(goButton);
+        launcherFrame.setVisible(true);
+            }
+        });
         
     }
 }

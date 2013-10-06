@@ -8,6 +8,7 @@ public class DrawingPanel extends JPanel{
     private boolean launcher = true;
     private Renderer renderer = new Renderer();
     private Game game;
+    private Graphics g = this.getGraphics();
     
 
     public DrawingPanel(boolean launcher, Game game)
@@ -16,6 +17,11 @@ public class DrawingPanel extends JPanel{
         this.setVisible(true);
         this.setSize(500, 500);
         this.game = game;
+    }
+    
+    public void redraw()
+    {
+        repaint();
     }
     
     @Override
