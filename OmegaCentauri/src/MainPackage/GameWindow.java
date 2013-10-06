@@ -1,88 +1,125 @@
 package MainPackage;
-import java.awt.event.KeyEvent;
+
+import java.awt.Graphics;
+import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
 // @author Michael Kieburtz
-public class GameWindow {
-    private JFrame gameFrame;
-    public DrawingPanel gamePanel;
+public class GameWindow extends JFrame {
+
     private Game game;
-    private boolean move = false;
+    private boolean up, right, down, left = false;
     private java.util.Timer timer = new java.util.Timer();
-    private final int timerDelay = 100;
-    
-    public GameWindow(int width, int height, Game game)
-    {
-       
-       timer.schedule(new MovementTimer(), timerDelay);
-       this.game = game;
-       setUpWindow(1000, 600);
+    private final int timerDelay = 10;
+    private Renderer renderer;
+
+    public GameWindow(int width, int height, Game game) {
+
+        timer.schedule(new MovementTimer(), timerDelay);
+        this.game = game;
+        setUpWindow(1000, 600);
+        renderer = new Renderer();
+        addKeyListener(new AL());
     }
-    
-    private void setUpWindow(int width, int height)
-    {
-       gameFrame = new JFrame("Omega Centauri");
-       gameFrame.setVisible(true);
-       gameFrame.setSize(width, height);
-       gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       
-       gamePanel = new DrawingPanel(false, game); // not the launcher
-       
-       gameFrame.add(gamePanel);
-       gamePanel.setSize(gameFrame.getSize());
-       gamePanel.setVisible(true);
+
+    private void setUpWindow(int width, int height) {
+
+        setVisible(true);
+        setSize(width, height);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
-    
-    private class MovementTimer extends TimerTask
-    {
+
+    private class MovementTimer extends TimerTask {
+
         @Override
-        public void run()
-        {
-            if (!move)
-                move = true;
-            
+        public void run() {
+
+            if (up) {
+                
+                game.movePlayerRelitive(0, -1);
+            }
+            if (right) {
+                
+                game.movePlayerRelitive(1, 0);
+            }
+            if (down) {
+                
+                game.movePlayerRelitive(0, 1);
+            }
+            if (left) {
+                game.movePlayerRelitive(-1, 0);
+            }
+
             timer.schedule(new MovementTimer(), timerDelay);
         }
     }
-    
-    private void keyPressed(KeyEvent e)
-    {
-        switch (e.getKeyCode()) {
-            
-        case KeyEvent.VK_RIGHT: {
-            if (move)
-            {
-                game.movePlayer();
-                move = false;
-            }
+
+    private class AL extends KeyAdapter {
+
+        int keyCode;
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            keyCode = e.getKeyCode();
+
+            switch (keyCode) {
+                case KeyEvent.VK_UP: {
+                    up = true;
+                }
+                break;
+
+                case KeyEvent.VK_RIGHT: { // rotate eventually 
+                    right = true;
+                }
+                break;
+
+                case KeyEvent.VK_DOWN: {
+                    down = true;
+                }
+                break;
+
+                case KeyEvent.VK_LEFT: { // rotate eventually
+                    left = true;
+                }
+                break;
+
+            } // end switch
+
+        } // end method
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            keyCode = e.getKeyCode();
+
+            switch (keyCode) {
+                case KeyEvent.VK_UP: {
+                    up = false;
+                }
+                break;
+
+                case KeyEvent.VK_RIGHT: { // rotate eventually 
+                    right = false;
+                }
+                break;
+
+                case KeyEvent.VK_DOWN: {
+                    down = false;
+                }
+                break;
+
+                case KeyEvent.VK_LEFT: { // rotate eventually
+                    left = false;
+                }
+                break;
+
+            } // end switch
         }
-            break;
-        case KeyEvent.VK_LEFT: {
-            if (move)
-            {
-                game.movePlayer();
-                move = false;
-            }
-        }
-            break;
-        case KeyEvent.VK_DOWN: {
-            if (move)
-            {
-                game.movePlayer();
-                move = false;
-            }
-        }
-            break;
-        case KeyEvent.VK_UP: {
-            if (move)
-            {
-                game.movePlayer();
-                move = false;
-            }
-        }
-            break;
-        }
+    } // end class
+
+    @Override
+    public void paint(Graphics g) {
+        renderer.drawScreen(g, game.getPlayer());
+        repaint();
     }
 }

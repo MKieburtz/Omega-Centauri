@@ -6,25 +6,26 @@ public class Game {
     private ArrayList<EnemyShip> enemyShips = new ArrayList<EnemyShip>();
     private ArrayList<Ally> allyShips = new ArrayList<Ally>();
     private Player player;
-    public Player getPlayer()
-    {
-        return player;
-    }
+    
     GameWindow window;
     
     public Game()
     {
         window = new GameWindow(1000, 600, this);
-        player = new Player(100, 100, Type.Fighter, window.gamePanel);
+        player = new Player(100, 100, Type.Fighter);
+    }
+    public Player getPlayer()
+    {
+        return player;
     }
     
-    public void movePlayer() // int x, int y
+    public void movePlayer(int x, int y)
     {
-        player.moveTo(100, 100);
+        player.moveTo(x, y);
     }
     
-    public void movePlayerRelitive() // int dx, int dy
+    public void movePlayerRelitive(int dx, int dy)
     {
-        
+        player.moveRelitive(dx, dy);
     }
 }

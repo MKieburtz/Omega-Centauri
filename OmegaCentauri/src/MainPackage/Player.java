@@ -7,16 +7,14 @@ import java.io.File;
 public class Player extends Ship {
     
     private String name;
-    private DrawingPanel panel;
     
     public String getName()
     {
         return this.name;
     }
     
-    public Player(int x, int y, Type shipType, DrawingPanel panel)
+    public Player(int x, int y, Type shipType)
     {
-        this.panel = panel;
         location = new Point(x, y);
         type = shipType;
         imageFile = new File("resources/FighterGrey.png");
@@ -31,7 +29,11 @@ public class Player extends Ship {
     public void moveTo(int x, int y)
     {
         location.move(x, y);
-        panel.redraw();
+    }
+    
+    public void moveRelitive(int dx, int dy)
+    {
+        location.move(location.x + dx, location.y + dy);
     }
     
 }
