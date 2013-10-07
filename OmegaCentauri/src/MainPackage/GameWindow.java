@@ -7,7 +7,7 @@ import javax.swing.*;
 
 // @author Michael Kieburtz
 public class GameWindow extends JFrame {
-
+    private Graphics fg;
     private Game game;
     private boolean up, right, down, left = false;
     private java.util.Timer timer = new java.util.Timer();
@@ -15,18 +15,19 @@ public class GameWindow extends JFrame {
     private Renderer renderer;
 
     public GameWindow(int width, int height, Game game) {
-
+        
+        fg = this.getGraphics();
+        setUpWindow(width, height);
         timer.schedule(new MovementTimer(), timerDelay);
         this.game = game;
-        setUpWindow(1000, 600);
         renderer = new Renderer();
         addKeyListener(new AL());
     }
 
     private void setUpWindow(int width, int height) {
-
-        setVisible(true);
+       
         setSize(width, height);
+        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -116,10 +117,13 @@ public class GameWindow extends JFrame {
             } // end switch
         }
     } // end class
-
+    
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
+        System.out.println(g.hashCode());
+        super.paint(g);
         renderer.drawScreen(g, game.getPlayer());
-        repaint();
     }
+    
 }
