@@ -10,7 +10,7 @@ public class GameWindow extends JFrame {
     private Game game;
     private boolean up, right, down, left = false;
     private java.util.Timer timer = new java.util.Timer();
-    private final int timerDelay = 10;
+    private final int timerDelay = 1;
     private Renderer renderer;
     private Panel panel = new Panel(1000, 600);
 
@@ -41,21 +41,21 @@ public class GameWindow extends JFrame {
 
             if (up) {
                 
-                game.movePlayerRelitive(0, -1);
+                game.movePlayerRelitive(0, -2);
                 repaint();
             }
             if (right) {
                 
-                game.movePlayerRelitive(1, 0);
+                game.movePlayerRelitive(2, 0);
                 repaint();
             }
             if (down) {
                 
-                game.movePlayerRelitive(0, 1);
+                game.movePlayerRelitive(0, 2);
                 repaint();
             }
             if (left) {
-                game.movePlayerRelitive(-1, 0);
+                game.movePlayerRelitive(-2, 0);
                 repaint();
             }
 
