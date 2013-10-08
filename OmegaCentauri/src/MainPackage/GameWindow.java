@@ -12,6 +12,7 @@ public class GameWindow extends JFrame {
     private java.util.Timer timer = new java.util.Timer();
     private final int timerDelay = 10;
     private Renderer renderer;
+    private Panel panel = new Panel(1000, 600);
 
     public GameWindow(int width, int height, Game game) {
         
@@ -19,7 +20,7 @@ public class GameWindow extends JFrame {
         timer.schedule(new MovementTimer(), timerDelay);
         this.game = game;
         renderer = new Renderer();
-        addKeyListener(new AL());
+        
     }
 
     private void setUpWindow(int width, int height) {
@@ -27,6 +28,10 @@ public class GameWindow extends JFrame {
         setSize(width, height);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addKeyListener(new AL());
+        add(panel);
+        setContentPane(panel);
+                
     }
 
     private class MovementTimer extends TimerTask {
@@ -37,21 +42,21 @@ public class GameWindow extends JFrame {
             if (up) {
                 
                 game.movePlayerRelitive(0, -1);
-                paint(getGraphics());
+                repaint();
             }
             if (right) {
                 
                 game.movePlayerRelitive(1, 0);
-                paint(getGraphics());
+                repaint();
             }
             if (down) {
                 
                 game.movePlayerRelitive(0, 1);
-                paint(getGraphics());
+                repaint();
             }
             if (left) {
                 game.movePlayerRelitive(-1, 0);
-                paint(getGraphics());
+                repaint();
             }
 
             timer.schedule(new MovementTimer(), timerDelay);
@@ -120,11 +125,34 @@ public class GameWindow extends JFrame {
         }
     } // end class
     
-    @Override
-    public void paint(Graphics g)
+//    @Override
+//    public void paint(Graphics g)
+//    {
+//        super.paint(g);
+//        renderer.drawScreen(g, game.getPlayer());
+//    }
+    
+    public class Panel extends JPanel
     {
-        g = this.getGraphics();
-        renderer.drawScreen(g, game.getPlayer());
+        int width;
+        int height;
+        
+        public Panel(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+            
+            setSize(width, height);
+            setVisible(true);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            renderer.drawScreen(g, game.getPlayer());
+        }
     }
     
 }
