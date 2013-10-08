@@ -7,7 +7,6 @@ import javax.swing.*;
 
 // @author Michael Kieburtz
 public class GameWindow extends JFrame {
-    private Graphics fg;
     private Game game;
     private boolean up, right, down, left = false;
     private java.util.Timer timer = new java.util.Timer();
@@ -16,7 +15,6 @@ public class GameWindow extends JFrame {
 
     public GameWindow(int width, int height, Game game) {
         
-        fg = this.getGraphics();
         setUpWindow(width, height);
         timer.schedule(new MovementTimer(), timerDelay);
         this.game = game;
@@ -39,17 +37,21 @@ public class GameWindow extends JFrame {
             if (up) {
                 
                 game.movePlayerRelitive(0, -1);
+                paint(getGraphics());
             }
             if (right) {
                 
                 game.movePlayerRelitive(1, 0);
+                paint(getGraphics());
             }
             if (down) {
                 
                 game.movePlayerRelitive(0, 1);
+                paint(getGraphics());
             }
             if (left) {
                 game.movePlayerRelitive(-1, 0);
+                paint(getGraphics());
             }
 
             timer.schedule(new MovementTimer(), timerDelay);
@@ -121,8 +123,7 @@ public class GameWindow extends JFrame {
     @Override
     public void paint(Graphics g)
     {
-        System.out.println(g.hashCode());
-        super.paint(g);
+        g = this.getGraphics();
         renderer.drawScreen(g, game.getPlayer());
     }
     
