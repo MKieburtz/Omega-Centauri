@@ -3,7 +3,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.*;
-// @author Michael Kieburtz
+// @author Michael Kieburtz and Davis Freeman
 public class Launcher {
     
     static JFrame launcherFrame = new JFrame("Omega Centauri Launcher");
@@ -33,11 +33,22 @@ public class Launcher {
             }
         });
         
-        launcherFrame.getContentPane().setLayout(null);
-        launcherFrame.add(goButton);
-        launcherFrame.setVisible(true);
+        JButton closeButton = new JButton("Exit Game.");
+        closeButton.setText("Exit Game.");
+        closeButton.setSize(100, 50);
+        closeButton.setLocation(0,150);
+        
+        closeButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                launcherFrame.setVisible(false);
+                launcherFrame.dispose();
             }
         });
         
     }
+});
+}
 }
