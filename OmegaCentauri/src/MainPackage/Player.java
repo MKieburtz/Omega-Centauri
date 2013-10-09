@@ -7,6 +7,7 @@ import java.io.File;
 public class Player extends Ship {
     
     private String name;
+    private double angle = 0; // maybe move to Ship Class
     
     public String getName()
     {
@@ -20,6 +21,7 @@ public class Player extends Ship {
         imageFile = new File("resources/FighterGrey.png");
         setUpShipImage();
     }
+    
     
     public Point getLocation()
     {
@@ -36,4 +38,15 @@ public class Player extends Ship {
         location.move(location.x + dx, location.y + dy);
     }
     
+    private void rotate()
+    {
+        angle += 5;
+        if (angle == 360)
+            angle = 0;
+    }
+    
+    public double getAngle()
+    {
+        return angle;
+    }
 }

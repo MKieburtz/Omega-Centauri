@@ -1,18 +1,22 @@
 package MainPackage;
 
 import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
 
 // @author Michael Kieburtz
-public class GameWindow extends JFrame {
+public class GameWindow extends JFrame implements KeyListener{
     private Game game;
     private boolean up, right, down, left = false;
     private java.util.Timer timer = new java.util.Timer();
-    private final int timerDelay = 1;
+    private final int timerDelay = 10;
     private Renderer renderer;
     private Panel panel = new Panel(1000, 600);
+    private BufferedImage screenImage;
+    private Point middleOfPlayer = new Point();
 
     public GameWindow(int width, int height, Game game) {
         
@@ -22,26 +26,32 @@ public class GameWindow extends JFrame {
         renderer = new Renderer();
         
     }
+    
+    
 
     private void setUpWindow(int width, int height) {
        
         setSize(width, height);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addKeyListener(new AL());
+        addKeyListener(this);
         add(panel);
         setContentPane(panel);
-                
+        
     }
 
     private class MovementTimer extends TimerTask {
 
         @Override
         public void run() {
-
+            
+           
+            
             if (up) {
                 
                 game.movePlayerRelitive(0, -2);
+                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getLocation().x / 2;
+                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getLocation().y / 2;
                 repaint();
             }
             if (right) {
@@ -63,7 +73,6 @@ public class GameWindow extends JFrame {
         }
     }
 
-    private class AL extends KeyAdapter {
 
         int keyCode;
 
@@ -72,22 +81,22 @@ public class GameWindow extends JFrame {
             keyCode = e.getKeyCode();
 
             switch (keyCode) {
-                case KeyEvent.VK_UP: {
+                case KeyEvent.VK_W: {
                     up = true;
                 }
                 break;
 
-                case KeyEvent.VK_RIGHT: { // rotate eventually 
+                case KeyEvent.VK_D: { // rotate eventually 
                     right = true;
                 }
                 break;
 
-                case KeyEvent.VK_DOWN: {
+                case KeyEvent.VK_S: {
                     down = true;
                 }
                 break;
 
-                case KeyEvent.VK_LEFT: { // rotate eventually
+                case KeyEvent.VK_A: { // rotate eventually
                     left = true;
                 }
                 break;
@@ -101,36 +110,29 @@ public class GameWindow extends JFrame {
             keyCode = e.getKeyCode();
 
             switch (keyCode) {
-                case KeyEvent.VK_UP: {
+                case KeyEvent.VK_W: {
                     up = false;
                 }
                 break;
 
-                case KeyEvent.VK_RIGHT: { // rotate eventually 
+                case KeyEvent.VK_D: { // rotate eventually 
                     right = false;
                 }
                 break;
 
-                case KeyEvent.VK_DOWN: {
+                case KeyEvent.VK_S: {
                     down = false;
                 }
                 break;
 
-                case KeyEvent.VK_LEFT: { // rotate eventually
+                case KeyEvent.VK_A: { // rotate eventually
                     left = false;
                 }
                 break;
 
             } // end switch
         }
-    } // end class
     
-//    @Override
-//    public void paint(Graphics g)
-//    {
-//        super.paint(g);
-//        renderer.drawScreen(g, game.getPlayer());
-//    }
     
     public class Panel extends JPanel
     {
@@ -151,8 +153,13 @@ public class GameWindow extends JFrame {
         protected void paintComponent(Graphics g)
         {
             super.paintComponent(g);
-            renderer.drawScreen(g, game.getPlayer());
+            screenImage = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
+            renderer.drawScreen(g, game.getPlayer(), middleOfPlayer.x, middleOfPlayer.y);
         }
+
     }
-    
+    // WARNING: USELESS METHOD.
+    public void keyTyped(KeyEvent ke) {
+        
+    }
 }
