@@ -17,8 +17,12 @@ public class Launcher {
 
         launcherFrame.setSize(1000, 600);
         launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        launcherFrame.setVisible(true);
+        launcherFrame.setLayout(null);
+        
 
         JButton goButton = new JButton("GO!");
+        goButton.setVisible(true);
         goButton.setText("GO!");
         goButton.setSize(100, 50);
         
@@ -35,8 +39,9 @@ public class Launcher {
         
         JButton closeButton = new JButton("Exit Game.");
         closeButton.setText("Exit Game.");
-        closeButton.setSize(100, 50);
         closeButton.setLocation(0,150);
+        closeButton.setSize(100, 50);
+        
         
         closeButton.addActionListener(new ActionListener() {
 
@@ -48,6 +53,8 @@ public class Launcher {
             }
         });
         
+        launcherFrame.add(goButton);
+        launcherFrame.add(closeButton);
     }
 });
 }
