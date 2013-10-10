@@ -37,10 +37,23 @@ public class Player extends Ship {
     {
         location.move(location.x + dx, location.y + dy);
     }
+
+    public Player() {
+    }
     
-    private void rotate()
+    public void rotate(boolean positive)
     {
-        angle += 5;
+        if (positive)
+            angle += 5;
+        else if (!positive && angle == 0)
+        {
+            angle = 360;
+            angle -= 5;
+        }
+        else
+            angle -= 5;
+            
+        
         if (angle == 360)
             angle = 0;
     }

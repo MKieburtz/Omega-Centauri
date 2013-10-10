@@ -28,4 +28,9 @@ public class Game {
     {
         player.moveRelitive(dx, dy);
     }
+    
+    public void rotatePlayer(boolean positive)
+    {
+        player.rotate(positive);
+    }
 }
