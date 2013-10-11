@@ -7,7 +7,7 @@ import java.awt.*;
 public class Launcher {
     
     static JFrame launcherFrame = new JFrame("Omega Centauri Launcher");
-    // Launcher -> game -> gamewindow -> gamepanel -> renderer
+    // Launcher -> game -> gamewindow -> renderer
     public static void main(String args[])
     {
         EventQueue.invokeLater(new Runnable() {
