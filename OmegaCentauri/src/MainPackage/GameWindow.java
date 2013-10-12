@@ -17,15 +17,23 @@ public class GameWindow extends JFrame implements KeyListener {
     private Renderer renderer;
     private Panel panel = new Panel(1000, 600);
     private Point middleOfPlayer = new Point();
-    
     private Ellipse2D.Double playerCircle = new Ellipse2D.Double();
 
     public GameWindow(int width, int height, Game game) {
-        
+
         setUpWindow(width, height);
         timer.schedule(new MovementTimer(), timerDelay);
         this.game = game;
         renderer = new Renderer();
+
+        middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
+        middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
+
+        playerCircle.x = game.getPlayer().getLocation().x;
+        playerCircle.y = game.getPlayer().getLocation().y;
+        playerCircle.width = game.getPlayer().getImage().getWidth();
+        playerCircle.height = game.getPlayer().getImage().getHeight();
+        
         
     }
 
@@ -53,16 +61,16 @@ public class GameWindow extends JFrame implements KeyListener {
                 game.movePlayerRelitive(0, -2);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
-                
+
                 playerCircle.x = game.getPlayer().getLocation().x;
                 playerCircle.y = game.getPlayer().getLocation().y;
                 playerCircle.width = game.getPlayer().getImage().getWidth();
                 playerCircle.height = game.getPlayer().getImage().getHeight();
-                
+
                 repaint();
             }
             if (rotateRight) {
-                
+
                 game.rotatePlayer(true); // positive
                 repaint();
             }
@@ -70,12 +78,12 @@ public class GameWindow extends JFrame implements KeyListener {
                 game.movePlayerRelitive(0, 2);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
-                
+
                 playerCircle.x = game.getPlayer().getLocation().x;
                 playerCircle.y = game.getPlayer().getLocation().y;
                 playerCircle.width = game.getPlayer().getImage().getWidth();
                 playerCircle.height = game.getPlayer().getImage().getHeight();
-                
+
                 repaint();
             }
             if (rotateLeft) {
@@ -162,7 +170,7 @@ public class GameWindow extends JFrame implements KeyListener {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            
+
             renderer.drawScreen(g, game.getPlayer(), middleOfPlayer.x, middleOfPlayer.y, playerCircle);
         }
     }

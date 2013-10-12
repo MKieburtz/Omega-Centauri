@@ -11,8 +11,9 @@ public class Game {
     
     public Game()
     {
-        window = new GameWindow(1000, 600, this);
         player = new Player(100, 100, Type.Fighter);
+        window = new GameWindow(1000, 600, this);
+        
     }
     public Player getPlayer()
     {

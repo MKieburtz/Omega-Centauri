@@ -25,5 +25,15 @@ public class Renderer {
         g2d.setTransform(newXform);
         g2d.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y, null);
         g2d.draw(playerCircle);
+        
+        /*
+         * a point on the outer edge of a circle given the rectangle bounding
+         * box (cx, cy), the radius (r) and the angle where the ship is pointing
+         * (a) is
+         * x = cx + r + Math.cos(Math.toRadians(a));
+         * y is cy + r + Math.sin(Math.toRadians(a));
+         * 
+         * 
+         */
     }
 }
