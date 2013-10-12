@@ -39,7 +39,7 @@ public class Launcher {
         
         JButton closeButton = new JButton("Exit Game.");
         closeButton.setText("Exit Game.");
-        closeButton.setLocation(0,150);
+        closeButton.setLocation(0,55);
         closeButton.setSize(100, 50);
         
         
@@ -53,8 +53,21 @@ public class Launcher {
             }
         });
         
+        JButton resolution1440by900 = new JButton("Resoluton: 1440 x 900");
+        resolution1440by900.setText("Resolution: 1440 x 900");
+        resolution1440by900.setLocation(0,110);
+        resolution1440by900.setSize(200,50);
+        resolution1440by900.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                launcherFrame.setSize(1440,900);
+            }
+        });
+        
         launcherFrame.add(goButton);
         launcherFrame.add(closeButton);
+        launcherFrame.add(resolution1440by900);
     }
 });
 }
