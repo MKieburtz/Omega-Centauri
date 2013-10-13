@@ -27,7 +27,7 @@ public class GameWindow extends JFrame implements KeyListener {
         renderer = new Renderer();
 
         middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
-        middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
+        middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getWidth(this) / 2;
 
         playerCircle.x = game.getPlayer().getLocation().x;
         playerCircle.y = game.getPlayer().getLocation().y;

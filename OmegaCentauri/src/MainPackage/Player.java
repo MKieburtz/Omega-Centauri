@@ -7,7 +7,7 @@ import java.io.File;
 public class Player extends Ship {
     
     private String name;
-    private double angle = 0; // maybe move to Ship Class
+    private double angle = 135; // maybe move to Ship Class
     
     public String getName()
     {
@@ -56,6 +56,7 @@ public class Player extends Ship {
         
         if (angle == 360)
             angle = 0;
+        
     }
     
     public double getAngle()
