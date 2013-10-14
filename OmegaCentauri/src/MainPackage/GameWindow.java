@@ -11,7 +11,7 @@ import javax.swing.*;
 public class GameWindow extends JFrame implements KeyListener {
 
     private Game game;
-    private boolean up, rotateRight, down, rotateLeft = false;
+    private boolean forward, rotateRight, backward, rotateLeft = false;
     private java.util.Timer timer = new java.util.Timer();
     private final int timerDelay = 10;
     private Renderer renderer;
@@ -22,8 +22,9 @@ public class GameWindow extends JFrame implements KeyListener {
     public GameWindow(int width, int height, Game game) {
 
         setUpWindow(width, height);
-        timer.schedule(new MovementTimer(), timerDelay);
+        
         this.game = game;
+        timer.schedule(new MovementTimer(this.game), timerDelay);
         renderer = new Renderer();
 
         middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
@@ -50,15 +51,28 @@ public class GameWindow extends JFrame implements KeyListener {
     }
 
     private class MovementTimer extends TimerTask {
-
+        
+        Game game;
+        
+        public MovementTimer(Game game)
+        {
+            this.game = game;
+        }
+        
+            
         @Override
         public void run() {
 
+            
+           int movePlayerToX = (int)Math.sin(Math.toRadians(game.getPlayer().getAngle())) * game.getPlayer().getSpeed();
+           int movePlayerToY = (int)Math.cos(Math.toRadians(game.getPlayer().getAngle())) * (-1 * (game.getPlayer().getSpeed()));
+            
+           int dx = game.getPlayer().getLocation().x + movePlayerToX; 
+           int dy = game.getPlayer().getLocation().y + movePlayerToY;
+            
+            if (forward) {
 
-
-            if (up) {
-
-                game.movePlayerRelitive(0, -2);
+                game.movePlayerRelitive(dx, dy);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
 
@@ -74,8 +88,8 @@ public class GameWindow extends JFrame implements KeyListener {
                 game.rotatePlayer(true); // positive
                 repaint();
             }
-            if (down) {
-                game.movePlayerRelitive(0, 2);
+            if (backward) {
+                game.movePlayerRelitive(dx, dy);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
 
@@ -91,7 +105,7 @@ public class GameWindow extends JFrame implements KeyListener {
                 repaint();
             }
 
-            timer.schedule(new MovementTimer(), timerDelay);
+            timer.schedule(new MovementTimer(game), timerDelay);
         }
     }
     int keyCode;
@@ -102,7 +116,7 @@ public class GameWindow extends JFrame implements KeyListener {
 
         switch (keyCode) {
             case KeyEvent.VK_W: {
-                up = true;
+                forward = true;
             }
             break;
 
@@ -112,7 +126,7 @@ public class GameWindow extends JFrame implements KeyListener {
             break;
 
             case KeyEvent.VK_S: {
-                down = true;
+                backward = true;
             }
             break;
 
@@ -131,7 +145,7 @@ public class GameWindow extends JFrame implements KeyListener {
 
         switch (keyCode) {
             case KeyEvent.VK_W: {
-                up = false;
+                forward = false;
             }
             break;
 
@@ -141,7 +155,7 @@ public class GameWindow extends JFrame implements KeyListener {
             break;
 
             case KeyEvent.VK_S: {
-                down = false;
+                backward = false;
             }
             break;
 

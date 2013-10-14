@@ -8,7 +8,7 @@ public class Player extends Ship {
     
     private String name;
     private double angle = 0; // maybe move to Ship Class
-    
+    private int speed = 2;
     public String getName()
     {
         return this.name;
@@ -62,5 +62,10 @@ public class Player extends Ship {
     public double getAngle()
     {
         return angle;
+    }
+    
+    public int getSpeed()
+    {
+        return speed;
     }
 }
