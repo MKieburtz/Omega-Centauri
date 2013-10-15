@@ -3,7 +3,7 @@ package MainPackage;
 import java.awt.Graphics;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -18,15 +18,19 @@ public class GameWindow extends JFrame implements KeyListener {
     private Panel panel = new Panel(1000, 600);
     private Point middleOfPlayer = new Point();
     private Ellipse2D.Double playerCircle = new Ellipse2D.Double();
-
+    private Line2D.Double directionLine = new Line2D.Double();
+    private Point nextLocation = new Point();
+    
     public GameWindow(int width, int height, Game game) {
 
         setUpWindow(width, height);
         
         this.game = game;
-        timer.schedule(new MovementTimer(this.game), timerDelay);
         renderer = new Renderer();
-
+        
+        this.directionLine = renderer.getLine();
+        
+        timer.schedule(new MovementTimer(game.getPlayer(), this.directionLine), timerDelay);
         middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
         middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getWidth(this) / 2;
 
@@ -52,27 +56,24 @@ public class GameWindow extends JFrame implements KeyListener {
 
     private class MovementTimer extends TimerTask {
         
-        Game game;
+        Player player;
         
-        public MovementTimer(Game game)
+        public MovementTimer(Player player, Line2D.Double directionLine)
         {
-            this.game = game;
+            this.player = player;
         }
         
             
         @Override
         public void run() {
-
             
-           int movePlayerToX = (int)Math.sin(Math.toRadians(game.getPlayer().getAngle())) * game.getPlayer().getSpeed();
-           int movePlayerToY = (int)Math.cos(Math.toRadians(game.getPlayer().getAngle())) * (-1 * (game.getPlayer().getSpeed()));
+            nextLocation.x = player.getLocation().x + getSlopeX(directionLine.getX1(), directionLine.getX2());
+            nextLocation.y = player.getLocation().y + getSlopeY(directionLine.getY1(), directionLine.getY2());
             
-           int dx = game.getPlayer().getLocation().x + movePlayerToX; 
-           int dy = game.getPlayer().getLocation().y + movePlayerToY;
             
             if (forward) {
 
-                game.movePlayerRelitive(dx, dy);
+                game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
 
@@ -89,7 +90,7 @@ public class GameWindow extends JFrame implements KeyListener {
                 repaint();
             }
             if (backward) {
-                game.movePlayerRelitive(dx, dy);
+                game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
 
@@ -105,7 +106,7 @@ public class GameWindow extends JFrame implements KeyListener {
                 repaint();
             }
 
-            timer.schedule(new MovementTimer(game), timerDelay);
+            timer.schedule(new MovementTimer(player, directionLine), timerDelay);
         }
     }
     int keyCode;
@@ -192,4 +193,16 @@ public class GameWindow extends JFrame implements KeyListener {
 
     public void keyTyped(KeyEvent ke) {
     }
+    
+    private int getSlopeY(double y1, double y2)
+    {
+        return (int)Math.round(y2 - y1);
+    }
+
+    private int getSlopeX(double x1, double x2)
+    {
+        return (int)Math.round(x2 - x1);
+    }
+    
+    
 }

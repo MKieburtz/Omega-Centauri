@@ -33,6 +33,11 @@ public class Player extends Ship {
         location.move(x, y);
     }
     
+    public void moveTo(Point location)
+    {
+        this.location = location;
+    }
+    
     public void moveRelitive(int dx, int dy)
     {
         location.move(location.x + dx, location.y + dy);

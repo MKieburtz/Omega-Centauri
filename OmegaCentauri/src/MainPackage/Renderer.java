@@ -20,6 +20,7 @@ public class Renderer {
     public void drawScreen(Graphics g, Player player, int xRot, int yRot, Ellipse2D.Double playerCircle) {
         radius = playerCircle.getWidth() / 2;
         angle = player.getAngle();
+        
         directionLine.setLine((Point2D)new Point(xRot, yRot),
         (Point2D)new Point((int)(xRot + radius + Math.cos(Math.toRadians(player.getAngle()))) - (int)playerCircle.getWidth() / 2,
         (int)(yRot + radius + Math.sin(Math.toRadians(player.getAngle()))) - (int)playerCircle.getHeight()));
@@ -46,4 +47,11 @@ public class Renderer {
          * 
          */
     }
+    
+    public Line2D.Double getLine()
+    {
+        return directionLine;
+    }        
+
+    
 }

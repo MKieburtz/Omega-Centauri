@@ -1,4 +1,5 @@
 package MainPackage;
+import java.awt.Point;
 import java.util.*;
 
 // @author Michael Kieburtz
@@ -23,6 +24,11 @@ public class Game {
     public void movePlayer(int x, int y)
     {
         player.moveTo(x, y);
+    }
+    
+    public void movePlayer(Point location)
+    {
+        player.moveTo(location);
     }
     
     public void movePlayerRelitive(int dx, int dy)
