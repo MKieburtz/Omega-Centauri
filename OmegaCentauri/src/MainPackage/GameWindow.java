@@ -20,6 +20,9 @@ public class GameWindow extends JFrame implements KeyListener {
     private Ellipse2D.Double playerCircle = new Ellipse2D.Double();
     private Line2D.Double directionLine = new Line2D.Double();
     private Point nextLocation = new Point();
+    private float xSpeed = 2;
+    private float ySpeed = 2;
+    
     
     public GameWindow(int width, int height, Game game) {
 
@@ -32,7 +35,7 @@ public class GameWindow extends JFrame implements KeyListener {
         
         timer.schedule(new MovementTimer(game.getPlayer(), this.directionLine), timerDelay);
         middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
-        middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getWidth(this) / 2;
+        middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getWidth() / 2;
 
         playerCircle.x = game.getPlayer().getLocation().x;
         playerCircle.y = game.getPlayer().getLocation().y;
@@ -67,8 +70,8 @@ public class GameWindow extends JFrame implements KeyListener {
         @Override
         public void run() {
             
-            nextLocation.x = player.getLocation().x + getSlopeX(directionLine.getX1(), directionLine.getX2());
-            nextLocation.y = player.getLocation().y + getSlopeY(directionLine.getY1(), directionLine.getY2());
+            nextLocation.x = player.getLocation().x + (int)(xSpeed * Math.sin(Math.toRadians(player.getAngle())));
+            nextLocation.y = player.getLocation().y + (int)(ySpeed * -Math.cos(Math.toRadians(player.getAngle())));
             
             
             if (forward) {
@@ -203,6 +206,5 @@ public class GameWindow extends JFrame implements KeyListener {
     {
         return (int)Math.round(x2 - x1);
     }
-    
     
 }

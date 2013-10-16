@@ -21,9 +21,11 @@ public class Renderer {
         radius = playerCircle.getWidth() / 2;
         angle = player.getAngle();
         
-        directionLine.setLine((Point2D)new Point(xRot, yRot),
-        (Point2D)new Point((int)(xRot + radius + Math.cos(Math.toRadians(player.getAngle()))) - (int)playerCircle.getWidth() / 2,
-        (int)(yRot + radius + Math.sin(Math.toRadians(player.getAngle()))) - (int)playerCircle.getHeight()));
+        directionLine.x1 = xRot;
+        directionLine.y1 = yRot;
+        directionLine.x2 = xRot + radius + Math.cos(Math.toRadians(player.getAngle())) - playerCircle.getWidth() / 2;
+        directionLine.y2 = yRot + radius + Math.sin(Math.toRadians(player.getAngle())) - playerCircle.getHeight();
+
         
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         AffineTransform origXform = g2d.getTransform();
@@ -32,11 +34,11 @@ public class Renderer {
         newXform.rotate(Math.toRadians(player.getAngle()), xRot, yRot);
         g2d.setTransform(newXform);
         
-        g2d.draw(directionLine);
+        //g2d.draw(directionLine);
         
         g2d.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y, null);
-        g2d.draw(playerCircle);
-        
+        //g2d.draw(playerCircle);
+        System.out.println(directionLine.getX1() + " " + directionLine.getY1()+ "----" + directionLine.getX2() + " " + directionLine.getY2());
         /*
          * a point on the outer edge of a circle given the center of the circle
          * (cx, cy), the radius (r) and the angle where the ship is pointing
