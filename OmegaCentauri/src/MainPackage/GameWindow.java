@@ -20,8 +20,8 @@ public class GameWindow extends JFrame implements KeyListener {
     private Ellipse2D.Double playerCircle = new Ellipse2D.Double();
     private Line2D.Double directionLine = new Line2D.Double();
     private Point nextLocation = new Point();
-    private float xSpeed = 2;
-    private float ySpeed = 2;
+    private float xSpeed = 3;
+    private float ySpeed = 4;
     
     
     public GameWindow(int width, int height, Game game) {
@@ -70,12 +70,11 @@ public class GameWindow extends JFrame implements KeyListener {
         @Override
         public void run() {
             
-            nextLocation.x = player.getLocation().x + (int)(xSpeed * Math.sin(Math.toRadians(player.getAngle())));
-            nextLocation.y = player.getLocation().y + (int)(ySpeed * -Math.cos(Math.toRadians(player.getAngle())));
-            
-            
             if (forward) {
-
+                
+                nextLocation.x = player.getLocation().x + (int)(xSpeed * Math.sin(Math.toRadians(player.getAngle())));
+                nextLocation.y = player.getLocation().y + (int)(ySpeed * -Math.cos(Math.toRadians(player.getAngle())));
+                
                 game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
@@ -93,6 +92,10 @@ public class GameWindow extends JFrame implements KeyListener {
                 repaint();
             }
             if (backward) {
+                
+                nextLocation.x = player.getLocation().x + (int)(xSpeed * -Math.sin(Math.toRadians(player.getAngle())));
+                nextLocation.y = player.getLocation().y + (int)(ySpeed * -Math.cos(Math.toRadians(player.getAngle())));
+                
                 game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
@@ -197,14 +200,8 @@ public class GameWindow extends JFrame implements KeyListener {
     public void keyTyped(KeyEvent ke) {
     }
     
-    private int getSlopeY(double y1, double y2)
+    private int getSlope(double x1, double x2, double y1, double y2)
     {
-        return (int)Math.round(y2 - y1);
+        return (int)Math.round((y2 - y1) / (x2 - x1));
     }
-
-    private int getSlopeX(double x1, double x2)
-    {
-        return (int)Math.round(x2 - x1);
-    }
-    
 }

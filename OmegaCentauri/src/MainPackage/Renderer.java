@@ -2,7 +2,6 @@ package MainPackage;
 
 import java.awt.*;
 import java.awt.geom.*;
-// import javax.vecmath.Vector2d;
 
 // @author Michael Kieburtz
 
@@ -33,11 +32,10 @@ public class Renderer {
 
         newXform.rotate(Math.toRadians(player.getAngle()), xRot, yRot);
         g2d.setTransform(newXform);
-        
-        //g2d.draw(directionLine);
+        g2d.draw(directionLine);
         
         g2d.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y, null);
-        //g2d.draw(playerCircle);
+        g2d.draw(playerCircle);
         System.out.println(directionLine.getX1() + " " + directionLine.getY1()+ "----" + directionLine.getX2() + " " + directionLine.getY2());
         /*
          * a point on the outer edge of a circle given the center of the circle
