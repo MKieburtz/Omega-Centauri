@@ -200,8 +200,11 @@ public class GameWindow extends JFrame implements KeyListener {
     public void keyTyped(KeyEvent ke) {
     }
     
-    private int getSlope(double x1, double x2, double y1, double y2)
+    private double getSlope(double x1, double x2, double y1, double y2)
     {
-        return (int)Math.round((y2 - y1) / (x2 - x1));
+        double deltaX = x2 - x1;
+        double deltaY = y2 - y1;
+        
+        return Math.atan2(deltaX, deltaY);
     }
 }

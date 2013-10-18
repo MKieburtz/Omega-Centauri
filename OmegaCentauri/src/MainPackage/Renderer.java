@@ -27,10 +27,20 @@ public class Renderer {
 
         
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
+        
+        
         AffineTransform origXform = g2d.getTransform();
         AffineTransform newXform = (AffineTransform) (origXform.clone());
-
+        
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        g2d.setPaint(new TexturePaint(player.getImage(), new Rectangle2D.Float(0, 0, player.getImage().getWidth(), player.getImage().getHeight())));
+        newXform.setToIdentity();
+        
         newXform.rotate(Math.toRadians(player.getAngle()), xRot, yRot);
+        
         g2d.setTransform(newXform);
         g2d.draw(directionLine);
         
