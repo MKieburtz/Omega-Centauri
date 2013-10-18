@@ -20,14 +20,12 @@ public class GameWindow extends JFrame implements KeyListener {
     private Ellipse2D.Double playerCircle = new Ellipse2D.Double();
     private Line2D.Double directionLine = new Line2D.Double();
     private Point nextLocation = new Point();
-    private float xSpeed = 3;
-    private float ySpeed = 4;
+    private double speed = 4.0;
     
     
     public GameWindow(int width, int height, Game game) {
 
         setUpWindow(width, height);
-        
         this.game = game;
         renderer = new Renderer();
         
@@ -70,10 +68,17 @@ public class GameWindow extends JFrame implements KeyListener {
         @Override
         public void run() {
             
+            if (player.getAngle() % 90 == 0 || player.getAngle() == 0){
+            nextLocation.x = player.getLocation().x + (int)(speed * Math.sin(Math.toRadians(player.getAngle())));
+            nextLocation.y = player.getLocation().y + (int)(speed * -Math.cos(Math.toRadians(player.getAngle())));
+            }
+            else
+            {
+            nextLocation.x = player.getLocation().x + (int)(speed * Math.sin(Math.toRadians(player.getAngle())));
+            nextLocation.y = player.getLocation().y + (int)(speed * -Math.cos(Math.toRadians(player.getAngle())));
+            }
+            
             if (forward) {
-                
-                nextLocation.x = player.getLocation().x + (int)(xSpeed * Math.sin(Math.toRadians(player.getAngle())));
-                nextLocation.y = player.getLocation().y + (int)(ySpeed * -Math.cos(Math.toRadians(player.getAngle())));
                 
                 game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
@@ -93,8 +98,8 @@ public class GameWindow extends JFrame implements KeyListener {
             }
             if (backward) {
                 
-                nextLocation.x = player.getLocation().x + (int)(xSpeed * -Math.sin(Math.toRadians(player.getAngle())));
-                nextLocation.y = player.getLocation().y + (int)(ySpeed * -Math.cos(Math.toRadians(player.getAngle())));
+//                nextLocation.x = player.getLocation().x + (int)(xSpeed * -Math.sin(Math.toRadians(player.getAngle())));
+//                nextLocation.y = player.getLocation().y + (int)(ySpeed * -Math.cos(Math.toRadians(player.getAngle())));
                 
                 game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
