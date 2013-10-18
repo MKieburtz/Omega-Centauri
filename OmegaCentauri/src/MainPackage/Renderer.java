@@ -46,7 +46,8 @@ public class Renderer {
         
         g2d.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y, null);
         //g2d.draw(playerCircle);
-        System.out.println(directionLine.getX1() + " " + directionLine.getY1()+ "----" + directionLine.getX2() + " " + directionLine.getY2());
+        System.out.println(directionLine.getX1() + " " + directionLine.getY1()+ "----" + directionLine.getX2() + " " + directionLine.getY2() +
+                " -- " + player.getAngle());
         /*
          * a point on the outer edge of a circle given the center of the circle
          * (cx, cy), the radius (r) and the angle where the ship is pointing
