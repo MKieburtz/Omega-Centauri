@@ -1,5 +1,6 @@
 package MainPackage;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.File;
 
 // @author Michael Kieburtz
@@ -16,26 +17,28 @@ public class Player extends Ship {
     
     public Player(int x, int y, Type shipType)
     {
-        location = new Point(x, y);
+        location = new Point2D.Double(x, y);
         type = shipType;
         imageFile = new File("resources/FighterGrey.png");
         setUpShipImage();
     }
     
     
-    public Point getLocation()
+    public Point2D.Double getLocation()
     {
         return location;
     }
     
-    public void moveTo(int x, int y)
+    public void moveTo(double x, double y)
     {
-        location.move(x, y);
+        location.x = x;
+        location.y = y;
     }
     
-    public void moveTo(Point location)
+    public void moveTo(Point2D.Double location)
     {
-        this.location.move(location.x, location.y);
+        this.location.x = location.x;
+        this.location.y
     }
     
     public void moveRelitive(int dx, int dy)

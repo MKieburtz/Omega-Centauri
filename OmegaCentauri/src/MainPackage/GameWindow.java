@@ -68,33 +68,33 @@ public class GameWindow extends JFrame implements KeyListener {
             nextLocation.x = player.getLocation().x + (int)(speed * Math.sin(Math.toRadians(player.getAngle())));
             nextLocation.y = player.getLocation().y + (int)(speed * -Math.cos(Math.toRadians(player.getAngle())));
             
-            for (int i = 0; i < 4; i++) {
-                switch (i) {
-                    case 0:
-
-                        if (player.getAngle() >= 350) {
-                            nextLocation.x -= 1;
-                            nextLocation.y -= 1;
-                        }
-                        else
-                        {
-                            nextLocation.x += 1;
-                            nextLocation.y -= 1;
-                        }
-                        break;
-                    case 1:
-                        if (player.getAngle() >= 350) {
-                            nextLocation.x -= 1;
-                            nextLocation.y -= 1;
-                        }
-                        else
-                        {
-                            nextLocation.x += 1;
-                            nextLocation.y -= 1;
-                        }
-                        break;
-                }
-            }
+//            for (int i = 0; i < 4; i++) {
+//                switch (i) {
+//                    case 0:
+//
+//                        if (player.getAngle() >= 350) {
+//                            nextLocation.x -= 1;
+//                            nextLocation.y -= 1;
+//                        }
+//                        else
+//                        {
+//                            nextLocation.x += 1;
+//                            nextLocation.y -= 1;
+//                        }
+//                        break;
+//                    case 1:
+//                        if (player.getAngle() >= 350) {
+//                            nextLocation.x -= 1;
+//                            nextLocation.y -= 1;
+//                        }
+//                        else
+//                        {
+//                            nextLocation.x += 1;
+//                            nextLocation.y -= 1;
+//                        }
+//                        break;
+//                }
+//            }
 
             if (forward) {
 
