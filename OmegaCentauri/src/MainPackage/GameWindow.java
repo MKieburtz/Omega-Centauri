@@ -88,9 +88,7 @@ public class GameWindow extends JFrame implements KeyListener {
                 repaint();
             }
             if (backward) {
-
-//                nextLocation.x = player.getLocation().x + (int)(xSpeed * -Math.sin(Math.toRadians(player.getAngle())));
-//                nextLocation.y = player.getLocation().y + (int)(ySpeed * -Math.cos(Math.toRadians(player.getAngle())));
+                
 
                 game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
