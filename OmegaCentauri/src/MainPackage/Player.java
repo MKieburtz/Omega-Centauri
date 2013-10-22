@@ -38,12 +38,13 @@ public class Player extends Ship {
     public void moveTo(Point2D.Double location)
     {
         this.location.x = location.x;
-        this.location.y
+        this.location.y = location.y;
     }
     
-    public void moveRelitive(int dx, int dy)
+    public void moveRelitive(double dx, double dy)
     {
-        location.move(location.x + dx, location.y + dy);
+        this.location.x += dx;
+        this.location.y += dy;
     }
 
     public Player() {

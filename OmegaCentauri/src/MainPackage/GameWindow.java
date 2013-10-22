@@ -17,10 +17,10 @@ public class GameWindow extends JFrame implements KeyListener {
     private Renderer renderer;
     private int[] angles = {0, 90, 180, 270};
     private Panel panel = new Panel(1000, 600);
-    private Point middleOfPlayer = new Point();
+    private Point2D.Double middleOfPlayer = new Point2D.Double();
     private Ellipse2D.Double playerCircle = new Ellipse2D.Double();
     private Line2D.Double directionLine = new Line2D.Double();
-    private Point nextLocation = new Point();
+    private Point2D.Double nextLocation = new Point2D.Double();
     private double speed = 4.0;
 
     public GameWindow(int width, int height, Game game) {
@@ -65,37 +65,10 @@ public class GameWindow extends JFrame implements KeyListener {
 
         @Override
         public void run() {
-            nextLocation.x = player.getLocation().x + (int)(speed * Math.sin(Math.toRadians(player.getAngle())));
-            nextLocation.y = player.getLocation().y + (int)(speed * -Math.cos(Math.toRadians(player.getAngle())));
+            nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
+            nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
             
-//            for (int i = 0; i < 4; i++) {
-//                switch (i) {
-//                    case 0:
-//
-//                        if (player.getAngle() >= 350) {
-//                            nextLocation.x -= 1;
-//                            nextLocation.y -= 1;
-//                        }
-//                        else
-//                        {
-//                            nextLocation.x += 1;
-//                            nextLocation.y -= 1;
-//                        }
-//                        break;
-//                    case 1:
-//                        if (player.getAngle() >= 350) {
-//                            nextLocation.x -= 1;
-//                            nextLocation.y -= 1;
-//                        }
-//                        else
-//                        {
-//                            nextLocation.x += 1;
-//                            nextLocation.y -= 1;
-//                        }
-//                        break;
-//                }
-//            }
-
+            
             if (forward) {
 
                 game.movePlayer(nextLocation);

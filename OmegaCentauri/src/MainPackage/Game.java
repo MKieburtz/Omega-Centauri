@@ -1,5 +1,6 @@
 package MainPackage;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.*;
 
 // @author Michael Kieburtz
@@ -26,7 +27,7 @@ public class Game {
         player.moveTo(x, y);
     }
     
-    public void movePlayer(Point location)
+    public void movePlayer(Point2D.Double location)
     {
         player.moveTo(location);
     }

@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
@@ -12,7 +13,7 @@ public abstract class Ship {
     protected int fuel;
     protected int power;
     protected Type type;
-    protected Point location;
+    protected Point2D.Double location;
     // File -> FileInputStream -> ImageIO -> buffered image
     protected BufferedImage image; // readonly
     

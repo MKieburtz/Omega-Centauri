@@ -16,7 +16,7 @@ public class Renderer {
         angle = 0;
     }
 
-    public void drawScreen(Graphics g, Player player, int xRot, int yRot, Ellipse2D.Double playerCircle) {
+    public void drawScreen(Graphics g, Player player, double xRot, double yRot, Ellipse2D.Double playerCircle) {
         radius = playerCircle.getWidth() / 2;
         angle = player.getAngle();
         
@@ -44,7 +44,7 @@ public class Renderer {
         g2d.setTransform(newXform);
         //g2d.draw(directionLine);
         
-        g2d.drawImage(player.getImage(), player.getLocation().x, player.getLocation().y, null);
+        g2d.drawImage(player.getImage(), (int)player.getLocation().x, (int)player.getLocation().y, null);
         //g2d.draw(playerCircle);
         System.out.println(directionLine.getX1() + " " + directionLine.getY1()+ "----" + directionLine.getX2() + " " + directionLine.getY2() +
                 " -- " + player.getAngle());
