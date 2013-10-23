@@ -22,7 +22,7 @@ public class GameWindow extends JFrame implements KeyListener {
     private final Point2D.Double nextLocation = new Point2D.Double();
     // TODO: Refractor to Player class
     private double speed = 0.0;
-    private final double MaxSpeed = 8.0;
+    private final double MaxSpeed = 10.0;
     private final double velocityIncrease = .07;
     
 
@@ -110,6 +110,10 @@ public class GameWindow extends JFrame implements KeyListener {
                 playerCircle.height = game.getPlayer().getImage().getHeight();
                 speed = Math.abs(speed);
                 repaint();
+            }
+            if (!backward && !forward)
+            {
+                speed = 0.0;
             }
             if (rotateLeft) {
                 game.rotatePlayer(false); // negitive
