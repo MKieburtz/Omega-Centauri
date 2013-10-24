@@ -73,13 +73,13 @@ public class GameWindow extends JFrame implements KeyListener {
                 
                 if (!Slowingdown)
                 {
-                        if (speed < MaxSpeed) 
-                        {
-                        if (speed + velocityIncrease > MaxSpeed)
-                            speed = MaxSpeed;
-                        else
-                            speed += velocityIncrease;
-                        }
+                    if (speed < MaxSpeed) 
+                    {
+                    if (speed + velocityIncrease > MaxSpeed)
+                        speed = MaxSpeed;
+                    else
+                        speed += velocityIncrease;
+                    }
 
                 nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
                 nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
@@ -103,6 +103,7 @@ public class GameWindow extends JFrame implements KeyListener {
                         Slowingdown = false;
                         forward = false;
                     }
+                    
                 nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
                 nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
 
