@@ -22,9 +22,10 @@ public class GameWindow extends JFrame implements KeyListener {
     private final Point2D.Double nextLocation = new Point2D.Double();
     // TODO: Refractor to Player class
     private double speed = 0.0;
-    private final double MaxSpeed = 10.0;
+    private final double MaxSpeed = 5.0;
     private final double velocityIncrease = .07;
-    
+    private final double velocityDecrease = .05;
+    private boolean Slowingdown = false;
 
     public GameWindow(int width, int height, Game game) {
 
@@ -32,7 +33,7 @@ public class GameWindow extends JFrame implements KeyListener {
         this.game = game;
         renderer = new Renderer();
         setIconImage(game.getPlayer().getImage());
-        this.directionLine = renderer.getLine();
+        //this.directionLine = renderer.getLine();
 
         timer.schedule(new MovementTimer(game.getPlayer(), this.directionLine), timerDelay);
         middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
@@ -42,7 +43,6 @@ public class GameWindow extends JFrame implements KeyListener {
         playerCircle.y = game.getPlayer().getLocation().y;
         playerCircle.width = game.getPlayer().getImage().getWidth();
         playerCircle.height = game.getPlayer().getImage().getHeight();
-
 
     }
 
@@ -68,25 +68,48 @@ public class GameWindow extends JFrame implements KeyListener {
 
         @Override
         public void run() {
-            
-            if (speed < MaxSpeed)
-            {
-                speed += velocityIncrease;
-            }
-            
+
             if (forward) {
                 
+                if (!Slowingdown)
+                {
+                        if (speed < MaxSpeed) 
+                        {
+                        if (speed + velocityIncrease > MaxSpeed)
+                            speed = MaxSpeed;
+                        else
+                            speed += velocityIncrease;
+                        }
+
                 nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
-            nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
-            
+                nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
+
                 game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
 
-                playerCircle.x = game.getPlayer().getLocation().x;
-                playerCircle.y = game.getPlayer().getLocation().y;
-                playerCircle.width = game.getPlayer().getImage().getWidth();
-                playerCircle.height = game.getPlayer().getImage().getHeight();
+                }
+                else
+                {
+                    if (speed > 0)
+                    {
+                        if (speed - velocityDecrease < 0)
+                            speed = 0;
+                        else
+                            speed -= velocityDecrease;
+                    }
+                    else
+                    {
+                        Slowingdown = false;
+                        forward = false;
+                    }
+                nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
+                nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
+
+                game.movePlayer(nextLocation);
+                middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
+                middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
+                }
 
                 repaint();
             }
@@ -98,8 +121,8 @@ public class GameWindow extends JFrame implements KeyListener {
             if (backward) {
                 speed = -speed;
                 nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
-            nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
-            
+                nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
+
                 game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
@@ -111,9 +134,8 @@ public class GameWindow extends JFrame implements KeyListener {
                 speed = Math.abs(speed);
                 repaint();
             }
-            if (!backward && !forward)
-            {
-                speed = 0.0;
+            if (!backward && !forward && speed == MaxSpeed) {
+                speed -= velocityDecrease;
             }
             if (rotateLeft) {
                 game.rotatePlayer(false); // negitive
@@ -135,7 +157,7 @@ public class GameWindow extends JFrame implements KeyListener {
             }
             break;
 
-            case KeyEvent.VK_D: { // rotate eventually 
+            case KeyEvent.VK_D: {
                 rotateRight = true;
             }
             break;
@@ -145,7 +167,7 @@ public class GameWindow extends JFrame implements KeyListener {
             }
             break;
 
-            case KeyEvent.VK_A: { // rotate eventually
+            case KeyEvent.VK_A: {
                 rotateLeft = true;
             }
             break;
@@ -160,11 +182,11 @@ public class GameWindow extends JFrame implements KeyListener {
 
         switch (keyCode) {
             case KeyEvent.VK_W: {
-                forward = false;
+                Slowingdown = true;
             }
             break;
 
-            case KeyEvent.VK_D: { // rotate eventually 
+            case KeyEvent.VK_D: {
                 rotateRight = false;
             }
             break;
@@ -174,7 +196,7 @@ public class GameWindow extends JFrame implements KeyListener {
             }
             break;
 
-            case KeyEvent.VK_A: { // rotate eventually
+            case KeyEvent.VK_A: {
                 rotateLeft = false;
             }
             break;

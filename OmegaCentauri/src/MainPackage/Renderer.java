@@ -9,7 +9,7 @@ public class Renderer {
     
     private double radius;
     private double angle;
-    private Line2D.Double directionLine = new Line2D.Double();
+   // private Line2D.Double directionLine = new Line2D.Double();
     
     public Renderer() {
         radius = 0;
@@ -20,10 +20,10 @@ public class Renderer {
         radius = playerCircle.getWidth() / 2;
         angle = player.getAngle();
         
-        directionLine.x1 = xRot;
-        directionLine.y1 = yRot;
-        directionLine.x2 = xRot + radius + Math.cos(Math.toRadians(player.getAngle())) - playerCircle.getWidth() / 2;
-        directionLine.y2 = yRot + radius + Math.sin(Math.toRadians(player.getAngle())) - playerCircle.getHeight();
+//        directionLine.x1 = xRot;
+//        directionLine.y1 = yRot;
+//        directionLine.x2 = xRot + radius + Math.cos(Math.toRadians(player.getAngle())) - playerCircle.getWidth() / 2;
+//        directionLine.y2 = yRot + radius + Math.sin(Math.toRadians(player.getAngle())) - playerCircle.getHeight();
 
         
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
@@ -46,8 +46,8 @@ public class Renderer {
         
         g2d.drawImage(player.getImage(), (int)player.getLocation().x, (int)player.getLocation().y, null);
         //g2d.draw(playerCircle);
-        System.out.println(directionLine.getX1() + " " + directionLine.getY1()+ "----" + directionLine.getX2() + " " + directionLine.getY2() +
-                " -- " + player.getAngle());
+        //System.out.println(directionLine.getX1() + " " + directionLine.getY1()+ "----" + directionLine.getX2() + " " + directionLine.getY2() +
+               // " -- " + player.getAngle());
         /*
          * a point on the outer edge of a circle given the center of the circle
          * (cx, cy), the radius (r) and the angle where the ship is pointing
@@ -59,10 +59,10 @@ public class Renderer {
          */
     }
     
-    public Line2D.Double getLine()
-    {
-        return directionLine;
-    }        
+//    public Line2D.Double getLine()
+//    {
+//        return directionLine;
+//    }        
 
     
 }
