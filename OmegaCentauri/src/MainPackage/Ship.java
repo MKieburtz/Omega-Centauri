@@ -14,6 +14,7 @@ public abstract class Ship {
     protected int power;
     protected Type type;
     protected Point2D.Double location;
+    protected Point2D.Double nextLocation;
     // File -> FileInputStream -> ImageIO -> buffered image
     protected BufferedImage image; // readonly
     

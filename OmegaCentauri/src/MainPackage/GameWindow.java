@@ -20,12 +20,9 @@ public class GameWindow extends JFrame implements KeyListener {
     private final Ellipse2D.Double playerCircle = new Ellipse2D.Double();
     private Line2D.Double directionLine = new Line2D.Double();
     private final Point2D.Double nextLocation = new Point2D.Double();
-    // TODO: Refractor to Player class
-    private double speed = 0.0;
-    private final double MaxSpeed = 5.0;
-    private final double velocityIncrease = .07;
-    private final double velocityDecrease = .05;
     private boolean Slowingdown = false;
+    
+   
 
     public GameWindow(int width, int height, Game game) {
 
@@ -70,48 +67,9 @@ public class GameWindow extends JFrame implements KeyListener {
         public void run() {
 
             if (forward) {
-                
-                if (!Slowingdown)
-                {
-                    if (speed < MaxSpeed) 
-                    {
-                    if (speed + velocityIncrease > MaxSpeed)
-                        speed = MaxSpeed;
-                    else
-                        speed += velocityIncrease;
-                    }
-
-                nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
-                nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
-
-                game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
-
-                }
-                else
-                {
-                    if (speed > 0)
-                    {
-                        if (speed - velocityDecrease < 0)
-                            speed = 0;
-                        else
-                            speed -= velocityDecrease;
-                    }
-                    else
-                    {
-                        Slowingdown = false;
-                        forward = false;
-                    }
-                    
-                nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
-                nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
-
-                game.movePlayer(nextLocation);
-                middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
-                middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
-                }
-
+                game.movePlayer(true);
                 repaint();
             }
             if (rotateRight) {
@@ -120,24 +78,14 @@ public class GameWindow extends JFrame implements KeyListener {
                 repaint();
             }
             if (backward) {
-                speed = -speed;
-                nextLocation.x = player.getLocation().x + (speed * Math.sin(Math.toRadians(player.getAngle())));
-                nextLocation.y = player.getLocation().y + (speed * -Math.cos(Math.toRadians(player.getAngle())));
-
-                game.movePlayer(nextLocation);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
-
-                playerCircle.x = game.getPlayer().getLocation().x;
-                playerCircle.y = game.getPlayer().getLocation().y;
-                playerCircle.width = game.getPlayer().getImage().getWidth();
-                playerCircle.height = game.getPlayer().getImage().getHeight();
-                speed = Math.abs(speed);
+                game.movePlayer(true);
                 repaint();
             }
-            if (!backward && !forward && speed == MaxSpeed) {
-                speed -= velocityDecrease;
-            }
+//            if (!backward && !forward && speed == MaxSpeed) {
+//                speed -= velocityDecrease;
+//            }
             if (rotateLeft) {
                 game.rotatePlayer(false); // negitive
                 repaint();

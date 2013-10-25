@@ -11,10 +11,10 @@ public class Game {
     
     GameWindow window;
     
-    public Game()
+    public Game(int WindowWidth, int WindowHeight)
     {
         player = new Player(100, 100, Type.Fighter);
-        window = new GameWindow(1000, 600, this);
+        window = new GameWindow(WindowWidth, WindowHeight, this);
         
     }
     public Player getPlayer()
@@ -27,9 +27,9 @@ public class Game {
         player.moveTo(x, y);
     }
     
-    public void movePlayer(Point2D.Double location)
+    public void movePlayer(boolean forward)
     {
-        player.moveTo(location);
+        player.move(forward);
     }
     
     public void movePlayerRelitive(int dx, int dy)

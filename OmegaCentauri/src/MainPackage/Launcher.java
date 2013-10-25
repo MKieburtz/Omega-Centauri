@@ -5,17 +5,19 @@ import javax.swing.*;
 import java.awt.*;
 // @author Michael Kieburtz and Davis Freeman
 public class Launcher {
-    
+    static int width = 1000;
+    static int height = 600;
     static JFrame launcherFrame = new JFrame("Omega Centauri Launcher");
     // Launcher -> game -> gamewindow -> renderer
     public static void main(String args[])
     {
+        
         EventQueue.invokeLater(new Runnable() {
 
             @Override
             public void run() {
 
-        launcherFrame.setSize(1000, 600);
+        launcherFrame.setSize(width, height);
         launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         launcherFrame.setVisible(true);
         launcherFrame.setLayout(null);
@@ -33,7 +35,7 @@ public class Launcher {
             {
                 launcherFrame.setVisible(false);
                 launcherFrame.dispose();
-                Game game = new Game();
+                Game game = new Game(width,height);
             }
         });
         
@@ -61,6 +63,8 @@ public class Launcher {
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                width = 1440;
+                height = 900;
                 launcherFrame.setSize(1440,900);
             }
         });
