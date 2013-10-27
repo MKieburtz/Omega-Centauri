@@ -27,9 +27,9 @@ public class Game {
         player.moveTo(x, y);
     }
     
-    public void movePlayer(boolean forward)
+    public void movePlayer(boolean forward, boolean Slowingdown)
     {
-        player.move(forward);
+        player.move(forward, Slowingdown);
     }
     
     public void movePlayerRelitive(int dx, int dy)

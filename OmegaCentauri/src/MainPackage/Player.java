@@ -14,7 +14,6 @@ public class Player extends Ship {
     private final double MaxSpeed = 5.0;
     private final double velocityIncrease = .07;
     private final double velocityDecrease = .05;
-    private boolean Slowingdown = false;
 
     public String getName() {
         return this.name;
@@ -22,7 +21,7 @@ public class Player extends Ship {
 
     public Player(int x, int y, Type shipType) {
         location = new Point2D.Double(x, y);
-        nextLocation = new Point2D.Double();
+        nextLocation = new Point2D.Double(location.x, location.y);
         type = shipType;
         imageFile = new File("resources/FighterGrey.png");
         setUpShipImage();
@@ -63,8 +62,8 @@ public class Player extends Ship {
 
     }
 
-    public void move(boolean forward) {
-        
+    public void move(boolean forward, boolean Slowingdown) {
+
         if (forward) {
             if (!Slowingdown) {
                 if (speed < MaxSpeed) {
@@ -74,12 +73,13 @@ public class Player extends Ship {
                         speed += velocityIncrease;
                     }
                 }
-                
+
                 nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
                 nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
-                
 
-            } else {
+
+            }// end if
+            else {
                 if (speed > 0) {
                     if (speed - velocityDecrease < 0) {
                         speed = 0;
@@ -88,21 +88,22 @@ public class Player extends Ship {
                     }
                 } else {
                     Slowingdown = false;
-                    //forward = false;
                 }
                 nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
                 nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
             }
-        }
-        else
-        {
+        } // end forward
+        else {
             speed = -speed;
-            
+
             nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
             nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
-            
+
             speed = Math.abs(speed);
         }
+
+        location.x = nextLocation.x;
+        location.y = nextLocation.y;
     }
 
     public double getAngle() {

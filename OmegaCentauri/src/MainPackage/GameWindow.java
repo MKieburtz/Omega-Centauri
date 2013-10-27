@@ -18,11 +18,9 @@ public class GameWindow extends JFrame implements KeyListener {
     private final Panel panel = new Panel(1000, 600);
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
     private final Ellipse2D.Double playerCircle = new Ellipse2D.Double();
-    private Line2D.Double directionLine = new Line2D.Double();
-    private final Point2D.Double nextLocation = new Point2D.Double();
     private boolean Slowingdown = false;
-    
-   
+    //private JLabel fpsLabel = new JLabel();
+    private java.util.List<Long> updateTimes = new ArrayList<Long>();
 
     public GameWindow(int width, int height, Game game) {
 
@@ -30,17 +28,14 @@ public class GameWindow extends JFrame implements KeyListener {
         this.game = game;
         renderer = new Renderer();
         setIconImage(game.getPlayer().getImage());
-        //this.directionLine = renderer.getLine();
-
-        timer.schedule(new MovementTimer(game.getPlayer(), this.directionLine), timerDelay);
+        
+//        fpsLabel.setVisible(true);
+//        fpsLabel.setLocation(0, 0);
+//        fpsLabel.setText(String.valueOf(getFrameRate()));
+        
+        timer.schedule(new MovementTimer(game.getPlayer()), timerDelay);
         middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
         middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getWidth() / 2;
-
-        playerCircle.x = game.getPlayer().getLocation().x;
-        playerCircle.y = game.getPlayer().getLocation().y;
-        playerCircle.width = game.getPlayer().getImage().getWidth();
-        playerCircle.height = game.getPlayer().getImage().getHeight();
-
     }
 
     private void setUpWindow(int width, int height) {
@@ -50,26 +45,29 @@ public class GameWindow extends JFrame implements KeyListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addKeyListener(this);
-        add(panel);
+        
+        //add(fpsLabel);
+        add(panel);      
         setContentPane(panel);
-
     }
 
     private class MovementTimer extends TimerTask {
 
         Player player;
 
-        public MovementTimer(Player player, Line2D.Double directionLine) {
+        public MovementTimer(Player player) {
             this.player = player;
         }
 
         @Override
         public void run() {
-
+            
+            
             if (forward) {
+
+                game.movePlayer(true, Slowingdown);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
-                game.movePlayer(true);
                 repaint();
             }
             if (rotateRight) {
@@ -80,18 +78,18 @@ public class GameWindow extends JFrame implements KeyListener {
             if (backward) {
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
-                game.movePlayer(true);
+                game.movePlayer(false, Slowingdown);
                 repaint();
             }
-//            if (!backward && !forward && speed == MaxSpeed) {
-//                speed -= velocityDecrease;
-//            }
+            if (!backward && !forward) {
+                Slowingdown = true;
+            }
             if (rotateLeft) {
                 game.rotatePlayer(false); // negitive
                 repaint();
             }
 
-            timer.schedule(new MovementTimer(player, directionLine), timerDelay);
+            timer.schedule(new MovementTimer(player), timerDelay);
         }
     }
     int keyCode;
@@ -103,6 +101,7 @@ public class GameWindow extends JFrame implements KeyListener {
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = true;
+                Slowingdown = false;
             }
             break;
 
@@ -113,6 +112,7 @@ public class GameWindow extends JFrame implements KeyListener {
 
             case KeyEvent.VK_S: {
                 backward = true;
+                Slowingdown = false;
             }
             break;
 
@@ -161,7 +161,6 @@ public class GameWindow extends JFrame implements KeyListener {
         public Panel(int width, int height) {
             this.width = width;
             this.height = height;
-
             setSize(width, height);
             setVisible(true);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -179,10 +178,19 @@ public class GameWindow extends JFrame implements KeyListener {
     public void keyTyped(KeyEvent ke) {
     }
 
-    private double getSlope(double x1, double x2, double y1, double y2) {
-        double deltaX = x2 - x1;
-        double deltaY = y2 - y1;
+    private float getFrameRate() {
+        long time = System.currentTimeMillis();
 
-        return Math.atan2(deltaX, deltaY);
+        updateTimes.add(new Long(time));
+
+        float timeInSec = (time - updateTimes.get(0)) / 1000f;
+
+        float FPS = 30f / timeInSec;
+
+        if (updateTimes.size() == 31) {
+            updateTimes.remove(0);
+        }
+
+        return FPS;
     }
 }

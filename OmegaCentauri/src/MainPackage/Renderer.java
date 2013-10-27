@@ -7,18 +7,12 @@ import java.awt.geom.*;
 
 public class Renderer {
     
-    private double radius;
-    private double angle;
-   // private Line2D.Double directionLine = new Line2D.Double();
-    
+    @SuppressWarnings("empty-statement")
     public Renderer() {
-        radius = 0;
-        angle = 0;
+        ;
     }
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, Ellipse2D.Double playerCircle) {
-        radius = playerCircle.getWidth() / 2;
-        angle = player.getAngle();
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
         
@@ -38,11 +32,5 @@ public class Renderer {
         
         g2d.drawImage(player.getImage(), (int)player.getLocation().x, (int)player.getLocation().y, null);
     }
-    
-//    public Line2D.Double getLine()
-//    {
-//        return directionLine;
-//    }        
-
     
 }
