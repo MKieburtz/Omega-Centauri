@@ -62,8 +62,8 @@ public class Player extends Ship {
 
     }
 
+    @SuppressWarnings("empty-statement")
     public void move(boolean forward, boolean Slowingdown) {
-
         if (forward) {
             if (!Slowingdown) {
                 if (speed < MaxSpeed) {
@@ -74,10 +74,6 @@ public class Player extends Ship {
                     }
                 }
 
-                nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
-                nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
-
-
             }// end if
             else {
                 if (speed > 0) {
@@ -87,18 +83,28 @@ public class Player extends Ship {
                         speed -= velocityDecrease;
                     }
                 } else {
-                    Slowingdown = false;
+                    ;
                 }
-                nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
-                nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
             }
-        } // end forward
-        else {
-            speed = -speed;
-
             nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
             nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
-
+            
+        } // end forward
+        else {
+            
+            if (speed < MaxSpeed) {
+                    if (speed + velocityIncrease > MaxSpeed) {
+                        speed = MaxSpeed;
+                    } else {
+                        speed += velocityIncrease;
+                    }
+                }
+            
+            speed = -speed;
+            
+            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
+            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
+            
             speed = Math.abs(speed);
         }
 
