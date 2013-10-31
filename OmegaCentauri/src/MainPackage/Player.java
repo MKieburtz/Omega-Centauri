@@ -11,7 +11,7 @@ public class Player extends Ship {
     private String name;
     private double angle = 0; // maybe move to Ship Class
     private double speed = 0.0;
-    private final double MaxSpeed = 5.0;
+    private final double MaxSpeed = 9.0;
     private final double velocityIncrease = .07;
     private final double velocityDecrease = .05;
 
@@ -21,7 +21,7 @@ public class Player extends Ship {
 
     public Player(int x, int y, Type shipType) {
         location = new Point2D.Double(x, y);
-        nextLocation = new Point2D.Double(location.x, location.y);
+        nextLocation = new Point2D.Double();
         type = shipType;
         imageFile = new File("resources/FighterGrey.png");
         setUpShipImage();
@@ -91,25 +91,26 @@ public class Player extends Ship {
             
         } // end forward
         else {
-            
-            if (speed < MaxSpeed) {
+            if (!Slowingdown) {
+                if (speed < MaxSpeed) {
                     if (speed + velocityIncrease > MaxSpeed) {
                         speed = MaxSpeed;
                     } else {
                         speed += velocityIncrease;
                     }
                 }
-            
+            }
             speed = -speed;
-            
+
             nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
             nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
             
             speed = Math.abs(speed);
         }
-
-        location.x = nextLocation.x;
-        location.y = nextLocation.y;
+        
+        moveRelitive(location.x - nextLocation.x, location.y - nextLocation.y);
+        
+        System.out.println(location.x + " " + location.y + " " + speed);
     }
 
     public double getAngle() {

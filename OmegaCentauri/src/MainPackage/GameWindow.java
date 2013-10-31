@@ -76,9 +76,10 @@ public class GameWindow extends JFrame implements KeyListener {
                 repaint();
             }
             if (backward) {
+                
+                game.movePlayer(false, Slowingdown);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
-                game.movePlayer(false, Slowingdown);
                 repaint();
             }
             if (!backward && !forward) {
@@ -141,7 +142,7 @@ public class GameWindow extends JFrame implements KeyListener {
             break;
 
             case KeyEvent.VK_S: {
-                backward = false;
+                Slowingdown = true;
             }
             break;
 
