@@ -108,7 +108,7 @@ public class Player extends Ship {
             speed = Math.abs(speed);
         }
         
-        moveRelitive(location.x - nextLocation.x, location.y - nextLocation.y);
+        moveTo(nextLocation.x, nextLocation.y);
         
         System.out.println(location.x + " " + location.y + " " + speed);
     }
