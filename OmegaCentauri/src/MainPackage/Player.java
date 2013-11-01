@@ -100,6 +100,7 @@ public class Player extends Ship {
                     }
                 }
             }
+            
             speed = -speed;
 
             nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
@@ -108,7 +109,8 @@ public class Player extends Ship {
             speed = Math.abs(speed);
         }
         
-        moveTo(nextLocation.x, nextLocation.y);
+        location.x = nextLocation.x;
+        location.y = nextLocation.y;
         
         System.out.println(location.x + " " + location.y + " " + speed);
     }
