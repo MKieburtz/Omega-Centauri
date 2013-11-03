@@ -63,8 +63,7 @@ public class Player extends Ship {
     }
 
     @SuppressWarnings("empty-statement")
-    public void move(boolean forward, boolean Slowingdown) {
-        if (forward) {
+    public void move(boolean Slowingdown, double driftAngle) {
             if (!Slowingdown) {
                 if (speed < MaxSpeed) {
                     if (speed + velocityIncrease > MaxSpeed) {
@@ -73,6 +72,8 @@ public class Player extends Ship {
                         speed += velocityIncrease;
                     }
                 }
+            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
+            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
 
             }// end if
             else {
@@ -85,36 +86,15 @@ public class Player extends Ship {
                 } else {
                     ;
                 }
-            }
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
-            
-        } // end forward
-        else {
-            if (!Slowingdown) {
-                if (speed < MaxSpeed) {
-                    if (speed + velocityIncrease > MaxSpeed) {
-                        speed = MaxSpeed;
-                    } else {
-                        speed += velocityIncrease;
-                    }
-                }
+            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(driftAngle)));
+            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(driftAngle)));
             }
             
-            speed = -speed;
-
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
             
-            speed = Math.abs(speed);
-        }
+            
+            location = nextLocation;
         
-        location.x = nextLocation.x;
-        location.y = nextLocation.y;
-        
-        System.out.println(location.x + " " + location.y + " " + speed);
-    }
-
+}
     public double getAngle() {
         return angle;
     }
