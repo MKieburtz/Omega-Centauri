@@ -12,9 +12,9 @@ public class Player extends Ship {
     private double angle = 0; // maybe move to Ship Class
     private double driftAngle = 0;
     private double speed = 0.0;
-    private final double MaxSpeed = 9.0;
-    private final double velocityIncrease = .07;
-    private final double velocityDecrease = .08;
+    private final double MaxSpeed = 5.0;
+    private final double velocityIncrease = .05;
+    private final double velocityDecrease = .02;
     
     
     
@@ -64,6 +64,11 @@ public class Player extends Ship {
         }
 
     }
+    
+    public void rotate(double amount)
+    {
+        angle = amount;
+    }
 
     @SuppressWarnings("empty-statement")
     public void move(boolean Slowingdown, double driftAngle) {
@@ -81,7 +86,6 @@ public class Player extends Ship {
 
             }// end if
             else {
-                
                 if (speed > 0) {
                     if (speed - velocityDecrease < 0) {
                         speed = 0;
@@ -96,7 +100,6 @@ public class Player extends Ship {
             }
             
             location = nextLocation;
-        
 }
     public double getAngle() {
         return angle;

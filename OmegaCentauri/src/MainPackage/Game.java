@@ -41,4 +41,8 @@ public class Game {
     {
         player.rotate(positive);
     }
+    public void rotatePlayer(double amount)
+    {
+        player.rotate(amount);
+    }
 }
