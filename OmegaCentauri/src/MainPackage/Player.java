@@ -10,11 +10,14 @@ public class Player extends Ship {
 
     private String name;
     private double angle = 0; // maybe move to Ship Class
+    private double driftAngle = 0;
     private double speed = 0.0;
     private final double MaxSpeed = 9.0;
     private final double velocityIncrease = .07;
-    private final double velocityDecrease = .05;
-
+    private final double velocityDecrease = .08;
+    
+    
+    
     public String getName() {
         return this.name;
     }
@@ -65,6 +68,7 @@ public class Player extends Ship {
     @SuppressWarnings("empty-statement")
     public void move(boolean Slowingdown, double driftAngle) {
             if (!Slowingdown) {
+                this.driftAngle = driftAngle;
                 if (speed < MaxSpeed) {
                     if (speed + velocityIncrease > MaxSpeed) {
                         speed = MaxSpeed;
@@ -77,6 +81,7 @@ public class Player extends Ship {
 
             }// end if
             else {
+                
                 if (speed > 0) {
                     if (speed - velocityDecrease < 0) {
                         speed = 0;
@@ -86,11 +91,9 @@ public class Player extends Ship {
                 } else {
                     ;
                 }
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(driftAngle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(driftAngle)));
+            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(this.driftAngle)));
+            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(this.driftAngle)));
             }
-            
-            
             
             location = nextLocation;
         
