@@ -13,7 +13,7 @@ public class Game {
     
     public Game(int WindowWidth, int WindowHeight)
     {
-        player = new Player(100, 100, Type.Fighter);
+        player = new Player(((WindowWidth / 2)-50),((WindowHeight/ 2)-50), Type.Fighter);
         window = new GameWindow(WindowWidth, WindowHeight, this);
         
     }
