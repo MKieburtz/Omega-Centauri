@@ -28,7 +28,7 @@ public abstract class Ship {
     
     // MAKE SURE TO SET THE SHIP IMAGE IN THE CONSTRUCTOR!!!!!
     
-    //@returns success
+    //returns success
     protected boolean setUpShipImage()
     {
         try {

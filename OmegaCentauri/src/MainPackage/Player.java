@@ -13,9 +13,9 @@ public class Player extends Ship {
     private double driftAngle = 0;
     private double speed = 0.0;
     private final double MaxSpeed = 5.0;
-    private final double velocityIncrease = .05;
+    private final double velocityIncrease = .07;
     private final double velocityDecrease = .02;
-    
+    private double angleIcrement = 5;
     
     
     public String getName() {
@@ -51,12 +51,12 @@ public class Player extends Ship {
 
     public void rotate(boolean positive) {
         if (positive) {
-            angle += 5;
+            angle += angleIcrement;
         } else if (!positive && angle == 0) {
             angle = 360;
-            angle -= 5;
+            angle -= angleIcrement;
         } else {
-            angle -= 5;
+            angle -= angleIcrement;
         }
 
         if (angle == 360) {
@@ -74,6 +74,7 @@ public class Player extends Ship {
     public void move(boolean Slowingdown, double driftAngle) {
             if (!Slowingdown) {
                 this.driftAngle = driftAngle;
+                
                 if (speed < MaxSpeed) {
                     if (speed + velocityIncrease > MaxSpeed) {
                         speed = MaxSpeed;
@@ -93,12 +94,13 @@ public class Player extends Ship {
                         speed -= velocityDecrease;
                     }
                 } else {
-                    ;
+                   ;
                 }
+                
             nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(this.driftAngle)));
             nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(this.driftAngle)));
             }
-            
+            System.out.println(speed);
             location = nextLocation;
 }
     public double getAngle() {
