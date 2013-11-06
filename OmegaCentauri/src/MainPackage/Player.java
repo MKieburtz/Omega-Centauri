@@ -106,4 +106,5 @@ public class Player extends Ship {
     public double getAngle() {
         return angle;
     }
+    
 }
