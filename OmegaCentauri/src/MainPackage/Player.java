@@ -107,4 +107,13 @@ public class Player extends Ship {
         return angle;
     }
     
+    public double getSpeed()
+    {
+        return speed;
+    }
+    public void setSpeed(double speed)
+    {
+        this.speed = speed;
+    }
+    
 }

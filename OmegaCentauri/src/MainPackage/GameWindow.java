@@ -85,6 +85,11 @@ public class GameWindow extends JFrame implements KeyListener {
                 driftAngle = game.getPlayer().getAngle();
                 repaint();
             }
+            if (!forward && game.getPlayer().getSpeed() > 0)
+            {
+                game.getPlayer().setSpeed(0.0);
+                Slowingdown = false;
+            }
 
             timer.schedule(new MovementTimer(player), timerDelay);
         }
