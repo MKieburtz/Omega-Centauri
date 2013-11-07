@@ -22,6 +22,7 @@ public class GameWindow extends JFrame implements KeyListener {
     private double driftAngle = 0;
     //private JLabel fpsLabel = new JLabel();
     private java.util.List<Long> updateTimes = new ArrayList<Long>();
+    private boolean driftMove = false;
 
     public GameWindow(int width, int height, Game game) {
 
@@ -65,7 +66,7 @@ public class GameWindow extends JFrame implements KeyListener {
             
             if (forward) {
 
-                game.movePlayer(Slowingdown, driftAngle);
+                game.movePlayer(Slowingdown, driftAngle, driftMove);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
                 repaint();
@@ -85,11 +86,6 @@ public class GameWindow extends JFrame implements KeyListener {
                 driftAngle = game.getPlayer().getAngle();
                 repaint();
             }
-            if (!forward && game.getPlayer().getSpeed() > 0)
-            {
-                game.getPlayer().setSpeed(0.0);
-                Slowingdown = false;
-            }
 
             timer.schedule(new MovementTimer(player), timerDelay);
         }
@@ -103,7 +99,16 @@ public class GameWindow extends JFrame implements KeyListener {
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = true;
-                Slowingdown = false;
+                if (game.getPlayer().getSpeed() > 0)
+                {
+                    driftMove = true;
+                    break;
+                }
+                else
+                {
+                    driftMove = false;
+                    Slowingdown = false;
+                }
             }
             break;
 
@@ -116,6 +121,11 @@ public class GameWindow extends JFrame implements KeyListener {
                 rotateLeft = true;
             }
             break;
+            
+            case KeyEvent.VK_SPACE: {
+                game.getPlayer().location.x = 500;
+                game.getPlayer().location.y = 250;
+            }
 
         } // end switch
 
@@ -128,6 +138,7 @@ public class GameWindow extends JFrame implements KeyListener {
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 Slowingdown = true;
+                driftMove = false;
             }
             break;
 

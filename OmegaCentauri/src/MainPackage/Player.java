@@ -15,7 +15,8 @@ public class Player extends Ship {
     private final double MaxSpeed = 5.0;
     private final double velocityIncrease = .07;
     private final double velocityDecrease = .02;
-    private double angleIcrement = 5;
+    private double angleIcrement = 2.5;
+    private boolean drifting = false;
     
     
     public String getName() {
@@ -64,56 +65,99 @@ public class Player extends Ship {
         }
 
     }
-    
-    public void rotate(double amount)
-    {
+
+    public void rotate(double amount) {
         angle = amount;
     }
 
-    @SuppressWarnings("empty-statement")
-    public void move(boolean Slowingdown, double driftAngle) {
-            if (!Slowingdown) {
-                this.driftAngle = driftAngle;
-                
-                if (speed < MaxSpeed) {
-                    if (speed + velocityIncrease > MaxSpeed) {
-                        speed = MaxSpeed;
-                    } else {
-                        speed += velocityIncrease;
-                    }
-                }
+    public void move(boolean Slowingdown, double driftAngle, boolean pressing) {
+        if (!Slowingdown) {
+            this.driftAngle = driftAngle;
+            Slowingdown = false;
+            increaseSpeed();
+
             nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
             nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
 
-            }// end if
-            else {
-                if (speed > 0) {
-                    if (speed - velocityDecrease < 0) {
-                        speed = 0;
-                    } else {
-                        speed -= velocityDecrease;
-                    }
-                } else {
-                   ;
-                }
-                
+        }// end if
+        else if (Slowingdown && pressing) {
+            
+            if (drifting)
+            {
+                decreaseSpeed();
+            }
+            increaseSpeed();
             nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(this.driftAngle)));
             nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(this.driftAngle)));
-            }
-            System.out.println(speed);
-            location = nextLocation;
-}
+            
+            nextLocation.x = location.x + (speed / 2 * Math.sin(Math.toRadians(angle)));
+            nextLocation.y = location.y + (speed / 2 * -Math.cos(Math.toRadians(angle)));
+            
+
+        } else {
+            Slowingdown = true;
+            decreaseSpeed();
+            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(this.driftAngle)));
+            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(this.driftAngle)));
+        }
+        
+        
+        location = nextLocation;
+    }
+
     public double getAngle() {
         return angle;
     }
-    
-    public double getSpeed()
-    {
+
+    public double getSpeed() {
         return speed;
     }
-    public void setSpeed(double speed)
-    {
+
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
+
+    private void increaseSpeed() 
+    {
+        if (speed < MaxSpeed) {
+                if (speed + velocityIncrease > MaxSpeed) {
+                    speed = MaxSpeed;
+                } else {
+                    speed += velocityIncrease;
+                }
+            }
+    }
+
+    private void increaseSpeed(double amount) 
+    {
+
+    }
     
+    private void decreaseSpeed() 
+    {
+         if (speed > 0) {
+                if (speed - velocityDecrease < 0) {
+                    speed = 0;
+                } else {
+                    speed -= velocityDecrease;
+                }
+            } else {
+                drifting = false;
+            }
+    }
+    
+    private void decreaseSpeed(double amount) 
+    {
+        if (speed > 0) {
+
+            if (speed - velocityDecrease + amount < 0) {
+                speed = 0;
+            } else {
+                speed -= velocityDecrease + amount;
+            }
+        } else {
+            drifting = false;
+        }
+    }
+
 }

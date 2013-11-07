@@ -27,9 +27,9 @@ public class Game {
         player.moveTo(x, y);
     }
     
-    public void movePlayer(boolean Slowingdown, double driftAngle)
+    public void movePlayer(boolean Slowingdown, double driftAngle, boolean pressing)
     {
-        player.move(Slowingdown, driftAngle);
+        player.move(Slowingdown, driftAngle, pressing);
     }
     
     public void movePlayerRelitive(int dx, int dy)
