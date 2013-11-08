@@ -16,8 +16,8 @@ public class Player extends Ship {
     private final double velocityIncrease = .07;
     private final double velocityDecrease = .02;
     private double angleIcrement = 2.5;
+    private double driftSpeed = 0;
     private boolean drifting = false;
-    
     
     public String getName() {
         return this.name;
@@ -70,19 +70,34 @@ public class Player extends Ship {
         angle = amount;
     }
 
-    public void move(boolean Slowingdown, double driftAngle) {
+    public void move(boolean Slowingdown, double driftAngle, boolean driftMove) {
         if (!Slowingdown) {
             this.driftAngle = driftAngle;
             increaseSpeed();
 
-            nextLocation.x = location.x + (speed * Math.cos(Math.toRadians(angle - 90)));
-            nextLocation.y = location.y + (speed * Math.sin(Math.toRadians(angle - 90)));
+            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
+            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
 
         }// end if
+        else if (driftMove)
+        {
+            if (drifting)
+            {
+            driftSpeed = speed;
+            speed = 0;
+            }
+            increaseSpeed();
+            nextLocation.x = location.x + (driftSpeed * Math.sin(Math.toRadians(this.driftAngle)));
+            nextLocation.y = location.y + (driftSpeed * -Math.cos(Math.toRadians(this.driftAngle)));
+            
+            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
+            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
+        }
+        
         else {
             decreaseSpeed();
-            nextLocation.x = location.x + (speed * Math.cos(Math.toRadians(this.driftAngle - 90)));
-            nextLocation.y = location.y + (speed * Math.sin(Math.toRadians(this.driftAngle- 90)));
+            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(this.driftAngle)));
+            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(this.driftAngle)));
         }
         
         
@@ -114,7 +129,14 @@ public class Player extends Ship {
 
     private void increaseSpeed(double amount) 
     {
-
+        if (speed < MaxSpeed) {
+                if (speed + amount > MaxSpeed) {
+                    speed = MaxSpeed;
+                } else {
+                    speed += amount;
+                            
+                }
+            }
     }
     
     private void decreaseSpeed() 
