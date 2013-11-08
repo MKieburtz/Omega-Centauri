@@ -70,35 +70,19 @@ public class Player extends Ship {
         angle = amount;
     }
 
-    public void move(boolean Slowingdown, double driftAngle, boolean pressing) {
+    public void move(boolean Slowingdown, double driftAngle) {
         if (!Slowingdown) {
             this.driftAngle = driftAngle;
-            Slowingdown = false;
             increaseSpeed();
 
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
+            nextLocation.x = location.x + (speed * Math.cos(Math.toRadians(angle - 90)));
+            nextLocation.y = location.y + (speed * Math.sin(Math.toRadians(angle - 90)));
 
         }// end if
-        else if (Slowingdown && pressing) {
-            
-            if (drifting)
-            {
-                decreaseSpeed();
-            }
-            increaseSpeed();
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(this.driftAngle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(this.driftAngle)));
-            
-            nextLocation.x = location.x + (speed / 2 * Math.sin(Math.toRadians(angle)));
-            nextLocation.y = location.y + (speed / 2 * -Math.cos(Math.toRadians(angle)));
-            
-
-        } else {
-            Slowingdown = true;
+        else {
             decreaseSpeed();
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(this.driftAngle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(this.driftAngle)));
+            nextLocation.x = location.x + (speed * Math.cos(Math.toRadians(this.driftAngle - 90)));
+            nextLocation.y = location.y + (speed * Math.sin(Math.toRadians(this.driftAngle- 90)));
         }
         
         
