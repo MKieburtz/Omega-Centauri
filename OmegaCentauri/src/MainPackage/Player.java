@@ -15,11 +15,10 @@ public class Player extends Ship {
     private final double maxVel = 5.0;
     private final double velocityIncrease = .07;
     private final double velocityDecrease = .02;
-    private double angleIcrement = 2.5;
-    private double driftSpeed = 0;
+    private final double angleIcrement = 2.5;
     private boolean drifting = false;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
-    private double acceleration = .05;
+    private final double acceleration = .05;
     
     public String getName() {
         return this.name;
@@ -62,7 +61,7 @@ public class Player extends Ship {
         else
         {
             faceAngle -= angleIcrement;
-            if (faceAngle < 0)
+            if (faceAngle <= 0)
                 faceAngle = 360 - angleIcrement;
         }
     }
@@ -82,15 +81,15 @@ public class Player extends Ship {
         else if (velocity.x < -maxVel)
             velocity.x = -maxVel;
         
-        velocity.y += CalcAngleMoveY(faceAngle) * acceleration;
+        velocity.y += CalcAngleMoveY(moveAngle) * acceleration;
         
         if (velocity.y > maxVel)
             velocity.y = maxVel;
         
-        else if (velocity.x < -maxVel)
-            velocity.x = -maxVel;
+        else if (velocity.y < -maxVel)
+            velocity.y = -maxVel;
         
-        
+        System.out.println(faceAngle + " " + moveAngle + " " + velocity);
         location.x += velocity.x;
         location.y += velocity.y;
     }
