@@ -9,15 +9,17 @@ import java.io.File;
 public class Player extends Ship {
 
     private String name;
-    private double angle = 0; // maybe move to Ship Class
-    private double driftAngle = 0;
+    private double faceAngle = 360.0; // maybe move to Ship Class
+    private double moveAngle = 0.0;
     private double speed = 0.0;
-    private final double MaxSpeed = 5.0;
+    private final double maxVel = 5.0;
     private final double velocityIncrease = .07;
     private final double velocityDecrease = .02;
     private double angleIcrement = 2.5;
     private double driftSpeed = 0;
     private boolean drifting = false;
+    private Point2D.Double velocity = new Point2D.Double(0, 0);
+    private double acceleration = .05;
     
     public String getName() {
         return this.name;
@@ -51,61 +53,50 @@ public class Player extends Ship {
     }
 
     public void rotate(boolean positive) {
-        if (positive) {
-            angle += angleIcrement;
-        } else if (!positive && angle == 0) {
-            angle = 360;
-            angle -= angleIcrement;
-        } else {
-            angle -= angleIcrement;
+        if (positive)
+        {
+            faceAngle += angleIcrement;
+            if (faceAngle > 360)
+                faceAngle = angleIcrement;
         }
-
-        if (angle == 360) {
-            angle = 0;
+        else
+        {
+            faceAngle -= angleIcrement;
+            if (faceAngle < 0)
+                faceAngle = 360 - angleIcrement;
         }
-
     }
 
     public void rotate(double amount) {
-        angle = amount;
+        faceAngle = amount;
     }
 
-    public void move(boolean Slowingdown, double driftAngle, boolean driftMove) {
-        if (!Slowingdown) {
-            this.driftAngle = driftAngle;
-            increaseSpeed();
-
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
-
-        }// end if
-        else if (driftMove)
-        {
-            if (drifting)
-            {
-            driftSpeed = speed;
-            speed = 0;
-            }
-            increaseSpeed();
-            nextLocation.x = location.x + (driftSpeed * Math.sin(Math.toRadians(this.driftAngle)));
-            nextLocation.y = location.y + (driftSpeed * -Math.cos(Math.toRadians(this.driftAngle)));
-            
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(angle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(angle)));
-        }
+    public void move() {
+        moveAngle = faceAngle - 90;
         
-        else {
-            decreaseSpeed();
-            nextLocation.x = location.x + (speed * Math.sin(Math.toRadians(this.driftAngle)));
-            nextLocation.y = location.y + (speed * -Math.cos(Math.toRadians(this.driftAngle)));
-        }
+        velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
+        
+        if (velocity.x > maxVel) 
+            velocity.x = maxVel;
+        
+        else if (velocity.x < -maxVel)
+            velocity.x = -maxVel;
+        
+        velocity.y += CalcAngleMoveY(faceAngle) * acceleration;
+        
+        if (velocity.y > maxVel)
+            velocity.y = maxVel;
+        
+        else if (velocity.x < -maxVel)
+            velocity.x = -maxVel;
         
         
-        location = nextLocation;
+        location.x += velocity.x;
+        location.y += velocity.y;
     }
 
     public double getAngle() {
-        return angle;
+        return faceAngle;
     }
 
     public double getSpeed() {
@@ -118,9 +109,9 @@ public class Player extends Ship {
 
     private void increaseSpeed() 
     {
-        if (speed < MaxSpeed) {
-                if (speed + velocityIncrease > MaxSpeed) {
-                    speed = MaxSpeed;
+        if (speed < maxVel) {
+                if (speed + velocityIncrease > maxVel) {
+                    speed = maxVel;
                 } else {
                     speed += velocityIncrease;
                 }
@@ -129,9 +120,9 @@ public class Player extends Ship {
 
     private void increaseSpeed(double amount) 
     {
-        if (speed < MaxSpeed) {
-                if (speed + amount > MaxSpeed) {
-                    speed = MaxSpeed;
+        if (speed < maxVel) {
+                if (speed + amount > maxVel) {
+                    speed = maxVel;
                 } else {
                     speed += amount;
                             
@@ -164,6 +155,16 @@ public class Player extends Ship {
         } else {
             drifting = false;
         }
+    }
+    
+    private double CalcAngleMoveX(double angle)
+    {
+        return (double)(Math.cos(angle * Math.PI / 180));
+    }
+    
+    private double CalcAngleMoveY(double angle)
+    {
+        return (double)(Math.sin(angle * Math.PI / 180));
     }
 
 }
