@@ -13,12 +13,10 @@ public class Player extends Ship {
     private double moveAngle = 0.0;
     private double speed = 0.0;
     private final double maxVel = 5.0;
-    private final double velocityIncrease = .07;
-    private final double velocityDecrease = .02;
-    private final double angleIcrement = 2.5;
+    private final double angleIcrement = 5;
     private boolean drifting = false;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
-    private final double acceleration = .05;
+    private final double acceleration = .1;
     
     public String getName() {
         return this.name;
@@ -66,13 +64,13 @@ public class Player extends Ship {
         }
     }
 
-    public void rotate(double amount) {
-        faceAngle = amount;
-    }
+    public void rotate(double amount) { faceAngle = amount; }
 
-    public void move() {
+    public void move(boolean slowingDown) {
         moveAngle = faceAngle - 90;
         
+        if (!slowingDown)
+        {
         velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
         
         if (velocity.x > maxVel) 
@@ -89,9 +87,44 @@ public class Player extends Ship {
         else if (velocity.y < -maxVel)
             velocity.y = -maxVel;
         
-        System.out.println(faceAngle + " " + moveAngle + " " + velocity);
+        }
+        else
+        {
+            if (velocity.x > 0)
+            {
+                if (velocity.x - (CalcAngleMoveX(moveAngle) * acceleration) < 0)
+                    velocity.x = 0;
+                else
+                    velocity.x -= CalcAngleMoveX(moveAngle) * acceleration;
+            }
+            else if (velocity.x < 0)
+            {
+                if (velocity.x + (CalcAngleMoveX(moveAngle) * acceleration) > 0)
+                    velocity.x = 0;
+                else
+                    velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
+            }
+            
+            if (velocity.y > 0)
+            {
+                if (velocity.y - (CalcAngleMoveY(moveAngle) * acceleration) < 0)
+                    velocity.y = 0;
+                else
+                    velocity.y -= CalcAngleMoveY(moveAngle) * acceleration;
+            }
+            else if (velocity.y < 0)
+            {
+                if (velocity.y + (CalcAngleMoveY(moveAngle) * acceleration) > 0)
+                    velocity.y = 0;
+                else
+                    velocity.y += CalcAngleMoveY(moveAngle) * acceleration;
+            }
+            
+            if (velocity.x == 0 && velocity.y == 0) return;
+        }
         location.x += velocity.x;
         location.y += velocity.y;
+        
     }
 
     public double getAngle() {
@@ -105,56 +138,6 @@ public class Player extends Ship {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
-
-    private void increaseSpeed() 
-    {
-        if (speed < maxVel) {
-                if (speed + velocityIncrease > maxVel) {
-                    speed = maxVel;
-                } else {
-                    speed += velocityIncrease;
-                }
-            }
-    }
-
-    private void increaseSpeed(double amount) 
-    {
-        if (speed < maxVel) {
-                if (speed + amount > maxVel) {
-                    speed = maxVel;
-                } else {
-                    speed += amount;
-                            
-                }
-            }
-    }
-    
-    private void decreaseSpeed() 
-    {
-         if (speed > 0) {
-                if (speed - velocityDecrease < 0) {
-                    speed = 0;
-                } else {
-                    speed -= velocityDecrease;
-                }
-            } else {
-                drifting = false;
-            }
-    }
-    
-    private void decreaseSpeed(double amount) 
-    {
-        if (speed > 0) {
-
-            if (speed - velocityDecrease + amount < 0) {
-                speed = 0;
-            } else {
-                speed -= velocityDecrease + amount;
-            }
-        } else {
-            drifting = false;
-        }
-    }
     
     private double CalcAngleMoveX(double angle)
     {
@@ -165,5 +148,4 @@ public class Player extends Ship {
     {
         return (double)(Math.sin(angle * Math.PI / 180));
     }
-
 }

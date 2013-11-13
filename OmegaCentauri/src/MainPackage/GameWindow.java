@@ -64,8 +64,8 @@ public class GameWindow extends JFrame implements KeyListener {
             
             
             if (forward) {
-
-                game.movePlayer();
+                
+                game.movePlayer(false);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
                 repaint();
@@ -83,6 +83,15 @@ public class GameWindow extends JFrame implements KeyListener {
                 repaint();
             }
             
+            if (!forward) Slowingdown = true;
+            
+            if (Slowingdown)
+            {
+                game.movePlayer(true);
+                middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
+                middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
+                repaint();
+            }
             timer.schedule(new MovementTimer(player), timerDelay);
         }
     }
@@ -95,6 +104,7 @@ public class GameWindow extends JFrame implements KeyListener {
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = true;
+                Slowingdown = false;
             }
             break;
 
