@@ -17,7 +17,8 @@ public class Player extends Ship {
     private boolean drifting = false;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .1;
-    
+    private final double deacceleration = .05;
+
     public String getName() {
         return this.name;
     }
@@ -50,81 +51,93 @@ public class Player extends Ship {
     }
 
     public void rotate(boolean positive) {
-        if (positive)
-        {
+        if (positive) {
             faceAngle += angleIcrement;
-            if (faceAngle > 360)
+            if (faceAngle > 360) {
                 faceAngle = angleIcrement;
-        }
-        else
-        {
+            }
+        } else {
             faceAngle -= angleIcrement;
-            if (faceAngle <= 0)
+            if (faceAngle <= 0) {
                 faceAngle = 360 - angleIcrement;
+            }
         }
     }
 
-    public void rotate(double amount) { faceAngle = amount; }
+    public void rotate(double amount) {
+        faceAngle = amount;
+    }
 
     public void move(boolean slowingDown) {
         moveAngle = faceAngle - 90;
-        
-        if (!slowingDown)
+
+        if (!slowingDown) {
+            velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
+
+            if (velocity.x > maxVel) {
+                velocity.x = maxVel;
+            } else if (velocity.x < -maxVel) {
+                velocity.x = -maxVel;
+            }
+
+            velocity.y += CalcAngleMoveY(moveAngle) * acceleration;
+
+            if (velocity.y > maxVel) {
+                velocity.y = maxVel;
+            } else if (velocity.y < -maxVel) {
+                velocity.y = -maxVel;
+            }
+
+        } else // the ship is slowing down, the keybind for the forward key is not being pressed.
         {
-        velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
-        
-        if (velocity.x > maxVel) 
-            velocity.x = maxVel;
-        
-        else if (velocity.x < -maxVel)
-            velocity.x = -maxVel;
-        
-        velocity.y += CalcAngleMoveY(moveAngle) * acceleration;
-        
-        if (velocity.y > maxVel)
-            velocity.y = maxVel;
-        
-        else if (velocity.y < -maxVel)
-            velocity.y = -maxVel;
-        
-        }
-        else
-        {
-            if (velocity.x > 0)
-            {
-                if (velocity.x - (CalcAngleMoveX(moveAngle) * acceleration) < 0)
+            if (velocity.x == 0 && velocity.y == 0) {
+                return;
+            }
+
+            if (velocity.x > 0) {
+
+                if (velocity.x - deacceleration < 0) {
                     velocity.x = 0;
-                else
-                    velocity.x -= CalcAngleMoveX(moveAngle) * acceleration;
-            }
-            else if (velocity.x < 0)
-            {
-                if (velocity.x + (CalcAngleMoveX(moveAngle) * acceleration) > 0)
+                } else {
+                    velocity.x -= deacceleration;
+                }
+
+            } else if (velocity.x < 0) {
+
+                if (velocity.x + deacceleration > 0) {
                     velocity.x = 0;
-                else
-                    velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
+                } else {
+                    velocity.x += deacceleration;
+                }
+
             }
-            
-            if (velocity.y > 0)
-            {
-                if (velocity.y - (CalcAngleMoveY(moveAngle) * acceleration) < 0)
+
+            if (velocity.y > 0) {
+
+                if (velocity.y - deacceleration < 0) {
                     velocity.y = 0;
-                else
-                    velocity.y -= CalcAngleMoveY(moveAngle) * acceleration;
-            }
-            else if (velocity.y < 0)
-            {
-                if (velocity.y + (CalcAngleMoveY(moveAngle) * acceleration) > 0)
+                } else {
+                    velocity.y -= deacceleration;
+                }
+
+            } else if (velocity.y < 0) {
+                if (velocity.y + deacceleration > 0) {
                     velocity.y = 0;
-                else
-                    velocity.y += CalcAngleMoveY(moveAngle) * acceleration;
+                } else {
+                    velocity.y += deacceleration;
+                }
             }
-            
-            if (velocity.x == 0 && velocity.y == 0) return;
+
+            System.out.println(velocity.x + " " + velocity.y);
         }
+        System.out.println(velocity.x + " " + velocity.y);
+        updatePosition();
+
+    }
+
+    private void updatePosition() {
         location.x += velocity.x;
         location.y += velocity.y;
-        
     }
 
     public double getAngle() {
@@ -138,14 +151,12 @@ public class Player extends Ship {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
-    
-    private double CalcAngleMoveX(double angle)
-    {
-        return (double)(Math.cos(angle * Math.PI / 180));
+
+    private double CalcAngleMoveX(double angle) {
+        return (double) (Math.cos(angle * Math.PI / 180));
     }
-    
-    private double CalcAngleMoveY(double angle)
-    {
-        return (double)(Math.sin(angle * Math.PI / 180));
+
+    private double CalcAngleMoveY(double angle) {
+        return (double) (Math.sin(angle * Math.PI / 180));
     }
 }
