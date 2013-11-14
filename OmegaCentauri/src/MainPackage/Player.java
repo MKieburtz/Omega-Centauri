@@ -27,7 +27,10 @@ public class Player extends Ship {
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
-        imageFile = new File("resources/FighterGreyIdle.png");
+        imageFiles.add(new File("resources/FighterGreyIdle.png"));
+        imageFiles.add(new File("resources/FighterGreyMoving.png"));
+        imageFiles.add(new File("resources/FighterGreyTurningLeft.png"));
+        imageFiles.add(new File("resources/FighterGreyTurningRight.png"));
         setUpShipImage();
     }
 
