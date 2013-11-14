@@ -25,6 +25,11 @@ public abstract class Ship {
         return this.images.get(0);
     }
     
+    public BufferedImage getImage(int index)
+    {
+        return this.images.get(index);
+    }
+    
     protected ArrayList <File> imageFiles = new ArrayList<File>();
     protected ArrayList <FileInputStream> inputStreams = new ArrayList<FileInputStream>();
     
@@ -33,16 +38,21 @@ public abstract class Ship {
     //returns success
     protected boolean setUpShipImage()
     {
+        int j = 0;
         try {
-            inputStreams.add(new FileInputStream(imageFiles.get(0)));
-            images.add(ImageIO.read(inputStreams.get(0)));
+            for (int i = 0; i < imageFiles.size(); i++) {
+                inputStreams.add(new FileInputStream(imageFiles.get(i)));
+            }
+            for (j = 0; j < inputStreams.size(); j++) {
+                images.add(ImageIO.read(inputStreams.get(j)));
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
-            System.err.println("error reading file: " + imageFiles.get(0).getPath());
+            System.err.println("Error reading file: " + imageFiles.get(j).getPath());
         } catch (NullPointerException ex2)
         {
             ex2.printStackTrace();
-            System.err.println("this shouldn't have happend. Issue with base class 'Ship'");
+            System.err.println("This shouldn't have happend. Issue with base class 'Ship'");
             return false;
         }
         return true;

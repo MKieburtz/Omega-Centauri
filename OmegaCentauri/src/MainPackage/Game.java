@@ -15,7 +15,6 @@ public class Game {
     {
         player = new Player(((WindowWidth / 2) - 25),((WindowHeight/ 2) - 25), Type.Fighter);
         window = new GameWindow(WindowWidth, WindowHeight, this);
-        System.out.println(player.getLocation());
     }
     public Player getPlayer()
     {

@@ -133,9 +133,8 @@ public class Player extends Ship {
                 }
             }
 
-            System.out.println(velocity.x + " " + velocity.y);
         }
-        System.out.println(velocity.x + " " + velocity.y);
+        
         updatePosition();
 
     }
@@ -164,7 +163,7 @@ public class Player extends Ship {
     private double CalcAngleMoveY(double angle) {
         return (double) (Math.sin(angle * Math.PI / 180));
     }
-    public ArrayList getImages ()
+    public ArrayList getImages()
     {
         return imageFiles;
     }

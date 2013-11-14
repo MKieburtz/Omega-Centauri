@@ -46,7 +46,8 @@ public class GameWindow extends JFrame implements KeyListener {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addKeyListener(this);
-        //add(fpsLabel);
+        setTitle("Omega Centauri");
+        //add(fpsLabel); 
         add(panel);      
         setContentPane(panel);
     }
