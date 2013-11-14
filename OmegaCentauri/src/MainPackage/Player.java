@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.util.ArrayList;
 
 // @author Michael Kieburtz
 // might refractor to playerShip
@@ -161,5 +162,9 @@ public class Player extends Ship {
 
     private double CalcAngleMoveY(double angle) {
         return (double) (Math.sin(angle * Math.PI / 180));
+    }
+    public ArrayList getImages ()
+    {
+        return imageFiles;
     }
 }
