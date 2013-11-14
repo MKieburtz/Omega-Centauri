@@ -33,6 +33,7 @@ public class Player extends Ship {
         imageFiles.add(new File("resources/FighterGreyTurningLeft.png"));
         imageFiles.add(new File("resources/FighterGreyTurningRight.png"));
         setUpShipImage();
+        activeImage = images.get(0);
     }
 
     public Point2D.Double getLocation() {

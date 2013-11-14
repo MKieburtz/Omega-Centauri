@@ -18,6 +18,7 @@ public abstract class Ship {
     protected Point2D.Double nextLocation;
     // File -> FileInputStream -> ImageIO -> buffered image
     protected ArrayList <BufferedImage> images = new ArrayList<BufferedImage>();
+    protected BufferedImage activeImage;
     
     public BufferedImage getImage()
     {

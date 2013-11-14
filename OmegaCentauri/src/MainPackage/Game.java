@@ -45,4 +45,8 @@ public class Game {
     {
         player.rotate(amount);
     }
+    public ArrayList getPlayerImages()
+    {
+        return player.getImages();
+    }
 }
