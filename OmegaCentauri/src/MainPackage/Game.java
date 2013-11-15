@@ -9,12 +9,12 @@ public class Game {
     private ArrayList<Ally> allyShips = new ArrayList<Ally>();
     private Player player;
     
-    GameWindow window;
+    OmegaCentauri window;
     
     public Game(int WindowWidth, int WindowHeight)
     {
         player = new Player(((WindowWidth / 2) - 25),((WindowHeight/ 2) - 25), Type.Fighter);
-        window = new GameWindow(WindowWidth, WindowHeight, this);
+        window = new OmegaCentauri(WindowWidth, WindowHeight, this);
     }
     public Player getPlayer()
     {

@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 
-// @author Michael Kieburtz
+// @author Michael Kieburtz and Davis Freeman
 // might refractor to playerShip
 public class Player extends Ship {
 
@@ -15,7 +15,6 @@ public class Player extends Ship {
     private double speed = 0.0;
     private final double maxVel = 5.0;
     private final double angleIcrement = 5;
-    private boolean drifting = false;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .1;
     private final double deacceleration = .05;

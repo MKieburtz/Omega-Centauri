@@ -8,7 +8,7 @@ import java.util.*;
 import javax.swing.*;
 
 // @author Michael Kieburtz
-public class GameWindow extends JFrame implements KeyListener {
+public class OmegaCentauri extends JFrame implements KeyListener {
 
     private final Game game;
     private boolean forward, rotateRight, rotateLeft = false;
@@ -23,7 +23,7 @@ public class GameWindow extends JFrame implements KeyListener {
     //private JLabel fpsLabel = new JLabel();
     private java.util.List<Long> updateTimes = new ArrayList<Long>();
 
-    public GameWindow(int width, int height, Game game) {
+    public OmegaCentauri(int width, int height, Game game) {
 
         setUpWindow(width, height);
         this.game = game;

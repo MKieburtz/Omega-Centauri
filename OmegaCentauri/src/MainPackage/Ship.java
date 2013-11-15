@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import javax.imageio.*;
 
-// @author Davis Freeman and Michael Kieburtz
+// @author Michael Kieburtz and Davis Freeman
 public abstract class Ship {
 
     protected int hull;
