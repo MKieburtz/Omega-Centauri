@@ -29,7 +29,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
         this.game = game;
         renderer = new Renderer();
         setIconImage(game.getPlayer().getImage());
-        
+
 //        fpsLabel.setVisible(true);
 //        fpsLabel.setLocation(0, 0);
 //        fpsLabel.setText(String.valueOf(getFrameRate()));
@@ -48,7 +48,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
         addKeyListener(this);
         setTitle("Omega Centauri");
         //add(fpsLabel); 
-        add(panel);      
+        add(panel);
         setContentPane(panel);
     }
 
@@ -62,10 +62,9 @@ public class OmegaCentauri extends JFrame implements KeyListener {
 
         @Override
         public void run() {
-            
-            
+
             if (forward) {
-                
+
                 game.movePlayer(false);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
@@ -77,17 +76,18 @@ public class OmegaCentauri extends JFrame implements KeyListener {
                 driftAngle = game.getPlayer().getAngle();
                 repaint();
             }
-            
+
             if (rotateLeft) {
                 game.rotatePlayer(false); // negitive
                 driftAngle = game.getPlayer().getAngle();
                 repaint();
             }
-            
-            if (!forward) Slowingdown = true;
-            
-            if (Slowingdown)
-            {
+
+            if (!forward) {
+                Slowingdown = true;
+            }
+
+            if (Slowingdown) {
                 game.movePlayer(true);
                 middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
@@ -118,7 +118,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
                 rotateLeft = true;
             }
             break;
-            
+
             case KeyEvent.VK_SPACE: {
                 game.getPlayer().location.x = 500;
                 game.getPlayer().location.y = 250;
@@ -142,7 +142,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
                 rotateRight = false;
             }
             break;
-                
+
             case KeyEvent.VK_A: {
                 rotateLeft = false;
             }

@@ -17,27 +17,23 @@ public abstract class Ship {
     protected Point2D.Double location;
     protected Point2D.Double nextLocation;
     // File -> FileInputStream -> ImageIO -> buffered image
-    protected ArrayList <BufferedImage> images = new ArrayList<BufferedImage>();
+    protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected BufferedImage activeImage;
-    
-    public BufferedImage getImage()
-    {
+
+    public BufferedImage getImage() {
         return this.images.get(0);
     }
-    
-    public BufferedImage getImage(int index)
-    {
+
+    public BufferedImage getImage(int index) {
         return this.images.get(index);
     }
-    
-    protected ArrayList <File> imageFiles = new ArrayList<File>();
-    protected ArrayList <FileInputStream> inputStreams = new ArrayList<FileInputStream>();
-    
+
+    protected ArrayList<File> imageFiles = new ArrayList<File>();
+    protected ArrayList<FileInputStream> inputStreams = new ArrayList<FileInputStream>();
+
     // MAKE SURE TO SET THE SHIP IMAGE IN THE CONSTRUCTOR!!!!!
-    
     //returns success
-    protected boolean setUpShipImage()
-    {
+    protected boolean setUpShipImage() {
         int j = 0;
         try {
             for (int i = 0; i < imageFiles.size(); i++) {
@@ -49,14 +45,12 @@ public abstract class Ship {
         } catch (IOException ex) {
             ex.printStackTrace();
             System.err.println("Error reading file: " + imageFiles.get(j).getPath());
-        } catch (NullPointerException ex2)
-        {
+        } catch (NullPointerException ex2) {
             ex2.printStackTrace();
             System.err.println("This shouldn't have happend. Issue with base class 'Ship'");
             return false;
         }
         return true;
     }
-    
-    
+
 }
