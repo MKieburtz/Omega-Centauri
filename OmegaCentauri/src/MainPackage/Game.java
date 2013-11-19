@@ -45,4 +45,14 @@ public class Game {
     public ArrayList getPlayerImages() {
         return player.getImages();
     }
+    
+    public Point2D.Double getVel()
+    {
+        return player.getVel();
+    }
+    
+    public void setVel(int vert, int hor)
+    {
+        player.setVel(vert, hor);
+    }
 }

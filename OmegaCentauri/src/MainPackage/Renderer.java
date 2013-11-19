@@ -12,10 +12,10 @@ public class Renderer {
         ;
     }
 
-    public void drawScreen(Graphics g, Player player, double xRot, double yRot, Ellipse2D.Double playerCircle) {
+    public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps) {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
-        
+        g2d.drawString("FPS: " + String.valueOf(fps), 10, 20);
         AffineTransform origXform = g2d.getTransform();
         AffineTransform newXform = (AffineTransform) (origXform.clone());
         

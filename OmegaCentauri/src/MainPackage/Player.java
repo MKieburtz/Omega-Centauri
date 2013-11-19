@@ -12,9 +12,8 @@ public class Player extends Ship {
     private String name;
     private double faceAngle = 360.0; // maybe move to Ship Class
     private double moveAngle = 0.0;
-    private double speed = 0.0;
-    private final double maxVel = 5.0;
-    private final double angleIcrement = 5;
+    private final double maxVel = 4.0;
+    private final double angleIcrement = 4;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .1;
     private final double deacceleration = .05;
@@ -135,7 +134,6 @@ public class Player extends Ship {
         }
 
         updatePosition();
-
     }
 
     private void updatePosition() {
@@ -147,12 +145,15 @@ public class Player extends Ship {
         return faceAngle;
     }
 
-    public double getSpeed() {
-        return speed;
+    public Point2D.Double getVel()
+    {
+        return this.velocity;
     }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    
+    public void setVel(int vert, int hor)
+    {
+        this.velocity.x = vert;
+        this.velocity.y = hor;
     }
 
     private double CalcAngleMoveX(double angle) {

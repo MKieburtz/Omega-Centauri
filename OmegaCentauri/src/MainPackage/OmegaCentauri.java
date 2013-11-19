@@ -17,10 +17,8 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600);
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
-    private final Ellipse2D.Double playerCircle = new Ellipse2D.Double();
     private boolean Slowingdown = false;
-    private double driftAngle = 0;
-    //private JLabel fpsLabel = new JLabel();
+    private double FPS = 0;
     private java.util.List<Long> updateTimes = new ArrayList<Long>();
 
     public OmegaCentauri(int width, int height, Game game) {
@@ -30,10 +28,6 @@ public class OmegaCentauri extends JFrame implements KeyListener {
         renderer = new Renderer();
         setIconImage(game.getPlayer().getImage());
 
-//        fpsLabel.setVisible(true);
-//        fpsLabel.setLocation(0, 0);
-//        fpsLabel.setText(String.valueOf(getFrameRate()));
-        driftAngle = game.getPlayer().getAngle();
         timer.schedule(new MovementTimer(game.getPlayer()), timerDelay);
         middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
         middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getWidth() / 2;
@@ -59,10 +53,12 @@ public class OmegaCentauri extends JFrame implements KeyListener {
         public MovementTimer(Player player) {
             this.player = player;
         }
-
+        
         @Override
         public void run() {
-
+            FPS = getFrameRate();
+            System.out.println(FPS);
+            
             if (forward) {
 
                 game.movePlayer(false);
@@ -73,13 +69,11 @@ public class OmegaCentauri extends JFrame implements KeyListener {
             if (rotateRight) {
 
                 game.rotatePlayer(true); // positive
-                driftAngle = game.getPlayer().getAngle();
                 repaint();
             }
 
             if (rotateLeft) {
                 game.rotatePlayer(false); // negitive
-                driftAngle = game.getPlayer().getAngle();
                 repaint();
             }
 
@@ -168,7 +162,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            renderer.drawScreen(g, game.getPlayer(), middleOfPlayer.x, middleOfPlayer.y, playerCircle);
+            renderer.drawScreen(g, game.getPlayer(), middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS));
         }
     }
     // WARNING: USELESS METHOD.
