@@ -185,4 +185,9 @@ public class OmegaCentauri extends JFrame implements KeyListener {
 
         return FPS;
     }
+    
+    public static void main(String args[])
+    {
+        new OmegaCentauri(1000, 600, new Game(1000, 600));
+    }
 }

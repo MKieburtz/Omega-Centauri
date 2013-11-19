@@ -12,7 +12,7 @@ public class Player extends Ship {
     private String name;
     private double faceAngle = 360.0; // maybe move to Ship Class
     private double moveAngle = 0.0;
-    private final double maxVel = 4.0;
+    private final double maxVel = 5.0;
     private final double angleIcrement = 4;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .1;
