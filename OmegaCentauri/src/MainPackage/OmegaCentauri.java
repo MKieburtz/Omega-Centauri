@@ -34,7 +34,6 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     }
 
     private void setUpWindow(int width, int height) {
-
         setSize(width, height);
         setResizable(false);
         setVisible(true);
@@ -116,6 +115,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
             case KeyEvent.VK_SPACE: {
                 game.getPlayer().location.x = 500;
                 game.getPlayer().location.y = 250;
+                game.setVel(0, 0);
             }
 
         } // end switch
