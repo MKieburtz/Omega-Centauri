@@ -16,6 +16,7 @@ public class Renderer {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
         g2d.drawString("FPS: " + String.valueOf(fps), 10, 20);
+        g2d.drawImage(player.getImage(4), null, 0, 0);
         
         AffineTransform origXform = g2d.getTransform();
         AffineTransform newXform = (AffineTransform) (origXform.clone());
