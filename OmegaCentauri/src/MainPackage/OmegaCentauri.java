@@ -189,6 +189,6 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     
     public static void main(String args[])
     {
-        new OmegaCentauri(1000, 600, new Game(1000, 600), 100);
+       OmegaCentauri oc = new OmegaCentauri(1000, 600, new Game(1000, 600), 100);
     }
 }
