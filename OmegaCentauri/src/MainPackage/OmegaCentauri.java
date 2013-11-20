@@ -13,7 +13,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     private final Game game;
     private boolean forward, rotateRight, rotateLeft = false;
     private final java.util.Timer timer = new java.util.Timer();
-    private final int timerDelay = 10;
+    private final int timerDelay;
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600);
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
@@ -21,8 +21,9 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     private double FPS = 0;
     private java.util.List<Long> updateTimes = new ArrayList<Long>();
 
-    public OmegaCentauri(int width, int height, Game game) {
-
+    public OmegaCentauri(int width, int height, Game game, int desiredFrameRate) {
+        
+        timerDelay = desiredFrameRate / 10;
         setUpWindow(width, height);
         this.game = game;
         renderer = new Renderer();
@@ -188,6 +189,6 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     
     public static void main(String args[])
     {
-        new OmegaCentauri(1000, 600, new Game(1000, 600));
+        new OmegaCentauri(1000, 600, new Game(1000, 600), 100);
     }
 }

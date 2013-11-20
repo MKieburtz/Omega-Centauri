@@ -15,7 +15,6 @@ public class Game {
 
     public Game(int WindowWidth, int WindowHeight) {
         player = new Player(((WindowWidth / 2) - 25), ((WindowHeight / 2) - 25), Type.Fighter);
-        window = new OmegaCentauri(WindowWidth, WindowHeight, this);
     }
 
     public Player getPlayer() {
