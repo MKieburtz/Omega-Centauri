@@ -21,11 +21,11 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     private double FPS = 0;
     private java.util.List<Long> updateTimes = new ArrayList<Long>();
 
-    public OmegaCentauri(int width, int height, Game game, int desiredFrameRate) {
+    public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
         timerDelay = desiredFrameRate / 10;
         setUpWindow(width, height);
-        this.game = game;
+        this.game = new Game(width, height);
         renderer = new Renderer();
         setIconImage(game.getPlayer().getImage());
 
@@ -87,7 +87,10 @@ public class OmegaCentauri extends JFrame implements KeyListener {
                 middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
                 repaint();
             }
-            timer.schedule(new MovementTimer(player), timerDelay);
+            if (FPS > 250)
+                timer.schedule(new MovementTimer(player), timerDelay);
+            else
+                timer.schedule(new MovementTimer(player), (int)FPS / 10);
         }
     }
     int keyCode;
@@ -186,9 +189,5 @@ public class OmegaCentauri extends JFrame implements KeyListener {
 
         return FPS;
     }
-    
-    public static void main(String args[])
-    {
-       OmegaCentauri oc = new OmegaCentauri(1000, 600, new Game(1000, 600), 100);
-    }
+
 }
