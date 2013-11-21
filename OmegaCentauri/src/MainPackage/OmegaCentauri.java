@@ -35,13 +35,13 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     }
 
     private void setUpWindow(int width, int height) {
+        
         setSize(width, height);
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addKeyListener(this);
         setTitle("Omega Centauri");
-        //add(fpsLabel); 
         add(panel);
         setContentPane(panel);
     }
@@ -92,11 +92,16 @@ public class OmegaCentauri extends JFrame implements KeyListener {
         }
     }
     int keyCode;
-
+    
     @Override
     public void keyPressed(KeyEvent e) {
         keyCode = e.getKeyCode();
-
+        /*
+        * 0 = stationary
+        * 1 = both thrusters
+        * 2 = right thruster
+        * 3 = left thruster
+        */
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = true;
@@ -107,14 +112,16 @@ public class OmegaCentauri extends JFrame implements KeyListener {
 
             case KeyEvent.VK_D: {
                 rotateRight = true;
-                game.changePlayerImage(3);
+                if (!forward)
+                    game.changePlayerImage(3);
                 
             }
             break;
 
             case KeyEvent.VK_A: {
                 rotateLeft = true;
-                game.changePlayerImage(2);
+                if (!forward)
+                    game.changePlayerImage(2);
             }
             break;
 
@@ -145,13 +152,19 @@ public class OmegaCentauri extends JFrame implements KeyListener {
 
             case KeyEvent.VK_D: {
                 rotateRight = false;
-                game.changePlayerImage(0);
+                if (!forward)
+                    game.changePlayerImage(0);
+                else
+                    game.changePlayerImage(1);
             }
             break;
 
             case KeyEvent.VK_A: {
                 rotateLeft = false;
-                game.changePlayerImage(0);
+                if (!forward)
+                    game.changePlayerImage(0);
+                else
+                    game.changePlayerImage(1);
             }
             
             break;
