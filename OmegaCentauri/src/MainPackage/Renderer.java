@@ -6,17 +6,19 @@ import java.awt.geom.*;
 // @author Michael Kieburtz
 
 public class Renderer {
-    
-    @SuppressWarnings("empty-statement")
+    Font fpsFont;
     public Renderer() {
-        ;
+        fpsFont = new Font("OCR A Std", Font.BOLD, 16);
     }
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps) {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
-        g2d.drawString("FPS: " + String.valueOf(fps), 10, 20);
+        
+        g2d.setFont(fpsFont);
+        g2d.setColor(Color.CYAN);
         g2d.drawImage(player.getImage(4), null, 0, 0);
+        g2d.drawString("FPS: " + String.valueOf(fps), 10, 20);
         
         AffineTransform origXform = g2d.getTransform();
         AffineTransform newXform = (AffineTransform) (origXform.clone());
