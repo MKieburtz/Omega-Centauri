@@ -108,6 +108,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
             case KeyEvent.VK_D: {
                 rotateRight = true;
                 game.changePlayerImage(3);
+                
             }
             break;
 
@@ -135,6 +136,10 @@ public class OmegaCentauri extends JFrame implements KeyListener {
             case KeyEvent.VK_W: {
                 forward = false;
                 game.changePlayerImage(0);
+                if (rotateRight)
+                    game.changePlayerImage(3);
+                else if (rotateLeft)
+                    game.changePlayerImage(2);
             }
             break;
 
@@ -148,6 +153,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
                 rotateLeft = false;
                 game.changePlayerImage(0);
             }
+            
             break;
 
         } // end switch
