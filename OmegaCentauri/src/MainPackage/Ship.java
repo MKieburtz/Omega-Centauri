@@ -21,7 +21,7 @@ public abstract class Ship {
     protected BufferedImage activeImage;
 
     public BufferedImage getImage() {
-        return this.images.get(0);
+        return activeImage;
     }
 
     public BufferedImage getImage(int index) {

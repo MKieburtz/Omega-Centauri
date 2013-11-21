@@ -168,4 +168,9 @@ public class Player extends Ship {
     public ArrayList getImages() {
         return images;
     }
+    
+    public void changeImage(int index)
+    {
+        activeImage = images.get(index);
+    }
 }

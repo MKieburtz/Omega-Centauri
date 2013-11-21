@@ -54,4 +54,8 @@ public class Game {
     {
         player.setVel(vert, hor);
     }
+    public void changePlayerImage(int index)
+    {
+        player.changeImage(index);
+    }
 }
