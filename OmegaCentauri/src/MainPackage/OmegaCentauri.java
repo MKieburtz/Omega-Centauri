@@ -8,9 +8,8 @@ import java.util.*;
 import javax.swing.*;
 
 // @author Michael Kieburtz
-public class OmegaCentauri extends JFrame implements KeyListener {
+public class OmegaCentauri extends Game {
 
-    private final Game game;
     private boolean forward, rotateRight, rotateLeft = false;
     private final java.util.Timer timer = new java.util.Timer();
     private final int timerDelay;
@@ -20,18 +19,18 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     private boolean Slowingdown = false;
     private double FPS = 0;
     private java.util.List<Long> updateTimes = new ArrayList<Long>();
-
+    
+    
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
         timerDelay = 15;
         setUpWindow(width, height);
-        this.game = new Game(width, height);
+        player = new Player(((width / 2) - 25), ((width / 2) - 25), MainPackage.Type.Fighter);
         renderer = new Renderer();
-        setIconImage(game.getPlayer().getImage());
 
-        timer.schedule(new MovementTimer(game.getPlayer()), timerDelay);
-        middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
-        middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getWidth() / 2;
+        timer.schedule(new MovementTimer(player), timerDelay);
+        middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
+        middleOfPlayer.y = player.getLocation().y + player.getImage().getWidth() / 2;
     }
 
     private void setUpWindow(int width, int height) {
@@ -61,19 +60,19 @@ public class OmegaCentauri extends JFrame implements KeyListener {
             
             if (forward) {
 
-                game.movePlayer(false);
-                middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
-                middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
+                player.move(false);
+                middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
+                middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
                 repaint();
             }
             if (rotateRight) {
 
-                game.rotatePlayer(true); // positive
+                player.rotate(true); // positive
                 repaint();
             }
 
             if (rotateLeft) {
-                game.rotatePlayer(false); // negitive
+                player.rotate(false); // negitive
                 repaint();
             }
 
@@ -82,9 +81,9 @@ public class OmegaCentauri extends JFrame implements KeyListener {
             }
 
             if (Slowingdown) {
-                game.movePlayer(true);
-                middleOfPlayer.x = game.getPlayer().getLocation().x + game.getPlayer().getImage().getWidth() / 2;
-                middleOfPlayer.y = game.getPlayer().getLocation().y + game.getPlayer().getImage().getHeight() / 2;
+                player.move(true);
+                middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
+                middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
                 repaint();
             }
             
@@ -93,8 +92,7 @@ public class OmegaCentauri extends JFrame implements KeyListener {
     }
     int keyCode;
     
-    @Override
-    public void keyPressed(KeyEvent e) {
+    public void CheckKeyPressed(KeyEvent e) {
         keyCode = e.getKeyCode();
         /*
         * 0 = stationary
@@ -106,14 +104,14 @@ public class OmegaCentauri extends JFrame implements KeyListener {
             case KeyEvent.VK_W: {
                 forward = true;
                 Slowingdown = false;
-                game.changePlayerImage(1);
+                player.changeImage(1);
             }
             break;
 
             case KeyEvent.VK_D: {
                 rotateRight = true;
                 if (!forward)
-                    game.changePlayerImage(3);
+                    player.changeImage(3);
                 
             }
             break;
@@ -121,50 +119,49 @@ public class OmegaCentauri extends JFrame implements KeyListener {
             case KeyEvent.VK_A: {
                 rotateLeft = true;
                 if (!forward)
-                    game.changePlayerImage(2);
+                    player.changeImage(2);
             }
             break;
 
             case KeyEvent.VK_SPACE: {
-                game.getPlayer().location.x = 500;
-                game.getPlayer().location.y = 250;
-                game.setVel(0, 0);
+                player.location.x = 500;
+                player.location.y = 250;
+                player.setVel(0, 0);
             }
 
         } // end switch
 
     } // end method
 
-    @Override
-    public void keyReleased(KeyEvent e) {
+    public void  CheckKeyReleased(KeyEvent e) {
         keyCode = e.getKeyCode();
 
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = false;
-                game.changePlayerImage(0);
+                player.changeImage(0);
                 if (rotateRight)
-                    game.changePlayerImage(3);
+                    player.changeImage(3);
                 else if (rotateLeft)
-                    game.changePlayerImage(2);
+                    player.changeImage(2);
             }
             break;
 
             case KeyEvent.VK_D: {
                 rotateRight = false;
                 if (!forward)
-                    game.changePlayerImage(0);
+                    player.changeImage(0);
                 else
-                    game.changePlayerImage(1);
+                    player.changeImage(1);
             }
             break;
 
             case KeyEvent.VK_A: {
                 rotateLeft = false;
                 if (!forward)
-                    game.changePlayerImage(0);
+                    player.changeImage(0);
                 else
-                    game.changePlayerImage(1);
+                    player.changeImage(1);
             }
             
             break;
@@ -189,13 +186,10 @@ public class OmegaCentauri extends JFrame implements KeyListener {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            renderer.drawScreen(g, game.getPlayer(), middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS));
+            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS));
         }
     }
-    // WARNING: USELESS METHOD.
-
-    public void keyTyped(KeyEvent ke) {
-    }
+    
 
     private float getFrameRate() {
         long time = System.currentTimeMillis();
@@ -212,5 +206,4 @@ public class OmegaCentauri extends JFrame implements KeyListener {
 
         return FPS;
     }
-
 }

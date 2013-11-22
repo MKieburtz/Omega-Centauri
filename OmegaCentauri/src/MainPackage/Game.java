@@ -1,61 +1,39 @@
 package MainPackage;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 import java.util.*;
+import javax.swing.JFrame;
 
 // @author Michael Kieburtz
-public class Game {
+abstract class Game extends JFrame implements KeyListener{
 
-    private ArrayList<EnemyShip> enemyShips = new ArrayList<EnemyShip>();
-    private ArrayList<Ally> allyShips = new ArrayList<Ally>();
-    private Player player;
+    protected ArrayList<EnemyShip> enemyShips = new ArrayList<EnemyShip>();
+    protected ArrayList<Ally> allyShips = new ArrayList<Ally>();
+    protected Player player;
+    
+    
+    
+    abstract void CheckKeyPressed(KeyEvent e);
+    abstract void CheckKeyReleased(KeyEvent e);
 
-    OmegaCentauri window;
-
-    public Game(int WindowWidth, int WindowHeight) {
-        player = new Player(((WindowWidth / 2) - 25), ((WindowHeight / 2) - 25), Type.Fighter);
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void movePlayer(int x, int y) {
-        player.moveTo(x, y);
-    }
-
-    public void movePlayer(boolean slowingDown) {
-        player.move(slowingDown);
-    }
-
-    public void movePlayerRelitive(int dx, int dy) {
-        player.moveRelitive(dx, dy);
-    }
-
-    public void rotatePlayer(boolean positive) {
-        player.rotate(positive);
-    }
-
-    public void rotatePlayer(double amount) {
-        player.rotate(amount);
-    }
-
-    public ArrayList getPlayerImages() {
-        return player.getImages();
+    @Override
+    public void keyPressed(KeyEvent e) {
+        CheckKeyPressed(e);
     }
     
-    public Point2D.Double getVel()
-    {
-        return player.getVel();
+    @Override
+    public void keyReleased(KeyEvent e) {
+        CheckKeyReleased(e);
     }
     
-    public void setVel(int vert, int hor)
-    {
-        player.setVel(vert, hor);
+    // WARNING: USELESS METHOD... FOR NOW
+
+    public void keyTyped(KeyEvent ke) {
+        
     }
-    public void changePlayerImage(int index)
-    {
-        player.changeImage(index);
-    }
+    
+    
 }
