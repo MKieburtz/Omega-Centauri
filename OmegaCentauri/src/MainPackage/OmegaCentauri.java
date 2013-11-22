@@ -19,10 +19,13 @@ public class OmegaCentauri extends Game {
     private boolean Slowingdown = false;
     private double FPS = 0;
     private java.util.List<Long> updateTimes = new ArrayList<Long>();
-    
+    private final Point screenSize = new Point(10000, 10000);
+    private final Point cameraSize;
+    private Point2D.Double cameraPos = new Point2D.Double(0.0, 0.0);
     
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
+        cameraSize = new Point(width, height);
         timerDelay = 15;
         setUpWindow(width, height);
         player = new Player(((width / 2) - 25), ((width / 2) - 25), MainPackage.Type.Fighter);
@@ -92,6 +95,7 @@ public class OmegaCentauri extends Game {
     }
     int keyCode;
     
+    @Override
     public void CheckKeyPressed(KeyEvent e) {
         keyCode = e.getKeyCode();
         /*
@@ -133,6 +137,7 @@ public class OmegaCentauri extends Game {
 
     } // end method
 
+    @Override
     public void  CheckKeyReleased(KeyEvent e) {
         keyCode = e.getKeyCode();
 
@@ -198,12 +203,12 @@ public class OmegaCentauri extends Game {
 
         float timeInSec = (time - updateTimes.get(0)) / 1000f;
 
-        float FPS = 30f / timeInSec;
+        float fps = 30f / timeInSec;
 
         if (updateTimes.size() == 31) {
             updateTimes.remove(0);
         }
 
-        return FPS;
+        return fps;
     }
 }
