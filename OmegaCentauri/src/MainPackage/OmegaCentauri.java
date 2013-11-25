@@ -25,18 +25,22 @@ public class OmegaCentauri extends Game {
     private Point2D.Double cameraPos = new Point2D.Double(0.0, 0.0);
     private ArrayList<Dust> particles = new ArrayList<Dust>();
     private Random random = new Random();
-    private Point2D.Double[] dustPositions = new Point2D.Double[1000];
+    private double[] dustPositionsx = new double[500];
+    private double[] dustPositionsy = new double[500];
     
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
         
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 500; i++)
         {
-                dustPositions[i] = new Point2D.Double((random.nextDouble() + 1) * (i * 20), (random.nextDouble() + 1) * (i * 20));
-                particles.add(new Dust(dustPositions[i]));
-                System.out.println(dustPositions[i]);
+                dustPositionsx[i] = (random.nextDouble()) * (i * 20);
+                dustPositionsy[i] = (random.nextDouble()) * (i * 20);
+                particles.add(new Dust(dustPositionsx[i], dustPositionsy[i]));
+                System.out.println(dustPositionsx[i] + " " + dustPositionsy[i]);
+                
+                if (dustPositionsx[i] > 10000 || dustPositionsy[i] > 10000)
+                    System.err.println("OOPS");
         }
-        
         
         cameraSize = new Point(width, height);
         timerDelay = 15;
