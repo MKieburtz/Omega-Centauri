@@ -18,12 +18,25 @@ public class OmegaCentauri extends Game {
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
     private boolean Slowingdown = false;
     private double FPS = 0;
-    private java.util.List<Long> updateTimes = new ArrayList<Long>();
+    private ArrayList<Long> updateTimes = new ArrayList<Long>();
+    
     private final Point screenSize = new Point(10000, 10000);
     private final Point cameraSize;
     private Point2D.Double cameraPos = new Point2D.Double(0.0, 0.0);
+    private ArrayList<Dust> particles = new ArrayList<Dust>();
+    private Random random = new Random();
+    private Point2D.Double[] dustPositions = new Point2D.Double[1000];
     
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
+        
+        
+        for (int i = 0; i < 1000; i++)
+        {
+                dustPositions[i] = new Point2D.Double((random.nextDouble() + 1) * (i * 20), (random.nextDouble() + 1) * (i * 20));
+                particles.add(new Dust(dustPositions[i]));
+                System.out.println(dustPositions[i]);
+        }
+        
         
         cameraSize = new Point(width, height);
         timerDelay = 15;
@@ -59,7 +72,6 @@ public class OmegaCentauri extends Game {
         @Override
         public void run() {
             FPS = getFrameRate();
-            System.out.println(FPS);
             
             if (forward) {
 
@@ -191,7 +203,7 @@ public class OmegaCentauri extends Game {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS));
+            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), particles);
         }
     }
     

@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 
 // @author Michael Kieburtz
 
@@ -11,14 +12,20 @@ public class Renderer {
         fpsFont = new Font("OCR A Std", Font.BOLD, 16);
     }
 
-    public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps) {
+    public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps, ArrayList<Dust> dust) {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
+        g2d.drawImage(player.getImage(4), null, 0, 0);
+        for (int i = 0; i < dust.size(); i++)
+        {
+            dust.get(i).draw(g2d);
+        }
         
         g2d.setFont(fpsFont);
         g2d.setColor(Color.CYAN);
-        g2d.drawImage(player.getImage(4), null, 0, 0);
+        
         g2d.drawString("FPS: " + String.valueOf(fps), 10, 20);
+        
         
         AffineTransform origXform = g2d.getTransform();
         AffineTransform newXform = (AffineTransform) (origXform.clone());
