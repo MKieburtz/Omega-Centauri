@@ -25,7 +25,6 @@ public class Renderer {
         
         for (int i = 0; i < dust.size(); i++)
         {
-            System.err.println(dust.get(i).getLocation());
             if (insideCameraView(dust.get(i).getLocation()))
             {
                 dust.get(i).draw(g2d);
