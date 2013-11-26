@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Dust {
     private Point2D.Double location;
-    private int dimension = 2;
+    private final int dimension = 2;
     private Rectangle2D.Double image;
     
     public Dust(double x, double y)
@@ -25,5 +25,10 @@ public class Dust {
     {
         g2d.setColor(Color.GRAY);
         g2d.fill(image);
+    }
+    
+    public Point2D.Double getLocation()
+    {
+        return location;
     }
 }

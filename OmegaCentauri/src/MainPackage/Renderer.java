@@ -1,5 +1,6 @@
 package MainPackage;
 
+import com.sun.org.apache.bcel.internal.generic.GOTO;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
@@ -7,18 +8,27 @@ import java.util.ArrayList;
 // @author Michael Kieburtz
 
 public class Renderer {
-    Font fpsFont;
-    public Renderer() {
+    private Font fpsFont;
+    private Point2D.Double cameraPos= new Point2D.Double(0, 0);
+    private Point cameraSize;
+    
+    public Renderer(int cameraWidth, int cameraHeight) {
         fpsFont = new Font("OCR A Std", Font.BOLD, 16);
     }
 
-    public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps, ArrayList<Dust> dust) {
+    public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
+            ArrayList<Dust> dust, Point2D.Double cameraPos, Point cameraSize) {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
         g2d.drawImage(player.getImage(4), null, 0, 0);
+        
         for (int i = 0; i < dust.size(); i++)
         {
-            dust.get(i).draw(g2d);
+            System.err.println(dust.get(i).getLocation());
+            if (insideCameraView(dust.get(i).getLocation()))
+            {
+                dust.get(i).draw(g2d);
+            }
         }
         
         g2d.setFont(fpsFont);
@@ -44,4 +54,18 @@ public class Renderer {
         g2d.drawImage(player.getImage(), (int)player.getLocation().x, (int)player.getLocation().y, null);
     }
     
+    private boolean insideCameraView(Point2D.Double point)
+    {
+        // use nested if statements because the conditionals are so long.
+        
+        if (point.x > cameraPos.x && point.x < cameraPos.x + cameraSize.x)
+        {
+            if (point.y > cameraPos.y && point.y < cameraPos.y + cameraSize.y)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }

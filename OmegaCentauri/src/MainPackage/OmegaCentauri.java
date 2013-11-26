@@ -28,6 +28,8 @@ public class OmegaCentauri extends Game {
     private double[] dustPositionsx = new double[500];
     private double[] dustPositionsy = new double[500];
     
+    private boolean paused = true;
+    
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
         
@@ -36,7 +38,6 @@ public class OmegaCentauri extends Game {
                 dustPositionsx[i] = (random.nextDouble()) * (i * 20);
                 dustPositionsy[i] = (random.nextDouble()) * (i * 20);
                 particles.add(new Dust(dustPositionsx[i], dustPositionsy[i]));
-                System.out.println(dustPositionsx[i] + " " + dustPositionsy[i]);
                 
                 if (dustPositionsx[i] > 10000 || dustPositionsy[i] > 10000)
                     System.err.println("OOPS");
@@ -46,11 +47,12 @@ public class OmegaCentauri extends Game {
         timerDelay = 15;
         setUpWindow(width, height);
         player = new Player(((width / 2) - 25), ((width / 2) - 25), MainPackage.Type.Fighter);
-        renderer = new Renderer();
+        renderer = new Renderer(width, height);
 
         timer.schedule(new MovementTimer(player), timerDelay);
         middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = player.getLocation().y + player.getImage().getWidth() / 2;
+        paused = false;
     }
 
     private void setUpWindow(int width, int height) {
@@ -105,7 +107,8 @@ public class OmegaCentauri extends Game {
                 middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
                 repaint();
             }
-            
+            cameraPos.x = player.getLocation().x - (getHeight() / 2);
+            cameraPos.y = player.getLocation().y - (getWidth() / 2);
             timer.schedule(new MovementTimer(player), timerDelay);
         }
     }
@@ -206,8 +209,7 @@ public class OmegaCentauri extends Game {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-
-            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), particles);
+            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), particles, cameraPos, cameraSize);
         }
     }
     
