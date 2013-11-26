@@ -1,9 +1,10 @@
 package MainPackage;
 
-import com.sun.org.apache.bcel.internal.generic.GOTO;
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+
 
 // @author Michael Kieburtz
 
@@ -11,6 +12,7 @@ public class Renderer {
     private Font fpsFont;
     private Point2D.Double cameraPos= new Point2D.Double(0, 0);
     private Point cameraSize;
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     
     public Renderer(int cameraWidth, int cameraHeight) {
         fpsFont = new Font("OCR A Std", Font.BOLD, 16);
@@ -51,7 +53,7 @@ public class Renderer {
         
         g2d.setTransform(newXform);
         
-        g2d.drawImage(player.getImage(), (int)player.getLocation().x, (int)player.getLocation().y, null);
+        g2d.drawImage(player.getImage(), (int)(player.getLocation().x - cameraPos.x), (int)(player.getLocation().y - cameraPos.y), null);
     }
     
     private boolean insideCameraView(Point2D.Double point)
