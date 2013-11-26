@@ -14,6 +14,7 @@ public class Renderer {
     
     public Renderer(int cameraWidth, int cameraHeight) {
         fpsFont = new Font("OCR A Std", Font.BOLD, 16);
+        cameraSize = new Point(cameraWidth, cameraWidth);
     }
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
