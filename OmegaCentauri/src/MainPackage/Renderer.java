@@ -24,15 +24,19 @@ public class Renderer {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
         g2d.drawImage(player.getImage(4), null, 0, 0);
-        
         for (int i = 0; i < dust.size(); i++)
         {
             if (insideCameraView(dust.get(i).getLocation()))
             {
-                dust.get(i).draw(g2d);
+                dust.get(i).draw(g2d, cameraPos);
             }
         }
-        
+        g.setColor(Color.yellow);
+        g.fillRect((int)xRot, (int)yRot, 10, 10);
+        g.setColor(Color.red);
+        g.fillRect((int)player.getLocation().x - (int)cameraPos.x, (int)player.getLocation().y - (int)cameraPos.y, 10, 10);
+        g.setColor(Color.blue);
+        g.fillRect((int)cameraPos.x - (int)cameraPos.x, (int)cameraPos.y - (int)cameraPos.y, 10, 10);
         g2d.setFont(fpsFont);
         g2d.setColor(Color.CYAN);
         

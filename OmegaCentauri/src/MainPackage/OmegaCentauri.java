@@ -28,7 +28,6 @@ public class OmegaCentauri extends Game {
     private double[] dustPositionsx = new double[500];
     private double[] dustPositionsy = new double[500];
     
-    private boolean paused = true;
     
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
@@ -46,13 +45,14 @@ public class OmegaCentauri extends Game {
         cameraSize = new Point(width, height);
         timerDelay = 15;
         setUpWindow(width, height);
-        player = new Player(((width / 2) - 25), ((width / 2) - 25), MainPackage.Type.Fighter);
+        player = new Player(500, 500, MainPackage.Type.Fighter);
         renderer = new Renderer(width, height);
 
         timer.schedule(new MovementTimer(player), timerDelay);
-        middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
-        middleOfPlayer.y = player.getLocation().y + player.getImage().getWidth() / 2;
-        paused = false;
+        
+        middleOfPlayer.x = cameraPos.x - player.getLocation().x + player.getImage().getWidth() / 2;
+        middleOfPlayer.y = cameraPos.y - player.getLocation().y + player.getImage().getHeight() / 2;
+        
     }
 
     private void setUpWindow(int width, int height) {
@@ -103,13 +103,19 @@ public class OmegaCentauri extends Game {
 
             if (Slowingdown) {
                 player.move(true);
-                middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
-                middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
+                
                 repaint();
             }
-            cameraPos.x = player.getLocation().x - (getHeight() / 2);
-            cameraPos.y = player.getLocation().y - (getWidth() / 2);
+            
+            cameraPos.x = player.getLocation().x - (getWidth()/ 2);
+            cameraPos.y = player.getLocation().y - (getHeight()/ 2);
+            
+            
+            middleOfPlayer.x = (player.getLocation().x - cameraPos.x) + player.getImage().getWidth() / 2;
+            middleOfPlayer.y = (player.getLocation().y - cameraPos.y) + player.getImage().getHeight() / 2;
+            
             timer.schedule(new MovementTimer(player), timerDelay);
+            
         }
     }
     int keyCode;

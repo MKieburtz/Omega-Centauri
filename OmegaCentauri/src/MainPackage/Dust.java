@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -13,7 +14,7 @@ public class Dust {
     public Dust(double x, double y)
     {
         location = new Point2D.Double(x, y);
-        image = new Rectangle2D.Double(location.x, location.y, dimension, dimension);
+        image = new Rectangle2D.Double();
     }
     public Dust(Point2D.Double location)
     {
@@ -21,8 +22,12 @@ public class Dust {
         image = new Rectangle2D.Double(this.location.x, this.location.y, dimension, dimension);
     }
     
-    public void draw(Graphics2D g2d)
-    {
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
+    {   
+        
+        image.x = location.x - cameraLocation.x;
+        image.y = location.y - cameraLocation.y;
+        
         g2d.setColor(Color.GRAY);
         g2d.fill(image);
     }
