@@ -41,7 +41,7 @@ public class OmegaCentauri extends Game {
                 if (dustPositionsx[i] > 10000 || dustPositionsy[i] > 10000)
                     System.err.println("OOPS");
         }
-        
+        this.setBackground(Color.BLACK);
         cameraSize = new Point(width, height);
         timerDelay = 15;
         setUpWindow(width, height);

@@ -38,7 +38,8 @@ public class Renderer {
             ArrayList<Dust> dust, Point2D.Double cameraPos, Point cameraSize) {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
-        g2d.drawImage(player.getImage(4), null, 0, 0);
+        //g2d.drawImage(player.getImage(4), null, 0, 0);
+        
         for (int i = 0; i < dust.size(); i++)
         {
             if (insideCameraView(dust.get(i).getLocation()))
@@ -46,6 +47,7 @@ public class Renderer {
                 dust.get(i).draw(g2d, cameraPos);
             }
         }
+        
         g.setColor(Color.yellow);
         g.fillRect((int)xRot, (int)yRot, 10, 10);
         g.setColor(Color.red);
