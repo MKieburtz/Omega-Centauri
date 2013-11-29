@@ -3,19 +3,34 @@ package MainPackage;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.*;
 import java.util.ArrayList;
+
 
 
 // @author Michael Kieburtz
 
 public class Renderer {
+    File fontFile;
     private Font fpsFont;
     private Point2D.Double cameraPos= new Point2D.Double(0, 0);
     private Point cameraSize;
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     
     public Renderer(int cameraWidth, int cameraHeight) {
-        fpsFont = new Font("OCR A Std", Font.BOLD, 16);
+        
+        fontFile = new File("resources/BlackHoleBB_ital.ttf");
+        
+        try {
+            fpsFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(36f);
+        } catch (FontFormatException ex) {
+            System.err.println("Bad font");
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            System.err.println("Bad file");
+            ex.printStackTrace();
+        }
+        
         cameraSize = new Point(cameraWidth, cameraWidth);
     }
 
