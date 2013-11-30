@@ -15,7 +15,7 @@ abstract class Game extends JFrame implements KeyListener{
     protected Player player;
     
     
-    
+
     abstract void CheckKeyPressed(KeyEvent e);
     abstract void CheckKeyReleased(KeyEvent e);
 

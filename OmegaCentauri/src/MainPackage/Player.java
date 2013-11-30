@@ -31,6 +31,7 @@ public class Player extends Ship {
         imageFiles.add(new File("resources/FighterGreyTurningLeft.png"));
         imageFiles.add(new File("resources/FighterGreyTurningRight.png"));
         imageFiles.add(new File("resources/FillerBackground.png"));
+        imageFiles.add(new File("resources/FPSbackground.png"));
         setUpShipImage();
         activeImage = images.get(0);
     }

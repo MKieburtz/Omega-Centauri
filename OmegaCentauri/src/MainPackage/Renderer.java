@@ -54,10 +54,11 @@ public class Renderer {
         g.fillRect((int)player.getLocation().x - (int)cameraPos.x, (int)player.getLocation().y - (int)cameraPos.y, 10, 10);
         g.setColor(Color.blue);
         g.fillRect((int)cameraPos.x - (int)cameraPos.x, (int)cameraPos.y - (int)cameraPos.y, 10, 10);
+        g2d.drawImage(player.getImage(5),null,0,0);
         g2d.setFont(fpsFont);
         g2d.setColor(Color.CYAN);
         
-        g2d.drawString("FPS: " + String.valueOf(fps), 10, 20);
+        g2d.drawString("FPS: " + String.valueOf(fps), 10, 30);
         
         
         AffineTransform origXform = g2d.getTransform();
