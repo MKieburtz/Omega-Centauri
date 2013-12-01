@@ -52,17 +52,13 @@ public class Renderer {
             }
         }
         
-        g.setColor(Color.yellow);
-        g.fillRect((int)xRot, (int)yRot, 10, 10);
-        g.setColor(Color.red);
-        g.fillRect((int)player.getLocation().x - (int)cameraPos.x, (int)player.getLocation().y - (int)cameraPos.y, 10, 10);
-        g.setColor(Color.blue);
-        g.fillRect((int)cameraPos.x - (int)cameraPos.x, (int)cameraPos.y - (int)cameraPos.y, 10, 10);
         g2d.drawImage(player.getImage(5),null,0,0);
         g2d.setFont(fpsFont);
         g2d.setColor(Color.CYAN);
-        
-        g2d.drawString("FPS: " + String.valueOf(fps), 10, 30);
+        fpsFont = fpsFont.deriveFont(36f);
+        g2d.drawString(String.valueOf(fps), 155, 33);
+        fpsFont = fpsFont.deriveFont(56f);
+        g2d.drawString("FPS:",10,40);
         
         
         AffineTransform origXform = g2d.getTransform();
