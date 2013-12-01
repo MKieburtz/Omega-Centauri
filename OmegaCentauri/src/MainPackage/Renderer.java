@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 
 
-// @author Michael Kieburtz
+// @author Michael Kieburtz and Davis Freeman
 
 public class Renderer {
     File fontFile;
@@ -38,6 +38,8 @@ public class Renderer {
             ArrayList<Dust> dust, Point2D.Double cameraPos, Point cameraSize) {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
+        g.setColor(Color.BLACK);
+        g2d.fillRect(0,0,10000,10000);
         //g2d.drawImage(player.getImage(4), null, 0, 0);
         
         for (int i = 0; i < dust.size(); i++)
