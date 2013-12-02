@@ -13,8 +13,6 @@ import java.util.ArrayList;
 public class Renderer {
     File fontFile;
     private Font fpsFont;
-    private Point2D.Double cameraPos= new Point2D.Double(0, 0);
-    private Point cameraSize;
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     
     public Renderer(int cameraWidth, int cameraHeight) {
@@ -31,11 +29,10 @@ public class Renderer {
             ex.printStackTrace();
         }
         
-        cameraSize = new Point(cameraWidth, cameraWidth);
     }
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
-            ArrayList<Dust> dust, Point2D.Double cameraPos, Point cameraSize) {
+            ArrayList<DustChunk> dust, Camera camera) {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
         g.setColor(Color.BLACK);
@@ -48,9 +45,9 @@ public class Renderer {
         
         for (int i = 0; i < dust.size(); i++)
         {
-            if (insideCameraView(dust.get(i).getLocation()))
+            if (camera.insideView(dust.get(i).getLocation()))
             {
-                dust.get(i).draw(g2d, cameraPos);
+                dust.get(i).draw(g2d, camera.getLocation());
             }
         }
         
@@ -77,22 +74,10 @@ public class Renderer {
         
         g2d.setTransform(newXform);
         
-        g2d.drawImage(player.getImage(), (int)(player.getLocation().x - cameraPos.x), (int)(player.getLocation().y - cameraPos.y), null);
+        g2d.drawImage(player.getImage(), (int)(player.getLocation().x - camera.getLocation().x),
+                (int)(player.getLocation().y - camera.getLocation().y), null);
     }
     
-    private boolean insideCameraView(Point2D.Double point)
-    {
-        // use nested if statements because the conditionals are so long.
-        
-        if (point.x > cameraPos.x && point.x < cameraPos.x + cameraSize.x)
-        {
-            if (point.y > cameraPos.y && point.y < cameraPos.y + cameraSize.y)
-            {
-                return true;
-            }
-        }
-        
-        return false;
-    }
+    
     
 }

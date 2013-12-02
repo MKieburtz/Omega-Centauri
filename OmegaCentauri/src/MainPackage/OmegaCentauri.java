@@ -1,6 +1,5 @@
 package MainPackage;
 
-import java.awt.Graphics;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -21,9 +20,9 @@ public class OmegaCentauri extends Game {
     private ArrayList<Long> updateTimes = new ArrayList<Long>();
     
     private final Point screenSize = new Point(10000, 10000);
-    private final Point cameraSize;
-    private Point2D.Double cameraPos = new Point2D.Double(0.0, 0.0);
-    private ArrayList<Dust> particles = new ArrayList<Dust>();
+    Camera camera;
+    
+    private ArrayList<DustChunk> particles = new ArrayList<DustChunk>();
     private Random random = new Random();
     private double[] dustPositionsx = new double[500];
     private double[] dustPositionsy = new double[500];
@@ -31,17 +30,17 @@ public class OmegaCentauri extends Game {
     
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
-        
+        camera = new Camera(width, height);
         for (int i = 0; i < 500; i++)
         {
-                dustPositionsx[i] = (random.nextDouble()) * (i * 20);
-                dustPositionsy[i] = (random.nextDouble()) * (i * 20);
-                particles.add(new Dust(dustPositionsx[i], dustPositionsy[i]));
+                dustPositionsx[i] = (random.nextDouble()) * (i * 30);
+                dustPositionsy[i] = (random.nextDouble()) * (i * 30);
+                particles.add(new DustChunk(dustPositionsx[i], dustPositionsy[i]));
                 
                 if (dustPositionsx[i] > 10000 || dustPositionsy[i] > 10000)
                     System.err.println("OOPS");
         }
-        cameraSize = new Point(width, height);
+        
         timerDelay = 15;
         setUpWindow(width, height);
         player = new Player(500, 500, MainPackage.Type.Fighter);
@@ -49,8 +48,8 @@ public class OmegaCentauri extends Game {
 
         timer.schedule(new MovementTimer(player), timerDelay);
         
-        middleOfPlayer.x = cameraPos.x - player.getLocation().x + player.getImage().getWidth() / 2;
-        middleOfPlayer.y = cameraPos.y - player.getLocation().y + player.getImage().getHeight() / 2;
+        middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
+        middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
         
     }
 
@@ -106,12 +105,12 @@ public class OmegaCentauri extends Game {
                 repaint();
             }
             
-            cameraPos.x = player.getLocation().x - (getWidth()/ 2);
-            cameraPos.y = player.getLocation().y - (getHeight()/ 2);
+            camera.getLocation().x = player.getLocation().x - (getWidth()/ 2);
+            camera.getLocation().y = player.getLocation().y - (getHeight()/ 2);
             
             
-            middleOfPlayer.x = (player.getLocation().x - cameraPos.x) + player.getImage().getWidth() / 2;
-            middleOfPlayer.y = (player.getLocation().y - cameraPos.y) + player.getImage().getHeight() / 2;
+            middleOfPlayer.x = (player.getLocation().x - camera.getLocation().x) + player.getImage().getWidth() / 2;
+            middleOfPlayer.y = (player.getLocation().y - camera.getLocation().y) + player.getImage().getHeight() / 2;
             
             timer.schedule(new MovementTimer(player), timerDelay);
             
@@ -214,7 +213,7 @@ public class OmegaCentauri extends Game {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), particles, cameraPos, cameraSize);
+            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), particles, camera);
         }
     }
     

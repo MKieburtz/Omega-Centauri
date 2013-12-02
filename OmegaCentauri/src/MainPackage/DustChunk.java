@@ -6,17 +6,18 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 //@author Michael Kieburtz
-public class Dust {
+
+public class DustChunk {
     private Point2D.Double location;
     private final int dimension = 2;
     private Rectangle2D.Double image;
     
-    public Dust(double x, double y)
+    public DustChunk(double x, double y)
     {
         location = new Point2D.Double(x, y);
         image = new Rectangle2D.Double(this.location.x, this.location.y, dimension, dimension);
     }
-    public Dust(Point2D.Double location)
+    public DustChunk(Point2D.Double location)
     {
         this.location = new Point2D.Double(location.x, location.y);
         image = new Rectangle2D.Double(this.location.x, this.location.y, dimension, dimension);
