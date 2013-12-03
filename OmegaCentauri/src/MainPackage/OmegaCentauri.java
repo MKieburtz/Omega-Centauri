@@ -22,19 +22,23 @@ public class OmegaCentauri extends Game {
     private final Point screenSize = new Point(10000, 10000);
     Camera camera;
     
-    private ArrayList<DustChunk> dustChunks = new ArrayList<DustChunk>();
-    
+    private ArrayList<DustChunk> particles = new ArrayList<DustChunk>();
+    private Random random = new Random();
+    private double[] dustPositionsx = new double[500];
+    private double[] dustPositionsy = new double[500];
     
     
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
         camera = new Camera(width, height);
-        for (int i = 0; i < 2000; i = i + 100)
+        for (int i = 0; i < 500; i++)
         {
-            for (int j = 0; j < 2000; j = j + 100)
-            {
-                dustChunks.add(new DustChunk(i, j));
-            }
+                dustPositionsx[i] = (random.nextDouble()) * (i * 30);
+                dustPositionsy[i] = (random.nextDouble()) * (i * 30);
+                particles.add(new DustChunk(dustPositionsx[i], dustPositionsy[i]));
+                
+                if (dustPositionsx[i] > 10000 || dustPositionsy[i] > 10000)
+                    System.err.println("OOPS");
         }
         
         timerDelay = 15;
@@ -72,7 +76,6 @@ public class OmegaCentauri extends Game {
         @Override
         public void run() {
             FPS = getFrameRate();
-            
             
             if (forward) {
 
@@ -210,7 +213,7 @@ public class OmegaCentauri extends Game {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), dustChunks, camera);
+            renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), particles, camera);
         }
     }
     
