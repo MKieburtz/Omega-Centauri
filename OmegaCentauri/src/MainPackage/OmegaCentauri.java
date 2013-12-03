@@ -31,15 +31,17 @@ public class OmegaCentauri extends Game {
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
         camera = new Camera(width, height);
-        for (int i = 0; i < 500; i++)
-        {
-                dustPositionsx[i] = (random.nextDouble()) * (i * 30);
-                dustPositionsy[i] = (random.nextDouble()) * (i * 30);
-                particles.add(new DustChunk(dustPositionsx[i], dustPositionsy[i]));
-                
-                if (dustPositionsx[i] > 10000 || dustPositionsy[i] > 10000)
-                    System.err.println("OOPS");
-        }
+//        for (int i = 0; i < 500; i++)
+//        {
+//                dustPositionsx[i] = (random.nextDouble()) * (i * 30);
+//                dustPositionsy[i] = (random.nextDouble()) * (i * 30);
+//                particles.add(new DustChunk(dustPositionsx[i], dustPositionsy[i]));
+//                
+//                if (dustPositionsx[i] > 10000 || dustPositionsy[i] > 10000)
+//                    System.err.println("OOPS");
+//        }
+            
+        particles.add(new DustChunk(1, 1));
         
         timerDelay = 15;
         setUpWindow(width, height);

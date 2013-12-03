@@ -33,14 +33,13 @@ public class Camera {
     {
         // use nested if statements because the conditionals are so long.
         
-        if (point.x > location.x && point.x < location.x + size.x)
+        if (point.x - location.x > 0 && point.x - location.x < size.x)
         {
-            if (point.y > location.y && point.y < location.y + size.y)
+            if (point.y - location.y > 0 && point.y - location.y < size.y)
             {
                 return true;
             }
         }
-        
         return false;
     }
 }
