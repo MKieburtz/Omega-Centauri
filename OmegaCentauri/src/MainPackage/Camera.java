@@ -33,9 +33,9 @@ public class Camera {
     {
         // use nested if statements because the conditionals are so long.
         
-        if (point.x - location.x + size.x > 0 && point.x - location.x + size.x < this.size.x)
+        if (point.x - location.x > -size.x && point.x - location.x < this.size.x + size.x)
         {
-            if (point.y - location.y + size.y > 0 && point.y - location.y + size.y < this.size.y)
+            if (point.y + size.y - location.y > 0 && point.y - location.y + size.y < this.size.y)
             {
                 return true;
             }
