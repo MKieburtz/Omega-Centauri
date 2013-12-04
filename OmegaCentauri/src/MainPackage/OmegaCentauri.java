@@ -24,25 +24,20 @@ public class OmegaCentauri extends Game {
     
     private ArrayList<DustChunk> particles = new ArrayList<DustChunk>();
     private Random random = new Random();
-    private double[] dustPositionsx = new double[500];
-    private double[] dustPositionsy = new double[500];
     
     
     public OmegaCentauri(int width, int height, int desiredFrameRate) {
         
         camera = new Camera(width, height);
-//        for (int i = 0; i < 500; i++)
-//        {
-//                dustPositionsx[i] = (random.nextDouble()) * (i * 30);
-//                dustPositionsy[i] = (random.nextDouble()) * (i * 30);
-//                particles.add(new DustChunk(dustPositionsx[i], dustPositionsy[i]));
-//                
-//                if (dustPositionsx[i] > 10000 || dustPositionsy[i] > 10000)
-//                    System.err.println("OOPS");
-//        }
-            
-        particles.add(new DustChunk(1, 1));
+        for (int x = 1; x < screenSize.x / 2; x = x + 100)
+        {
+            for (int y = 1; y < screenSize.y / 2; y = y + 100)
+            {
+                particles.add(new DustChunk(x, y));
+            }
+        }
         
+        System.err.println(particles.get(1).stars()[0].x + " " + particles.get(1).getLocation());
         timerDelay = 15;
         setUpWindow(width, height);
         player = new Player(500, 500, MainPackage.Type.Fighter);
@@ -141,6 +136,8 @@ public class OmegaCentauri extends Game {
                 rotateRight = true;
                 if (!forward)
                     player.changeImage(3);
+                if (rotateLeft)
+                    player.changeImage(0);
                 
             }
             break;
@@ -149,6 +146,8 @@ public class OmegaCentauri extends Game {
                 rotateLeft = true;
                 if (!forward)
                     player.changeImage(2);
+                if (rotateRight)
+                    player.changeImage(0);
             }
             break;
 

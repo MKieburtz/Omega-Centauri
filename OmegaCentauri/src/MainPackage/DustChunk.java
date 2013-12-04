@@ -18,31 +18,36 @@ public class DustChunk {
     {
         location = new Point2D.Double(x, y);
         double num1, num2 = 0;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 3; i++)
         {
-            num1 = (double)random.nextInt(2) * 100;
-            num2 = (double)random.nextInt(2) * 100;
+            num1 = ((double)random.nextDouble() + 1) * (x + 100);
+            num2 = ((double)random.nextDouble() + 1) * (y + 100);
             rects[i] = new Rectangle2D.Double(num1, num2, dimension, dimension);
-            System.out.println(rects[i] + " " + i);
         }
     }
     
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
     {   
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 3; i++)
         {
-        rects[i].x = location.x - cameraLocation.x;
-        rects[i].y = location.y - cameraLocation.y;
-        
-        g2d.setColor(Color.GRAY);
-        g2d.fill(rects[i]);
-            
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect((int)(rects[i].x - cameraLocation.x), (int)(rects[i].y - cameraLocation.y), dimension, dimension);
         }
     }
     
     public Point2D.Double getLocation()
     {
         return location;
+    }
+    
+    public Rectangle2D.Double[] stars()
+    {
+        return rects;
+    }
+    
+    public Point getSize()
+    {
+        return new Point(100, 100);
     }
 }

@@ -16,7 +16,7 @@ public class Player extends Ship {
     private final double angleIcrement = 4;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .2;
-    private final double deacceleration = .03;
+    private final double deacceleration = .02;
 
     public String getName() {
         return this.name;

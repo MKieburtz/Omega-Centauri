@@ -29,13 +29,13 @@ public class Camera {
         return this.size;
     }
     
-    public boolean insideView(Point2D.Double point)
+    public boolean insideView(Point2D.Double point, Point size)
     {
         // use nested if statements because the conditionals are so long.
         
-        if (point.x - location.x > 0 && point.x - location.x < size.x)
+        if (point.x - location.x + size.x > 0 && point.x - location.x + size.x < this.size.x)
         {
-            if (point.y - location.y > 0 && point.y - location.y < size.y)
+            if (point.y - location.y + size.y > 0 && point.y - location.y + size.y < this.size.y)
             {
                 return true;
             }

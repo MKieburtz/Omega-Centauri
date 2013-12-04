@@ -45,12 +45,13 @@ public class Renderer {
         
         for (int i = 0; i < dust.size(); i++)
         {
-            if (camera.insideView(dust.get(i).getLocation()))
-            {
-                dust.get(i).draw(g2d, camera.getLocation());
-            }
+//            if (camera.insideView(dust.get(i).getLocation(), dust.get(i).getSize()))
+//            {
+//                dust.get(i).draw(g2d, camera.getLocation());
+//            }
+            
+            dust.get(i).draw(g2d, camera.getLocation());
         }
-        
         g2d.drawImage(player.getImage(5),null,0,0);
         g2d.setFont(fpsFont.deriveFont(32f));
         g2d.setColor(Color.CYAN);
