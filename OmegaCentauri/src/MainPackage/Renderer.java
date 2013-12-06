@@ -49,7 +49,7 @@ public class Renderer {
             {
                 dust.get(i).draw(g2d, camera.getLocation());
                 g2d.setColor(Color.yellow);
-                g2d.fillRect((int)(dust.get(i).getLocation().x - camera.getLocation().x), (int)(dust.get(i).getLocation().y - camera.getLocation().y), 5, 5);
+                //g2d.fillRect((int)(dust.get(i).getLocation().x - camera.getLocation().x), (int)(dust.get(i).getLocation().y - camera.getLocation().y), 5, 5);
             }
             
         }
