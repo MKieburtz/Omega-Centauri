@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Player extends Ship {
 
     private String name;
-    private double faceAngle = 360.0; // maybe move to Ship Class
+    private double faceAngle = 90.0; // maybe move to Ship Class
     private double moveAngle = 0.0;
     private final double maxVel = 5.0;
     private final double angleIcrement = 4;
