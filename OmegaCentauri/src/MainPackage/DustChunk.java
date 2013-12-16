@@ -20,8 +20,8 @@ public class DustChunk {
         double num1, num2 = 0;
         for (int i = 0; i < 3; i++)
         {
-            num1 = ((double)random.nextDouble() + 1) * (x + 100);
-            num2 = ((double)random.nextDouble() + 1) * (y + 100);
+            num1 = ((double)random.nextInt((int)((x + 100) - x)) + x);
+            num2 = ((double)random.nextInt((int)((y + 100) - y)) + y);
             rects[i] = new Rectangle2D.Double(num1, num2, dimension, dimension);
         }
     }
@@ -41,7 +41,7 @@ public class DustChunk {
         return location;
     }
     
-    public Rectangle2D.Double[] stars()
+    public Rectangle2D.Double[] getStars()
     {
         return rects;
     }

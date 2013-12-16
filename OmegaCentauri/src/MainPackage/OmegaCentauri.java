@@ -36,8 +36,8 @@ public class OmegaCentauri extends Game {
                 particles.add(new DustChunk(x, y));
             }
         }
-        
-        System.err.println(particles.get(1).stars()[0].x + " " + particles.get(1).getLocation());
+                
+        System.err.println(particles.get(0).getStars()[0]);
         timerDelay = 15;
         setUpWindow(width, height);
         player = new Player(500, 500, MainPackage.Type.Fighter);
