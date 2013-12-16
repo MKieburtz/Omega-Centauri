@@ -26,8 +26,8 @@ public class OmegaCentauri extends Game {
     private Random random = new Random();
     
     
-    public OmegaCentauri(int width, int height, int desiredFrameRate) {
-        
+    public OmegaCentauri(int width, int height, int desiredFrameRate, Renderer renderer) {
+        this.renderer = renderer;
         camera = new Camera(width, height);
         for (int x = 1; x < screenSize.x / 2; x = x + 100)
         {
@@ -41,7 +41,6 @@ public class OmegaCentauri extends Game {
         timerDelay = 15;
         setUpWindow(width, height);
         player = new Player(500, 500, MainPackage.Type.Fighter);
-        renderer = new Renderer(width, height);
 
         timer.schedule(new MovementTimer(player), timerDelay);
         
@@ -208,7 +207,6 @@ public class OmegaCentauri extends Game {
             this.height = height;
             setSize(width, height);
             setVisible(true);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 
         @Override

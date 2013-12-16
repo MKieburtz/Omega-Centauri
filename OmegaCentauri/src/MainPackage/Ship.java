@@ -32,7 +32,7 @@ public abstract class Ship {
     protected ArrayList<FileInputStream> inputStreams = new ArrayList<FileInputStream>();
 
     // MAKE SURE TO SET THE SHIP IMAGE IN THE CONSTRUCTOR!!!!!
-    //returns success
+    //@returns success
     protected boolean setUpShipImage() {
         int j = 0;
         try {

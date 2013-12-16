@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.*;
+import javax.*;
 // @author Michael Kieburtz and Davis Freeman
 
 public class Launcher {
@@ -11,6 +12,7 @@ public class Launcher {
     static int width = 1000;
     static int height = 600;
     static JFrame launcherFrame = new JFrame("Omega Centauri Launcher");
+    static Renderer renderer = new Renderer(width, height);
 
     // Launcher -> game -> gamewindow -> renderer
     public static void main(String args[]) {
@@ -18,7 +20,7 @@ public class Launcher {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-
+                
                 launcherFrame.setSize(width, height);
                 launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 launcherFrame.setVisible(true);
@@ -35,7 +37,7 @@ public class Launcher {
                     public void actionPerformed(ActionEvent e) {
                         launcherFrame.setVisible(false);
                         launcherFrame.dispose();
-                        OmegaCentauri oc = new OmegaCentauri(width, height, 100);
+                        OmegaCentauri oc = new OmegaCentauri(width, height, 100, renderer);
                     }
                 });
 
@@ -69,7 +71,30 @@ public class Launcher {
                 launcherFrame.add(goButton);
                 launcherFrame.add(closeButton);
                 launcherFrame.add(resolution1440by900);
+                
+                
+
+            class Panel extends JPanel {
+
+                int width;
+                int height;
+
+                public Panel(int width, int height) {
+                    this.width = width;
+                    this.height = height;
+                    setSize(width, height);
+                    setVisible(true);
+                }
+
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    renderer.drawLauncher(g);
+                }
             }
-        });
+        }
+    }
+
+);
     }
 }
