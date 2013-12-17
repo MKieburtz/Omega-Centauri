@@ -19,6 +19,8 @@ public abstract class Ship {
     // File -> FileInputStream -> ImageIO -> buffered image
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected BufferedImage activeImage;
+    protected ArrayList<String> imagePaths = new ArrayList<String>();
+    protected ImageLoader imageLoader = new ImageLoader();
 
     public BufferedImage getImage() {
         return activeImage;
@@ -28,29 +30,6 @@ public abstract class Ship {
         return this.images.get(index);
     }
 
-    protected ArrayList<File> imageFiles = new ArrayList<File>();
-    protected ArrayList<FileInputStream> inputStreams = new ArrayList<FileInputStream>();
-
-    // MAKE SURE TO SET THE SHIP IMAGE IN THE CONSTRUCTOR!!!!!
-    //@returns success
-    protected boolean setUpShipImage() {
-        int j = 0;
-        try {
-            for (int i = 0; i < imageFiles.size(); i++) {
-                inputStreams.add(new FileInputStream(imageFiles.get(i)));
-            }
-            for (j = 0; j < inputStreams.size(); j++) {
-                images.add(ImageIO.read(inputStreams.get(j)));
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.err.println("Error reading file: " + imageFiles.get(j).getPath());
-        } catch (NullPointerException ex2) {
-            ex2.printStackTrace();
-            System.err.println("This shouldn't have happend. Issue with base class 'Ship'");
-            return false;
-        }
-        return true;
-    }
+    
 
 }
