@@ -4,6 +4,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import javax.*;
 // @author Michael Kieburtz and Davis Freeman
 
@@ -13,6 +15,9 @@ public class Launcher {
     static int height = 600;
     static JFrame launcherFrame = new JFrame("Omega Centauri Launcher");
     static Renderer renderer = new Renderer(width, height);
+    static ImageLoader imageLoader = new ImageLoader();
+    static ArrayList<String> imagePaths = new ArrayList<String>();
+    static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 
     // Launcher -> game -> gamewindow -> renderer
     public static void main(String args[]) {
@@ -20,7 +25,9 @@ public class Launcher {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                
+                imagePaths.add("resources/GoButton.png");
+                images = imageLoader.loadImages(imagePaths);
+
                 launcherFrame.setSize(width, height);
                 launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 launcherFrame.setVisible(true);
@@ -68,33 +75,25 @@ public class Launcher {
                     }
                 });
 
+                JPanel panel = new JPanel() {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
+                        System.out.println("cool");
+                        renderer.drawLauncher(g, images.get(0));
+                    }
+                };
+                
+                panel.setSize(width, height);
+                panel.setVisible(true);
+
                 launcherFrame.add(goButton);
                 launcherFrame.add(closeButton);
                 launcherFrame.add(resolution1440by900);
-                
-                
+                launcherFrame.add(panel);
 
-            class Panel extends JPanel {
-
-                int width;
-                int height;
-
-                public Panel(int width, int height) {
-                    this.width = width;
-                    this.height = height;
-                    setSize(width, height);
-                    setVisible(true);
-                }
-
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    renderer.drawLauncher(g);
-                }
             }
         }
-    }
-
-);
+        );
     }
 }

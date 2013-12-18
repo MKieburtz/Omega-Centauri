@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -69,9 +70,9 @@ public class Renderer {
                 (int) (player.getLocation().y - camera.getLocation().y), null);
     }
     
-    public void drawLauncher(Graphics g)
+    public void drawLauncher(Graphics g, BufferedImage startButtonImage)
     {
-        
+        g.drawImage(startButtonImage, 100, 0, null);
     }
 
 }
