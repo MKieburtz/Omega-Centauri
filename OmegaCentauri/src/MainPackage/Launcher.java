@@ -32,7 +32,9 @@ public class Launcher {
                 launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 launcherFrame.setVisible(true);
                 launcherFrame.setLayout(null);
-
+                
+                /******************** BEGIN BUTTON STUFF ***************/
+                
                 JButton goButton = new JButton("GO!");
                 goButton.setVisible(true);
                 goButton.setText("GO!");
@@ -74,7 +76,9 @@ public class Launcher {
                         launcherFrame.setSize(1440, 900);
                     }
                 });
-
+                
+                /******************** STOP BUTTON STUFF ****************/
+                
                 JPanel panel = new JPanel() {
                     @Override
                     protected void paintComponent(Graphics g) {
