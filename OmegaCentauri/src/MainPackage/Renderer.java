@@ -88,7 +88,7 @@ public class Renderer {
     
     public void drawLauncher(Graphics g, BufferedImage startButtonImage)
     {
-        g.drawImage(startButtonImage, 100, 0, null);
+        g.drawImage(startButtonImage, 0, 0, null);
     }
 
 }
