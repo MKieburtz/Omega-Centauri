@@ -7,10 +7,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.*;
-import java.awt.event.*;
 // @author Michael Kieburtz and Davis Freeman
 
-public class Launcher implements MouseListener {
+public class Launcher {
 
     static int width = 1000;
     static int height = 600;
@@ -23,6 +22,9 @@ public class Launcher implements MouseListener {
     // Launcher -> game -> gamewindow -> renderer
     public static void main(String args[]) {
 
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
                 imagePaths.add("resources/GoButton.png");
                 images = imageLoader.loadImages(imagePaths);
 
@@ -75,7 +77,7 @@ public class Launcher implements MouseListener {
                     }
                 });
                 
-                /******************** END BUTTON STUFF *****************/
+                /******************** STOP BUTTON STUFF ****************/
                 
                 JPanel panel = new JPanel() {
                     @Override
@@ -89,42 +91,13 @@ public class Launcher implements MouseListener {
                 panel.setSize(width, height);
                 panel.setVisible(true);
 
-                //launcherFrame.add(goButton);
+                launcherFrame.add(goButton);
                 launcherFrame.add(closeButton);
                 launcherFrame.add(resolution1440by900);
                 launcherFrame.add(panel);
-            }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getLocationOnScreen().x > 0 && e.getLocationOnScreen().x < 100)
-        {
-            if (e.getLocationOnScreen().y > 0 && e.getLocationOnScreen().y < 50)
-            {
-                launcherFrame.setVisible(false);
-                launcherFrame.dispose();
-                OmegaCentauri oc = new OmegaCentauri(width, height, 100, renderer);
             }
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        );
     }
 }
