@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -14,40 +15,33 @@ public class Launcher extends JFrame implements MouseListener{
 
     private int width = 1000;
     private int height = 600;
-    private JFrame launcherFrame = new JFrame("Omega Centauri Launcher");
+    
     private Renderer renderer = new Renderer(width, height);
     private ImageLoader imageLoader = new ImageLoader();
     private ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-
+    
+    private Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
+    
     public Launcher() {
         imagePaths.add("resources/GoButton.png");
         images = imageLoader.loadImages(imagePaths);
-
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                renderer.drawLauncher(g, images.get(0));
-            }
-        };
-
-        panel.setSize(width, height);
-        panel.setVisible(true);
-
-        
-        launcherFrame.add(panel);
-
+        setUpWindow(width, height);
+        addButtons();
     }
 
     private void setUpWindow(int width, int height) {
-        launcherFrame.setSize(width, height);
-        launcherFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        launcherFrame.setVisible(true);
-        launcherFrame.setLayout(null);
+        this.setSize(width, height);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+        this.setLayout(null);
+        
+        this.addMouseListener(this);
+        this.setTitle("Omega-Centauri Launcher");
+        this.setResizable(false);
     }
 
-    private void addButtons() // temp method
+    private void addButtons() // temp method. Davis delete this when you do your button images
     {
         JButton goButton = new JButton("GO!");
         goButton.setVisible(true);
@@ -58,8 +52,7 @@ public class Launcher extends JFrame implements MouseListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                launcherFrame.setVisible(false);
-                launcherFrame.dispose();
+                closeWindow();
                 OmegaCentauri oc = new OmegaCentauri(width, height, 100, renderer);
             }
         });
@@ -73,8 +66,7 @@ public class Launcher extends JFrame implements MouseListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                launcherFrame.setVisible(false);
-                launcherFrame.dispose();
+                closeWindow();
             }
         });
 
@@ -87,12 +79,69 @@ public class Launcher extends JFrame implements MouseListener{
             public void actionPerformed(ActionEvent e) {
                 width = 1440;
                 height = 900;
-                launcherFrame.setSize(1440, 900);
+                changeResolution(width, height);
             }
         });
         
-        launcherFrame.add(goButton);
-        launcherFrame.add(closeButton);
-        launcherFrame.add(resolution1440by900);
+        this.add(goButton);
+        this.add(closeButton);
+        this.add(resolution1440by900);
+        this.add(panel);
+    }
+    
+    public class Panel extends JPanel
+    {
+        int width;
+        int height;
+
+        public Panel(int width, int height) {
+            this.width = width;
+            this.height = height;
+            setSize(width, height);
+            setVisible(true);
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            renderer.drawLauncher(g, images.get(0));
+        }
+    }
+    
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        
+    }
+    
+    private void closeWindow()
+    {
+        this.setVisible(false);
+        this.dispose();
+    }
+    
+    private void changeResolution(int width, int height)
+    {
+        this.setSize(width, height);
     }
 }

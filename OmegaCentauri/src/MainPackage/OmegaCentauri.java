@@ -13,7 +13,7 @@ public class OmegaCentauri extends Game {
     private final java.util.Timer timer = new java.util.Timer();
     private final int timerDelay;
     private final Renderer renderer;
-    private final Panel panel = new Panel(1000, 600);
+    private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
     private boolean Slowingdown = false;
     private double FPS = 0;
