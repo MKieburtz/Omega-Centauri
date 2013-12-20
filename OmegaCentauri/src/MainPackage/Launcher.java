@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import javax.*;
 // @author Michael Kieburtz and Davis Freeman
 
 public class Launcher extends JFrame implements MouseListener{
@@ -16,12 +15,12 @@ public class Launcher extends JFrame implements MouseListener{
     private int width = 1000;
     private int height = 600;
     
-    private Renderer renderer = new Renderer(width, height);
-    private ImageLoader imageLoader = new ImageLoader();
-    private ArrayList<String> imagePaths = new ArrayList<String>();
+    private final Renderer renderer = new Renderer(width, height);
+    private final ImageLoader imageLoader = new ImageLoader();
+    private final ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     
-    private Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
+    private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     
     public Launcher() {
         imagePaths.add("resources/GoButton.png");

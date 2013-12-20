@@ -5,6 +5,7 @@ import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import javax.swing.text.AttributeSet;
 
 // @author Michael Kieburtz and Davis Freeman
 public class Renderer {
@@ -90,5 +91,15 @@ public class Renderer {
     {
         g.drawImage(startButtonImage, 100, 0, null);
     }
-
+    
+    public void drawLoadingScreen(Graphics g, int percentDone, int width, int height)
+    {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, width, height);
+        
+        g.setColor(Color.RED);
+        g.drawRect((width / 2) - 200, (height / 2) - 50, 200, 50);
+        g.setColor(Color.GREEN);
+        g.fillRect((width / 2) - 200, (height / 2) - 50, percentDone * 2, 50);
+    }
 }
