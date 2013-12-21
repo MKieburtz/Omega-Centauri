@@ -98,8 +98,12 @@ public class Renderer {
         g.fillRect(0, 0, width, height);
         
         g.setColor(Color.RED);
-        g.drawRect((width / 2) - 200, (height / 2) - 50, 200, 50);
+        g.drawRect((width / 2) - 100, (height / 2) - 50, 200, 50);
         g.setColor(Color.GREEN);
-        g.fillRect((width / 2) - 200, (height / 2) - 50, percentDone * 2, 50);
+        g.fillRect((width / 2) - 100, (height / 2) - 50, percentDone * 2, 50);
+        
+        g.setFont(fpsFont);
+        g.setColor(Color.CYAN);
+        g.drawString("Loading...", width / 2 - 75, height / 2 - 75);
     }
 }
