@@ -21,23 +21,20 @@ public class OmegaCentauri extends Game {
     private boolean paused = false;
     private boolean loading = false;
     private int starChunksLoaded = 0;
-
     private final Point screenSize = new Point(10000, 10000);
     Camera camera;
-
     private ArrayList<DustChunk> particles = new ArrayList<DustChunk>();
     private Random random = new Random();
-
     private int[] yPositions = {10000, 10000, 0, 0}; // starting y positions
-    
+
     public OmegaCentauri(int width, int height, int desiredFrameRate, Renderer renderer) {
         this.renderer = renderer;
         camera = new Camera(width, height);
         loading = true;
-        
+
 
         timerDelay = 15;
-        
+
         player = new Player(0, 0, MainPackage.Type.Fighter);
 
         timer.schedule(new MovementTimer(player), timerDelay);
@@ -56,7 +53,7 @@ public class OmegaCentauri extends Game {
         setTitle("Omega Centauri");
         add(panel);
         setContentPane(panel);
-        
+
     }
 
     private class MovementTimer extends TimerTask {
@@ -70,104 +67,103 @@ public class OmegaCentauri extends Game {
         @Override
         public void run() {
             FPS = getFrameRate();
-            
+
             if (loading) {
                 // load 100 starChunks from each quadrant
                 // load all the horizontal star chunks from each quadrant
                 // then move down 100 to the next chunk down
-                
+
                 // quadrant 1
-                
+
                 /*  _______
                  * |___|_x_|
                  * |___|___|
-                */
-                
+                 */
+
                 for (int x = 1; x < screenSize.x; x = x + 100) {
 
                     particles.add(new DustChunk(x, yPositions[0]));
                     starChunksLoaded++;
                 }
                 yPositions[0] -= 100;
-                
+
                 // quadrant 2
-                
+
                 /*  _______
                  * |_x_|___|
                  * |___|___|
-                */
-                
+                 */
+
                 for (int x = -1; x > -screenSize.x; x = x - 100) {
 
                     particles.add(new DustChunk(x, yPositions[1]));
                     starChunksLoaded++;
                 }
                 yPositions[1] -= 100;
-                
+
                 // quadrant 3
-                
+
                 /*  _______
                  * |___|___|
                  * |_x_|___|
-                */
+                 */
                 for (int x = -1; x < -screenSize.x; x = x - 100) {
 
                     particles.add(new DustChunk(x, yPositions[2]));
                     starChunksLoaded++;
                 }
                 yPositions[2] += 100;
-                
+
                 // quadrant 4
-                
+
                 /*  _______
                  * |___|___|
                  * |___|_x_|
-                */
+                 */
                 for (int x = 1; x < screenSize.x; x = x + 100) {
 
                     particles.add(new DustChunk(x, yPositions[3]));
                     starChunksLoaded++;
                 }
-                
+
                 yPositions[3] += 100;
-                
-                if (starChunksLoaded >= ((100 * 100) * 4))
+
+                if (starChunksLoaded >= ((100 * 100) * 4)) {
                     loading = false;
-                
+                }
+
                 repaint();
+            } else {
+                if (forward) {
+
+                    player.move(true);
+                    middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
+                    middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
+                    repaint();
+                }
+                if (rotateRight) {
+
+                    player.rotate(true); // positive
+                    repaint();
+                }
+
+                if (rotateLeft) {
+                    player.rotate(false); // negitive
+                    repaint();
+                }
+
+                if (!forward && player.isMoving()) {
+                    player.move(false);
+                    repaint();
+                }
+
+
+                camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
+                camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
+
+                middleOfPlayer.x = (player.getLocation().x - camera.getLocation().x) + player.getImage().getWidth() / 2;
+                middleOfPlayer.y = (player.getLocation().y - camera.getLocation().y) + player.getImage().getHeight() / 2;
             }
-            
-
-            if (forward) {
-
-                player.move(true);
-                middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
-                middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
-                repaint();
-            }
-            if (rotateRight) {
-
-                player.rotate(true); // positive
-                repaint();
-            }
-
-            if (rotateLeft) {
-                player.rotate(false); // negitive
-                repaint();
-            }
-
-            if (!forward && player.isMoving()) {
-                player.move(false);
-                repaint();
-            }
-
-
-            camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
-            camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
-
-            middleOfPlayer.x = (player.getLocation().x - camera.getLocation().x) + player.getImage().getWidth() / 2;
-            middleOfPlayer.y = (player.getLocation().y - camera.getLocation().y) + player.getImage().getHeight() / 2;
-
             timer.schedule(new MovementTimer(player), timerDelay);
 
         }
@@ -279,11 +275,12 @@ public class OmegaCentauri extends Game {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            
-            if (!loading)
+
+            if (!loading) {
                 renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), particles, camera);
-            else
+            } else {
                 renderer.drawLoadingScreen(g, starChunksLoaded / 400, width, height);
+            }
         }
     }
 

@@ -106,7 +106,6 @@ public class Player extends Ship {
         if (Math.abs(velocity.y) < .1)
             velocity.y = 0;
         
-        System.out.println(velocity);
         updatePosition();
         
         }
