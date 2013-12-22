@@ -15,8 +15,7 @@ public class Player extends Ship {
     private final double maxVel = 5.0;
     private final double angleIcrement = 4;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
-    private final double acceleration = .2;
-    private final double deacceleration = .02;
+    private final double acceleration = .15;
 
     public String getName() {
         return this.name;
@@ -73,11 +72,13 @@ public class Player extends Ship {
     public void rotate(double amount) {
         faceAngle = amount;
     }
-
-    public void move(boolean slowingDown) {
+    
+    public void move(boolean thrusting) {
+        
         moveAngle = faceAngle - 90;
-
-        if (!slowingDown) {
+        
+        if (thrusting)
+        {
             velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
 
             if (velocity.x > maxVel) {
@@ -93,52 +94,22 @@ public class Player extends Ship {
             } else if (velocity.y < -maxVel) {
                 velocity.y = -maxVel;
             }
-
-        } else // the ship is slowing down, the keybind for the forward key is not being pressed.
-        {
-            if (velocity.x == 0 && velocity.y == 0) {
-                return;
-            }
-
-            if (velocity.x > 0) {
-
-                if (velocity.x - deacceleration < 0) {
-                    velocity.x = 0;
-                } else {
-                    velocity.x -= deacceleration;
-                }
-
-            } else if (velocity.x < 0) {
-
-                if (velocity.x + deacceleration > 0) {
-                    velocity.x = 0;
-                } else {
-                    velocity.x += deacceleration;
-                }
-
-            }
-
-            if (velocity.y > 0) {
-
-                if (velocity.y - deacceleration < 0) {
-                    velocity.y = 0;
-                } else {
-                    velocity.y -= deacceleration;
-                }
-
-            } else if (velocity.y < 0) {
-                if (velocity.y + deacceleration > 0) {
-                    velocity.y = 0;
-                } else {
-                    velocity.y += deacceleration;
-                }
-            }
-
+            
         }
-
+        
+        velocity.x *= .99;
+        velocity.y *= .99;
+        
+        if (Math.abs(velocity.x) < .1)
+            velocity.x = 0;
+        
+        if (Math.abs(velocity.y) < .1)
+            velocity.y = 0;
+        
+        System.out.println(velocity);
         updatePosition();
-    }
-
+        
+        }
     private void updatePosition() {
         location.x += velocity.x;
         location.y += velocity.y;
@@ -160,11 +131,11 @@ public class Player extends Ship {
     }
 
     private double CalcAngleMoveX(double angle) {
-        return (double) (Math.cos(angle * Math.PI / 180));
+        return (double) (Math.cos(Math.toRadians(angle)));
     }
 
     private double CalcAngleMoveY(double angle) {
-        return (double) (Math.sin(angle * Math.PI / 180));
+        return (double) (Math.sin(Math.toRadians(angle)));
     }
 
     public ArrayList getImages() {
@@ -174,5 +145,10 @@ public class Player extends Ship {
     public void changeImage(int index)
     {
         activeImage = images.get(index);
+    }
+    
+    public boolean isMoving()
+    {
+        return velocity.x != 0 || velocity.y != 0;
     }
 }

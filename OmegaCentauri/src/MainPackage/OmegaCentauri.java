@@ -140,7 +140,7 @@ public class OmegaCentauri extends Game {
 
             if (forward) {
 
-                player.move(false);
+                player.move(true);
                 middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
                 middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
                 repaint();
@@ -156,15 +156,11 @@ public class OmegaCentauri extends Game {
                 repaint();
             }
 
-            if (!forward) {
-                Slowingdown = true;
-            }
-
-            if (Slowingdown) {
-                player.move(true);
-
+            if (!forward && player.isMoving()) {
+                player.move(false);
                 repaint();
             }
+
 
             camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
             camera.getLocation().y = player.getLocation().y - (getHeight() / 2);

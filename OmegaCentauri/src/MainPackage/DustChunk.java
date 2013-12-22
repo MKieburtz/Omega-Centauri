@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class DustChunk {
     private Point2D.Double location;
-    private final int dimension = 2;
+    private final int dimension = 1;
     private Rectangle2D.Double[] rects = new Rectangle2D.Double[10];
     private Random random = new Random();
     
