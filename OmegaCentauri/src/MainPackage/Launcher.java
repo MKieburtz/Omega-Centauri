@@ -36,7 +36,7 @@ public class Launcher extends JFrame implements MouseListener{
         this.setLayout(null);
         
         this.addMouseListener(this);
-        this.setTitle("Omega-Centauri Launcher");
+        this.setTitle("Omega Centauri Launcher");
         this.setResizable(false);
     }
 
