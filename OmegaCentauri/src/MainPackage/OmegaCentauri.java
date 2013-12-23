@@ -157,13 +157,13 @@ public class OmegaCentauri extends Game {
                     repaint();
                 }
 
-
+            }
                 camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
                 camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
 
                 middleOfPlayer.x = (player.getLocation().x - camera.getLocation().x) + player.getImage().getWidth() / 2;
                 middleOfPlayer.y = (player.getLocation().y - camera.getLocation().y) + player.getImage().getHeight() / 2;
-            }
+            
             timer.schedule(new MovementTimer(player), timerDelay);
 
         }
@@ -209,12 +209,6 @@ public class OmegaCentauri extends Game {
                 }
             }
             break;
-
-            case KeyEvent.VK_SPACE: {
-                player.location.x = 500;
-                player.location.y = 250;
-                player.setVel(0, 0);
-            }
 
         } // end switch
 

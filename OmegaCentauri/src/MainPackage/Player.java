@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public class Player extends Ship {
 
     private String name;
-    private double faceAngle = 90.0; // maybe move to Ship Class
+    private double faceAngle = 360.0; // maybe move to Ship Class
     private double moveAngle = 0.0;
     private final double maxVel = 5.0;
-    private final double angleIcrement = 4;
+    private final double angleIcrement = 5;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .15;
 
@@ -72,13 +72,12 @@ public class Player extends Ship {
     public void rotate(double amount) {
         faceAngle = amount;
     }
-    
+
     public void move(boolean thrusting) {
-        
+
         moveAngle = faceAngle - 90;
-        
-        if (thrusting)
-        {
+
+        if (thrusting) {
             velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
 
             if (velocity.x > maxVel) {
@@ -94,21 +93,28 @@ public class Player extends Ship {
             } else if (velocity.y < -maxVel) {
                 velocity.y = -maxVel;
             }
-            
+
         }
-        
+
         velocity.x *= .99;
         velocity.y *= .99;
-        
-        if (Math.abs(velocity.x) < .1)
-            velocity.x = 0;
-        
-        if (Math.abs(velocity.y) < .1)
-            velocity.y = 0;
-        
-        updatePosition();
-        
+
+
+
+        if (!thrusting) {
+            if (Math.abs(velocity.x) < .1) {
+                velocity.x = 0;
+            }
+
+            if (Math.abs(velocity.y) < .1) {
+                velocity.y = 0;
+            }
         }
+
+        updatePosition();
+
+    }
+
     private void updatePosition() {
         location.x += velocity.x;
         location.y += velocity.y;
@@ -118,13 +124,11 @@ public class Player extends Ship {
         return faceAngle;
     }
 
-    public Point2D.Double getVel()
-    {
+    public Point2D.Double getVel() {
         return this.velocity;
     }
-    
-    public void setVel(int vert, int hor)
-    {
+
+    public void setVel(int vert, int hor) {
         this.velocity.x = vert;
         this.velocity.y = hor;
     }
@@ -140,14 +144,12 @@ public class Player extends Ship {
     public ArrayList getImages() {
         return images;
     }
-    
-    public void changeImage(int index)
-    {
+
+    public void changeImage(int index) {
         activeImage = images.get(index);
     }
-    
-    public boolean isMoving()
-    {
+
+    public boolean isMoving() {
         return velocity.x != 0 || velocity.y != 0;
     }
 }

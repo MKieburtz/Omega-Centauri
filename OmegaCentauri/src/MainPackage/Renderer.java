@@ -32,12 +32,13 @@ public class Renderer {
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
             ArrayList<DustChunk> dust, Camera camera) {
-        Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
+        Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
+
         // draw backround rectangle
         g.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 1000, 1000);
-        
+
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -57,19 +58,19 @@ public class Renderer {
         g2d.drawString(String.valueOf(fps), 155, 33);
 
         g2d.setFont(fpsFont.deriveFont(60f));
-        
+
         g2d.drawString("FPS:", 10, 50);
-        
+
         // draw the minimap
         g2d.setColor(Color.BLACK);
         g2d.fillRect(794, 382, 200, 190);
-        
+
         g2d.setColor(new Color(0, 255, 0, 50));
         g2d.fillRect(794, 382, 200, 190);
-        
+
         g2d.setColor(Color.GREEN);
         g2d.drawRect(794, 382, 200, 190);
-        
+
         // transform the player and draw it
         AffineTransform origXform = g2d.getTransform();
         AffineTransform newXform = (AffineTransform) (origXform.clone());
@@ -80,28 +81,26 @@ public class Renderer {
         newXform.rotate(Math.toRadians(player.getAngle()), xRot, yRot);
 
         g2d.setTransform(newXform);
-        
+
         g2d.drawImage(player.getImage(), (int) (player.getLocation().x - camera.getLocation().x),
                 (int) (player.getLocation().y - camera.getLocation().y), null);
-        
-        
+
+
     }
-    
-    public void drawLauncher(Graphics g, BufferedImage startButtonImage)
-    {
+
+    public void drawLauncher(Graphics g, BufferedImage startButtonImage) {
         g.drawImage(startButtonImage, 100, 0, null);
     }
-    
-    public void drawLoadingScreen(Graphics g, int percentDone, int width, int height)
-    {
+
+    public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
-        
+
         g.setColor(Color.RED);
         g.drawRect((width / 2) - 100, (height / 2) - 50, 200, 50);
         g.setColor(Color.GREEN);
         g.fillRect((width / 2) - 100, (height / 2) - 50, percentDone * 2, 50);
-        
+
         g.setFont(fpsFont);
         g.setColor(Color.CYAN);
         g.drawString("Loading...", width / 2 - 75, height / 2 - 75);
