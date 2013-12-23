@@ -213,6 +213,7 @@ public class OmegaCentauri extends Game {
             case KeyEvent.VK_SPACE: {
                 player.speedBoost();
             }
+            break;
 
         } // end switch
 
@@ -254,6 +255,10 @@ public class OmegaCentauri extends Game {
             }
 
             break;
+                
+            case KeyEvent.VK_SPACE: {
+                player.stopSpeedBoosting();
+            }
 
         } // end switch
     }

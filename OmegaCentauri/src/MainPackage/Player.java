@@ -12,7 +12,8 @@ public class Player extends Ship {
     private String name;
     private double faceAngle = 360.0; // maybe move to Ship Class
     private double moveAngle = 0.0;
-    private final double maxVel = 5.0;
+    private final double baseMaxVel = 5.0;
+    private double maxVel = 5.0;
     private final double angleIcrement = 5;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .15;
@@ -93,13 +94,15 @@ public class Player extends Ship {
             } else if (velocity.y < -maxVel) {
                 velocity.y = -maxVel;
             }
+            
+            
 
         }
 
         velocity.x *= .99;
         velocity.y *= .99;
 
-
+        System.out.println(maxVel);
 
         if (!thrusting) {
             if (Math.abs(velocity.x) < .1) {
@@ -152,7 +155,18 @@ public class Player extends Ship {
     public boolean isMoving() {
         return velocity.x != 0 || velocity.y != 0;
     }
-    public double speedBoost() {
-        return (maxVel * 2);
+    
+    public void speedBoost() {
+        if (maxVel == baseMaxVel)
+            maxVel *= 2;
+    }
+    
+    public void stopSpeedBoosting()
+    {
+        while (maxVel > baseMaxVel)
+        {
+            maxVel *= .98;
+        }
+        maxVel = 5.0;
     }
 }
