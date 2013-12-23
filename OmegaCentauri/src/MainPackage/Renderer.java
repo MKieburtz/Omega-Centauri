@@ -70,6 +70,10 @@ public class Renderer {
 
         g2d.setColor(Color.GREEN);
         g2d.drawRect(794, 382, 200, 190);
+        
+        g2d.setColor(Color.CYAN);
+        Rectangle2D.Double minimapPlayer = new Rectangle2D.Double(794 + 100 + player.getLocation().x / 100, 382 + 95 + player.getLocation().y / 100, 1, 1);
+        g2d.draw(minimapPlayer);
 
         // transform the player and draw it
         AffineTransform origXform = g2d.getTransform();

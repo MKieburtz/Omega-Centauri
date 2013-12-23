@@ -22,7 +22,7 @@ public class OmegaCentauri extends Game {
     private boolean loading = false;
     private int starChunksLoaded = 0;
     private final Point screenSize = new Point(10000, 10000);
-    Camera camera;
+    private Camera camera;
     private ArrayList<DustChunk> particles = new ArrayList<DustChunk>();
     private Random random = new Random();
     private int[] yPositions = {10000, 10000, 0, 0}; // starting y positions
