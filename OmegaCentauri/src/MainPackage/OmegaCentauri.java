@@ -209,6 +209,10 @@ public class OmegaCentauri extends Game {
                 }
             }
             break;
+                
+            case KeyEvent.VK_SPACE: {
+                player.speedBoost();
+            }
 
         } // end switch
 

@@ -152,4 +152,7 @@ public class Player extends Ship {
     public boolean isMoving() {
         return velocity.x != 0 || velocity.y != 0;
     }
+    public double speedBoost() {
+        return (maxVel * 2);
+    }
 }
