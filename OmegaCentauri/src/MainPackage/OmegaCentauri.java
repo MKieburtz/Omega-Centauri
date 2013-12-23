@@ -25,7 +25,7 @@ public class OmegaCentauri extends Game {
     private Camera camera;
     private ArrayList<DustChunk> particles = new ArrayList<DustChunk>();
     private Random random = new Random();
-    private int[] yPositions = {10000, 10000, 0, 0}; // starting y positions
+    private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
 
     public OmegaCentauri(int width, int height, int desiredFrameRate, Renderer renderer) {
         this.renderer = renderer;
@@ -80,26 +80,31 @@ public class OmegaCentauri extends Game {
                  * |___|___|
                  */
 
-                for (int x = 1; x < screenSize.x; x = x + 100) {
+                if (yPositions[0] < 0) {
 
-                    particles.add(new DustChunk(x, yPositions[0]));
-                    starChunksLoaded++;
+                    for (int x = 1; x < screenSize.x; x = x + 100) {
+
+                        particles.add(new DustChunk(x, yPositions[0]));
+                        starChunksLoaded++;
+                    }
+                    
+                    yPositions[0] += 100;
                 }
-                yPositions[0] -= 100;
-
                 // quadrant 2
 
                 /*  _______
                  * |_x_|___|
                  * |___|___|
                  */
-
+                
+                
                 for (int x = -1; x > -screenSize.x; x = x - 100) {
 
                     particles.add(new DustChunk(x, yPositions[1]));
                     starChunksLoaded++;
                 }
-                yPositions[1] -= 100;
+
+                yPositions[1] += 100;
 
                 // quadrant 3
 
@@ -112,6 +117,7 @@ public class OmegaCentauri extends Game {
                     particles.add(new DustChunk(x, yPositions[2]));
                     starChunksLoaded++;
                 }
+
                 yPositions[2] += 100;
 
                 // quadrant 4
@@ -120,6 +126,9 @@ public class OmegaCentauri extends Game {
                  * |___|___|
                  * |___|_x_|
                  */
+                
+                if (yPositions[3] < 10000)
+                {
                 for (int x = 1; x < screenSize.x; x = x + 100) {
 
                     particles.add(new DustChunk(x, yPositions[3]));
@@ -127,8 +136,10 @@ public class OmegaCentauri extends Game {
                 }
 
                 yPositions[3] += 100;
+                }
 
                 if (starChunksLoaded >= ((100 * 100) * 4)) {
+                    System.err.println(starChunksLoaded);
                     loading = false;
                 }
 
@@ -158,12 +169,12 @@ public class OmegaCentauri extends Game {
                 }
 
             }
-                camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
-                camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
+            camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
+            camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
 
-                middleOfPlayer.x = (player.getLocation().x - camera.getLocation().x) + player.getImage().getWidth() / 2;
-                middleOfPlayer.y = (player.getLocation().y - camera.getLocation().y) + player.getImage().getHeight() / 2;
-            
+            middleOfPlayer.x = (player.getLocation().x - camera.getLocation().x) + player.getImage().getWidth() / 2;
+            middleOfPlayer.y = (player.getLocation().y - camera.getLocation().y) + player.getImage().getHeight() / 2;
+
             timer.schedule(new MovementTimer(player), timerDelay);
 
         }
@@ -209,7 +220,7 @@ public class OmegaCentauri extends Game {
                 }
             }
             break;
-                
+
             case KeyEvent.VK_SPACE: {
                 player.speedBoost();
             }
@@ -255,7 +266,7 @@ public class OmegaCentauri extends Game {
             }
 
             break;
-                
+
             case KeyEvent.VK_SPACE: {
                 player.stopSpeedBoosting();
             }

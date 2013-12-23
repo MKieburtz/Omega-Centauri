@@ -5,14 +5,12 @@ import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import javax.swing.text.AttributeSet;
 
 // @author Michael Kieburtz and Davis Freeman
 public class Renderer {
 
     File fontFile;
     private Font fpsFont;
-    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
     public Renderer(int cameraWidth, int cameraHeight) {
 
@@ -63,16 +61,16 @@ public class Renderer {
 
         // draw the minimap
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(794, 382, 200, 190);
+        g2d.fillRect(794, 372, 200, 200);
 
         g2d.setColor(new Color(0, 255, 0, 50));
-        g2d.fillRect(794, 382, 200, 190);
+        g2d.fillRect(794, 372, 200, 200);
 
         g2d.setColor(Color.GREEN);
-        g2d.drawRect(794, 382, 200, 190);
+        g2d.drawRect(794, 372, 200, 200);
         
         g2d.setColor(Color.CYAN);
-        Rectangle2D.Double minimapPlayer = new Rectangle2D.Double(794 + 100 + player.getLocation().x / 100, 382 + 95 + player.getLocation().y / 100, 1, 1);
+        Rectangle2D.Double minimapPlayer = new Rectangle2D.Double(794 + 100 + player.getLocation().x / 100, 372 + 100 + player.getLocation().y / 100, 1, 1);
         g2d.draw(minimapPlayer);
 
         // transform the player and draw it

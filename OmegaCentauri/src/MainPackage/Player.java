@@ -94,15 +94,14 @@ public class Player extends Ship {
             } else if (velocity.y < -maxVel) {
                 velocity.y = -maxVel;
             }
-            
-            
+
+
 
         }
 
         velocity.x *= .99;
         velocity.y *= .99;
 
-        System.out.println(maxVel);
 
         if (!thrusting) {
             if (Math.abs(velocity.x) < .1) {
@@ -155,16 +154,15 @@ public class Player extends Ship {
     public boolean isMoving() {
         return velocity.x != 0 || velocity.y != 0;
     }
-    
+
     public void speedBoost() {
-        if (maxVel == baseMaxVel)
+        if (maxVel == baseMaxVel) {
             maxVel *= 2;
+        }
     }
-    
-    public void stopSpeedBoosting()
-    {
-        while (maxVel > baseMaxVel)
-        {
+
+    public void stopSpeedBoosting() {
+        while (maxVel > baseMaxVel) {
             maxVel *= .98;
         }
         maxVel = 5.0;
