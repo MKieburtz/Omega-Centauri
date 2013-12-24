@@ -29,10 +29,13 @@ public class Renderer {
     }
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
-            ArrayList<StarChunk> dust, Camera camera) {
+            ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots) {
 
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
-
+        
+        
+        
+        
         // draw backround rectangle
         g.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 1000, 1000);
@@ -41,11 +44,11 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        
         // draw stars
-        for (int i = 0; i < dust.size(); i++) {
-            if (camera.insideView(dust.get(i).getLocation(), dust.get(i).getSize())) {
-                dust.get(i).draw(g2d, camera.getLocation());
+        for (StarChunk starChunk : stars) {
+            if (camera.insideView(starChunk.getLocation(), starChunk.getSize())) {
+                starChunk.draw(g2d, camera.getLocation());
             }
         }
         // draw fps info
@@ -58,7 +61,15 @@ public class Renderer {
         g2d.setFont(fpsFont.deriveFont(60f));
 
         g2d.drawString("FPS:", 10, 50);
-
+        
+        // move and draw the bullets
+        for (Shot shot : shots)
+        {
+            shot.move();
+            if (camera.insideView(shot.getLocation(), shot.getSize()))
+                shot.draw(g2d, camera.getLocation());
+        }
+        
         // draw the minimap
         g2d.setColor(Color.BLACK);
         g2d.fillRect(794, 372, 200, 200);
@@ -86,7 +97,11 @@ public class Renderer {
 
         g2d.drawImage(player.getImage(), (int) (player.getLocation().x - camera.getLocation().x),
                 (int) (player.getLocation().y - camera.getLocation().y), null);
-
+        
+        
+//        g.setColor(Color.RED);
+//        g.fillRect((int)Calculator.CalcPositionToShoot(new Point2D.Double(xRot, yRot), player.getImage().getWidth() / 2, player.getAngle()).x - player.getImage().getWidth() / 2,
+//                (int)Calculator.CalcPositionToShoot(new Point2D.Double(xRot, yRot), player.getImage().getWidth() / 2, player.getAngle()).y - player.getImage().getHeight(), 5, 5);
     }
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage) {
@@ -107,20 +122,5 @@ public class Renderer {
         g.drawString("Loading...", width / 2 - 75, height / 2 - 75);
     }
 
-    public Point2D.Double CalcPositionToShoot(Point2D.Double centerLocation, double radius, double shipAngle) {
-        /*
-         * a point on the outer edge of a circle given the center of a rectangle
-         * bounding box (cx, cy), the radius (r) and the angle where the ship is pointing
-         * (a) is
-         * x = cx + r + Math.cos(Math.toRadians(a));
-         * y = cy + r + Math.sin(Math.toRadians(a));
-         * 
-         * 
-         */
-
-        double x = centerLocation.x + radius + (Math.cos(Math.toRadians(shipAngle)));
-        double y = centerLocation.y + radius + (Math.sin(Math.toRadians(shipAngle)));
-
-        return new Point2D.Double(x, y);
-    }
+    
 }

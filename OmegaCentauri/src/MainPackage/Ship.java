@@ -21,6 +21,8 @@ public abstract class Ship {
     protected BufferedImage activeImage;
     protected ArrayList<String> imagePaths = new ArrayList<String>();
     protected ImageLoader imageLoader = new ImageLoader();
+    
+    protected ArrayList<Shot> shots = new ArrayList<Shot>();
 
     public BufferedImage getImage() {
         return activeImage;

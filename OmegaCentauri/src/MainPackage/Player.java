@@ -17,7 +17,9 @@ public class Player extends Ship {
     private final double angleIcrement = 5;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .15;
-
+   
+    
+    
     public String getName() {
         return this.name;
     }
@@ -35,6 +37,7 @@ public class Player extends Ship {
         imagePaths.add("resources/GoButton.png");
         images = imageLoader.loadImages(imagePaths);
         activeImage = images.get(0);
+        
     }
 
     public Point2D.Double getLocation() {
@@ -79,7 +82,7 @@ public class Player extends Ship {
         moveAngle = faceAngle - 90;
 
         if (thrusting) {
-            velocity.x += Calculator.CalcAngleMoveX(moveAngle);
+            velocity.x += Calculator.CalcAngleMoveX(moveAngle) * acceleration;
 
             if (velocity.x > maxVel) {
                 velocity.x = maxVel;
@@ -87,15 +90,13 @@ public class Player extends Ship {
                 velocity.x = -maxVel;
             }
 
-            velocity.y += Calculator.CalcAngleMoveY(moveAngle);
+            velocity.y += Calculator.CalcAngleMoveY(moveAngle) * acceleration;
 
             if (velocity.y > maxVel) {
                 velocity.y = maxVel;
             } else if (velocity.y < -maxVel) {
                 velocity.y = -maxVel;
             }
-
-
 
         }
 
@@ -158,5 +159,20 @@ public class Player extends Ship {
             maxVel *= .98;
         }
         maxVel = 5.0;
+    }
+    
+    public void shoot(Point2D.Double middleOfPlayer)
+    {
+        Point2D.Double ShotStartingLocation = 
+                Calculator.CalcPositionToShoot(middleOfPlayer, getImage().getWidth() / 2, faceAngle);
+        
+        System.out.println(ShotStartingLocation);
+        shots.add(new PulseShot(5, 100, false, ShotStartingLocation, new Point(7, 7), faceAngle));
+        
+    }
+    
+    public ArrayList<Shot> getShots()
+    {
+        return shots;
     }
 }

@@ -222,6 +222,10 @@ public class OmegaCentauri extends Game {
                 player.speedBoost();
             }
             break;
+                
+            case KeyEvent.VK_SPACE: {
+                player.shoot(middleOfPlayer);
+            }
 
         } // end switch
 
@@ -288,7 +292,7 @@ public class OmegaCentauri extends Game {
             super.paintComponent(g);
 
             if (!loading) {
-                renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), stars, camera);
+                renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), stars, camera, player.getShots());
             } else {
                 renderer.drawLoadingScreen(g, starChunksLoaded / 400, width, height);
             }
