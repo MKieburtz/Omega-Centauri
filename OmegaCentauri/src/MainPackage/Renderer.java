@@ -98,10 +98,7 @@ public class Renderer {
         g2d.drawImage(player.getImage(), (int) (player.getLocation().x - camera.getLocation().x),
                 (int) (player.getLocation().y - camera.getLocation().y), null);
         
-        
-//        g.setColor(Color.RED);
-//        g.fillRect((int)Calculator.CalcPositionToShoot(new Point2D.Double(xRot, yRot), player.getImage().getWidth() / 2, player.getAngle()).x - player.getImage().getWidth() / 2,
-//                (int)Calculator.CalcPositionToShoot(new Point2D.Double(xRot, yRot), player.getImage().getWidth() / 2, player.getAngle()).y - player.getImage().getHeight(), 5, 5);
+       
     }
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage) {

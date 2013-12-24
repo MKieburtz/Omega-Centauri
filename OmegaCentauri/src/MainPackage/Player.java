@@ -161,13 +161,13 @@ public class Player extends Ship {
         maxVel = 5.0;
     }
     
-    public void shoot(Point2D.Double middleOfPlayer)
+    public void shoot(Point2D.Double middle)
     {
-        Point2D.Double ShotStartingLocation = 
-                Calculator.CalcPositionToShoot(middleOfPlayer, getImage().getWidth() / 2, faceAngle);
+        Point ShotStartingVel =
+                new Point(10 * (int)Calculator.CalcAngleMoveX(moveAngle),10 * (int)Calculator.CalcAngleMoveY(moveAngle));
         
-        System.out.println(ShotStartingLocation);
-        shots.add(new PulseShot(5, 100, false, ShotStartingLocation, new Point(7, 7), faceAngle));
+        System.out.println(middle);
+        shots.add(new PulseShot(5, 100, false, middle, ShotStartingVel, faceAngle));
         
     }
     

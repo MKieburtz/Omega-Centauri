@@ -65,7 +65,7 @@ abstract class Shot {
         return location;
     }
     
-    public Point getSize()
+    public Point getSize() // ovveride if animated
     {
         return new Point(images.get(0).getWidth(), images.get(0).getHeight());
     }

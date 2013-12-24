@@ -17,8 +17,9 @@ public class PulseShot extends Shot {
         this.animated = animated;
         this.location = location;
         this.velocity = velocity;
+        
         this.angle = angle;
-        this.maxVel = velocity.x; // x because x is cooler than y
+        this.maxVel = 10;
         
         imagePaths.add("resources/Pulse.png");
         
