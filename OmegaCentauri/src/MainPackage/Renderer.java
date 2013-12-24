@@ -42,7 +42,7 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // draw dust/stars
+        // draw stars
         for (int i = 0; i < dust.size(); i++) {
             if (camera.insideView(dust.get(i).getLocation(), dust.get(i).getSize())) {
                 dust.get(i).draw(g2d, camera.getLocation());
@@ -86,7 +86,6 @@ public class Renderer {
 
         g2d.drawImage(player.getImage(), (int) (player.getLocation().x - camera.getLocation().x),
                 (int) (player.getLocation().y - camera.getLocation().y), null);
-
 
     }
 
