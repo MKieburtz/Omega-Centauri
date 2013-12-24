@@ -30,7 +30,7 @@ public class Renderer {
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
             ArrayList<StarChunk> dust, Camera camera) {
-        
+
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
 
         // draw backround rectangle
@@ -41,7 +41,7 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         // draw stars
         for (int i = 0; i < dust.size(); i++) {
             if (camera.insideView(dust.get(i).getLocation(), dust.get(i).getSize())) {
@@ -68,7 +68,7 @@ public class Renderer {
 
         g2d.setColor(Color.GREEN);
         g2d.drawRect(794, 372, 200, 200);
-        
+
         g2d.setColor(Color.CYAN);
         Ellipse2D.Double minimapPlayer = new Ellipse2D.Double(794 + 100 + player.getLocation().x / 100, 372 + 100 + player.getLocation().y / 100, 1, 1);
         g2d.draw(minimapPlayer);
@@ -105,5 +105,22 @@ public class Renderer {
         g.setFont(fpsFont);
         g.setColor(Color.CYAN);
         g.drawString("Loading...", width / 2 - 75, height / 2 - 75);
+    }
+
+    public Point2D.Double CalcPositionToShoot(Point2D.Double centerLocation, double radius, double shipAngle) {
+        /*
+         * a point on the outer edge of a circle given the center of a rectangle
+         * bounding box (cx, cy), the radius (r) and the angle where the ship is pointing
+         * (a) is
+         * x = cx + r + Math.cos(Math.toRadians(a));
+         * y = cy + r + Math.sin(Math.toRadians(a));
+         * 
+         * 
+         */
+
+        double x = centerLocation.x + radius + (Math.cos(Math.toRadians(shipAngle)));
+        double y = centerLocation.y + radius + (Math.sin(Math.toRadians(shipAngle)));
+
+        return new Point2D.Double(x, y);
     }
 }

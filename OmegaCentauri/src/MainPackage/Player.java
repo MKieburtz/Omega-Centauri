@@ -79,7 +79,7 @@ public class Player extends Ship {
         moveAngle = faceAngle - 90;
 
         if (thrusting) {
-            velocity.x += CalcAngleMoveX(moveAngle) * acceleration;
+            velocity.x += Calculator.CalcAngleMoveX(moveAngle);
 
             if (velocity.x > maxVel) {
                 velocity.x = maxVel;
@@ -87,7 +87,7 @@ public class Player extends Ship {
                 velocity.x = -maxVel;
             }
 
-            velocity.y += CalcAngleMoveY(moveAngle) * acceleration;
+            velocity.y += Calculator.CalcAngleMoveY(moveAngle);
 
             if (velocity.y > maxVel) {
                 velocity.y = maxVel;
@@ -133,14 +133,6 @@ public class Player extends Ship {
     public void setVel(int vert, int hor) {
         this.velocity.x = vert;
         this.velocity.y = hor;
-    }
-
-    private double CalcAngleMoveX(double angle) {
-        return (double) (Math.cos(Math.toRadians(angle)));
-    }
-
-    private double CalcAngleMoveY(double angle) {
-        return (double) (Math.sin(Math.toRadians(angle)));
     }
 
     public ArrayList getImages() {
