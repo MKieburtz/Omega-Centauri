@@ -29,7 +29,7 @@ public class Renderer {
     }
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
-            ArrayList<DustChunk> dust, Camera camera) {
+            ArrayList<StarChunk> dust, Camera camera) {
         
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
 
@@ -70,7 +70,7 @@ public class Renderer {
         g2d.drawRect(794, 372, 200, 200);
         
         g2d.setColor(Color.CYAN);
-        Rectangle2D.Double minimapPlayer = new Rectangle2D.Double(794 + 100 + player.getLocation().x / 100, 372 + 100 + player.getLocation().y / 100, 1, 1);
+        Ellipse2D.Double minimapPlayer = new Ellipse2D.Double(794 + 100 + player.getLocation().x / 100, 372 + 100 + player.getLocation().y / 100, 1, 1);
         g2d.draw(minimapPlayer);
 
         // transform the player and draw it

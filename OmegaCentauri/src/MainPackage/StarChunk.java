@@ -8,13 +8,13 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 //@author Michael Kieburtz
 
-public class DustChunk {
+public class StarChunk {
     private Point2D.Double location;
     private final int dimension = 1;
     private Rectangle2D.Double[] rects = new Rectangle2D.Double[10];
     private Random random = new Random();
     
-    public DustChunk(double x, double y)
+    public StarChunk(double x, double y)
     {
         location = new Point2D.Double(x, y);
         double num1, num2 = 0;
@@ -32,7 +32,7 @@ public class DustChunk {
         for (int i = 0; i < 3; i++)
         {
         g2d.setColor(Color.WHITE);
-        g2d.fillRect((int)(rects[i].x - cameraLocation.x), (int)(rects[i].y - cameraLocation.y), dimension, dimension);
+        g2d.fillOval((int)(rects[i].x - cameraLocation.x), (int)(rects[i].y - cameraLocation.y), dimension, dimension);
         }
     }
     

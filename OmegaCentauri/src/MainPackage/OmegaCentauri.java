@@ -15,7 +15,6 @@ public class OmegaCentauri extends Game {
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
-    private boolean Slowingdown = false;
     private double FPS = 0;
     private ArrayList<Long> updateTimes = new ArrayList<Long>();
     private boolean paused = false;
@@ -23,8 +22,8 @@ public class OmegaCentauri extends Game {
     private int starChunksLoaded = 0;
     private final Point screenSize = new Point(10000, 10000);
     private Camera camera;
-    private ArrayList<DustChunk> particles = new ArrayList<DustChunk>();
-    private Random random = new Random();
+    private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
+    
     private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
 
     public OmegaCentauri(int width, int height, int desiredFrameRate, Renderer renderer) {
@@ -84,7 +83,7 @@ public class OmegaCentauri extends Game {
 
                     for (int x = 1; x < screenSize.x; x = x + 100) {
 
-                        particles.add(new DustChunk(x, yPositions[0]));
+                        stars.add(new StarChunk(x, yPositions[0]));
                         starChunksLoaded++;
                     }
                     
@@ -100,7 +99,7 @@ public class OmegaCentauri extends Game {
                 
                 for (int x = -1; x > -screenSize.x; x = x - 100) {
 
-                    particles.add(new DustChunk(x, yPositions[1]));
+                    stars.add(new StarChunk(x, yPositions[1]));
                     starChunksLoaded++;
                 }
 
@@ -114,7 +113,7 @@ public class OmegaCentauri extends Game {
                  */
                 for (int x = -1; x < -screenSize.x; x = x - 100) {
 
-                    particles.add(new DustChunk(x, yPositions[2]));
+                    stars.add(new StarChunk(x, yPositions[2]));
                     starChunksLoaded++;
                 }
 
@@ -131,7 +130,7 @@ public class OmegaCentauri extends Game {
                 {
                 for (int x = 1; x < screenSize.x; x = x + 100) {
 
-                    particles.add(new DustChunk(x, yPositions[3]));
+                    stars.add(new StarChunk(x, yPositions[3]));
                     starChunksLoaded++;
                 }
 
@@ -139,7 +138,6 @@ public class OmegaCentauri extends Game {
                 }
 
                 if (starChunksLoaded >= ((100 * 100) * 4)) {
-                    System.err.println(starChunksLoaded);
                     loading = false;
                 }
 
@@ -193,7 +191,6 @@ public class OmegaCentauri extends Game {
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = true;
-                Slowingdown = false;
                 player.changeImage(1);
             }
             break;
@@ -221,7 +218,7 @@ public class OmegaCentauri extends Game {
             }
             break;
 
-            case KeyEvent.VK_SPACE: {
+            case KeyEvent.VK_SHIFT: {
                 player.speedBoost();
             }
             break;
@@ -267,7 +264,7 @@ public class OmegaCentauri extends Game {
 
             break;
 
-            case KeyEvent.VK_SPACE: {
+            case KeyEvent.VK_SHIFT: {
                 player.stopSpeedBoosting();
             }
 
@@ -291,7 +288,7 @@ public class OmegaCentauri extends Game {
             super.paintComponent(g);
 
             if (!loading) {
-                renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), particles, camera);
+                renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), stars, camera);
             } else {
                 renderer.drawLoadingScreen(g, starChunksLoaded / 400, width, height);
             }
