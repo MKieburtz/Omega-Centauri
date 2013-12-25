@@ -170,11 +170,13 @@ public class OmegaCentauri extends Game {
             camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
             camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
 
-            middleOfPlayer.x = (player.getLocation().x - camera.getLocation().x) + player.getImage().getWidth() / 2;
-            middleOfPlayer.y = (player.getLocation().y - camera.getLocation().y) + player.getImage().getHeight() / 2;
-
+            middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
+            middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
+            
+            repaint();
+            
             timer.schedule(new MovementTimer(player), timerDelay);
-
+            
         }
     }
     int keyCode;
@@ -226,6 +228,7 @@ public class OmegaCentauri extends Game {
             case KeyEvent.VK_SPACE: {
                 player.shoot(new Point2D.Double(middleOfPlayer.x + camera.getLocation().x,
                         middleOfPlayer.y + camera.getLocation().y));
+                
             }
 
         } // end switch

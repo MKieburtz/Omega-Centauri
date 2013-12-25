@@ -18,8 +18,8 @@ abstract class Shot {
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<String> imagePaths = new ArrayList<String>();
     protected Point2D.Double location;
-    protected double angle;
-    protected Point velocity;
+    protected double faceAngle;
+    protected Point2D.Double velocity;
     protected int maxVel;
 
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
@@ -39,7 +39,7 @@ abstract class Shot {
     }
 
     protected void move() {
-        double moveAngle = angle - 90;
+        double moveAngle = faceAngle - 90;
 
         velocity.x += Calculator.CalcAngleMoveX(moveAngle);
 
@@ -58,6 +58,7 @@ abstract class Shot {
         }
         
         updateLocation();
+        
     }
     
     public Point2D.Double getLocation()
