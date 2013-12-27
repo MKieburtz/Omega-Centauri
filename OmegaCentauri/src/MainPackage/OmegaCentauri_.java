@@ -7,7 +7,7 @@ import java.util.*;
 import javax.swing.*;
 
 // @author Michael Kieburtz
-public class OmegaCentauri extends Game {
+public class OmegaCentauri_ extends Game {
 
     private boolean forward, rotateRight, rotateLeft = false;
     private final java.util.Timer timer = new java.util.Timer();
@@ -26,7 +26,7 @@ public class OmegaCentauri extends Game {
     
     private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
 
-    public OmegaCentauri(int width, int height, int desiredFrameRate, Renderer renderer) {
+    public OmegaCentauri_(int width, int height, int desiredFrameRate, Renderer renderer) {
         this.renderer = renderer;
         camera = new Camera(width, height);
         loading = true;

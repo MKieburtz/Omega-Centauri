@@ -1,9 +1,10 @@
-package MainPackage;
+
 
 // @author Michael Kieburtz
 import java.awt.EventQueue;
+import MainPackage.*;
 
-public class Main {
+public class OmegaCentauri {
     
     static Launcher launcher;
     

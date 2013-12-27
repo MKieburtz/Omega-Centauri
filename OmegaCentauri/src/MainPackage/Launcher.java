@@ -52,7 +52,7 @@ public class Launcher extends JFrame implements MouseListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 closeWindow();
-                OmegaCentauri oc = new OmegaCentauri(width, height, 100, renderer);
+                OmegaCentauri_ oc = new OmegaCentauri_(width, height, 100, renderer);
             }
         });
 
