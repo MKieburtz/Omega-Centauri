@@ -8,20 +8,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-// @author Michael Kieburtz and Davis Freeman
+import com.apple.eawt.Application;
 
-public class Launcher extends JFrame implements MouseListener{
+// @author Michael Kieburtz and Davis Freeman
+public class Launcher extends JFrame implements MouseListener {
 
     private int width = 1000;
     private int height = 600;
-    
     private final Renderer renderer = new Renderer(width, height);
     private final ImageLoader imageLoader = new ImageLoader();
     private final ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-    
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
-    
+
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
         images = imageLoader.loadImages(imagePaths);
@@ -30,11 +29,19 @@ public class Launcher extends JFrame implements MouseListener{
     }
 
     private void setUpWindow(int width, int height) {
+        // code for setting desktop image on a Mac change when an icon has been made
+        
+//        Application application = Application.getApplication();
+//        Image image = images.get(INDEX);
+//        application.setDockIconImage(image);
+
+        this.setIconImage(images.get(1));
+        
         this.setSize(width, height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.setLayout(null);
-        
+
         this.addMouseListener(this);
         this.setTitle("Omega Centauri Launcher");
         this.setResizable(false);
@@ -48,7 +55,6 @@ public class Launcher extends JFrame implements MouseListener{
         goButton.setSize(100, 50);
 
         goButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 closeWindow();
@@ -62,7 +68,6 @@ public class Launcher extends JFrame implements MouseListener{
         closeButton.setSize(100, 50);
 
         closeButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 closeWindow();
@@ -81,15 +86,15 @@ public class Launcher extends JFrame implements MouseListener{
                 changeResolution(width, height);
             }
         });
-        
+
         this.add(goButton);
         this.add(closeButton);
         this.add(resolution1440by900);
         this.add(panel);
     }
-    
-    public class Panel extends JPanel
-    {
+
+    public class Panel extends JPanel {
+
         int width;
         int height;
 
@@ -99,48 +104,40 @@ public class Launcher extends JFrame implements MouseListener{
             setSize(width, height);
             setVisible(true);
         }
-        
+
         @Override
-        protected void paintComponent(Graphics g)
-        {
+        protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             renderer.drawLauncher(g, images.get(0));
         }
     }
-    
+
     @Override
     public void mouseClicked(MouseEvent me) {
-        
     }
 
     @Override
     public void mousePressed(MouseEvent me) {
-        
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        
     }
 
     @Override
     public void mouseEntered(MouseEvent me) {
-        
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-        
     }
-    
-    private void closeWindow()
-    {
+
+    private void closeWindow() {
         this.setVisible(false);
         this.dispose();
     }
-    
-    private void changeResolution(int width, int height)
-    {
+
+    private void changeResolution(int width, int height) {
         this.setSize(width, height);
     }
 }
