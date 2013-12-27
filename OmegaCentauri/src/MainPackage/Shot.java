@@ -38,28 +38,6 @@ abstract class Shot {
         location.y += velocity.y;
     }
 
-    protected void move() {
-        double moveAngle = faceAngle - 90;
-
-        velocity.x += Calculator.CalcAngleMoveX(moveAngle);
-
-        if (velocity.x > maxVel) {
-            velocity.x = maxVel;
-        } else if (velocity.x < -maxVel) {
-            velocity.x = -maxVel;
-        }
-
-        velocity.y += Calculator.CalcAngleMoveY(moveAngle);
-
-        if (velocity.y > maxVel) {
-            velocity.y = maxVel;
-        } else if (velocity.y < -maxVel) {
-            velocity.y = -maxVel;
-        }
-        
-        updateLocation();
-        
-    }
     
     public Point2D.Double getLocation()
     {
@@ -69,5 +47,10 @@ abstract class Shot {
     public Point getSize() // ovveride if animated
     {
         return new Point(images.get(0).getWidth(), images.get(0).getHeight());
+    }
+    
+    public BufferedImage getImage()
+    {
+        return images.get(0);
     }
 }

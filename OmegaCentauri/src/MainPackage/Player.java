@@ -163,10 +163,26 @@ public class Player extends Ship {
     
     public void shoot(Point2D.Double middle)
     {
-        Point2D.Double ShotStartingPos = 
-                Calculator.CalcPositionToShoot(middle, activeImage.getWidth() / 2, faceAngle, activeImage.getWidth(), activeImage.getHeight());
+        Point2D.Double ShotStartingVel;
         
-        Point2D.Double ShotStartingVel = new Point2D.Double(0, 0);
+        if (middle.x == 25.0 && middle.y == 25.0) // The ship doesn't shoot properly if it is
+            // in the middle of the map.
+        {
+            System.out.println("true");
+            ShotStartingVel = 
+                new Point2D.Double(0, Calculator.CalcAngleMoveY(moveAngle) * 10);
+        }
+        else
+        {
+            ShotStartingVel = 
+                new Point2D.Double(Calculator.CalcAngleMoveX(moveAngle) * 10, Calculator.CalcAngleMoveY(moveAngle) * 10);
+        }
+        
+        
+        
+        
+        Point2D.Double ShotStartingPos = 
+                new Point2D.Double(middle.x - 2.5, middle.y - 2.5);
         
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
         
