@@ -23,7 +23,7 @@ public class Launcher extends JFrame implements MouseListener{
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     
     public Launcher() {
-        imagePaths.add("resources/GoButton.png");
+        imagePaths.add("src/resources/GoButton.png");
         images = imageLoader.loadImages(imagePaths);
         setUpWindow(width, height);
         addButtons();

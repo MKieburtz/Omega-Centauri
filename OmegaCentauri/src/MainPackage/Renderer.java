@@ -14,7 +14,7 @@ public class Renderer {
 
     public Renderer(int cameraWidth, int cameraHeight) {
 
-        fontFile = new File("resources/BlackHoleBB_ital.ttf");
+        fontFile = new File("src/resources/BlackHoleBB_ital.ttf");
 
         try {
             fpsFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(36f);
@@ -34,8 +34,6 @@ public class Renderer {
         Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
         
         
-        
-        
         // draw backround rectangle
         g.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 1000, 1000);
@@ -52,7 +50,7 @@ public class Renderer {
             }
         }
         // draw fps info
-        g2d.drawImage(player.getImage(5), null, 0, 0);
+        g2d.drawImage(player.getImage(4), null, 0, 0);
         g2d.setFont(fpsFont.deriveFont(32f));
         g2d.setColor(Color.CYAN);
 
@@ -106,17 +104,25 @@ public class Renderer {
     }
 
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, width, height);
+        
+        Graphics2D g2d = (Graphics2D)g;
+        
+        // enable anti-aliasing
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 0, width, height);
 
-        g.setColor(Color.RED);
-        g.drawRect((width / 2) - 100, (height / 2) - 50, 200, 50);
-        g.setColor(Color.GREEN);
-        g.fillRect((width / 2) - 100, (height / 2) - 50, percentDone * 2, 50);
+        g2d.setColor(Color.RED);
+        g2d.drawRect((width / 2) - 100, (height / 2) - 50, 200, 50);
+        g2d.setColor(Color.GREEN);
+        g2d.fillRect((width / 2) - 100, (height / 2) - 50, percentDone * 2, 50);
 
-        g.setFont(fpsFont);
-        g.setColor(Color.CYAN);
-        g.drawString("Loading...", width / 2 - 75, height / 2 - 75);
+        g2d.setFont(fpsFont);
+        g2d.setColor(Color.CYAN);
+        g2d.drawString("Loading...", width / 2 - 75, height / 2 - 75);
     }
 
     

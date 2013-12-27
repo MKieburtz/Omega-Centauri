@@ -21,7 +21,7 @@ public class PulseShot extends Shot {
         this.faceAngle = angle;
         this.maxVel = 5;
         
-        imagePaths.add("resources/Pulse.png");
+        imagePaths.add("src/resources/Pulse.png");
         
         loadImages(imagePaths);
         

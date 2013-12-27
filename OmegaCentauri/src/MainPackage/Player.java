@@ -17,9 +17,7 @@ public class Player extends Ship {
     private final double angleIcrement = 5;
     private Point2D.Double velocity = new Point2D.Double(0, 0);
     private final double acceleration = .15;
-   
-    
-    
+
     public String getName() {
         return this.name;
     }
@@ -28,16 +26,15 @@ public class Player extends Ship {
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
-        imagePaths.add("resources/FighterGreyIdle.png");
-        imagePaths.add("resources/FighterGreyMoving.png");
-        imagePaths.add("resources/FighterGreyTurningLeft.png");
-        imagePaths.add("resources/FighterGreyTurningRight.png");
-        imagePaths.add("resources/FillerBackground.png");
-        imagePaths.add("resources/FPSbackground.png");
-        imagePaths.add("resources/GoButton.png");
+        imagePaths.add("src/resources/FighterGreyIdle.png");
+        imagePaths.add("src/resources/FighterGreyMoving.png");
+        imagePaths.add("src/resources/FighterGreyTurningLeft.png");
+        imagePaths.add("src/resources/FighterGreyTurningRight.png");
+        imagePaths.add("src/resources/FPSbackground.png");
+        imagePaths.add("src/resources/GoButton.png");
         images = imageLoader.loadImages(imagePaths);
         activeImage = images.get(0);
-        
+
     }
 
     public Point2D.Double getLocation() {
@@ -160,36 +157,25 @@ public class Player extends Ship {
         }
         maxVel = 5.0;
     }
-    
-    public void shoot(Point2D.Double middle)
+
+    public void shoot(Point2D.Double middle, double moveAngle) // have to pass the angle for some reason
     {
         Point2D.Double ShotStartingVel;
-        
-        if (middle.x == 25.0 && middle.y == 25.0) // The ship doesn't shoot properly if it is
-            // in the middle of the map.
-        {
-            System.out.println("true");
-            ShotStartingVel = 
-                new Point2D.Double(0, Calculator.CalcAngleMoveY(moveAngle) * 10);
-        }
-        else
-        {
-            ShotStartingVel = 
+
+        ShotStartingVel =
                 new Point2D.Double(Calculator.CalcAngleMoveX(moveAngle) * 10, Calculator.CalcAngleMoveY(moveAngle) * 10);
-        }
-        
-        
-        
-        
-        Point2D.Double ShotStartingPos = 
+
+
+
+
+        Point2D.Double ShotStartingPos =
                 new Point2D.Double(middle.x - 2.5, middle.y - 2.5);
-        
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
-        
+
+        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, moveAngle + 90));
+
     }
-    
-    public ArrayList<Shot> getShots()
-    {
+
+    public ArrayList<Shot> getShots() {
         return shots;
     }
 }

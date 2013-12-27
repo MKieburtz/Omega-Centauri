@@ -227,7 +227,7 @@ public class OmegaCentauri extends Game {
                 
             case KeyEvent.VK_SPACE: {
                 player.shoot(new Point2D.Double(middleOfPlayer.x + camera.getLocation().x,
-                        middleOfPlayer.y + camera.getLocation().y));
+                        middleOfPlayer.y + camera.getLocation().y), player.getAngle() - 90);
                 
             }
 
