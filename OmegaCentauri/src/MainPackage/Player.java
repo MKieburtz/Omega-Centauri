@@ -163,7 +163,7 @@ public class Player extends Ship {
         Point2D.Double ShotStartingVel;
 
         ShotStartingVel =
-                new Point2D.Double(Calculator.CalcAngleMoveX(moveAngle) * 10, Calculator.CalcAngleMoveY(moveAngle) * 10);
+                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(moveAngle) * 10, velocity.y + Calculator.CalcAngleMoveY(moveAngle) * 10);
 
 
 

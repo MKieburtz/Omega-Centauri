@@ -23,17 +23,17 @@ public class Launcher extends JFrame implements MouseListener {
 
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
+        imagePaths.add("src/resources/OmegaCentauriLogo.png");
         images = imageLoader.loadImages(imagePaths);
         setUpWindow(width, height);
         addButtons();
     }
 
     private void setUpWindow(int width, int height) {
-        // code for setting desktop image on a Mac change when an icon has been made
         
-//        Application application = Application.getApplication();
-//        Image image = images.get(INDEX);
-//        application.setDockIconImage(image);
+        Application application = Application.getApplication();
+        Image image = images.get(1);
+        application.setDockIconImage(image);
 
         this.setIconImage(images.get(1));
         
