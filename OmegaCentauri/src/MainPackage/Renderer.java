@@ -100,7 +100,9 @@ public class Renderer {
     }
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage) {
-        g.drawImage(startButtonImage, 100, 0, null);
+        Graphics2D g2d = (Graphics2D)g;
+        
+        g2d.drawImage(startButtonImage, 100, 0, null);
     }
 
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
