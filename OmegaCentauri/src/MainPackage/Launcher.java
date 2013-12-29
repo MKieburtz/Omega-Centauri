@@ -30,13 +30,16 @@ public class Launcher extends JFrame implements MouseListener {
     }
 
     private void setUpWindow(int width, int height) {
-        
-        Application application = Application.getApplication();
-        Image image = images.get(1);
-        application.setDockIconImage(image);
+
+        if (System.getProperty("os.name").contains("Mac")) {
+            // check if this is running on a Mac, no other operating systems have "docks."
+            Application application = Application.getApplication();
+            Image image = images.get(1);
+            application.setDockIconImage(image);
+        }
 
         this.setIconImage(images.get(1));
-        
+
         this.setSize(width, height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);

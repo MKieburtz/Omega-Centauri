@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd /Users/Kieburtz/Omega-Centauri/OmegaCentauri/dist
+
+java -jar OmegaCentauri.jar
