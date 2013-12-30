@@ -4,10 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 // @author Michael Kieburtz
-public class OmegaCentauri_ extends Game {
+public class OmegaCentauri_ extends Game implements Runnable {
 
     private boolean forward, rotateRight, rotateLeft = false;
     private final java.util.Timer timer = new java.util.Timer();
@@ -36,11 +38,14 @@ public class OmegaCentauri_ extends Game {
 
         player = new Player(0, 0, MainPackage.Type.Fighter);
 
-        timer.schedule(new MovementTimer(player), timerDelay);
-
+        //timer.schedule(new MovementTimer(player), timerDelay);
+        
         middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
         setUpWindow(width, height);
+        
+        Thread game = new Thread(this);
+        game.start();
     }
 
     private void setUpWindow(int width, int height) {
@@ -55,18 +60,12 @@ public class OmegaCentauri_ extends Game {
 
     }
 
-    private class MovementTimer extends TimerTask {
+    @Override
+    public void run() {
+        FPS = getFrameRate();
 
-        Player player;
-
-        public MovementTimer(Player player) {
-            this.player = player;
-        }
-
-        @Override
-        public void run() {
-            FPS = getFrameRate();
-
+        while(true)
+        {
             if (loading) {
                 // load 100 starChunks from each quadrant
                 // load all the horizontal star chunks from each quadrant
@@ -174,6 +173,25 @@ public class OmegaCentauri_ extends Game {
             middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
             
             repaint();
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException ex) {
+                
+            }
+        }
+    }
+
+    private class MovementTimer extends TimerTask {
+
+        Player player;
+
+        public MovementTimer(Player player) {
+            this.player = player;
+        }
+
+        @Override
+        public void run() {
+            
             
             timer.schedule(new MovementTimer(player), timerDelay);
             
