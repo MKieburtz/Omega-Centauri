@@ -31,11 +31,14 @@ public class Renderer {
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
             ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots) {
 
-        Graphics2D g2d = (Graphics2D) g; // turns it into 2d graphics
+        
+        BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics2D g2d = (Graphics2D)bufferedImage.getGraphics(); // turns it into 2d graphics
         
         
         // draw backround rectangle
-        g.setColor(Color.BLACK);
+        g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 1000, 1000);
 
         // enable anti-aliasing
@@ -96,6 +99,7 @@ public class Renderer {
         g2d.drawImage(player.getImage(), (int) (player.getLocation().x - camera.getLocation().x),
                 (int) (player.getLocation().y - camera.getLocation().y), null);
         
+        g.drawImage(bufferedImage, 0, 0, null);
        
     }
 
@@ -107,7 +111,9 @@ public class Renderer {
 
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
         
-        Graphics2D g2d = (Graphics2D)g;
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics2D g2d = (Graphics2D)bufferedImage.getGraphics();
         
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
@@ -125,6 +131,8 @@ public class Renderer {
         g2d.setFont(fpsFont);
         g2d.setColor(Color.CYAN);
         g2d.drawString("Loading...", width / 2 - 75, height / 2 - 75);
+        
+        g.drawImage(bufferedImage, 0, 0, null);
     }
 
     

@@ -44,8 +44,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
         setUpWindow(width, height);
         
-        Thread game = new Thread(this);
-        game.start();
+        loadGame();
     }
 
     private void setUpWindow(int width, int height) {
@@ -57,17 +56,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
         setTitle("Omega Centauri");
         add(panel);
         setContentPane(panel);
-
+        
     }
-
-    @Override
-    public void run() {
-        FPS = getFrameRate();
-
-        while(true)
+    
+    private void loadGame()
+    {
+        while(loading)
         {
-            if (loading) {
-                // load 100 starChunks from each quadrant
+            // load 100 starChunks from each quadrant
                 // load all the horizontal star chunks from each quadrant
                 // then move down 100 to the next chunk down
 
@@ -139,46 +135,61 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 if (starChunksLoaded >= ((100 * 100) * 4)) {
                     loading = false;
                 }
+                
+                // use active rendering to draw the screen
+                renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
+            try {
+                if (!(starChunksLoaded >= ((100 * 100) * 4) - 100)) // if we don't only have 1 row to go
+                    Thread.sleep(20); // sleep
+            } catch (InterruptedException ex) {}
+        }
+        
+        startGame();
+    }
+    
+    private void startGame()
+    {
+        Thread game = new Thread(this);
+        game.start();
+    }
 
-                repaint();
-            } else {
+    @Override
+    public void run() {
+        FPS = getFrameRate();
+        
+        while(!paused) // game loop
+        {
                 if (forward) {
-
                     player.move(true);
                     middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
                     middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
-                    repaint();
                 }
                 if (rotateRight) {
 
                     player.rotate(true); // positive
-                    repaint();
                 }
 
                 if (rotateLeft) {
                     player.rotate(false); // negitive
-                    repaint();
                 }
 
                 if (!forward && player.isMoving()) {
                     player.move(false);
-                    repaint();
                 }
 
-            }
+            
             camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
             camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
 
             middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
             middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
             
-            repaint();
+            renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, FPS, stars, camera, player.getShots());
+            
             try {
-                Thread.sleep(20);
-            } catch (InterruptedException ex) {
-                
-            }
-        }
+                Thread.sleep(15);
+            } catch (InterruptedException ex) {}
+        }           
     }
 
     private class MovementTimer extends TimerTask {
@@ -307,17 +318,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
             this.height = height;
             setSize(width, height);
             setVisible(true);
+            setBackground(Color.BLACK);
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-
-            if (!loading) {
-                renderer.drawScreen(g, player, middleOfPlayer.x, middleOfPlayer.y, Math.ceil(FPS), stars, camera, player.getShots());
-            } else {
-                renderer.drawLoadingScreen(g, starChunksLoaded / 400, width, height);
-            }
         }
     }
 
