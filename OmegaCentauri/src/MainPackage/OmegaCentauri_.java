@@ -11,39 +11,38 @@ import javax.swing.*;
 // @author Michael Kieburtz
 public class OmegaCentauri_ extends Game implements Runnable {
 
+    // game state varibles
     private boolean forward, rotateRight, rotateLeft = false;
-    private final java.util.Timer timer = new java.util.Timer();
-    private final int timerDelay;
-    private final Renderer renderer;
-    private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
-    private final Point2D.Double middleOfPlayer = new Point2D.Double();
-    private double FPS = 0;
-    private ArrayList<Long> updateTimes = new ArrayList<Long>();
     private boolean paused = false;
     private boolean loading = false;
-    private int starChunksLoaded = 0;
+    private double FPS = 0;
+    private ArrayList<Long> updateTimes = new ArrayList<Long>();
     private final Point screenSize = new Point(10000, 10000);
-    private Camera camera;
-    private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
+    private final Point2D.Double middleOfPlayer = new Point2D.Double();
     
+    // objects
+    private final Renderer renderer;
+    private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
+    private Camera camera;
+    
+    // varibles for loading
     private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
+    private int starChunksLoaded = 0;
+    private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
 
     public OmegaCentauri_(int width, int height, int desiredFrameRate, Renderer renderer) {
         this.renderer = renderer;
         camera = new Camera(width, height);
         loading = true;
 
-
-        timerDelay = 15;
-
         player = new Player(0, 0, MainPackage.Type.Fighter);
 
         //timer.schedule(new MovementTimer(player), timerDelay);
-        
+
         middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
         setUpWindow(width, height);
-        
+
         loadGame();
     }
 
@@ -52,77 +51,76 @@ public class OmegaCentauri_ extends Game implements Runnable {
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setFocusable(true);
+        requestFocus();
         addKeyListener(this);
         setTitle("Omega Centauri");
         add(panel);
         setContentPane(panel);
-        
+
     }
-    
-    private void loadGame()
-    {
-        while(loading)
-        {
+
+    private void loadGame() {
+        while (loading) {
             // load 100 starChunks from each quadrant
-                // load all the horizontal star chunks from each quadrant
-                // then move down 100 to the next chunk down
+            // load all the horizontal star chunks from each quadrant
+            // then move down 100 to the next chunk down
 
-                // quadrant 1
+            // quadrant 1
 
-                /*  _______
-                 * |___|_x_|
-                 * |___|___|
-                 */
+            /*  _______
+             * |___|_x_|
+             * |___|___|
+             */
 
-                if (yPositions[0] < 0) {
+            if (yPositions[0] < 0) {
 
-                    for (int x = 1; x < screenSize.x; x = x + 100) {
+                for (int x = 1; x < screenSize.x; x = x + 100) {
 
-                        stars.add(new StarChunk(x, yPositions[0]));
-                        starChunksLoaded++;
-                    }
-                    
-                    yPositions[0] += 100;
-                }
-                // quadrant 2
-
-                /*  _______
-                 * |_x_|___|
-                 * |___|___|
-                 */
-                
-                
-                for (int x = -1; x > -screenSize.x; x = x - 100) {
-
-                    stars.add(new StarChunk(x, yPositions[1]));
+                    stars.add(new StarChunk(x, yPositions[0]));
                     starChunksLoaded++;
                 }
 
-                yPositions[1] += 100;
+                yPositions[0] += 100;
+            }
+            // quadrant 2
 
-                // quadrant 3
+            /*  _______
+             * |_x_|___|
+             * |___|___|
+             */
 
-                /*  _______
-                 * |___|___|
-                 * |_x_|___|
-                 */
-                for (int x = -1; x < -screenSize.x; x = x - 100) {
 
-                    stars.add(new StarChunk(x, yPositions[2]));
-                    starChunksLoaded++;
-                }
+            for (int x = -1; x > -screenSize.x; x = x - 100) {
 
-                yPositions[2] += 100;
+                stars.add(new StarChunk(x, yPositions[1]));
+                starChunksLoaded++;
+            }
 
-                // quadrant 4
+            yPositions[1] += 100;
 
-                /*  _______
-                 * |___|___|
-                 * |___|_x_|
-                 */
-                
-                if (yPositions[3] < 10000)
-                {
+            // quadrant 3
+
+            /*  _______
+             * |___|___|
+             * |_x_|___|
+             */
+            for (int x = -1; x < -screenSize.x; x = x - 100) {
+
+                stars.add(new StarChunk(x, yPositions[2]));
+                starChunksLoaded++;
+            }
+
+            yPositions[2] += 100;
+
+            // quadrant 4
+
+            /*  _______
+             * |___|___|
+             * |___|_x_|
+             */
+
+            if (yPositions[3] < 10000) {
                 for (int x = 1; x < screenSize.x; x = x + 100) {
 
                     stars.add(new StarChunk(x, yPositions[3]));
@@ -130,82 +128,74 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 }
 
                 yPositions[3] += 100;
-                }
+            }
 
-                if (starChunksLoaded >= ((100 * 100) * 4)) {
-                    loading = false;
-                }
-                
-                // use active rendering to draw the screen
-                renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
+            if (starChunksLoaded >= ((100 * 100) * 4)) {
+                loading = false;
+            }
+
+            // use active rendering to draw the screen
+            renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
             try {
                 if (!(starChunksLoaded >= ((100 * 100) * 4) - 100)) // if we don't only have 1 row to go
+                {
                     Thread.sleep(20); // sleep
-            } catch (InterruptedException ex) {}
+                }
+            } catch (InterruptedException ex) {
+            }
         }
-        
+
         startGame();
     }
-    
-    private void startGame()
-    {
+
+    private void startGame() {
         Thread game = new Thread(this);
         game.start();
     }
 
+    
     @Override
     public void run() {
-        FPS = getFrameRate();
         
-        while(!paused) // game loop
-        {
-                if (forward) {
-                    player.move(true);
-                    middleOfPlayer.x = player.getLocation().x + player.getImage().getWidth() / 2;
-                    middleOfPlayer.y = player.getLocation().y + player.getImage().getHeight() / 2;
-                }
-                if (rotateRight) {
 
-                    player.rotate(true); // positive
-                }
-
-                if (rotateLeft) {
-                    player.rotate(false); // negitive
-                }
-
-                if (!forward && player.isMoving()) {
-                    player.move(false);
-                }
-
+        while (!paused) // game loop
+        {    
+            // make sure the window is active
+            if (!hasFocus())
+                setEnabled(false);
             
-            camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
-            camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
+            if (!isEnabled() && hasFocus())
+                setEnabled(true);
+                
+            
+            // process input and preform logic
+            if (forward) {
+                player.move(true);
+            }
+            if (rotateRight) {
 
-            middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
-            middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
+                player.rotate(true); // positive
+            }
+
+            if (rotateLeft) {
+                player.rotate(false); // negitive
+            }
+
+            if (!forward && player.isMoving()) {
+                player.move(false);
+            }
+
+            syncGameStateVaribles();
+            
+            // draw to buffer and to screen
             
             renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, FPS, stars, camera, player.getShots());
             
+            // sleep
             try {
                 Thread.sleep(15);
-            } catch (InterruptedException ex) {}
-        }           
-    }
-
-    private class MovementTimer extends TimerTask {
-
-        Player player;
-
-        public MovementTimer(Player player) {
-            this.player = player;
-        }
-
-        @Override
-        public void run() {
-            
-            
-            timer.schedule(new MovementTimer(player), timerDelay);
-            
+            } catch (InterruptedException ex) {
+            }
         }
     }
     int keyCode;
@@ -253,11 +243,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 player.speedBoost();
             }
             break;
-                
+
             case KeyEvent.VK_SPACE: {
                 player.shoot(new Point2D.Double(middleOfPlayer.x + camera.getLocation().x,
                         middleOfPlayer.y + camera.getLocation().y), player.getAngle() - 90);
-                
+
             }
 
         } // end switch
@@ -308,6 +298,22 @@ public class OmegaCentauri_ extends Game implements Runnable {
         } // end switch
     }
 
+    private float getFrameRate() {
+        long time = System.currentTimeMillis();
+
+        updateTimes.add(new Long(time));
+
+        float timeInSec = (time - updateTimes.get(0)) / 1000f;
+
+        float fps = 30f / timeInSec;
+
+        if (updateTimes.size() == 31) {
+            updateTimes.remove(0);
+        }
+
+        return fps;
+    }
+
     public class Panel extends JPanel {
 
         int width;
@@ -327,19 +333,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
         }
     }
 
-    private float getFrameRate() {
-        long time = System.currentTimeMillis();
+    private void syncGameStateVaribles() {
+        camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
+        camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
 
-        updateTimes.add(new Long(time));
-
-        float timeInSec = (time - updateTimes.get(0)) / 1000f;
-
-        float fps = 30f / timeInSec;
-
-        if (updateTimes.size() == 31) {
-            updateTimes.remove(0);
-        }
-
-        return fps;
+        middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
+        middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
     }
 }
