@@ -184,44 +184,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
             // draw to buffer and to screen
             
             renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
-            // calculate how long to sleep
-            afterTime = System.currentTimeMillis();
-            timeDiff = afterTime - beforeTime;
-            sleepTime = (period - timeDiff) - overSleepTime;
-            
-            if (sleepTime > 0)
-            {
-                try {
-                    Thread.sleep(sleepTime / 1000000L);
-                } catch (Exception e) {}
-                
-                overSleepTime = (System.currentTimeMillis() - afterTime) - sleepTime;
-            }
-            else
-            {
-                excess -= sleepTime;
-                overSleepTime = 0L;
-                
-                if (++noDelays >= 15)
-                {
-                    Thread.yield();
-                    noDelays = 0;
-                }
-            }
-            
-            beforeTime = System.currentTimeMillis();
-            
-            int skips = 0;
-            
-            while((excess > period) && (skips < 5))
-            {
-                excess -= period;
-                gameUpdate();
-                syncGameStateVaribles();
-                skips++;
-            }
-           
-            
             
         }
     }
