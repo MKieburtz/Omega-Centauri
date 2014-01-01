@@ -4,8 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 // @author Michael Kieburtz
@@ -15,10 +13,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private boolean forward, rotateRight, rotateLeft = false;
     private boolean paused = false;
     private boolean loading = false;
-    private double FPS = 0;
+    private double averageFPS = 0;
+    private double totalFPS = 0;
     private ArrayList<Long> updateTimes = new ArrayList<Long>();
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
+    private long gameStartTime, prevStatsTime, period;
     
     // objects
     private final Renderer renderer;
@@ -30,14 +30,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
 
-    public OmegaCentauri_(int width, int height, int desiredFrameRate, Renderer renderer) {
+    public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer) {
         this.renderer = renderer;
         camera = new Camera(width, height);
         loading = true;
 
         player = new Player(0, 0, MainPackage.Type.Fighter);
 
-        //timer.schedule(new MovementTimer(player), timerDelay);
+        period = (long) 1000.0 / desiredFrameRate;
 
         middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
@@ -157,6 +157,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
     @Override
     public void run() {
         
+        long beforeTime, afterTime, timeDiff, sleepTime;
+        long overSleepTime = 0L;
+        int noDelays = 0;
+        long excess = 0L;
+        
+        gameStartTime = System.currentTimeMillis();
+        prevStatsTime = gameStartTime;
+        beforeTime = gameStartTime;
 
         while (!paused) // game loop
         {    
@@ -169,7 +177,58 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 
             
             // process input and preform logic
-            if (forward) {
+            gameUpdate();
+
+            syncGameStateVaribles();
+            
+            // draw to buffer and to screen
+            
+            renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
+            // calculate how long to sleep
+            afterTime = System.currentTimeMillis();
+            timeDiff = afterTime - beforeTime;
+            sleepTime = (period - timeDiff) - overSleepTime;
+            
+            if (sleepTime > 0)
+            {
+                try {
+                    Thread.sleep(sleepTime / 1000000L);
+                } catch (Exception e) {}
+                
+                overSleepTime = (System.currentTimeMillis() - afterTime) - sleepTime;
+            }
+            else
+            {
+                excess -= sleepTime;
+                overSleepTime = 0L;
+                
+                if (++noDelays >= 15)
+                {
+                    Thread.yield();
+                    noDelays = 0;
+                }
+            }
+            
+            beforeTime = System.currentTimeMillis();
+            
+            int skips = 0;
+            
+            while((excess > period) && (skips < 5))
+            {
+                excess -= period;
+                gameUpdate();
+                syncGameStateVaribles();
+                skips++;
+            }
+           
+            
+            
+        }
+    }
+    
+    private void gameUpdate()
+    {
+        if (forward) {
                 player.move(true);
             }
             if (rotateRight) {
@@ -184,20 +243,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
             if (!forward && player.isMoving()) {
                 player.move(false);
             }
-
-            syncGameStateVaribles();
-            
-            // draw to buffer and to screen
-            
-            renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, FPS, stars, camera, player.getShots());
-            
-            // sleep
-            try {
-                Thread.sleep(15);
-            } catch (InterruptedException ex) {
-            }
-        }
     }
+    
     int keyCode;
 
     @Override
@@ -298,20 +345,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
         } // end switch
     }
 
-    private float getFrameRate() {
+    private double getFrameRate() {
         long time = System.currentTimeMillis();
-
-        updateTimes.add(new Long(time));
-
-        float timeInSec = (time - updateTimes.get(0)) / 1000f;
-
-        float fps = 30f / timeInSec;
-
-        if (updateTimes.size() == 31) {
-            updateTimes.remove(0);
-        }
-
-        return fps;
+        
+        int timeSpentInGame = (int) ((time - gameStartTime) / 1000000000L);
+        
+        long realElapsedTime = time - prevStatsTime;
+        
+        return 0.0;
     }
 
     public class Panel extends JPanel {
