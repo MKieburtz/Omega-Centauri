@@ -14,11 +14,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private boolean paused = false;
     private boolean loading = false;
     private double averageFPS = 0;
-    private double totalFPS = 0;
-    private ArrayList<Long> updateTimes = new ArrayList<Long>();
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
-    private long gameStartTime, prevStatsTime, period;
+    private long gameStartTime, timeIngame, loopTime;
+    private long framesDrawn = 1;
     
     // objects
     private final Renderer renderer;
@@ -36,9 +35,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
         loading = true;
 
         player = new Player(0, 0, MainPackage.Type.Fighter);
-
-        period = (long) 1000.0 / desiredFrameRate;
-
+        
+        loopTime = (long)Math.ceil(1000 / desiredFrameRate); // 12 renders
+        
         middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
         setUpWindow(width, height);
@@ -157,17 +156,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
     @Override
     public void run() {
         
-        long beforeTime, afterTime, timeDiff, sleepTime;
-        long overSleepTime = 0L;
-        int noDelays = 0;
-        long excess = 0L;
+        long beforeTime, afterTime, timeDiff, overTime = 0L;
         
         gameStartTime = System.currentTimeMillis();
-        prevStatsTime = gameStartTime;
-        beforeTime = gameStartTime;
 
         while (!paused) // game loop
-        {    
+        {   
+            beforeTime = System.currentTimeMillis();
+            
             // make sure the window is active
             if (!hasFocus())
                 setEnabled(false);
@@ -178,12 +174,38 @@ public class OmegaCentauri_ extends Game implements Runnable {
             
             // process input and preform logic
             gameUpdate();
-
             syncGameStateVaribles();
             
             // draw to buffer and to screen
-            
+            averageFPS = getFrameRate();
             renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
+            framesDrawn++;
+            
+            afterTime = System.currentTimeMillis();
+            
+            timeDiff = afterTime - beforeTime;
+            
+            timeIngame += timeDiff;
+            
+            if (timeDiff > loopTime)
+                overTime = timeDiff;
+            else
+            {
+                
+                try {
+                    Thread.sleep(loopTime - timeDiff);
+                } catch (InterruptedException ex) {}
+                
+                continue;
+            }
+            
+            while (overTime > 0)
+            {
+                gameUpdate();
+                syncGameStateVaribles();
+                overTime -= loopTime;
+            }
+            
             
         }
     }
@@ -308,13 +330,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private double getFrameRate() {
-        long time = System.currentTimeMillis();
-        
-        int timeSpentInGame = (int) ((time - gameStartTime) / 1000000000L);
-        
-        long realElapsedTime = time - prevStatsTime;
-        
-        return 0.0;
+        return (timeIngame / 1000) / framesDrawn;
     }
 
     public class Panel extends JPanel {
