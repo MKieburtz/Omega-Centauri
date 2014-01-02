@@ -18,11 +18,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
     private long gameStartTime, timeIngame, loopTime;
     private long framesDrawn = 1;
+    private final int timerDelay = 1000;
     
     // objects
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private Camera camera;
+    private java.util.Timer GameTimer = new java.util.Timer();
+    
     
     // varibles for loading
     private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
@@ -41,7 +44,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
         setUpWindow(width, height);
-
+        
         loadGame();
     }
 
@@ -148,6 +151,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private void startGame() {
+        GameTimer.schedule(new GameTimer(), 1);
         Thread game = new Thread(this);
         game.start();
     }
@@ -185,10 +189,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
             
             timeDiff = afterTime - beforeTime;
             
-            timeIngame += timeDiff;
             
             if (timeDiff > loopTime)
                 overTime = timeDiff;
+            
             else
             {
                 
@@ -330,7 +334,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private double getFrameRate() {
-        return (timeIngame / 1000) / framesDrawn;
+        
+        return framesDrawn / timeIngame;
     }
 
     public class Panel extends JPanel {
@@ -358,5 +363,15 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
+    }
+    
+    private class GameTimer extends TimerTask{
+
+        @Override
+        public void run() {
+            timeIngame++;
+            GameTimer.schedule(new GameTimer(), timerDelay);
+        }
+        
     }
 }
