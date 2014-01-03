@@ -16,15 +16,20 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private double averageFPS = 0;
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
-    private long gameStartTime, timeIngame, loopTime;
+    private long gameStartTime, loopTime;
+    private double timeInGame;
     private long framesDrawn = 1;
-    private final int timerDelay = 1000;
+    private final int FPSTimerDelay = 100;
+    private boolean canUpdate = true;
+    private final int UPS = 60;
+    private final int UPSDelay = 1000/UPS;
     
     // objects
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private Camera camera;
-    private java.util.Timer GameTimer = new java.util.Timer();
+    private java.util.Timer FPSTimer = new java.util.Timer();
+    private java.util.Timer UpdateTimer = new java.util.Timer();
     
     
     // varibles for loading
@@ -151,7 +156,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private void startGame() {
-        GameTimer.schedule(new GameTimer(), 1);
+        // start the timers immeatitely then start the main game thread
+        FPSTimer.schedule(new FPSTimer(), 1);
+        UpdateTimer.schedule(new UpdateTimer(), 1);
         Thread game = new Thread(this);
         game.start();
     }
@@ -168,6 +175,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         {   
             beforeTime = System.currentTimeMillis();
             
+            
             // make sure the window is active
             if (!hasFocus())
                 setEnabled(false);
@@ -177,8 +185,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 
             
             // process input and preform logic
+            if (canUpdate)
+            {
             gameUpdate();
             syncGameStateVaribles();
+            canUpdate = false;
+            }
             
             // draw to buffer and to screen
             averageFPS = getFrameRate();
@@ -335,7 +347,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     private double getFrameRate() {
         
-        return framesDrawn / timeIngame;
+        return framesDrawn / timeInGame;
     }
 
     public class Panel extends JPanel {
@@ -365,13 +377,24 @@ public class OmegaCentauri_ extends Game implements Runnable {
         middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
     }
     
-    private class GameTimer extends TimerTask{
+    private class FPSTimer extends TimerTask
+    {
 
         @Override
         public void run() {
-            timeIngame++;
-            GameTimer.schedule(new GameTimer(), timerDelay);
+            timeInGame += .1;
+            FPSTimer.schedule(new FPSTimer(), FPSTimerDelay);
         }
         
+    }
+    
+    private class UpdateTimer extends TimerTask
+    {
+        @Override
+        public void run()
+        {
+            canUpdate = true;
+            UpdateTimer.schedule(new UpdateTimer(), UPSDelay);
+        }
     }
 }

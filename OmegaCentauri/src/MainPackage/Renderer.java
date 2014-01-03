@@ -4,14 +4,16 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 // @author Michael Kieburtz and Davis Freeman
 public class Renderer {
 
-    File fontFile;
+    private File fontFile;
     private Font fpsFont;
-
+    private DecimalFormat df = new DecimalFormat("0.#");
+    
     public Renderer(int cameraWidth, int cameraHeight) {
 
         fontFile = new File("src/resources/BlackHoleBB_ital.ttf");
@@ -57,7 +59,7 @@ public class Renderer {
         g2d.setFont(fpsFont.deriveFont(32f));
         g2d.setColor(Color.CYAN);
 
-        g2d.drawString(String.valueOf(fps), 155, 33);
+        g2d.drawString(String.valueOf(df.format(fps)), 155, 33);
 
         g2d.setFont(fpsFont.deriveFont(60f));
 
