@@ -1,9 +1,7 @@
 package MainPackage;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Point2D;
 import java.util.*;
 import javax.swing.JFrame;
 
@@ -15,7 +13,7 @@ abstract class Game extends JFrame implements KeyListener{
     protected Player player;
     
     
-
+    
     abstract void CheckKeyPressed(KeyEvent e);
     abstract void CheckKeyReleased(KeyEvent e);
 

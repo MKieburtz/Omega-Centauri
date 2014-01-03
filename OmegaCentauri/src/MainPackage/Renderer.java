@@ -13,7 +13,7 @@ public class Renderer {
     private File fontFile;
     private Font fpsFont;
     private DecimalFormat df = new DecimalFormat("0.#");
-    
+
     public Renderer(int cameraWidth, int cameraHeight) {
 
         fontFile = new File("src/resources/BlackHoleBB_ital.ttf");
@@ -33,12 +33,12 @@ public class Renderer {
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
             ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots) {
 
-        
+
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
-        
-        Graphics2D g2d = (Graphics2D)bufferedImage.getGraphics(); // turns it into 2d graphics
-        
-        
+
+        Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics(); // turns it into 2d graphics
+
+
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 1000, 1000);
@@ -47,7 +47,7 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         // draw stars
         for (StarChunk starChunk : stars) {
             if (camera.insideView(starChunk.getLocation(), starChunk.getSize())) {
@@ -64,15 +64,17 @@ public class Renderer {
         g2d.setFont(fpsFont.deriveFont(60f));
 
         g2d.drawString("FPS:", 10, 50);
-        
+
         // move and draw the bullets
-        for (Shot shot : shots)
-        {
+        for (Shot shot : shots) {
+            
             shot.updateLocation();
-            if (camera.insideView(shot.getLocation(), shot.getSize()))
+            if (camera.insideView(shot.getLocation(), shot.getSize())) {
                 shot.draw(g2d, camera.getLocation());
+            }
+
         }
-        
+
         // draw the minimap
         g2d.setColor(Color.BLACK);
         g2d.fillRect(794, 372, 200, 200);
@@ -100,28 +102,28 @@ public class Renderer {
 
         g2d.drawImage(player.getImage(), (int) (player.getLocation().x - camera.getLocation().x),
                 (int) (player.getLocation().y - camera.getLocation().y), null);
-        
+
         g.drawImage(bufferedImage, 0, 0, null);
-       
+
     }
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage) {
-        Graphics2D g2d = (Graphics2D)g;
-        
+        Graphics2D g2d = (Graphics2D) g;
+
         g2d.drawImage(startButtonImage, 100, 0, null);
     }
 
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
-        
+
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        
-        Graphics2D g2d = (Graphics2D)bufferedImage.getGraphics();
-        
+
+        Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
+
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, width, height);
 
@@ -133,9 +135,7 @@ public class Renderer {
         g2d.setFont(fpsFont);
         g2d.setColor(Color.CYAN);
         g2d.drawString("Loading...", width / 2 - 75, height / 2 - 75);
-        
+
         g.drawImage(bufferedImage, 0, 0, null);
     }
-
-    
 }

@@ -54,6 +54,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private void setUpWindow(int width, int height) {
+        setEnabled(true);
         setSize(width, height);
         setResizable(false);
         setVisible(true);
@@ -64,7 +65,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         setTitle("Omega Centauri");
         add(panel);
         setContentPane(panel);
-
     }
 
     private void loadGame() {
@@ -167,7 +167,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     @Override
     public void run() {
         
-        long beforeTime, afterTime, timeDiff, overTime = 0L;
+        long beforeTime, afterTime, timeDiff = 0L;
         
         gameStartTime = System.currentTimeMillis();
 
@@ -177,6 +177,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             
             
             // make sure the window is active
+            System.out.println(hasFocus());
             if (!hasFocus())
                 setEnabled(false);
             
@@ -203,7 +204,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             
             
             if (timeDiff > loopTime)
-                overTime = timeDiff;
+                continue; // don't sleep
             
             else
             {
@@ -214,14 +215,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 
                 continue;
             }
-            
-            while (overTime > 0)
-            {
-                gameUpdate();
-                syncGameStateVaribles();
-                overTime -= loopTime;
-            }
-            
             
         }
     }
@@ -352,15 +345,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     public class Panel extends JPanel {
 
-        int width;
-        int height;
-
         public Panel(int width, int height) {
-            this.width = width;
-            this.height = height;
             setSize(width, height);
             setVisible(true);
             setBackground(Color.BLACK);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 
         @Override
