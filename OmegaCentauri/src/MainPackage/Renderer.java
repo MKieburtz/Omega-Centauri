@@ -136,7 +136,7 @@ public class Renderer {
 
         g2d.setColor(Color.RED);
         g2d.drawRect((width / 2) - 100, (height / 2) - 50, 200, 50);
-        g2d.setColor(Color.GREEN);
+        g2d.setColor(Color.CYAN);
         g2d.fillRect((width / 2) - 100, (height / 2) - 50, percentDone * 2, 50);
 
         g2d.setFont(fpsFont);

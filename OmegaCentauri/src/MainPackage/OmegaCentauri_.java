@@ -126,30 +126,28 @@ public class OmegaCentauri_ extends Game implements Runnable {
              * |___|___|
              * |___|_x_|
              */
-
+            
             if (yPositions[3] < 10000) {
                 for (int x = 1; x < screenSize.x; x = x + 100) {
 
                     stars.add(new StarChunk(x, yPositions[3]));
                     starChunksLoaded++;
                 }
-
+                
                 yPositions[3] += 100;
             }
-
+            
             if (starChunksLoaded >= ((100 * 100) * 4)) {
                 loading = false;
             }
 
             // use active rendering to draw the screen
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
+            
             try {
-                if (!(starChunksLoaded >= ((100 * 100) * 4) - 100)) // if we don't only have 1 row to go
-                {
-                    Thread.sleep(20); // sleep
-                }
-            } catch (InterruptedException ex) {
-            }
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {}
+            
         }
 
         startGame();
