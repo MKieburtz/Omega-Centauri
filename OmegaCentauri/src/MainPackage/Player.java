@@ -169,7 +169,7 @@ public class Player extends Ship {
 
 
         Point2D.Double ShotStartingPos =
-                new Point2D.Double(middle.x - 2.5, middle.y - 2.5);
+                new Point2D.Double(middle.x, middle.y);
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, moveAngle + 90));
 

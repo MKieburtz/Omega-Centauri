@@ -44,7 +44,7 @@ public class Renderer {
         g2d.fillRect(0, 0, 1000, 1000);
 
         // enable anti-aliasing
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        //g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -66,7 +66,8 @@ public class Renderer {
         g2d.drawString("FPS:", 10, 50);
 
         // move and draw the bullets
-        for (Shot shot : shots) {
+        try {
+            for (Shot shot : shots) {
             
             shot.updateLocation();
             if (camera.insideView(shot.getLocation(), shot.getSize())) {
@@ -74,6 +75,10 @@ public class Renderer {
             }
 
         }
+        } catch (java.util.ConcurrentModificationException ex) {
+            System.err.println("Concurrent Modification Execption occured");
+        }
+        
 
         // draw the minimap
         g2d.setColor(Color.BLACK);
@@ -104,6 +109,8 @@ public class Renderer {
                 (int) (player.getLocation().y - camera.getLocation().y), null);
 
         g.drawImage(bufferedImage, 0, 0, null);
+        
+        g2d.dispose();
 
     }
 

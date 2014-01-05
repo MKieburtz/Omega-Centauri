@@ -1,9 +1,6 @@
 
 package MainPackage;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
-
 /**
  * @author Michael Kieburtz
  */
@@ -18,10 +15,10 @@ public class Calculator {
     }
     
     public static double CalcAngleMoveX(double angle) {
-        return (double) (Math.cos(Math.toRadians(angle)));
+        return Math.cos(Math.toRadians(angle));
     }
 
     public static double CalcAngleMoveY(double angle) {
-        return (double) (Math.sin(Math.toRadians(angle)));
+        return Math.sin(Math.toRadians(angle));
     }
 }

@@ -20,7 +20,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private double timeInGame;
     private long framesDrawn = 1;
     private final int FPSTimerDelay = 100;
-    private boolean canUpdate = true;
+    private boolean canUpdate, canGetFPS = true;
     private final int UPS = 60;
     private final int UPSDelay = 1000/UPS;
     
@@ -170,14 +170,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
         long beforeTime, afterTime, timeDiff = 0L;
         
         gameStartTime = System.currentTimeMillis();
-
+        averageFPS = getFrameRate();
         while (!paused) // game loop
         {   
             beforeTime = System.currentTimeMillis();
             
             
             // make sure the window is active
-            System.out.println(hasFocus());
             if (!hasFocus())
                 setEnabled(false);
             
@@ -194,7 +193,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
             }
             
             // draw to buffer and to screen
+            if (canGetFPS)
+            {
             averageFPS = getFrameRate();
+            canGetFPS = false;
+            }
             renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
             framesDrawn++;
             
@@ -372,6 +375,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         @Override
         public void run() {
             timeInGame += .1;
+            canGetFPS = true;
             FPSTimer.schedule(new FPSTimer(), FPSTimerDelay);
         }
         
