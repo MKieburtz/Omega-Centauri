@@ -17,9 +17,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double();
     private long gameStartTime, loopTime;
-    private double timeInGame;
+    private int timeInGame;
     private long framesDrawn = 1;
-    private final int FPSTimerDelay = 100;
+    private final int FPSTimerDelay = 1000;
     private boolean canUpdate, canGetFPS = true;
     private final int UPS = 60;
     private final int UPSDelay = 1000 / UPS;
@@ -202,6 +202,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             if (canGetFPS) {
                 averageFPS = getFrameRate();
                 canGetFPS = false;
+                framesDrawn = 0;
             }
             renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
             framesDrawn++;
@@ -345,7 +346,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     private double getFrameRate() {
 
-        return framesDrawn / timeInGame;
+        return framesDrawn;
     }
 
     public class Panel extends JPanel {
@@ -375,7 +376,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         @Override
         public void run() {
-            timeInGame += .1;
             canGetFPS = true;
             FPSTimer.schedule(new FPSTimer(), FPSTimerDelay);
         }
