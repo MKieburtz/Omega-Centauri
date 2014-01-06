@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -130,17 +131,17 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, width, height);
 
-        g2d.setColor(Color.RED);
-        g2d.drawRect((width / 2) - 100, (height / 2) - 50, 200, 50);
+        g2d.setColor(Color.BLUE);
+        g2d.drawRect((width / 2) - 200, (height / 2) - 50, 400, 10);
         g2d.setColor(Color.CYAN);
-        g2d.fillRect((width / 2) - 100, (height / 2) - 50, percentDone * 2, 50);
+        g2d.fillRect((width / 2) - 200, (height / 2) - 50, percentDone * 4, 10);
 
         g2d.setFont(fpsFont);
-        g2d.setColor(Color.CYAN);
+        g2d.setColor(new Color(0x00CECE));
         g2d.drawString("Loading...", width / 2 - 75, height / 2 - 75);
 
         g.drawImage(bufferedImage, 0, 0, null);

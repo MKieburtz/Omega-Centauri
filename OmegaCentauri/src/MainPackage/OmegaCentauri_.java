@@ -22,16 +22,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private final int FPSTimerDelay = 100;
     private boolean canUpdate, canGetFPS = true;
     private final int UPS = 60;
-    private final int UPSDelay = 1000/UPS;
-    
+    private final int UPSDelay = 1000 / UPS;
     // objects
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private Camera camera;
     private java.util.Timer FPSTimer = new java.util.Timer();
     private java.util.Timer UpdateTimer = new java.util.Timer();
-    
-    
     // varibles for loading
     private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
     private int starChunksLoaded = 0;
@@ -43,13 +40,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
         loading = true;
 
         player = new Player(0, 0, MainPackage.Type.Fighter);
-        
-        loopTime = (long)Math.ceil(1000 / desiredFrameRate); // 12 renders
-        
+
+        loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders
+
         middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
         setUpWindow(width, height);
-        
+
         loadGame();
     }
 
@@ -90,6 +87,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
                 yPositions[0] += 100;
             }
+
+
             // quadrant 2
 
             /*  _______
@@ -97,14 +96,16 @@ public class OmegaCentauri_ extends Game implements Runnable {
              * |___|___|
              */
 
+            if (yPositions[1] < 0) {
+                for (int x = -1; x > -screenSize.x; x = x - 100) {
 
-            for (int x = -1; x > -screenSize.x; x = x - 100) {
+                    stars.add(new StarChunk(x, yPositions[1]));
+                    starChunksLoaded++;
 
-                stars.add(new StarChunk(x, yPositions[1]));
-                starChunksLoaded++;
+                }
+
+                yPositions[1] += 100;
             }
-
-            yPositions[1] += 100;
 
             // quadrant 3
 
@@ -112,13 +113,16 @@ public class OmegaCentauri_ extends Game implements Runnable {
              * |___|___|
              * |_x_|___|
              */
-            for (int x = -1; x < -screenSize.x; x = x - 100) {
 
-                stars.add(new StarChunk(x, yPositions[2]));
-                starChunksLoaded++;
+            if (yPositions[2] < 10000) {
+                for (int x = -1; x > -screenSize.x; x = x - 100) {
+
+                    stars.add(new StarChunk(x, yPositions[2]));
+                    starChunksLoaded++;
+                }
+
+                yPositions[2] += 100;
             }
-
-            yPositions[2] += 100;
 
             // quadrant 4
 
@@ -126,7 +130,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
              * |___|___|
              * |___|_x_|
              */
-            
+
             if (yPositions[3] < 10000) {
                 for (int x = 1; x < screenSize.x; x = x + 100) {
 
@@ -137,17 +141,21 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 yPositions[3] += 100;
             }
             
-            if (starChunksLoaded >= ((100 * 100) * 4)) {
+            
+            // base case
+            if (starChunksLoaded == (100 * 100) * 4) {
                 loading = false;
+                break;
             }
 
             // use active rendering to draw the screen
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
-            
+
             try {
                 Thread.sleep(10);
-            } catch (InterruptedException ex) {}
-            
+            } catch (InterruptedException ex) {
+            }
+
         }
 
         startGame();
@@ -161,84 +169,80 @@ public class OmegaCentauri_ extends Game implements Runnable {
         game.start();
     }
 
-    
     @Override
     public void run() {
-        
+
         long beforeTime, afterTime, timeDiff = 0L;
-        
+
         gameStartTime = System.currentTimeMillis();
         averageFPS = getFrameRate();
         while (!paused) // game loop
-        {   
+        {
             beforeTime = System.currentTimeMillis();
-            
-            
+
+
             // make sure the window is active
-            if (!hasFocus())
+            if (!hasFocus()) {
                 setEnabled(false);
-            
-            if (!isEnabled() && hasFocus())
-                setEnabled(true);
-                
-            
-            // process input and preform logic
-            if (canUpdate)
-            {
-            gameUpdate();
-            syncGameStateVaribles();
-            canUpdate = false;
             }
-            
+
+            if (!isEnabled() && hasFocus()) {
+                setEnabled(true);
+            }
+
+
+            // process input and preform logic
+            if (canUpdate) {
+                gameUpdate();
+                syncGameStateVaribles();
+                canUpdate = false;
+            }
+
             // draw to buffer and to screen
-            if (canGetFPS)
-            {
-            averageFPS = getFrameRate();
-            canGetFPS = false;
+            if (canGetFPS) {
+                averageFPS = getFrameRate();
+                canGetFPS = false;
             }
             renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
             framesDrawn++;
-            
+
             afterTime = System.currentTimeMillis();
-            
+
             timeDiff = afterTime - beforeTime;
-            
-            
-            if (timeDiff > loopTime)
+
+
+            if (timeDiff > loopTime) {
                 continue; // don't sleep
-            
-            else
-            {
-                
+            } else {
+
                 try {
                     Thread.sleep(loopTime - timeDiff);
-                } catch (InterruptedException ex) {}
-                
+                } catch (InterruptedException ex) {
+                }
+
                 continue;
             }
-            
+
         }
     }
-    
-    private void gameUpdate()
-    {
+
+    private void gameUpdate() {
         if (forward) {
-                player.move(true);
-            }
-            if (rotateRight) {
+            player.move(true);
+        }
+        if (rotateRight) {
 
-                player.rotate(true); // positive
-            }
+            player.rotate(true); // positive
+        }
 
-            if (rotateLeft) {
-                player.rotate(false); // negitive
-            }
+        if (rotateLeft) {
+            player.rotate(false); // negitive
+        }
 
-            if (!forward && player.isMoving()) {
-                player.move(false);
-            }
+        if (!forward && player.isMoving()) {
+            player.move(false);
+        }
     }
-    
     int keyCode;
 
     @Override
@@ -340,7 +344,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private double getFrameRate() {
-        
+
         return framesDrawn / timeInGame;
     }
 
@@ -366,9 +370,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
         middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
     }
-    
-    private class FPSTimer extends TimerTask
-    {
+
+    private class FPSTimer extends TimerTask {
 
         @Override
         public void run() {
@@ -376,14 +379,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
             canGetFPS = true;
             FPSTimer.schedule(new FPSTimer(), FPSTimerDelay);
         }
-        
     }
-    
-    private class UpdateTimer extends TimerTask
-    {
+
+    private class UpdateTimer extends TimerTask {
+
         @Override
-        public void run()
-        {
+        public void run() {
             canUpdate = true;
             UpdateTimer.schedule(new UpdateTimer(), UPSDelay);
         }
