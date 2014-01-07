@@ -23,6 +23,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private boolean canUpdate, canGetFPS = true;
     private final int UPS = 60;
     private final int UPSDelay = 1000 / UPS;
+    private ArrayList<Integer> keyPresses = new ArrayList<Integer>();
     // objects
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
@@ -192,6 +193,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
             if (canGetFPS) {
                 averageFPS = getFrameRate();
                 canGetFPS = false;
+                if (averageFPS == 1)
+                    averageFPS = 80;
                 framesDrawn = 0;
             }
             renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
