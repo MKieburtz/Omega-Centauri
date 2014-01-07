@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import com.apple.eawt.Application;
 
 // @author Michael Kieburtz and Davis Freeman
 public class Launcher extends JFrame implements MouseListener {
@@ -31,12 +30,6 @@ public class Launcher extends JFrame implements MouseListener {
 
     private void setUpWindow(int width, int height) {
 
-        if (System.getProperty("os.name").contains("Mac")) {
-            // check if this is running on a Mac, no other operating systems have "docks."
-            Application application = Application.getApplication();
-            Image image = images.get(1);
-            application.setDockIconImage(image);
-        }
 
         this.setIconImage(images.get(1));
 
