@@ -181,23 +181,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
             beforeTime = System.currentTimeMillis();
 
 
-            // make sure the window is active
-            if (!hasFocus()) {
-                setEnabled(false);
-            }
-
-            if (!isEnabled() && hasFocus()) {
-                setEnabled(true);
-            }
-
-
             // process input and preform logic
             if (canUpdate) {
                 gameUpdate();
                 syncGameStateVaribles();
                 canUpdate = false;
             }
-
+            
             // draw to buffer and to screen
             if (canGetFPS) {
                 averageFPS = getFrameRate();
