@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -21,12 +22,16 @@ abstract class Shot {
     protected double faceAngle;
     protected Point2D.Double velocity;
     protected int maxVel;
+    protected AffineTransform transform = new AffineTransform();
 
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
     {
-
+        
+       // g2d.setTransform(transform);
+        
         g2d.drawImage(images.get(0), (int) (location.x - cameraLocation.x),
                 (int) (location.y - cameraLocation.y), null);
+        
     }
 
     protected void loadImages(ArrayList<String> imagePaths) {
@@ -52,5 +57,10 @@ abstract class Shot {
     public BufferedImage getImage()
     {
         return images.get(0);
+    }
+    
+    protected void initImages()
+    {
+        transform.rotate(Math.toRadians(faceAngle), location.x, location.y);
     }
 }

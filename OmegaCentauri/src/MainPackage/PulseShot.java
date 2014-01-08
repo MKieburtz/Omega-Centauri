@@ -25,6 +25,7 @@ public class PulseShot extends Shot {
         
         loadImages(imagePaths);
         
+        initImages();
 
     }
     

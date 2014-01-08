@@ -79,8 +79,6 @@ public class Renderer {
         } catch (java.util.ConcurrentModificationException ex) {
             System.err.println("Concurrent Modification Execption occured");
         }
-        
-
         // draw the minimap
         g2d.setColor(Color.BLACK);
         g2d.fillRect(794, 372, 200, 200);
@@ -94,18 +92,20 @@ public class Renderer {
         g2d.setColor(Color.CYAN);
         Ellipse2D.Double minimapPlayer = new Ellipse2D.Double(794 + 100 + player.getLocation().x / 100, 372 + 100 + player.getLocation().y / 100, 1, 1);
         g2d.draw(minimapPlayer);
-
+        
+        
         // transform the player and draw it
         AffineTransform origXform = g2d.getTransform();
         AffineTransform newXform = (AffineTransform) (origXform.clone());
-
-        g2d.setPaint(new TexturePaint(player.getImage(), new Rectangle2D.Float(0, 0, player.getImage().getWidth(), player.getImage().getHeight())));
+        
+        g2d.setPaint(new TexturePaint(player.getImage(),
+                new Rectangle2D.Float(0, 0, player.getImage().getWidth(), player.getImage().getHeight())));
+        
         newXform.setToIdentity();
-
         newXform.rotate(Math.toRadians(player.getAngle()), xRot, yRot);
 
         g2d.setTransform(newXform);
-
+        
         g2d.drawImage(player.getImage(), (int) (player.getLocation().x - camera.getLocation().x),
                 (int) (player.getLocation().y - camera.getLocation().y), null);
 
