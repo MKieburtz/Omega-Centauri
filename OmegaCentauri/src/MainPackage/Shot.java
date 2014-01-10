@@ -22,15 +22,22 @@ abstract class Shot {
     protected double faceAngle;
     protected Point2D.Double velocity;
     protected int maxVel;
-    protected AffineTransform transform = new AffineTransform();
 
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
     {
         
-       // g2d.setTransform(transform);
+        AffineTransform original = g2d.getTransform();
+        
+        AffineTransform transform = (AffineTransform) original.clone();
+        
+        transform.rotate(Math.toRadians(faceAngle), getScreenLocationMiddle(cameraLocation).x, getScreenLocationMiddle(cameraLocation).y);
+        
+        g2d.setTransform(transform);
         
         g2d.drawImage(images.get(0), (int) (location.x - cameraLocation.x),
                 (int) (location.y - cameraLocation.y), null);
+        
+        g2d.setTransform(original);
         
     }
 
@@ -59,8 +66,9 @@ abstract class Shot {
         return images.get(0);
     }
     
-    protected void initImages()
+    private Point2D.Double getScreenLocationMiddle(Point2D.Double cameraLocation)
     {
-        transform.rotate(Math.toRadians(faceAngle), location.x, location.y);
+        return new Point2D.Double((location.x - cameraLocation.x) + (images.get(0).getWidth() / 2),
+                (location.y - cameraLocation.y) + (images.get(0).getHeight() / 2));
     }
 }

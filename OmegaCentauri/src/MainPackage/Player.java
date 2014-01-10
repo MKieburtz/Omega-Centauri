@@ -163,13 +163,11 @@ public class Player extends Ship {
         Point2D.Double ShotStartingVel;
 
         ShotStartingVel =
-                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(moveAngle) * 10, velocity.y + Calculator.CalcAngleMoveY(moveAngle) * 10);
-
-
-
+                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(moveAngle) * 10,
+                        velocity.y + Calculator.CalcAngleMoveY(moveAngle) * 10);
 
         Point2D.Double ShotStartingPos =
-                new Point2D.Double(middle.x, ((middle.y)-4.5));
+                new Point2D.Double((middle.x)-4.5, ((middle.y)-5)); //  THIS ONLY WORKS FOR THE CURRENT BULLET IMAGE!!!
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
 

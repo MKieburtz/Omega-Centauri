@@ -24,8 +24,6 @@ public class PulseShot extends Shot {
         imagePaths.add("src/resources/Pulse.png");
         
         loadImages(imagePaths);
-        
-        initImages();
 
     }
     
