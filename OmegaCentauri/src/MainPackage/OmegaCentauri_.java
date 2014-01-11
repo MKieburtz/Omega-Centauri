@@ -9,28 +9,41 @@ import javax.swing.*;
 // @author Michael Kieburtz
 public class OmegaCentauri_ extends Game implements Runnable {
 
-    // game state varibles
-    private boolean forward, rotateRight, rotateLeft = false;
+    /*
+     * GAME STATE VARIBLES:
+     */
+    
+    private boolean forward, rotateRight, rotateLeft, shooting = false; // movement booleans 
     private boolean paused = false;
     private boolean loading = false;
-    private double averageFPS = 0;
     private final Point screenSize = new Point(10000, 10000);
-    private final Point2D.Double middleOfPlayer = new Point2D.Double();
-    private long gameStartTime, loopTime;
-    private int timeInGame;
-    private long framesDrawn = 1;
-    private final int FPSTimerDelay = 1000;
-    private boolean canUpdate, canGetFPS = true;
+    private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
+    private int canShootDelay = 200;
+    
+    // TIMING STUFF
+    private int averageFPS = 0;
     private final int UPS = 60;
     private final int UPSDelay = 1000 / UPS;
-    private ArrayList<Integer> keyPresses = new ArrayList<Integer>();
-    // objects
+    private long loopTime;
+    private int framesDrawn = 1;
+    private final int FPSTimerDelay = 1000;
+    private boolean canUpdate, canGetFPS, canShoot = true;
+    
+    /*
+     * OBJECTS:
+     */
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private Camera camera;
+    
+    // TIMERS
     private java.util.Timer FPSTimer = new java.util.Timer();
     private java.util.Timer UpdateTimer = new java.util.Timer();
-    // varibles for loading
+    private java.util.Timer ShootingTimer = new java.util.Timer();
+    
+    /*
+     * LOADING VARIBLES:
+     */
     private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
@@ -138,11 +151,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
                     stars.add(new StarChunk(x, yPositions[3]));
                     starChunksLoaded++;
                 }
-                
+
                 yPositions[3] += 100;
             }
-            
-            
+
+
             // base case
             if (starChunksLoaded == (100 * 100) * 4) {
                 loading = false;
@@ -166,6 +179,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
         // start the timers immeatitely then start the main game thread
         FPSTimer.schedule(new FPSTimer(), 1);
         UpdateTimer.schedule(new UpdateTimer(), 1);
+        ShootingTimer.schedule(new ShootingTimer(), 1);
+
         Thread game = new Thread(this);
         game.start();
     }
@@ -175,7 +190,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         long beforeTime, afterTime, timeDiff = 0L;
 
-        gameStartTime = System.currentTimeMillis();
         averageFPS = getFrameRate();
         while (!paused) // game loop
         {
@@ -188,13 +202,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 syncGameStateVaribles();
                 canUpdate = false;
             }
-            
+
             // draw to buffer and to screen
             if (canGetFPS) {
                 averageFPS = getFrameRate();
                 canGetFPS = false;
-                if (averageFPS == 1)
+                if (averageFPS == 1) {
                     averageFPS = 80;
+                }
                 framesDrawn = 0;
             }
             renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
@@ -207,6 +222,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
             if (timeDiff > loopTime) {
                 continue; // don't sleep
+
             } else {
 
                 try {
@@ -236,6 +252,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
         if (!forward && player.isMoving()) {
             player.move(false);
         }
+
+        if (shooting && canShoot ) {
+            player.shoot(new Point2D.Double(middleOfPlayer.x + camera.getLocation().x,
+                    middleOfPlayer.y + camera.getLocation().y), player.getAngle() - 90);
+            canShoot = false;
+        }
+
     }
     int keyCode;
 
@@ -284,9 +307,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             break;
 
             case KeyEvent.VK_SPACE: {
-                player.shoot(new Point2D.Double(middleOfPlayer.x + camera.getLocation().x,
-                        middleOfPlayer.y + camera.getLocation().y), player.getAngle() - 90);
-
+                shooting = true;
             }
 
         } // end switch
@@ -334,10 +355,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 player.stopSpeedBoosting();
             }
 
+            case KeyEvent.VK_SPACE: {
+                shooting = false;
+            }
+
         } // end switch
     }
 
-    private double getFrameRate() {
+    private int getFrameRate() {
 
         return framesDrawn;
     }
@@ -380,6 +405,15 @@ public class OmegaCentauri_ extends Game implements Runnable {
         public void run() {
             canUpdate = true;
             UpdateTimer.schedule(new UpdateTimer(), UPSDelay);
+        }
+    }
+
+    private class ShootingTimer extends TimerTask {
+
+        @Override
+        public void run() {
+            canShoot = true;
+            ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
     }
 }

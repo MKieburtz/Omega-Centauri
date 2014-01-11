@@ -1,7 +1,6 @@
 package MainPackage;
 
 import java.awt.*;
-import java.awt.color.ColorSpace;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -13,7 +12,6 @@ public class Renderer {
 
     private File fontFile;
     private Font fpsFont;
-    private DecimalFormat df = new DecimalFormat("0.#");
 
     public Renderer(int cameraWidth, int cameraHeight) {
 
@@ -31,7 +29,7 @@ public class Renderer {
 
     }
 
-    public void drawScreen(Graphics g, Player player, double xRot, double yRot, double fps,
+    public void drawScreen(Graphics g, Player player, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots) {
 
 
@@ -60,7 +58,7 @@ public class Renderer {
         g2d.setFont(fpsFont.deriveFont(32f));
         g2d.setColor(Color.CYAN);
 
-        g2d.drawString(String.valueOf(df.format(fps)), 155, 33);
+        g2d.drawString(String.valueOf(fps), 155, 33);
 
         g2d.setFont(fpsFont.deriveFont(60f));
 
@@ -69,8 +67,9 @@ public class Renderer {
         // move and draw the bullets
         try {
             for (Shot shot : shots) {
-            
+
             shot.updateLocation();
+            
             if (camera.insideView(shot.getLocation(), shot.getSize())) {
                 shot.draw(g2d, camera.getLocation());
             }
@@ -141,7 +140,7 @@ public class Renderer {
         g2d.fillRect((width / 2) - 200, (height / 2) - 50, percentDone * 4, 10);
 
         g2d.setFont(fpsFont);
-        g2d.setColor(new Color(0x00CECE));
+        g2d.setColor(new Color(0x00CECE)); // hex codes rock
         g2d.drawString("Loading...", width / 2 - 75, height / 2 - 75);
 
         g.drawImage(bufferedImage, 0, 0, null);
