@@ -20,7 +20,7 @@ public abstract class Ship {
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected BufferedImage activeImage;
     protected ArrayList<String> imagePaths = new ArrayList<String>();
-    protected ImageLoader imageLoader = new ImageLoader();
+    protected MediaLoader imageLoader = new MediaLoader();
     
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
 

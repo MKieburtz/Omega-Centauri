@@ -14,7 +14,7 @@ abstract class Shot {
     protected int range;
     protected int life;
     protected int damage;
-    protected ImageLoader imageLoader = new ImageLoader();
+    protected MediaLoader imageLoader = new MediaLoader();
     protected boolean animated;
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<String> imagePaths = new ArrayList<String>();

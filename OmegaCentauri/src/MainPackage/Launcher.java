@@ -15,7 +15,7 @@ public class Launcher extends JFrame implements MouseListener {
     private int width = 1000;
     private int height = 600;
     private final Renderer renderer = new Renderer(width, height);
-    private final ImageLoader imageLoader = new ImageLoader();
+    private final MediaLoader imageLoader = new MediaLoader();
     private final ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things

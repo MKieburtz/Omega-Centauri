@@ -18,7 +18,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private boolean loading = false;
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
-    private int canShootDelay = 200;
+    private final int canShootDelay = 200;
     
     // TIMING STUFF
     private int averageFPS = 0;
@@ -187,11 +187,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     @Override
     public void run() {
-
+        
         long beforeTime, afterTime, timeDiff = 0L;
 
         averageFPS = getFrameRate();
-        while (!paused) // game loop
+        boolean running = true;
+        while (running) // game loop
         {
             beforeTime = System.currentTimeMillis();
 
@@ -230,7 +231,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 } catch (InterruptedException ex) {
                 }
 
-                continue;
             }
 
         }
@@ -253,7 +253,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             player.move(false);
         }
 
-        if (shooting && canShoot ) {
+        if (shooting && canShoot) {
             player.shoot(new Point2D.Double(middleOfPlayer.x + camera.getLocation().x,
                     middleOfPlayer.y + camera.getLocation().y), player.getAngle() - 90);
             canShoot = false;
