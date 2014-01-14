@@ -15,7 +15,7 @@ public class Launcher extends JFrame implements MouseListener {
     private int width = 1000;
     private int height = 600;
     private final Renderer renderer = new Renderer(width, height);
-    private final MediaLoader imageLoader = new MediaLoader();
+    private final MediaLoader mediaLoader = new MediaLoader();
     private final ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
@@ -23,7 +23,7 @@ public class Launcher extends JFrame implements MouseListener {
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
-        images = imageLoader.loadImages(imagePaths);
+        images = mediaLoader.loadImages(imagePaths);
         setUpWindow(width, height);
         addButtons();
     }
@@ -43,7 +43,7 @@ public class Launcher extends JFrame implements MouseListener {
         this.setResizable(false);
     }
 
-    private void addButtons() // temp method. Davis delete this when you do your button images
+    private void addButtons()
     {
         JButton goButton = new JButton("GO!");
         goButton.setVisible(true);

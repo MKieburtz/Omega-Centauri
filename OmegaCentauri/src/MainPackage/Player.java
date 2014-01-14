@@ -1,8 +1,6 @@
 package MainPackage;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
-import java.io.File;
 import java.util.ArrayList;
 
 // @author Michael Kieburtz and Davis Freeman
@@ -32,7 +30,7 @@ public class Player extends Ship {
         imagePaths.add("src/resources/FighterGreyTurningRight.png");
         imagePaths.add("src/resources/FPSbackground.png");
         imagePaths.add("src/resources/GoButton.png");
-        images = imageLoader.loadImages(imagePaths);
+        images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
 
     }

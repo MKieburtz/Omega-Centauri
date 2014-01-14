@@ -55,7 +55,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         player = new Player(0, 0, MainPackage.Type.Fighter);
 
-        loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders
+        loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
         middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
@@ -412,7 +412,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         @Override
         public void run() {
-            canShoot = true;
             ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
     }

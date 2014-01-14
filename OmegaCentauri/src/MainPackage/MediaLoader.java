@@ -1,10 +1,7 @@
 package MainPackage;
 
 import java.awt.image.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
@@ -79,7 +76,7 @@ public class MediaLoader {
             
             try {
                 clip = AudioSystem.getClip();
-                clip.open(a);
+                clip.open(a); // this actually loads the sound
             } catch (LineUnavailableException ex) {
                 ex.printStackTrace();
             } catch (IOException ex){

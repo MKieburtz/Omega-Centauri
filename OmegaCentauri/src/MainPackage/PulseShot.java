@@ -1,8 +1,6 @@
 package MainPackage;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 
 /**
  * @author Michael Kieburtz
