@@ -412,6 +412,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         @Override
         public void run() {
+            canShoot = true;
             ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
     }
