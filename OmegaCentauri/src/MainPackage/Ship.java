@@ -6,6 +6,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.util.ArrayList;
 import javax.imageio.*;
+import javax.sound.sampled.Clip;
 
 // @author Michael Kieburtz and Davis Freeman
 public abstract class Ship {
@@ -18,8 +19,11 @@ public abstract class Ship {
     protected Point2D.Double nextLocation;
     // File -> FileInputStream -> ImageIO -> buffered image
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    protected ArrayList<Clip> sounds = new ArrayList<Clip>();
+    
     protected BufferedImage activeImage;
     protected ArrayList<String> imagePaths = new ArrayList<String>();
+    protected ArrayList<String> soundPaths = new ArrayList<String>();
     protected MediaLoader mediaLoader = new MediaLoader();
     
     protected ArrayList<Shot> shots = new ArrayList<Shot>();

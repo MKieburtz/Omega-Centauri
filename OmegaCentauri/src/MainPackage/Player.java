@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import javax.sound.sampled.*;
 
 // @author Michael Kieburtz and Davis Freeman
 // might refractor to playerShip
@@ -32,7 +33,10 @@ public class Player extends Ship {
         imagePaths.add("src/resources/GoButton.png");
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
-
+        
+        soundPaths.add("src/resources/SimpleShot.wav");
+        
+        sounds = mediaLoader.loadSounds(soundPaths);
     }
 
     public Point2D.Double getLocation() {
@@ -166,7 +170,10 @@ public class Player extends Ship {
 
         Point2D.Double ShotStartingPos =
                 new Point2D.Double((middle.x)-4.5, ((middle.y)-5)); //  THIS ONLY WORKS FOR THE CURRENT BULLET IMAGE!!!
-
+        
+        sounds.get(0).setFramePosition(0);
+        sounds.get(0).start();
+        
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
 
     }
