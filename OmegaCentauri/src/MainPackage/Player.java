@@ -22,9 +22,8 @@ public class Player extends Ship {
     }
 
     public Player(int x, int y, Type shipType) {
-        location = new Point2D.Double(x, y);
-        nextLocation = new Point2D.Double();
-        type = shipType;
+        super(x, y, shipType);
+        
         imagePaths.add("src/resources/FighterGreyIdle.png");
         imagePaths.add("src/resources/FighterGreyMoving.png");
         imagePaths.add("src/resources/FighterGreyTurningLeft.png");
@@ -162,6 +161,7 @@ public class Player extends Ship {
 
     public void shoot(Point2D.Double middle, double moveAngle) // have to pass the angle for some reason
     {
+        sounds.get(0).setFramePosition(0);
         Point2D.Double ShotStartingVel;
 
         ShotStartingVel =
@@ -171,7 +171,6 @@ public class Player extends Ship {
         Point2D.Double ShotStartingPos =
                 new Point2D.Double((middle.x)-4.5, ((middle.y)-5)); //  THIS ONLY WORKS FOR THE CURRENT BULLET IMAGE!!!
         
-        sounds.get(0).setFramePosition(0);
         sounds.get(0).start();
         
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));

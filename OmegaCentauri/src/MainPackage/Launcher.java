@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import javax.sound.sampled.Clip;
 
 // @author Michael Kieburtz and Davis Freeman
 public class Launcher extends JFrame implements MouseListener {
@@ -17,13 +18,19 @@ public class Launcher extends JFrame implements MouseListener {
     private final Renderer renderer = new Renderer(width, height);
     private final MediaLoader mediaLoader = new MediaLoader();
     private final ArrayList<String> imagePaths = new ArrayList<String>();
+    private final ArrayList<String> soundPaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private ArrayList<Clip> sounds = new ArrayList<Clip>();
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
 
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
         images = mediaLoader.loadImages(imagePaths);
+        
+        soundPaths.add("src/resources/MenuSound1.wav");
+        sounds = mediaLoader.loadSounds(soundPaths);
+        
         setUpWindow(width, height);
         addButtons();
     }
@@ -53,6 +60,7 @@ public class Launcher extends JFrame implements MouseListener {
         goButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                sounds.get(0).start();
                 closeWindow();
                 OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer);
             }

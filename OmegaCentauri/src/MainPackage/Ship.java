@@ -27,7 +27,14 @@ public abstract class Ship {
     protected MediaLoader mediaLoader = new MediaLoader();
     
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
-
+    
+    public Ship(int x, int y, Type shipType)
+    {
+        location = new Point2D.Double(x, y);
+        nextLocation = new Point2D.Double();
+        type = shipType;
+    }
+    
     public BufferedImage getImage() {
         return activeImage;
     }

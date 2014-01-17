@@ -4,8 +4,8 @@ package MainPackage;
 
 public class Ally extends Ship {
 
-    public Ally()
+    public Ally(int x, int y, Type shipType)
     {
-
+        super(x, y, shipType);
     }
 }
