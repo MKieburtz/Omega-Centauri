@@ -257,6 +257,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             player.shoot(new Point2D.Double(middleOfPlayer.x + camera.getLocation().x,
                     middleOfPlayer.y + camera.getLocation().y), player.getAngle() - 90);
             canShoot = false;
+            ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
 
     }
@@ -413,7 +414,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         @Override
         public void run() {
             canShoot = true;
-            ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
     }
 }

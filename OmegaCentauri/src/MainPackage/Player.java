@@ -34,7 +34,7 @@ public class Player extends Ship {
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
         
-        soundPaths.add("src/resources/SimpleShot.wav");
+        soundPaths.add("src/resources/Pulse.wav");
         
         sounds = mediaLoader.loadSounds(soundPaths);
     }
