@@ -28,7 +28,7 @@ public class Launcher extends JFrame implements MouseListener {
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
         images = mediaLoader.loadImages(imagePaths);
         
-        soundPaths.add("src/resources/MenuSound1.wav");
+        soundPaths.add("src/resources/mouseClick.wav");
         sounds = mediaLoader.loadSounds(soundPaths);
         
         setUpWindow(width, height);
