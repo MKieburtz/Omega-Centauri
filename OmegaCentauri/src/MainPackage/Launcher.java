@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.*;
 import javax.sound.sampled.Clip;
 
 // @author Michael Kieburtz and Davis Freeman
@@ -22,6 +22,8 @@ public class Launcher extends JFrame implements MouseListener {
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
+    
+    private java.util.Timer refreshTimer = new java.util.Timer();
 
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
@@ -31,6 +33,7 @@ public class Launcher extends JFrame implements MouseListener {
         soundPaths.add("src/resources/mouseClick.wav");
         sounds = mediaLoader.loadSounds(soundPaths);
         
+        refreshTimer.schedule(new refreshTimer(), 100);
         setUpWindow(width, height);
         addButtons();
     }
@@ -99,12 +102,8 @@ public class Launcher extends JFrame implements MouseListener {
 
     public class Panel extends JPanel {
 
-        int width;
-        int height;
 
         public Panel(int width, int height) {
-            this.width = width;
-            this.height = height;
             setSize(width, height);
             setVisible(true);
         }
@@ -112,7 +111,6 @@ public class Launcher extends JFrame implements MouseListener {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            renderer.drawLauncher(g, images.get(0));
         }
     }
 
@@ -126,7 +124,6 @@ public class Launcher extends JFrame implements MouseListener {
         OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer);
         }
         */
-        
     }
 
     @Override
@@ -146,11 +143,22 @@ public class Launcher extends JFrame implements MouseListener {
     }
 
     private void closeWindow() {
+        refreshTimer.cancel();
         this.setVisible(false);
         this.dispose();
     }
 
     private void changeResolution(int width, int height) {
         this.setSize(width, height);
+    }
+    
+    private class refreshTimer extends TimerTask
+    {
+        @Override
+        public void run()
+        {
+            renderer.drawLauncher(panel.getGraphics(), images.get(0)); // use active rendering
+            refreshTimer.schedule(new refreshTimer(), 100); // 10 fps
+        }
     }
 }
