@@ -24,10 +24,10 @@ public class Player extends Ship {
     public Player(int x, int y, Type shipType) {
         super(x, y, shipType);
         
-        imagePaths.add("src/resources/FighterGreyIdle.png");
-        imagePaths.add("src/resources/FighterGreyMoving.png");
-        imagePaths.add("src/resources/FighterGreyTurningLeft.png");
-        imagePaths.add("src/resources/FighterGreyTurningRight.png");
+        imagePaths.add("src/resources/FighterIdle.png");
+        imagePaths.add("src/resources/FighterThrust.png");
+        imagePaths.add("src/resources/FighterLeft.png");
+        imagePaths.add("src/resources/FighterRight.png");
         imagePaths.add("src/resources/FPSbackground.png");
         imagePaths.add("src/resources/GoButton.png");
         images = mediaLoader.loadImages(imagePaths);
