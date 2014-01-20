@@ -180,4 +180,12 @@ public class Player extends Ship {
     public ArrayList<Shot> getShots() {
         return shots;
     }
+    
+    public Point2D.Double getScreenLocation(Point2D.Double cameraLocation)
+    {
+        double x = location.x - cameraLocation.x;
+        double y = location.y - cameraLocation.y;
+        
+        return new Point2D.Double(x, y);
+    }
 }

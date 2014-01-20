@@ -102,12 +102,17 @@ public class Renderer {
         
         newXform.setToIdentity();
         newXform.rotate(Math.toRadians(player.getAngle()), xRot, yRot);
-
-        g2d.setTransform(newXform);
         
-        g2d.drawImage(player.getImage(), (int) (player.getLocation().x - camera.getLocation().x),
-                (int) (player.getLocation().y - camera.getLocation().y), null);
+        newXform.translate(player.getScreenLocation(camera.getLocation()).x,
+                player.getScreenLocation(camera.getLocation()).y);
+        
+        newXform.scale(1, 1);
+        
+        
+        g2d.drawImage(player.getImage(), newXform, null);
 
+        
+        
         g.drawImage(bufferedImage, 0, 0, null);
         
         g2d.dispose();

@@ -33,7 +33,6 @@ public class Launcher extends JFrame implements MouseListener {
         soundPaths.add("src/resources/mouseClick.wav");
         sounds = mediaLoader.loadSounds(soundPaths);
         
-        refreshTimer.schedule(new refreshTimer(), 100);
         setUpWindow(width, height);
         addButtons();
     }
@@ -111,6 +110,7 @@ public class Launcher extends JFrame implements MouseListener {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+            refreshTimer.schedule(new refreshTimer(), 1);
         }
     }
 
