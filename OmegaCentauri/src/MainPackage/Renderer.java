@@ -30,7 +30,7 @@ public class Renderer {
     }
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, int fps,
-            ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots) {
+            ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots, String version) {
 
 
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
@@ -63,6 +63,11 @@ public class Renderer {
         g2d.setFont(fpsFont.deriveFont(60f));
 
         g2d.drawString("FPS:", 10, 50);
+        
+        // draw version info'
+        g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("Version: " + version, 900, 10);
 
         // move and draw the bullets
         try {

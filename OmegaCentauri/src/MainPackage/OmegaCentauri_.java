@@ -9,6 +9,8 @@ import javax.swing.*;
 // @author Michael Kieburtz
 public class OmegaCentauri_ extends Game implements Runnable {
 
+    private String Version = "Dev 0.1.1";
+    
     /*
      * GAME STATE VARIBLES:
      */
@@ -213,7 +215,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 }
                 framesDrawn = 0;
             }
-            renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots());
+            renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots(), Version);
             framesDrawn++;
 
             afterTime = System.currentTimeMillis();
