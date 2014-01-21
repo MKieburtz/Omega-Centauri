@@ -41,15 +41,15 @@ public class Launcher extends JFrame implements MouseListener {
 
 
         this.setIconImage(images.get(1));
-
         this.setSize(width, height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
+        
         this.setLayout(null);
-
+        
         this.addMouseListener(this);
         this.setTitle("Omega Centauri Launcher");
         this.setResizable(false);
+        this.setVisible(true);
     }
 
     private void addButtons()
@@ -97,6 +97,7 @@ public class Launcher extends JFrame implements MouseListener {
         this.add(closeButton);
         this.add(resolution1440by900);
         this.add(panel);
+        repaint();
     }
 
     public class Panel extends JPanel {

@@ -67,7 +67,7 @@ public class Renderer {
         // draw version info'
         g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
         g2d.setColor(Color.WHITE);
-        g2d.drawString("Version: " + version, 900, 10);
+        g2d.drawString("Version: " + version, 890, 10);
 
         // move and draw the bullets
         try {
@@ -126,8 +126,9 @@ public class Renderer {
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage) {
         Graphics2D g2d = (Graphics2D) g;
-
+        
         g2d.drawImage(startButtonImage, 100, 0, null);
+        g2d.dispose();
     }
 
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
