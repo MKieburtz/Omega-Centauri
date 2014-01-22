@@ -157,17 +157,17 @@ public class Player extends Ship {
         maxVel = 5.0;
     }
 
-    public void shoot(Point2D.Double middle, double moveAngle) // have to pass the angle for some reason
+    public void shoot(Point2D.Double cameraLocation) // have to pass the angle for some reason
     {
         sounds.get(0).setFramePosition(0);
         Point2D.Double ShotStartingVel;
 
         ShotStartingVel =
-                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(moveAngle) * 20,
-                        velocity.y + Calculator.CalcAngleMoveY(moveAngle) * 20);
+                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
+                        velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
-        Point2D.Double ShotStartingPos =
-                new Point2D.Double((middle.x)-4.5, ((middle.y)-5)); //  THIS ONLY WORKS FOR THE CURRENT BULLET IMAGE!!!
+        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 3.5,
+                getScreenLocationMiddle(cameraLocation).y - 3.5);
         
         sounds.get(0).start();
         

@@ -68,9 +68,16 @@ public abstract class Ship {
     {
         double x = location.x - cameraLocation.x;
         double y = location.y - cameraLocation.y;
-        
+        System.out.println(x + " " + y);
         return new Point2D.Double(x, y);
     }
     
+    public Point2D.Double getScreenLocationMiddle(Point2D.Double cameraLocation)
+    {
+        double x = getScreenLocation(cameraLocation).x + cameraLocation.x + activeImage.getWidth() / 2;
+        double y = getScreenLocation(cameraLocation).y + cameraLocation.y + activeImage.getHeight() / 2;
+        
+        return new Point2D.Double(x, y);
+    }
 
 }
