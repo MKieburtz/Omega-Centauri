@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 // @author Michael Kieburtz and Davis Freeman
@@ -31,7 +30,6 @@ public class Renderer {
 
     public void drawScreen(Graphics g, Player player, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots, String version) {
-
 
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
 
@@ -72,14 +70,12 @@ public class Renderer {
         // move and draw the bullets
         try {
             for (Shot shot : shots) {
-
-            shot.updateLocation();
-            
+                
             if (camera.insideView(shot.getLocation(), shot.getSize())) {
                 shot.draw(g2d, camera.getLocation());
             }
-
         }
+            
         } catch (java.util.ConcurrentModificationException ex) {
             System.err.println("Concurrent Modification Execption occured");
         }
@@ -98,30 +94,14 @@ public class Renderer {
         g2d.draw(minimapPlayer);
         
         
-        // transform the player and draw it
-        AffineTransform origXform = g2d.getTransform();
-        AffineTransform newXform = (AffineTransform) (origXform.clone());
+        // draw the player
         
-        g2d.setPaint(new TexturePaint(player.getImage(),
-                new Rectangle2D.Float(0, 0, player.getImage().getWidth(), player.getImage().getHeight())));
-        
-        newXform.setToIdentity();
-        newXform.rotate(Math.toRadians(player.getAngle()), xRot, yRot);
-        
-        newXform.translate(player.getScreenLocation(camera.getLocation()).x,
-                player.getScreenLocation(camera.getLocation()).y);
-        
-        newXform.scale(1, 1);
-        
-        
-        g2d.drawImage(player.getImage(), newXform, null);
-
-        
+        player.draw(g2d, camera.getLocation());
         
         g.drawImage(bufferedImage, 0, 0, null);
         
         g2d.dispose();
-
+        g.dispose();
     }
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage) {
@@ -129,6 +109,7 @@ public class Renderer {
         
         g2d.drawImage(startButtonImage, 100, 0, null);
         g2d.dispose();
+        g.dispose();
     }
 
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
@@ -155,5 +136,8 @@ public class Renderer {
         g2d.drawString("Loading...", width / 2 - 75, height / 2 - 75);
 
         g.drawImage(bufferedImage, 0, 0, null);
+        
+        g2d.dispose();
+        g.dispose();
     }
 }

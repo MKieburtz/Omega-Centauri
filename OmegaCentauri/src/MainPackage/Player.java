@@ -9,8 +9,6 @@ import javax.sound.sampled.*;
 public class Player extends Ship {
 
     private String name;
-    private double faceAngle = 360.0; // maybe move to Ship Class
-    private double moveAngle = 0.0;
     private final double baseMaxVel = 5.0;
     private double maxVel = 5.0;
     private final double angleIcrement = 5;
@@ -165,8 +163,8 @@ public class Player extends Ship {
         Point2D.Double ShotStartingVel;
 
         ShotStartingVel =
-                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(moveAngle) * 10,
-                        velocity.y + Calculator.CalcAngleMoveY(moveAngle) * 10);
+                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(moveAngle) * 20,
+                        velocity.y + Calculator.CalcAngleMoveY(moveAngle) * 20);
 
         Point2D.Double ShotStartingPos =
                 new Point2D.Double((middle.x)-4.5, ((middle.y)-5)); //  THIS ONLY WORKS FOR THE CURRENT BULLET IMAGE!!!
@@ -181,11 +179,4 @@ public class Player extends Ship {
         return shots;
     }
     
-    public Point2D.Double getScreenLocation(Point2D.Double cameraLocation)
-    {
-        double x = location.x - cameraLocation.x;
-        double y = location.y - cameraLocation.y;
-        
-        return new Point2D.Double(x, y);
-    }
 }

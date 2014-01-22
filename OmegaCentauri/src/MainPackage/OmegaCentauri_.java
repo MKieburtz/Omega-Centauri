@@ -261,6 +261,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
             canShoot = false;
             ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
+        
+        for (Shot shot : player.getShots())
+        {
+            shot.updateLocation();
+        }
 
     }
     int keyCode;

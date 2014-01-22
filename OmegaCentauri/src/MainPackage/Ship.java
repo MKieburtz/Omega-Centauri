@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.*;
 import java.io.*;
@@ -15,6 +16,8 @@ public abstract class Ship {
     protected int fuel;
     protected int power;
     protected Type type;
+    protected double faceAngle = 360.0; // maybe move to Ship Class
+    protected double moveAngle = 0.0;
     protected Point2D.Double location;
     protected Point2D.Double nextLocation;
     // File -> FileInputStream -> ImageIO -> buffered image
@@ -43,6 +46,31 @@ public abstract class Ship {
         return this.images.get(index);
     }
 
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
+    {
+        AffineTransform original = g2d.getTransform();
+        AffineTransform transform = (AffineTransform)original.clone();
+        
+        transform.setToIdentity();
+        transform.rotate(Math.toRadians(faceAngle),
+                getScreenLocation(cameraLocation).x + activeImage.getWidth() / 2,
+                getScreenLocation(cameraLocation).y + activeImage.getHeight() / 2);
+        
+        transform.translate(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y);
+        
+        transform.scale(1, 1);
+        
+        g2d.drawImage(activeImage, transform, null);
+        
+    }
+    
+    public Point2D.Double getScreenLocation(Point2D.Double cameraLocation)
+    {
+        double x = location.x - cameraLocation.x;
+        double y = location.y - cameraLocation.y;
+        
+        return new Point2D.Double(x, y);
+    }
     
 
 }
