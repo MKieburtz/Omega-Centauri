@@ -107,7 +107,7 @@ public class Renderer {
     public void drawLauncher(Graphics g, BufferedImage startButtonImage) {
         Graphics2D g2d = (Graphics2D) g;
         
-        g2d.drawImage(startButtonImage, 100, 0, null);
+        g2d.drawImage(startButtonImage, 450, 450, null);
         g2d.dispose();
         g.dispose();
     }

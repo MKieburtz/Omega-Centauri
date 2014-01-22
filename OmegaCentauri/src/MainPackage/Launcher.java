@@ -93,7 +93,7 @@ public class Launcher extends JFrame implements MouseListener {
             }
         });
 
-        this.add(goButton);
+        //this.add(goButton);
         this.add(closeButton);
         this.add(resolution1440by900);
         this.add(panel);
@@ -118,13 +118,23 @@ public class Launcher extends JFrame implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent me) {
         /*
-        Rectangle rect = new Rectangle(buttonx, buttony, buttonwidth, buttonheight);
+        PSEUDO CODE: EXAMPLE
+        * Rectangle rect = new Rectangle(buttonx, buttony, buttonwidth, buttonheight);
         if (rect.contains(me.getLocationOnScreen()))
         {
         closeWindow();
         OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer);
         }
         */
+        Rectangle rect = new Rectangle(450,475,100,75);
+        if (rect.contains(new Point(me.getX(),me.getY())))
+        {
+            System.out.println("America");
+            sounds.get(0).start();
+            closeWindow();
+            OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer);
+        }
+        
     }
 
     @Override
