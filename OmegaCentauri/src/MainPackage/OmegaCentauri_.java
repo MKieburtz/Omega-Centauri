@@ -20,7 +20,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private boolean loading = false;
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
-    private final int canShootDelay = 200;
+    private final int canShootDelay = 155;
     
     // TIMING STUFF
     private int averageFPS = 0;
