@@ -93,7 +93,7 @@ public class Launcher extends JFrame implements MouseListener {
             }
         });
 
-        //this.add(goButton);
+        this.add(goButton);
         this.add(closeButton);
         this.add(resolution1440by900);
         this.add(panel);
@@ -126,7 +126,7 @@ public class Launcher extends JFrame implements MouseListener {
         OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer);
         }
         */
-        Rectangle rect = new Rectangle(450,475,100,75);
+        Rectangle rect = new Rectangle(450,475,200,100);
         if (rect.contains(new Point(me.getX(),me.getY())))
         {
             System.out.println("America");
@@ -134,6 +134,7 @@ public class Launcher extends JFrame implements MouseListener {
             closeWindow();
             OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer);
         }
+        System.out.println(me.getX() + "," + me.getY());
         
     }
 
