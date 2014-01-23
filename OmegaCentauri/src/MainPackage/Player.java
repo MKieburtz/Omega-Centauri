@@ -8,17 +8,6 @@ import javax.sound.sampled.*;
 // might refractor to playerShip
 public class Player extends Ship {
 
-    private String name;
-    private final double baseMaxVel = 5.0;
-    private double maxVel = 5.0;
-    private final double angleIcrement = 5;
-    
-    private final double acceleration = .15;
-
-    public String getName() {
-        return this.name;
-    }
-
     public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration) {
         
@@ -133,6 +122,10 @@ public class Player extends Ship {
 
     public ArrayList<Shot> getShots() {
         return shots;
+    }
+    
+    public String getName() {
+        return this.name;
     }
     
 }

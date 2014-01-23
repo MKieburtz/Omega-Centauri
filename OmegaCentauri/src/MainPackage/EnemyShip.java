@@ -4,7 +4,6 @@ package MainPackage;
 
 import java.awt.geom.Point2D;
 
-
 public abstract class EnemyShip extends Ship{
     
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
@@ -20,10 +19,22 @@ public abstract class EnemyShip extends Ship{
         
         // move in the direction of the ship
         
-        double distance = Calculator.getDistance(location, playerLocation);
+        //double distance = Calculator.getDistance(location, playerLocation);
         
         double angle = Calculator.getAngleBetweenTwoPoints(location, playerLocation);
         
+        RotateToPlayer(angle);
         move(true);
+    }
+    
+    protected void RotateToPlayer(double angle)
+    {
+        if (Math.abs(faceAngle - angle) > angleIcrement)
+        {
+            if (faceAngle > angle)
+                faceAngle -= angleIcrement;
+            else if (faceAngle < angle)
+                faceAngle += angleIcrement;
+        }
     }
 }

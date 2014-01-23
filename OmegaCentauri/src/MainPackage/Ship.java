@@ -131,5 +131,22 @@ public abstract class Ship {
         location.x += velocity.x;
         location.y += velocity.y;
     }
+    
+    public void shoot(Point2D.Double cameraLocation) // have to pass the angle for some reason
+    {
+        sounds.get(0).setFramePosition(0);
+        Point2D.Double ShotStartingVel;
 
+        ShotStartingVel =
+                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
+                        velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
+
+        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 3.5,
+                getScreenLocationMiddle(cameraLocation).y - 3.5);
+        
+        sounds.get(0).start();
+        
+        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
+
+    }
 }
