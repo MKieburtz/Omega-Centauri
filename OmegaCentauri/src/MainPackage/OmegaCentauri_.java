@@ -55,7 +55,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         camera = new Camera(width, height);
         loading = true;
 
-        player = new Player(0, 0, MainPackage.Type.Fighter);
+        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 5, .15);
 
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
