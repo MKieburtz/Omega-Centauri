@@ -7,7 +7,7 @@ import javax.sound.sampled.*;
 // @author Michael Kieburtz and Davis Freeman
 // might refractor to playerShip
 public class Player extends Ship {
-
+    
     public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration) {
         
@@ -100,24 +100,6 @@ public class Player extends Ship {
             maxVel *= .98;
         }
         maxVel = 5.0;
-    }
-
-    public void shoot(Point2D.Double cameraLocation) // have to pass the angle for some reason
-    {
-        sounds.get(0).setFramePosition(0);
-        Point2D.Double ShotStartingVel;
-
-        ShotStartingVel =
-                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                        velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
-
-        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 3.5,
-                getScreenLocationMiddle(cameraLocation).y - 3.5);
-        
-        sounds.get(0).start();
-        
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
-
     }
 
     public ArrayList<Shot> getShots() {
