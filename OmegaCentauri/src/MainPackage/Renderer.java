@@ -108,7 +108,6 @@ public class Renderer {
         Graphics2D g2d = (Graphics2D) g;
         
         g2d.drawImage(startButtonImage, 450, 450, null);
-        g2d.drawLine(450,450,650,550);
         g2d.dispose();
         g.dispose();
     }
