@@ -7,20 +7,11 @@ import javax.sound.sampled.*;
 // @author Michael Kieburtz and Davis Freeman
 // might refractor to playerShip
 public class Player extends Ship {
-
-    private String name;
-    private final double baseMaxVel = 5.0;
-    private double maxVel = 5.0;
-    private final double angleIcrement = 5;
-    private Point2D.Double velocity = new Point2D.Double(0, 0);
-    private final double acceleration = .15;
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Player(int x, int y, Type shipType) {
-        super(x, y, shipType);
+    
+    public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+            double angleIncrement, double acceleration) {
+        
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration);
         
         imagePaths.add("src/resources/FighterIdle.png");
         imagePaths.add("src/resources/FighterThrust.png");
@@ -73,52 +64,6 @@ public class Player extends Ship {
         faceAngle = amount;
     }
 
-    public void move(boolean thrusting) {
-
-        moveAngle = faceAngle - 90;
-
-        if (thrusting) {
-            velocity.x += Calculator.CalcAngleMoveX(moveAngle) * acceleration;
-
-            if (velocity.x > maxVel) {
-                velocity.x = maxVel;
-            } else if (velocity.x < -maxVel) {
-                velocity.x = -maxVel;
-            }
-
-            velocity.y += Calculator.CalcAngleMoveY(moveAngle) * acceleration;
-
-            if (velocity.y > maxVel) {
-                velocity.y = maxVel;
-            } else if (velocity.y < -maxVel) {
-                velocity.y = -maxVel;
-            }
-
-        }
-
-        velocity.x *= .99;
-        velocity.y *= .99;
-
-
-        if (!thrusting) {
-            if (Math.abs(velocity.x) < .1) {
-                velocity.x = 0;
-            }
-
-            if (Math.abs(velocity.y) < .1) {
-                velocity.y = 0;
-            }
-        }
-
-        updatePosition();
-
-    }
-
-    private void updatePosition() {
-        location.x += velocity.x;
-        location.y += velocity.y;
-    }
-
     public double getAngle() {
         return faceAngle;
     }
@@ -157,26 +102,12 @@ public class Player extends Ship {
         maxVel = 5.0;
     }
 
-    public void shoot(Point2D.Double cameraLocation) // have to pass the angle for some reason
-    {
-        sounds.get(0).setFramePosition(0);
-        Point2D.Double ShotStartingVel;
-
-        ShotStartingVel =
-                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                        velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
-
-        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 3.5,
-                getScreenLocationMiddle(cameraLocation).y - 3.5);
-        
-        sounds.get(0).start();
-        
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
-
-    }
-
     public ArrayList<Shot> getShots() {
         return shots;
+    }
+    
+    public String getName() {
+        return this.name;
     }
     
 }
