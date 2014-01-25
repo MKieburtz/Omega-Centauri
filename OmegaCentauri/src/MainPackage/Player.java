@@ -50,12 +50,12 @@ public class Player extends Ship {
         if (positive) {
             faceAngle += angleIcrement;
             if (faceAngle > 360) {
-                faceAngle = angleIcrement;
+                faceAngle = faceAngle - 360;
             }
         } else {
             faceAngle -= angleIcrement;
-            if (faceAngle <= 0) {
-                faceAngle = 360 - angleIcrement;
+            if (faceAngle < 0) {
+                faceAngle = 360 + faceAngle;
             }
         }
     }
