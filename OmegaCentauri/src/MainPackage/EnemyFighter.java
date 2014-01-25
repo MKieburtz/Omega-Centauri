@@ -6,6 +6,12 @@ public class EnemyFighter extends EnemyShip{
             double angleIncrement, double acceleration) {
         
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration);
+        
+        imagePaths.add("src/EnemyShip.png");
+        
+        images = mediaLoader.loadImages(imagePaths);
+        
+        activeImage = images.get(0);
     }
     
 }

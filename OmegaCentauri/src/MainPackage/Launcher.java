@@ -124,15 +124,14 @@ public class Launcher extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent me) {
-        Rectangle rect = new Rectangle(450,475,200,100);
+        Rectangle rect = new Rectangle(450,450,200,100);
         
-        if (rect.contains(new Point(me.getX(),me.getY())))
+        if (rect.contains(new Point(me.getX(), me.getY())))
         {
-            System.out.println("America");
             sounds.get(0).start();
             closeWindow();
             OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer);
-        }System.out.println(me.getX() + "," + me.getY());
+        }
     }
 
     @Override
