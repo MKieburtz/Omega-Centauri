@@ -65,7 +65,7 @@ public class Renderer {
         // draw version info'
         g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
         g2d.setColor(Color.WHITE);
-        g2d.drawString("Version: " + version, 890, 10);
+        g2d.drawString("Version: " + version, (camera.getSize().x - 110), 10);
 
         // move and draw the bullets
         try {

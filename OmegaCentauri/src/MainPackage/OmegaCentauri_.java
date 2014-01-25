@@ -9,7 +9,7 @@ import javax.swing.*;
 // @author Michael Kieburtz
 public class OmegaCentauri_ extends Game implements Runnable {
 
-    private String Version = "Dev 0.1.1";
+    private String Version = "Dev 0.1.2";
     
     /*
      * GAME STATE VARIBLES:
@@ -69,6 +69,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private void setUpWindow(int width, int height) {
         setEnabled(true);
         setSize(width, height);
+        this.setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
