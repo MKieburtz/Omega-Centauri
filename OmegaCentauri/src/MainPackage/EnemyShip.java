@@ -21,20 +21,27 @@ public abstract class EnemyShip extends Ship{
         
         //double distance = Calculator.getDistance(location, playerLocation);
         
-        double angle = Calculator.getAngleBetweenTwoPoints(location, playerLocation);
-        
+        double angle = Calculator.getAngleBetweenTwoPoints(playerLocation, location);
+        //System.out.println(angle);
         RotateToPlayer(angle);
         move(true);
     }
     
     protected void RotateToPlayer(double angle)
     {
-        if (Math.abs(faceAngle - angle) > angleIcrement)
+        //System.out.println(faceAngle);
+        //System.err.println(angle);
+        //System.out.println(faceAngle - angle);
+        
+        double targetAngle = 360 - angle;
+                
+        if (Math.abs(targetAngle - faceAngle) > angleIcrement)
         {
-            if (faceAngle > angle)
-                faceAngle -= angleIcrement;
-            else if (faceAngle < angle)
-                faceAngle += angleIcrement;
+            if (faceAngle - 360 > targetAngle)
+                rotate(false);
+            
+            else if (faceAngle - 360 < targetAngle)
+                rotate(true);
         }
     }
 }

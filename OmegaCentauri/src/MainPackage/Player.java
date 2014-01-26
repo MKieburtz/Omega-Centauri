@@ -43,20 +43,6 @@ public class Player extends Ship {
         this.location.y += dy;
     }
 
-    public void rotate(boolean positive) {
-        if (positive) {
-            faceAngle += angleIcrement;
-            if (faceAngle > 360) {
-                faceAngle = faceAngle - 360;
-            }
-        } else {
-            faceAngle -= angleIcrement;
-            if (faceAngle < 0) {
-                faceAngle = 360 + faceAngle;
-            }
-        }
-    }
-
     public void rotate(double amount) {
         faceAngle = amount;
     }
