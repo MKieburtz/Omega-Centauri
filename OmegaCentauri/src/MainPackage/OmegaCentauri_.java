@@ -57,7 +57,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15);
         
-        enemyShips.add(new EnemyFighter(200, 0, Type.Fighter, 5, 5, 4, .15));
+        enemyShips.add(new EnemyFighter(200, 0, Type.Fighter, 5, 5, 5, .15));
         
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
@@ -274,6 +274,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
         for (Shot shot : player.getShots())
         {
             shot.updateLocation();
+        }
+        for (EnemyShip enemyShip : enemyShips)
+        {
+            enemyShip.update(player.getLocation());
         }
 
     }

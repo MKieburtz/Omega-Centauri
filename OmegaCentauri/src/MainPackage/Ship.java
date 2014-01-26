@@ -153,4 +153,21 @@ public abstract class Ship {
     public Point2D.Double getLocation() {
         return location;
     }
+    
+    public void rotate(boolean positive) {
+        if (faceAngle == 360)
+            faceAngle = 0;
+            
+        if (positive) {
+            faceAngle += angleIcrement;
+            if (faceAngle > 360) {
+                faceAngle = faceAngle - 360;
+            }
+        } else {
+            faceAngle -= angleIcrement;
+            if (faceAngle < 0) {
+                faceAngle = 360 + faceAngle;
+            }
+        }
+    }
 }
