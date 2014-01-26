@@ -44,6 +44,8 @@ public class Launcher extends JFrame implements MouseListener {
         this.setSize(width, height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        //this.setBackground(new Color(0,0,0,0));
+        
         this.setLayout(null);
         
         this.addMouseListener(this);
@@ -109,6 +111,8 @@ public class Launcher extends JFrame implements MouseListener {
         public Panel(int width, int height) {
             setSize(width, height);
             setVisible(true);
+            
+            //setOpaque(false);
         }
 
         @Override
