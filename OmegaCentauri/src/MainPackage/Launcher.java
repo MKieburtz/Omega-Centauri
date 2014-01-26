@@ -15,7 +15,7 @@ public class Launcher extends JFrame implements MouseListener {
 
     private int width = 1000;
     private int height = 600;
-    private final Renderer renderer = new Renderer(width, height);
+    private final Renderer renderer = new Renderer();
     private final MediaLoader mediaLoader = new MediaLoader();
     private final ArrayList<String> imagePaths = new ArrayList<String>();
     private final ArrayList<String> soundPaths = new ArrayList<String>();

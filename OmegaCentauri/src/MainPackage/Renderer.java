@@ -9,23 +9,18 @@ import java.util.ArrayList;
 // @author Michael Kieburtz and Davis Freeman
 public class Renderer {
 
-    private File fontFile;
+    private ArrayList<String> fontPaths = new ArrayList<String>();
+    private ArrayList<Float> fontSizes = new ArrayList<Float>();
     private Font fpsFont;
+    private MediaLoader loader;
+    
 
-    public Renderer(int cameraWidth, int cameraHeight) {
-
-        fontFile = new File("src/resources/BlackHoleBB_ital.ttf");
-
-        try {
-            fpsFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(36f);
-        } catch (FontFormatException ex) {
-            System.err.println("Bad font");
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            System.err.println("Bad file");
-            ex.printStackTrace();
-        }
-
+    public Renderer() {
+        loader = new MediaLoader();
+        fontSizes.add(36f);
+        fontPaths.add("src/resources/BlackHoleBB_ital.ttf");
+        
+        fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
     }
 
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
@@ -79,6 +74,7 @@ public class Renderer {
         } catch (java.util.ConcurrentModificationException ex) {
             System.err.println("Concurrent Modification Execption occured");
         }
+        
         // draw the minimap
         g2d.setColor(Color.BLACK);
         g2d.fillRect(794, 372, 200, 200);
