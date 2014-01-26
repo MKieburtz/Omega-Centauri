@@ -15,7 +15,7 @@ public class Launcher extends JFrame implements MouseListener {
 
     private int width = 1000;
     private int height = 600;
-    private final Renderer renderer = new Renderer(width, height);
+    private final Renderer renderer = new Renderer();
     private final MediaLoader mediaLoader = new MediaLoader();
     private final ArrayList<String> imagePaths = new ArrayList<String>();
     private final ArrayList<String> soundPaths = new ArrayList<String>();
@@ -43,6 +43,8 @@ public class Launcher extends JFrame implements MouseListener {
         this.setIconImage(images.get(1));
         this.setSize(width, height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //this.setBackground(new Color(0,0,0,0));
         
         this.setLayout(null);
         
@@ -109,6 +111,8 @@ public class Launcher extends JFrame implements MouseListener {
         public Panel(int width, int height) {
             setSize(width, height);
             setVisible(true);
+            
+            //setOpaque(false);
         }
 
         @Override

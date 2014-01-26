@@ -27,9 +27,6 @@ public class Player extends Ship {
         sounds = mediaLoader.loadSounds(soundPaths);
     }
 
-    public Point2D.Double getLocation() {
-        return location;
-    }
 
     public void moveTo(double x, double y) {
         location.x = x;
