@@ -28,7 +28,7 @@ public class Renderer {
 
     }
 
-    public void drawScreen(Graphics g, Player player, double xRot, double yRot, int fps,
+    public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots, String version) {
 
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
@@ -52,7 +52,7 @@ public class Renderer {
             }
         }
         // draw fps info
-        g2d.drawImage(player.getImage(4), null, 0, 0);
+        g2d.drawImage(ships.get(0).getImage(4), null, 0, 0);
         g2d.setFont(fpsFont.deriveFont(32f));
         g2d.setColor(Color.CYAN);
 
@@ -61,7 +61,7 @@ public class Renderer {
         g2d.setFont(fpsFont.deriveFont(60f));
 
         g2d.drawString("FPS:", 10, 50);
-        
+
         // draw version info'
         g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
         g2d.setColor(Color.WHITE);
@@ -70,12 +70,12 @@ public class Renderer {
         // move and draw the bullets
         try {
             for (Shot shot : shots) {
-                
-            if (camera.insideView(shot.getLocation(), shot.getSize())) {
-                shot.draw(g2d, camera.getLocation());
+
+                if (camera.insideView(shot.getLocation(), shot.getSize())) {
+                    shot.draw(g2d, camera.getLocation());
+                }
             }
-        }
-            
+
         } catch (java.util.ConcurrentModificationException ex) {
             System.err.println("Concurrent Modification Execption occured");
         }
@@ -89,24 +89,41 @@ public class Renderer {
         g2d.setColor(Color.GREEN);
         g2d.drawRect(794, 372, 200, 200);
 
-        g2d.setColor(Color.CYAN);
-        Ellipse2D.Double minimapPlayer = new Ellipse2D.Double(794 + 100 + player.getLocation().x / 100, 372 + 100 + player.getLocation().y / 100, 1, 1);
-        g2d.draw(minimapPlayer);
-        
-        
-        // draw the player
-        
-        player.draw(g2d, camera.getLocation());
-        
+        for (Ship ship : ships) {
+
+            if (ship instanceof Player)
+            {
+                g2d.setColor(Color.CYAN);
+            } else if (ship instanceof EnemyShip)
+            {
+                g2d.setColor(Color.RED);
+            } else 
+            {
+                g2d.setColor(Color.YELLOW);
+            }
+
+            Ellipse2D.Double minimapShip = new Ellipse2D.Double(794 + 100 + ship.getLocation().x / 100, 372 + 100 + ship.getLocation().y / 100, 1, 1);
+            g2d.draw(minimapShip);
+        }
+
+
+
+        // draw the player and enemies
+
+        for (Ship ship : ships)
+        {
+            ship.draw(g2d, camera.getLocation());
+        }
+
         g.drawImage(bufferedImage, 0, 0, null);
-        
+
         g2d.dispose();
         g.dispose();
     }
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage) {
         Graphics2D g2d = (Graphics2D) g;
-        
+
         g2d.drawImage(startButtonImage, 450, 450, null);
         g2d.dispose();
         g.dispose();
@@ -122,7 +139,7 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, width, height);
 
@@ -136,7 +153,7 @@ public class Renderer {
         g2d.drawString("Loading...", width / 2 - 75, height / 2 - 75);
 
         g.drawImage(bufferedImage, 0, 0, null);
-        
+
         g2d.dispose();
         g.dispose();
     }

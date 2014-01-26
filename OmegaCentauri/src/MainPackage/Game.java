@@ -10,6 +10,7 @@ abstract class Game extends JFrame implements KeyListener{
 
     protected ArrayList<EnemyShip> enemyShips = new ArrayList<EnemyShip>();
     protected ArrayList<Ally> allyShips = new ArrayList<Ally>();
+    protected ArrayList<Ship> shipsToDraw = new ArrayList<Ship>();
     protected Player player;
     
     

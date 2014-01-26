@@ -55,8 +55,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
         camera = new Camera(width, height);
         loading = true;
 
-        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 5, .15);
-
+        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15);
+        
+        enemyShips.add(new EnemyFighter(200, 0, Type.Fighter, 5, 5, 4, .15));
+        
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
         middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
@@ -216,9 +218,16 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 }
                 framesDrawn = 0;
             }
-            renderer.drawScreen(panel.getGraphics(), player, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots(), Version);
+            
+            shipsToDraw.add(player);
+            shipsToDraw.addAll(enemyShips);
+            shipsToDraw.addAll(allyShips);
+            
+            renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots(), Version);
             framesDrawn++;
-
+            
+            shipsToDraw.clear();
+            
             afterTime = System.currentTimeMillis();
 
             timeDiff = afterTime - beforeTime;

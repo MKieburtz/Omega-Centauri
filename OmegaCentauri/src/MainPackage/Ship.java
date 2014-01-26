@@ -149,4 +149,8 @@ public abstract class Ship {
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
 
     }
+    
+    public Point2D.Double getLocation() {
+        return location;
+    }
 }

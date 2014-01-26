@@ -7,7 +7,7 @@ public class EnemyFighter extends EnemyShip{
         
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration);
         
-        imagePaths.add("src/EnemyShip.png");
+        imagePaths.add("src/resources/EnemyShip.png");
         
         images = mediaLoader.loadImages(imagePaths);
         
