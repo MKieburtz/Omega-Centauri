@@ -23,18 +23,14 @@ public abstract class Ship {
     protected double baseMaxVel;
     protected double maxVel;
     protected double angleIcrement;
-
     protected double acceleration = .15;
-
     // File -> FileInputStream -> ImageIO -> buffered image
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<Clip> sounds = new ArrayList<Clip>();
-
     protected BufferedImage activeImage;
     protected ArrayList<String> imagePaths = new ArrayList<String>();
     protected ArrayList<String> soundPaths = new ArrayList<String>();
     protected MediaLoader mediaLoader = new MediaLoader();
-
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
 
     public Ship(int x, int y, Type shipType, double baseMaxVel,
@@ -89,9 +85,9 @@ public abstract class Ship {
     }
 
     protected void move(boolean thrusting) {
-        
+
         moveAngle = faceAngle - 90;
-        
+
         if (thrusting) {
             velocity.x += Calculator.CalcAngleMoveX(moveAngle) * acceleration;
 
@@ -109,7 +105,7 @@ public abstract class Ship {
                 velocity.y = -maxVel;
             }
         }
-        
+
         velocity.x *= .99;
         velocity.y *= .99;
 
@@ -126,38 +122,36 @@ public abstract class Ship {
         updatePosition();
 
     }
-    
+
     protected void updatePosition() {
         location.x += velocity.x;
         location.y += velocity.y;
     }
-    
-    public void shoot(Point2D.Double cameraLocation) // have to pass the angle for some reason
-    {
-        sounds.get(0).setFramePosition(0);
-        Point2D.Double ShotStartingVel;
 
-        ShotStartingVel =
+    public void shoot(Point2D.Double cameraLocation) {
+        playSound(0);
+
+        Point2D.Double ShotStartingVel =
                 new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                        velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
+                velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
         Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 3.5,
                 getScreenLocationMiddle(cameraLocation).y - 3.5);
-        
-        sounds.get(0).start();
-        
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle));
+
+
+        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false)); // enemies ovveride
 
     }
-    
+
     public Point2D.Double getLocation() {
         return location;
     }
-    
+
     public void rotate(boolean positive) {
-        if (faceAngle == 360)
+        if (faceAngle == 360) {
             faceAngle = 0;
-            
+        }
+
         if (positive) {
             faceAngle += angleIcrement;
             if (faceAngle > 360) {
@@ -169,5 +163,21 @@ public abstract class Ship {
                 faceAngle = 360 + faceAngle;
             }
         }
+    }
+
+    protected void playSound(int index) {
+        sounds.get(index).setFramePosition(0);
+        // do some random stuff to kill a little time
+        int x;
+        int y;
+        for (x = 0; x < 5; x++) {
+            y = x;
+        }
+
+        sounds.get(index).start();
+    }
+
+    public ArrayList<Shot> getShots() {
+        return shots;
     }
 }

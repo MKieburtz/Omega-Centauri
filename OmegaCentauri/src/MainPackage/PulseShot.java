@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 public class PulseShot extends Shot {
 
     public PulseShot(int damage, int range, boolean animated, Point2D.Double location,
-            Point2D.Double velocity, double angle) {
+            Point2D.Double velocity, double angle, boolean enemy) {
         life = 0;
 
         this.damage = damage;
@@ -20,7 +20,10 @@ public class PulseShot extends Shot {
         this.faceAngle = angle;
         this.maxVel = 5;
         
-        imagePaths.add("src/resources/TestPulse.png");
+        if (enemy)
+            imagePaths.add("src/resources/EnemyShot.png");
+        else
+            imagePaths.add("src/resources/Pulse.png");
         
         loadImages(imagePaths);
 

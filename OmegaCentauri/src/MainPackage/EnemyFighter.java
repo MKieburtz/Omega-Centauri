@@ -11,6 +11,10 @@ public class EnemyFighter extends EnemyShip{
         
         images = mediaLoader.loadImages(imagePaths);
         
+        soundPaths.add("src/resources/Pulse.wav");
+        
+        sounds = mediaLoader.loadSounds(soundPaths);
+        
         activeImage = images.get(0);
     }
     

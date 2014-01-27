@@ -28,6 +28,7 @@ public class Player extends Ship {
     }
 
 
+    
     public void moveTo(double x, double y) {
         location.x = x;
         location.y = y;
@@ -85,9 +86,7 @@ public class Player extends Ship {
         maxVel = 5.0;
     }
 
-    public ArrayList<Shot> getShots() {
-        return shots;
-    }
+
     
     public String getName() {
         return this.name;
