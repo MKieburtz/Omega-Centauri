@@ -223,7 +223,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
             shipsToDraw.addAll(enemyShips);
             shipsToDraw.addAll(allyShips);
             
-            renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y, averageFPS, stars, camera, player.getShots(), Version);
+            for (Ship ship : shipsToDraw)
+                shotsToDraw.addAll(ship.getShots());
+            
+            renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                    averageFPS, stars, camera, shotsToDraw, Version);
             framesDrawn++;
             
             shipsToDraw.clear();
@@ -271,13 +275,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
             ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
         
-        for (Shot shot : player.getShots())
+        for (Shot shot : shotsToDraw)
         {
             shot.updateLocation();
         }
+        
         for (EnemyShip enemyShip : enemyShips)
         {
-            enemyShip.update(player.getLocation());
+            enemyShip.update(player.getLocation(), camera.getLocation());
         }
 
     }
