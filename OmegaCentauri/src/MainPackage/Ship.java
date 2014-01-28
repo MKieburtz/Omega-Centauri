@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import java.util.ArrayList;
 import javax.sound.sampled.Clip;
@@ -19,6 +20,7 @@ public abstract class Ship {
     protected Point2D.Double location;
     protected Point2D.Double nextLocation;
     protected Point2D.Double velocity = new Point2D.Double(0, 0);
+    protected Rectangle2D.Double hitbox;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;
@@ -33,8 +35,8 @@ public abstract class Ship {
     protected MediaLoader mediaLoader = new MediaLoader();
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
 
-    public Ship(int x, int y, Type shipType, double baseMaxVel,
-            double maxVel, double angleIncrement, double acceleration) {
+    public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel, double angleIncrement,
+            double acceleration, Point2D.Double cameraLocation) {
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
@@ -65,7 +67,8 @@ public abstract class Ship {
         transform.translate(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y);
 
         transform.scale(1, 1);
-
+        g2d.setColor(Color.WHITE);
+        g2d.draw(hitbox);
         g2d.drawImage(activeImage, transform, null);
 
     }
@@ -179,5 +182,15 @@ public abstract class Ship {
 
     public ArrayList<Shot> getShots() {
         return shots;
+    }
+    
+    protected void setUpHitbox(Point2D.Double cameraLocation)
+    {
+        try {
+            hitbox = new Rectangle2D.Double(cameraLocation.x - location.x, cameraLocation.y - location.y,
+                activeImage.getWidth(), activeImage.getHeight());
+        } catch (NullPointerException e) {
+            System.err.println("activeimage not initialized!");
+        }
     }
 }

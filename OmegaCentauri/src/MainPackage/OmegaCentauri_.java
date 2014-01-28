@@ -55,14 +55,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
         camera = new Camera(width, height);
         loading = true;
 
-        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15);
+        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation());
         
-        enemyShips.add(new EnemyFighter(200, 0, Type.Fighter, 5, 5, 5, .15));
+        enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 5, 5, .15, camera.getLocation()));
         
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
-        middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
-        middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
+        syncGameStateVaribles();
         setUpWindow(width, height);
 
         loadGame();

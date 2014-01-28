@@ -7,10 +7,10 @@ import java.awt.geom.Point2D;
 public abstract class EnemyShip extends Ship{
     
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration)
+            double angleIncrement, double acceleration, Point2D.Double cameraLocation)
             // delegate assigning images to the types of ships
     {
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration);
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, cameraLocation);
     }
     
     protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation)
@@ -48,7 +48,7 @@ public abstract class EnemyShip extends Ship{
     @Override
     public void shoot(Point2D.Double cameraLocation)
     {
-        playSound(0);
+       // playSound(0);
         
         Point2D.Double ShotStartingVel =
                 new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
