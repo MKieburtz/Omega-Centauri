@@ -9,7 +9,7 @@ import javax.swing.*;
 // @author Michael Kieburtz
 public class OmegaCentauri_ extends Game implements Runnable {
 
-    private String Version = "Dev 0.1.2";
+    private final String Version = "Dev 0.1.2";
     
     /*
      * GAME STATE VARIBLES:
@@ -54,14 +54,17 @@ public class OmegaCentauri_ extends Game implements Runnable {
         this.renderer = renderer;
         camera = new Camera(width, height);
         loading = true;
-
-        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation());
         
+        
+        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation());
         enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 5, 5, .15, camera.getLocation()));
+        syncGameStateVaribles();
+        System.out.println(camera.getLocation());
+        player.setUpHitbox(camera.getLocation());
         
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
-        syncGameStateVaribles();
+        
         setUpWindow(width, height);
 
         loadGame();
@@ -408,8 +411,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private void syncGameStateVaribles() {
-        camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
-        camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
+        camera.move(player.getLocation().x - (getWidth() / 2), player.getLocation().y - (getHeight() / 2));
 
         middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;

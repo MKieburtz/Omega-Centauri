@@ -2,7 +2,6 @@ package MainPackage;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import javax.sound.sampled.*;
 
 // @author Michael Kieburtz and Davis Freeman
 // might refractor to playerShip
@@ -21,9 +20,7 @@ public class Player extends Ship {
         imagePaths.add("src/resources/GoButton.png");
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
-        
-        setUpHitbox(cameraLocation);
-        
+      
         soundPaths.add("src/resources/Pulse.wav");
         
         sounds = mediaLoader.loadSounds(soundPaths);

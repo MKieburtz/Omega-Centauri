@@ -67,8 +67,12 @@ public abstract class Ship {
         transform.translate(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y);
 
         transform.scale(1, 1);
-        g2d.setColor(Color.WHITE);
-        g2d.draw(hitbox);
+        
+        updateHitbox(cameraLocation);
+        
+//        g2d.setColor(Color.WHITE);
+//        g2d.draw(hitbox);
+        
         g2d.drawImage(activeImage, transform, null);
 
     }
@@ -184,13 +188,19 @@ public abstract class Ship {
         return shots;
     }
     
-    protected void setUpHitbox(Point2D.Double cameraLocation)
+    public void setUpHitbox(Point2D.Double cameraLocation)
     {
         try {
-            hitbox = new Rectangle2D.Double(cameraLocation.x - location.x, cameraLocation.y - location.y,
+            hitbox = new Rectangle2D.Double(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y,
                 activeImage.getWidth(), activeImage.getHeight());
         } catch (NullPointerException e) {
             System.err.println("activeimage not initialized!");
         }
+    }
+    
+    protected void updateHitbox(Point2D.Double cameraLocation)
+    {
+        hitbox.x = getScreenLocation(cameraLocation).x;
+        hitbox.y = getScreenLocation(cameraLocation).y;
     }
 }
