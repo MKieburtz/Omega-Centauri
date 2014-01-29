@@ -7,10 +7,10 @@ import java.awt.geom.Point2D;
 public abstract class EnemyShip extends Ship{
     
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration, Point2D.Double cameraLocation)
+            double angleIncrement, double acceleration, int shootingDelay)
             // delegate assigning images to the types of ships
     {
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, cameraLocation);
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay);
     }
     
     protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation)
@@ -26,7 +26,7 @@ public abstract class EnemyShip extends Ship{
         RotateToPlayer(angle);
         move(true);
         
-        if (distance < 500 && Math.abs((360 - angle) - faceAngle) < 45)
+        if (distance < 500 && Math.abs((360 - angle) - faceAngle) < 45 && canshoot)
             shoot(cameraLocation);
     }
     
@@ -59,5 +59,7 @@ public abstract class EnemyShip extends Ship{
         
         
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, true));
+        canshoot = false;
+        shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
     }
 }

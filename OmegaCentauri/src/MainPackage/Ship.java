@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import java.util.ArrayList;
+import java.util.TimerTask;
 import javax.sound.sampled.Clip;
 
 // @author Michael Kieburtz and Davis Freeman
@@ -26,7 +27,9 @@ public abstract class Ship {
     protected double maxVel;
     protected double angleIcrement;
     protected double acceleration = .15;
+    
     // File -> FileInputStream -> ImageIO -> buffered image
+    
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<Clip> sounds = new ArrayList<Clip>();
     protected BufferedImage activeImage;
@@ -34,9 +37,13 @@ public abstract class Ship {
     protected ArrayList<String> soundPaths = new ArrayList<String>();
     protected MediaLoader mediaLoader = new MediaLoader();
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
-
-    public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel, double angleIncrement,
-            double acceleration, Point2D.Double cameraLocation) {
+    
+    protected boolean canshoot = true;
+    protected java.util.Timer shootingTimer;
+    protected int shootingDelay;
+    
+    public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+            double angleIncrement, double acceleration, int shootingDelay) {
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
@@ -45,6 +52,9 @@ public abstract class Ship {
         this.maxVel = maxVel;
         this.angleIcrement = angleIncrement;
         this.acceleration = acceleration;
+        this.shootingDelay = shootingDelay;
+        
+        shootingTimer = new java.util.Timer();
     }
 
     public BufferedImage getImage() {
@@ -147,7 +157,8 @@ public abstract class Ship {
 
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false)); // enemies ovveride
-
+        canshoot = false;
+        shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
     }
 
     public Point2D.Double getLocation() {
@@ -202,5 +213,19 @@ public abstract class Ship {
     {
         hitbox.x = getScreenLocation(cameraLocation).x;
         hitbox.y = getScreenLocation(cameraLocation).y;
+    }
+    
+    public boolean canShoot()
+    {
+        return canshoot;
+    }
+    
+    protected class ShootingTimerTask extends TimerTask
+    {
+        @Override
+        public void run()
+        {
+            canshoot = true;
+        }
     }
 }

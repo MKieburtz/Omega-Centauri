@@ -5,9 +5,10 @@ import java.awt.geom.Point2D;
 public class EnemyFighter extends EnemyShip{
 
     public EnemyFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration, Point2D.Double cameraLocation) {
+            double angleIncrement, double acceleration, Point2D.Double cameraLocation,
+            int shootingDelay) {
         
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, cameraLocation);
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay);
         
         imagePaths.add("src/resources/EnemyShip.png");
         images = mediaLoader.loadImages(imagePaths);

@@ -8,9 +8,10 @@ import java.util.ArrayList;
 public class Player extends Ship {
     // x and y are game positions
     public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration, Point2D.Double cameraLocation) {
+            double angleIncrement, double acceleration, Point2D.Double cameraLocation,
+            int timerDelay) {
         
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, cameraLocation);
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, timerDelay);
         
         imagePaths.add("src/resources/FighterIdle.png");
         imagePaths.add("src/resources/FighterThrust.png");
@@ -20,7 +21,9 @@ public class Player extends Ship {
         imagePaths.add("src/resources/GoButton.png");
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
-      
+        
+        setUpHitbox(cameraLocation);
+        
         soundPaths.add("src/resources/Pulse.wav");
         
         sounds = mediaLoader.loadSounds(soundPaths);

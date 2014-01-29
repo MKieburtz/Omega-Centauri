@@ -9,7 +9,7 @@ import javax.swing.*;
 // @author Michael Kieburtz
 public class OmegaCentauri_ extends Game implements Runnable {
 
-    private final String Version = "Dev 0.1.2";
+    private final String Version = "Dev 1.0.0";
     
     /*
      * GAME STATE VARIBLES:
@@ -20,7 +20,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private boolean loading = false;
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
-    private final int canShootDelay = 155;
     
     // TIMING STUFF
     private int averageFPS = 0;
@@ -29,7 +28,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private long loopTime;
     private int framesDrawn = 1;
     private final int FPSTimerDelay = 1000;
-    private boolean canUpdate, canGetFPS, canShoot = true;
+    private boolean canUpdate, canGetFPS = true;
     
     /*
      * OBJECTS:
@@ -41,7 +40,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
     // TIMERS
     private java.util.Timer FPSTimer = new java.util.Timer();
     private java.util.Timer UpdateTimer = new java.util.Timer();
-    private java.util.Timer ShootingTimer = new java.util.Timer();
     
     /*
      * LOADING VARIBLES:
@@ -56,15 +54,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
         loading = true;
         
         
-        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation());
-        enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 5, 5, .15, camera.getLocation()));
+        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation(), 155);
+        enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 5, 5, .15, camera.getLocation(), 155));
         syncGameStateVaribles();
-        System.out.println(camera.getLocation());
+        
         player.setUpHitbox(camera.getLocation());
         
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
-        
         setUpWindow(width, height);
 
         loadGame();
@@ -186,7 +183,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         // start the timers immeatitely then start the main game thread
         FPSTimer.schedule(new FPSTimer(), 1);
         UpdateTimer.schedule(new UpdateTimer(), 1);
-        ShootingTimer.schedule(new ShootingTimer(), 1);
 
         Thread game = new Thread(this);
         game.start();
@@ -271,10 +267,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
             player.move(false);
         }
 
-        if (shooting && canShoot) {
+        if (shooting && player.canShoot()) {
             player.shoot(camera.getLocation());
-            canShoot = false;
-            ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
         
         for (Shot shot : shotsToDraw)
@@ -432,14 +426,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         public void run() {
             canUpdate = true;
             UpdateTimer.schedule(new UpdateTimer(), UPSDelay);
-        }
-    }
-
-    private class ShootingTimer extends TimerTask {
-
-        @Override
-        public void run() {
-            canShoot = true;
         }
     }
 }
