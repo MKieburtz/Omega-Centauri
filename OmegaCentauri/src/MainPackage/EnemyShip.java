@@ -17,7 +17,8 @@ public abstract class EnemyShip extends Ship{
     {
         // main AI goes here
         
-        // move in the direction of the ship
+        // move in the direction of the ship if it is far away
+        // and shoot if it is in range.
         
         double distance = Calculator.getDistance(location, playerLocation);
         

@@ -163,12 +163,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
             // base case
             if (starChunksLoaded == (100 * 100) * 4) {
                 loading = false;
-                break;
             }
 
             // use active rendering to draw the screen
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
-
+            
+            if (!loading)
+                break;
+            
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ex) {
