@@ -24,10 +24,14 @@ public abstract class EnemyShip extends Ship{
         double angle = Calculator.getAngleBetweenTwoPoints(playerLocation, location);
         //System.out.println(angle);
         RotateToPlayer(angle);
-        move(true);
         
         if (distance < 500 && Math.abs((360 - angle) - faceAngle) < 45 && canshoot)
             shoot(cameraLocation);
+        
+        if (distance < 200)
+            move(false);
+        else
+            move(true);
     }
     
     protected void RotateToPlayer(double angle)
@@ -54,8 +58,9 @@ public abstract class EnemyShip extends Ship{
                 new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
                         velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
-        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 3.5,
-                getScreenLocationMiddle(cameraLocation).y - 3.5);
+        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 5 +
+                Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
+                getScreenLocationMiddle(cameraLocation).y - 10 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
         
         
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, true));

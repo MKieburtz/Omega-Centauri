@@ -152,8 +152,9 @@ public abstract class Ship {
                 new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
                 velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
-        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 3.5,
-                getScreenLocationMiddle(cameraLocation).y - 3.5);
+        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 2.5 +
+                Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
+                getScreenLocationMiddle(cameraLocation).y - 8 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false)); // enemies ovveride

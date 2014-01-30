@@ -55,7 +55,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         
         
         player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation(), 155);
-        enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 5, 5, .15, camera.getLocation(), 155));
+        enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 5, 5, .15, camera.getLocation(), 500));
         syncGameStateVaribles();
         
         player.setUpHitbox(camera.getLocation());
