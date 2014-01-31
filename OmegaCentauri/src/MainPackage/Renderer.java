@@ -3,22 +3,29 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 // @author Michael Kieburtz and Davis Freeman
 public class Renderer {
 
     private ArrayList<String> fontPaths = new ArrayList<String>();
     private ArrayList<Float> fontSizes = new ArrayList<Float>();
+    private ArrayList<String> imagePaths = new ArrayList<String>();
+    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private Font fpsFont;
     private MediaLoader loader;
     
+    private final int FPSLABEL = 0;
 
     public Renderer() {
+        
         loader = new MediaLoader();
         fontSizes.add(36f);
         fontPaths.add("src/resources/BlackHoleBB_ital.ttf");
+        
+        imagePaths.add("src/resources/FPSbackground.png");
+        images = loader.loadImages(imagePaths);
+        
         
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
     }
@@ -47,7 +54,7 @@ public class Renderer {
             }
         }
         // draw fps info
-        g2d.drawImage(ships.get(0).getImage(4), null, 0, 0);
+        g2d.drawImage(images.get(FPSLABEL), null, 0, 0);
         g2d.setFont(fpsFont.deriveFont(32f));
         g2d.setColor(Color.CYAN);
 

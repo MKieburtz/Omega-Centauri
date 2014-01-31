@@ -17,7 +17,6 @@ public class Player extends Ship {
         imagePaths.add("src/resources/FighterThrust.png");
         imagePaths.add("src/resources/FighterLeft.png");
         imagePaths.add("src/resources/FighterRight.png");
-        imagePaths.add("src/resources/FPSbackground.png");
         imagePaths.add("src/resources/FighterIdleShield.png");
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
