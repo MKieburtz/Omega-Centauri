@@ -6,6 +6,12 @@ import java.util.ArrayList;
 // @author Michael Kieburtz and Davis Freeman
 // might refractor to playerShip
 public class Player extends Ship {
+    
+    private final int IDLE = 0;
+    private final int THRUSTING = 1;
+    private final int TURNINGLEFT = 2;
+    private final int TURNINGRIGHT = 3;
+    
     // x and y are game positions
     public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
@@ -66,8 +72,19 @@ public class Player extends Ship {
         return images;
     }
 
-    public void changeImage(int index) {
-        activeImage = images.get(index);
+    public void changeImage(ShipState state) {
+        switch(state)
+        {
+            case Idle:
+            {
+                activeImage = images.get(IDLE);
+                break;
+            }
+            case Thrusting:
+            {
+                activeImage = images.get(THRUSTING);
+            }
+        }
     }
 
     public boolean isMoving() {

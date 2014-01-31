@@ -412,7 +412,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
     }
-
+    
     private class FPSTimer extends TimerTask {
 
         @Override

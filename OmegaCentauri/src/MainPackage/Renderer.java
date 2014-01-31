@@ -26,7 +26,6 @@ public class Renderer {
         imagePaths.add("src/resources/FPSbackground.png");
         images = loader.loadImages(imagePaths);
         
-        
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
     }
 
