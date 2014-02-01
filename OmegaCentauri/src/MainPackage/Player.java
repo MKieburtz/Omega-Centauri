@@ -83,7 +83,19 @@ public class Player extends Ship {
             case Thrusting:
             {
                 activeImage = images.get(THRUSTING);
+                break;
             }
+            case TurningLeft:
+            {
+                activeImage = images.get(TURNINGLEFT);
+                break;
+            }
+            case TurningRight:
+            {
+                activeImage = images.get(TURNINGRIGHT);
+                break;
+            }
+                
         }
     }
 
