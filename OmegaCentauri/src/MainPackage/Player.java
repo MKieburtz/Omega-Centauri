@@ -11,6 +11,8 @@ public class Player extends Ship {
     private final int THRUSTING = 1;
     private final int TURNINGLEFT = 2;
     private final int TURNINGRIGHT = 3;
+    private final int TURNINGLEFTTHRUSTING = 4;
+    private final int TURNINGRIGHTTHRUSTING = 5;
     
     // x and y are game positions
     public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
@@ -23,7 +25,8 @@ public class Player extends Ship {
         imagePaths.add("src/resources/FighterThrust.png");
         imagePaths.add("src/resources/FighterLeft.png");
         imagePaths.add("src/resources/FighterRight.png");
-        imagePaths.add("src/resources/FighterIdleShield.png");
+        imagePaths.add("src/resources/FighterThrustLeft.png");
+        imagePaths.add("src/resources/FighterThrustRight.png");
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
         
@@ -93,6 +96,16 @@ public class Player extends Ship {
             case TurningRight:
             {
                 activeImage = images.get(TURNINGRIGHT);
+                break;
+            }
+            case TurningLeftThrusting:
+            {
+                activeImage = images.get(TURNINGLEFTTHRUSTING);
+                break;
+            }
+            case TurningRightThrusting:
+            {
+                activeImage = images.get(TURNINGRIGHTTHRUSTING);
                 break;
             }
                 

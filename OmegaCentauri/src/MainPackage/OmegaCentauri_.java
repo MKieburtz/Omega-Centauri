@@ -298,30 +298,42 @@ public class OmegaCentauri_ extends Game implements Runnable {
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = true;
-                player.changeImage(ShipState.Thrusting);
+                if (!rotateRight && !rotateLeft)
+                    player.changeImage(ShipState.Thrusting);
+                
+                else if (rotateLeft && !rotateRight)
+                    player.changeImage(ShipState.TurningLeftThrusting);
+                
+                else if (!rotateLeft && rotateRight)
+                    player.changeImage(ShipState.TurningRightThrusting);
             }
             break;
 
             case KeyEvent.VK_D: {
                 rotateRight = true;
-                if (!forward) {
+                if (!forward) 
                     player.changeImage(ShipState.TurningRight);
-                }
-                if (rotateLeft) {
+                
+                else if (forward)
+                    player.changeImage(ShipState.TurningRightThrusting);
+                
+                else if (rotateLeft)
                     player.changeImage(ShipState.Idle);
-                }
-
+               
             }
             break;
 
             case KeyEvent.VK_A: {
                 rotateLeft = true;
-                if (!forward) {
+                if (!forward) 
                     player.changeImage(ShipState.TurningLeft);
-                }
-                if (rotateRight) {
+                
+                else if (forward)
+                    player.changeImage(ShipState.TurningLeftThrusting);
+                
+                else if (rotateRight) 
                     player.changeImage(ShipState.Idle);
-                }
+                
             }
             break;
 
