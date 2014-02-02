@@ -1,7 +1,13 @@
 package MainPackage;
+
+
 import java.awt.*;
 import java.awt.geom.*;
-// @author Michael Kieburtz
+
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
 
 public class Camera {
     private Point size;

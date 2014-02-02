@@ -6,7 +6,11 @@ import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
 
-// @author Michael Kieburtz
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 public class OmegaCentauri_ extends Game implements Runnable {
 
     private final String Version = "Dev 1.0.0";
@@ -49,6 +53,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
 
     public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer) {
+                
         this.renderer = renderer;
         camera = new Camera(width, height);
         loading = true;
@@ -397,7 +402,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         } // end switch
     }
-
+    
     private int getFrameRate() {
 
         return framesDrawn;

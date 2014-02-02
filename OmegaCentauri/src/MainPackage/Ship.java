@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 import javax.sound.sampled.Clip;
 
-// @author Michael Kieburtz and Davis Freeman
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 public abstract class Ship {
 
     protected int hull;

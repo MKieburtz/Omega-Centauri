@@ -5,7 +5,11 @@ import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-// @author Michael Kieburtz and Davis Freeman
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 public class Renderer {
 
     private ArrayList<String> fontPaths = new ArrayList<String>();

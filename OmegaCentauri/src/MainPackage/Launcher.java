@@ -10,7 +10,11 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.sound.sampled.Clip;
 
-// @author Michael Kieburtz and Davis Freeman
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 public class Launcher extends JFrame implements MouseListener {
 
     private int width = 1000;

@@ -5,7 +5,10 @@ import java.awt.event.KeyListener;
 import java.util.*;
 import javax.swing.JFrame;
 
-// @author Michael Kieburtz
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
 abstract class Game extends JFrame implements KeyListener{
 
     protected ArrayList<EnemyShip> enemyShips = new ArrayList<EnemyShip>();

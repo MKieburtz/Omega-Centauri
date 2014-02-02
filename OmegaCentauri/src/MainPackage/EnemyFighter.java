@@ -2,6 +2,11 @@ package MainPackage;
 
 import java.awt.geom.Point2D;
 
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 public class EnemyFighter extends EnemyShip{
 
     public EnemyFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel,

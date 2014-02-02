@@ -3,7 +3,11 @@ package MainPackage;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-// @author Michael Kieburtz and Davis Freeman
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 // might refractor to playerShip
 public class Player extends Ship {
     

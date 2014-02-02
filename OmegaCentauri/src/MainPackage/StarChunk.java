@@ -1,12 +1,14 @@
 package MainPackage;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
-//@author Michael Kieburtz
+
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
 
 public class StarChunk {
     private Point2D.Double location;

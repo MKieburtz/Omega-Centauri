@@ -8,7 +8,9 @@ import java.util.ArrayList;
 
 /**
  * @author Michael Kieburtz
+ * @author Davis Freeman
  */
+
 abstract class Shot {
 
     protected int range;
