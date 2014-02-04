@@ -13,7 +13,7 @@ import javax.swing.*;
 
 public class OmegaCentauri_ extends Game implements Runnable {
 
-    private final String Version = "Dev 1.0.0";
+    private final String Version = "Dev 1.0.1";
     
     /*
      * GAME STATE VARIBLES:
@@ -206,14 +206,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         {
             beforeTime = System.currentTimeMillis();
 
-
-            // process input and preform logic
-            if (canUpdate) {
-                gameUpdate();
-                syncGameStateVaribles();
-                canUpdate = false;
-            }
-
             // draw to buffer and to screen
             if (canGetFPS) {
                 averageFPS = getFrameRate();
@@ -224,6 +216,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 framesDrawn = 0;
             }
             
+            // process input and preform logic
             shipsToDraw.add(player);
             shipsToDraw.addAll(enemyShips);
             shipsToDraw.addAll(allyShips);
@@ -231,11 +224,19 @@ public class OmegaCentauri_ extends Game implements Runnable {
             for (Ship ship : shipsToDraw)
                 shotsToDraw.addAll(ship.getShots());
             
+            if (canUpdate) {
+                gameUpdate();
+                syncGameStateVaribles();
+                canUpdate = false;
+            }
+            
+            // draw screen with active rendering
             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                     averageFPS, stars, camera, shotsToDraw, Version);
             framesDrawn++;
             
             shipsToDraw.clear();
+            shotsToDraw.clear();
             
             afterTime = System.currentTimeMillis();
 
@@ -283,11 +284,22 @@ public class OmegaCentauri_ extends Game implements Runnable {
             shot.updateLocation();
         }
         
+        Iterator<Shot> iterator = shotsToDraw.iterator();
+        
+        while(iterator.hasNext())
+        {
+            Shot shot = iterator.next();
+            
+            if (shot.outsideScreen())
+                iterator.remove();
+        }
+        
         for (EnemyShip enemyShip : enemyShips)
         {
             enemyShip.update(player.getLocation(), camera.getLocation());
         }
-
+        
+        System.out.println(shotsToDraw.size());
     }
     int keyCode;
 
