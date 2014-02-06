@@ -79,4 +79,9 @@ abstract class Shot {
         }
         return true;
     }
+    
+    public boolean imagesLoaded()
+    {
+        return !images.isEmpty();
+    }
 }

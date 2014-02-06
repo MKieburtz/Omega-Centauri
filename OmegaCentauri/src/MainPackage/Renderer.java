@@ -76,9 +76,11 @@ public class Renderer {
         // move and draw the bullets
         try {
             for (Shot shot : shots) {
-
-                if (camera.insideView(shot.getLocation(), shot.getSize())) {
-                    shot.draw(g2d, camera.getLocation());
+                if (shot.imagesLoaded())
+                {
+                    if (camera.insideView(shot.getLocation(), shot.getSize())) {
+                        shot.draw(g2d, camera.getLocation());
+                    }
                 }
             }
 
