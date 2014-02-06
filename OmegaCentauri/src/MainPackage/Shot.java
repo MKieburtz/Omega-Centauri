@@ -5,7 +5,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * @author Michael Kieburtz
@@ -25,11 +24,9 @@ abstract class Shot {
     protected Point2D.Double velocity;
     protected int maxVel;
 
-    boolean enabled = false;
 
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
     {
-        if (!enabled) {
             AffineTransform original = g2d.getTransform();
             AffineTransform transform = (AffineTransform) original.clone();
 
@@ -41,7 +38,6 @@ abstract class Shot {
                     (int) (location.y - cameraLocation.y), null);
 
             g2d.setTransform(original);
-        }
 
     }
 
@@ -50,14 +46,10 @@ abstract class Shot {
     }
 
     protected void updateLocation() {
-        if (!enabled) {
             location.x += velocity.x;
             location.y += velocity.y;
 
-            if (outsideScreen()) {
-                enabled = true;
-            }
-        }
+            
     }
 
     public Point2D.Double getLocation() {

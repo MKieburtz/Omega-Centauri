@@ -77,7 +77,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         setSize(width, height);
         this.setLocationRelativeTo(null);
         setResizable(false);
-        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
         requestFocus();
@@ -85,6 +84,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         setTitle("Omega Centauri");
         add(panel);
         setContentPane(panel);
+        setVisible(true);
     }
 
     private void loadGame() {
@@ -299,7 +299,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
             enemyShip.update(player.getLocation(), camera.getLocation());
         }
         
-        System.out.println(shotsToDraw.size());
     }
     int keyCode;
 

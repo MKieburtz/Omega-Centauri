@@ -42,8 +42,9 @@ public class Renderer {
 
 
         // draw backround rectangle
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0, 1000, 1000);
+        g2d.setColor(Color.BLACK); 
+        
+        g2d.fillRect(0, 0, camera.getSize().x, camera.getSize().y);
 
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
@@ -70,7 +71,7 @@ public class Renderer {
         // draw version info'
         g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
         g2d.setColor(Color.WHITE);
-        g2d.drawString("Version: " + version, (camera.getSize().x - 110), 10);
+        g2d.drawString("Version: " + version, camera.getSize().x - 110, 10);
 
         // move and draw the bullets
         try {
@@ -87,13 +88,13 @@ public class Renderer {
         
         // draw the minimap
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(794, 372, 200, 200);
+        g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
 
         g2d.setColor(new Color(0, 255, 0, 50));
-        g2d.fillRect(794, 372, 200, 200);
+        g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
 
         g2d.setColor(Color.GREEN);
-        g2d.drawRect(794, 372, 200, 200);
+        g2d.drawRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
 
         for (Ship ship : ships) {
 
@@ -108,7 +109,8 @@ public class Renderer {
                 g2d.setColor(Color.YELLOW);
             }
 
-            Ellipse2D.Double minimapShip = new Ellipse2D.Double(794 + 100 + ship.getLocation().x / 100, 372 + 100 + ship.getLocation().y / 100, 1, 1);
+            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + 100 + ship.getLocation().x / 100,
+                    camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
             g2d.draw(minimapShip);
         }
 
