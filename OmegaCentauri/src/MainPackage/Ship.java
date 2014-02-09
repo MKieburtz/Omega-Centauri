@@ -171,9 +171,6 @@ public abstract class Ship {
     }
 
     public void rotate(boolean positive) {
-        if (faceAngle == 360) {
-            faceAngle = 0;
-        }
 
         if (positive) {
             faceAngle += angleIcrement;
