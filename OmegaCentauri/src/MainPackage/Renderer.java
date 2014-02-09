@@ -9,7 +9,6 @@ import java.util.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-
 public class Renderer {
 
     private ArrayList<String> fontPaths = new ArrayList<String>();
@@ -18,18 +17,17 @@ public class Renderer {
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private Font fpsFont;
     private MediaLoader loader;
-    
     private final int FPSLABEL = 0;
 
     public Renderer() {
-        
+
         loader = new MediaLoader();
         fontSizes.add(36f);
         fontPaths.add("src/resources/BlackHoleBB_ital.ttf");
-        
+
         imagePaths.add("src/resources/FPSbackground.png");
         images = loader.loadImages(imagePaths);
-        
+
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
     }
 
@@ -42,8 +40,8 @@ public class Renderer {
 
 
         // draw backround rectangle
-        g2d.setColor(Color.BLACK); 
-        
+        g2d.setColor(Color.BLACK);
+
         g2d.fillRect(0, 0, camera.getSize().x, camera.getSize().y);
 
         // enable anti-aliasing
@@ -74,20 +72,16 @@ public class Renderer {
         g2d.drawString("Version: " + version, camera.getSize().x - 110, 10);
 
         // move and draw the bullets
-        try {
-            for (Shot shot : shots) {
-                if (shot.imagesLoaded())
-                {
-                    if (camera.insideView(shot.getLocation(), shot.getSize())) {
-                        shot.draw(g2d, camera.getLocation());
-                    }
+
+        for (Shot shot : shots) {
+            if (shot.imagesLoaded()) {
+                if (camera.insideView(shot.getLocation(), shot.getSize())) {
+                    shot.draw(g2d, camera.getLocation());
                 }
             }
-
-        } catch (java.util.ConcurrentModificationException ex) {
-            System.err.println("Concurrent Modification Execption occured");
         }
-        
+
+
         // draw the minimap
         g2d.setColor(Color.BLACK);
         g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
@@ -100,14 +94,11 @@ public class Renderer {
 
         for (Ship ship : ships) {
 
-            if (ship instanceof Player)
-            {
+            if (ship instanceof Player) {
                 g2d.setColor(Color.CYAN);
-            } else if (ship instanceof EnemyShip)
-            {
+            } else if (ship instanceof EnemyShip) {
                 g2d.setColor(Color.RED);
-            } else 
-            {
+            } else {
                 g2d.setColor(Color.YELLOW);
             }
 
@@ -120,8 +111,7 @@ public class Renderer {
 
         // draw the player and enemies
 
-        for (Ship ship : ships)
-        {
+        for (Ship ship : ships) {
             ship.draw(g2d, camera.getLocation());
         }
 
