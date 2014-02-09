@@ -35,6 +35,12 @@ public class Camera {
         return this.size;
     }
     
+    public void setSize(int x, int y)
+    {
+        size.x = x;
+        size.y = y;
+    }
+    
     public boolean insideView(Point2D.Double point, Point size)
     {
         // use nested if statements because the conditionals are so long.

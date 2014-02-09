@@ -75,8 +75,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private void setUpWindow(int width, int height) {
         setEnabled(true);
         setSize(width, height);
-        this.setLocationRelativeTo(null);
-        setResizable(false);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
         requestFocus();
@@ -259,6 +258,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private void gameUpdate() {
+        
+        if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight())
+        {
+            camera.setSize(getWidth(), getHeight());
+        }
+        
         if (forward) {
             player.move(true);
         }
