@@ -31,26 +31,36 @@ public abstract class EnemyShip extends Ship {
             shoot(cameraLocation);
         }
 
-        if (distance < 200)
-            move(false);
-        else
-            move(true);
+//        if (distance < 200)
+//            move(false);
+//        else
+//            move(true);
     }
 
     protected void RotateToPlayer(double angle) {
 
         double targetAngle = 360 - angle;
-
-        //System.out.println(targetAngle - faceAngle);
         
-        if (Math.abs(targetAngle - faceAngle) > angleIcrement) {
-            if (targetAngle - faceAngle < 0) {
-                rotate(false);
-            } else {
-                rotate(true);
-            }
+        double dist1 = 0, dist2 = 0;
+        
+        
+        if (faceAngle > targetAngle)
+        {
+                dist1 = 360 - faceAngle + targetAngle;
+                dist2 = faceAngle - targetAngle;
         }
-
+        else
+        {
+                dist1 = 360 - targetAngle + faceAngle;
+                dist2 = targetAngle - faceAngle;
+        }
+        
+        System.out.println(dist1 + " " + dist2);
+        
+        if (dist1 > dist2)
+            rotate(true);
+        else
+            rotate(false);
     }
 
     @Override
