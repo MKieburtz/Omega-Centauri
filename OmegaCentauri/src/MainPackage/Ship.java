@@ -179,7 +179,7 @@ public abstract class Ship {
             }
         } else {
             faceAngle -= angleIcrement;
-            if (faceAngle < 0) {
+            if (faceAngle <= 0) {
                 faceAngle = 360 + faceAngle;
             }
         }

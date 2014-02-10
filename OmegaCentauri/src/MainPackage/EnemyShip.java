@@ -43,19 +43,9 @@ public abstract class EnemyShip extends Ship {
         
         double dist1 = 0, dist2 = 0;
         
+       
         
-        if (faceAngle > targetAngle)
-        {
-                dist1 = 360 - faceAngle + targetAngle;
-                dist2 = faceAngle - targetAngle;
-        }
-        else
-        {
-                dist1 = 360 - targetAngle + faceAngle;
-                dist2 = targetAngle - faceAngle;
-        }
-        
-        System.out.println(dist1 + " " + dist2);
+        System.out.println(dist1 + " " + dist2 + " " + targetAngle + " " + faceAngle);
         
         if (dist1 > dist2)
             rotate(true);

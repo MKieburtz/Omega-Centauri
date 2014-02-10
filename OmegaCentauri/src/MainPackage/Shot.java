@@ -29,9 +29,14 @@ abstract class Shot {
     {
             AffineTransform original = g2d.getTransform();
             AffineTransform transform = (AffineTransform) original.clone();
-
-            transform.rotate(Math.toRadians(faceAngle), getScreenLocationMiddle(cameraLocation).x, getScreenLocationMiddle(cameraLocation).y);
-
+            
+            transform.setToIdentity();
+            
+            transform.rotate(Math.toRadians(faceAngle),
+                    getScreenLocationMiddle(cameraLocation).x,
+                    getScreenLocationMiddle(cameraLocation).y);
+           
+            
             g2d.setTransform(transform);
 
             g2d.drawImage(images.get(0), (int) (location.x - cameraLocation.x),
