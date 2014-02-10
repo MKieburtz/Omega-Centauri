@@ -10,7 +10,11 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.sound.sampled.Clip;
 
-// @author Michael Kieburtz and Davis Freeman
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 public class Launcher extends JFrame implements MouseListener {
 
     private int width = 1000;
@@ -28,6 +32,7 @@ public class Launcher extends JFrame implements MouseListener {
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
+        imagePaths.add("src/resources/LauncherBackground.png");
         images = mediaLoader.loadImages(imagePaths);
         
         soundPaths.add("src/resources/mouseClick.wav");

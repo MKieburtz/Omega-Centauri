@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 
 /**
  * @author Michael Kieburtz
+ * @author Davis Freeman
  */
 public class Calculator { 
     /* 

@@ -1,7 +1,13 @@
 package MainPackage;
+
+
 import java.awt.*;
 import java.awt.geom.*;
-// @author Michael Kieburtz
+
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
 
 public class Camera {
     private Point size;
@@ -27,6 +33,12 @@ public class Camera {
     public Point getSize()
     {
         return this.size;
+    }
+    
+    public void setSize(int x, int y)
+    {
+        size.x = x;
+        size.y = y;
     }
     
     public boolean insideView(Point2D.Double point, Point size)

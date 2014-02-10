@@ -1,12 +1,15 @@
 package MainPackage;
 
-// @author Michael Kieburtz
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
 
 public class Ally extends Ship {
 
     public Ally(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration)
+            double angleIncrement, double acceleration, int shootingDelay)
     {
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration);
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay);
     }
 }

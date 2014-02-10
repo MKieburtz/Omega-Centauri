@@ -3,23 +3,31 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
-// @author Michael Kieburtz and Davis Freeman
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
 public class Renderer {
 
     private ArrayList<String> fontPaths = new ArrayList<String>();
     private ArrayList<Float> fontSizes = new ArrayList<Float>();
+    private ArrayList<String> imagePaths = new ArrayList<String>();
+    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private Font fpsFont;
     private MediaLoader loader;
-    
+    private final int FPSLABEL = 0;
 
     public Renderer() {
+
         loader = new MediaLoader();
         fontSizes.add(36f);
         fontPaths.add("src/resources/BlackHoleBB_ital.ttf");
-        
+
+        imagePaths.add("src/resources/FPSbackground.png");
+        images = loader.loadImages(imagePaths);
+
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
     }
 
@@ -33,7 +41,8 @@ public class Renderer {
 
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0, 1000, 1000);
+
+        g2d.fillRect(0, 0, camera.getSize().x, camera.getSize().y);
 
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
@@ -47,7 +56,7 @@ public class Renderer {
             }
         }
         // draw fps info
-        g2d.drawImage(ships.get(0).getImage(4), null, 0, 0);
+        g2d.drawImage(images.get(FPSLABEL), null, 0, 0);
         g2d.setFont(fpsFont.deriveFont(32f));
         g2d.setColor(Color.CYAN);
 
@@ -60,45 +69,41 @@ public class Renderer {
         // draw version info'
         g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
         g2d.setColor(Color.WHITE);
-        g2d.drawString("Version: " + version, (camera.getSize().x - 110), 10);
+//        g2d.drawString("Version: " + version, camera.getSize().x - 130, 10);
 
         // move and draw the bullets
-        try {
-            for (Shot shot : shots) {
 
+        for (Shot shot : shots) {
+            if (shot.imagesLoaded()) {
                 if (camera.insideView(shot.getLocation(), shot.getSize())) {
                     shot.draw(g2d, camera.getLocation());
                 }
             }
-
-        } catch (java.util.ConcurrentModificationException ex) {
-            System.err.println("Concurrent Modification Execption occured");
         }
-        
+
+
         // draw the minimap
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(794, 372, 200, 200);
+        g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
 
         g2d.setColor(new Color(0, 255, 0, 50));
-        g2d.fillRect(794, 372, 200, 200);
+        g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
 
         g2d.setColor(Color.GREEN);
-        g2d.drawRect(794, 372, 200, 200);
+        g2d.drawRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
 
         for (Ship ship : ships) {
 
-            if (ship instanceof Player)
-            {
+            if (ship instanceof Player) {
                 g2d.setColor(Color.CYAN);
-            } else if (ship instanceof EnemyShip)
-            {
+            } else if (ship instanceof EnemyShip) {
                 g2d.setColor(Color.RED);
-            } else 
-            {
+            } else {
                 g2d.setColor(Color.YELLOW);
             }
 
-            Ellipse2D.Double minimapShip = new Ellipse2D.Double(794 + 100 + ship.getLocation().x / 100, 372 + 100 + ship.getLocation().y / 100, 1, 1);
+            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + 100 + ship.getLocation().x / 100,
+                    camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
             g2d.draw(minimapShip);
         }
 
@@ -106,8 +111,7 @@ public class Renderer {
 
         // draw the player and enemies
 
-        for (Ship ship : ships)
-        {
+        for (Ship ship : ships) {
             ship.draw(g2d, camera.getLocation());
         }
 

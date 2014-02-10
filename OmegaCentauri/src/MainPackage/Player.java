@@ -2,25 +2,39 @@ package MainPackage;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import javax.sound.sampled.*;
 
-// @author Michael Kieburtz and Davis Freeman
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 // might refractor to playerShip
 public class Player extends Ship {
     
+    private final int IDLE = 0;
+    private final int THRUSTING = 1;
+    private final int TURNINGLEFT = 2;
+    private final int TURNINGRIGHT = 3;
+    private final int TURNINGLEFTTHRUSTING = 4;
+    private final int TURNINGRIGHTTHRUSTING = 5;
+    
+    // x and y are game positions
     public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration) {
+            double angleIncrement, double acceleration, Point2D.Double cameraLocation,
+            int timerDelay) {
         
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration);
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, timerDelay);
         
         imagePaths.add("src/resources/FighterIdle.png");
         imagePaths.add("src/resources/FighterThrust.png");
         imagePaths.add("src/resources/FighterLeft.png");
         imagePaths.add("src/resources/FighterRight.png");
-        imagePaths.add("src/resources/FPSbackground.png");
-        imagePaths.add("src/resources/GoButton.png");
+        imagePaths.add("src/resources/FighterThrustLeft.png");
+        imagePaths.add("src/resources/FighterThrustRight.png");
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
+        
+        setUpHitbox(cameraLocation);
         
         soundPaths.add("src/resources/Pulse.wav");
         
@@ -65,8 +79,41 @@ public class Player extends Ship {
         return images;
     }
 
-    public void changeImage(int index) {
-        activeImage = images.get(index);
+    public void changeImage(ShipState state) {
+        switch(state)
+        {
+            case Idle:
+            {
+                activeImage = images.get(IDLE);
+                break;
+            }
+            case Thrusting:
+            {
+                activeImage = images.get(THRUSTING);
+                break;
+            }
+            case TurningLeft:
+            {
+                activeImage = images.get(TURNINGLEFT);
+                break;
+            }
+            case TurningRight:
+            {
+                activeImage = images.get(TURNINGRIGHT);
+                break;
+            }
+            case TurningLeftThrusting:
+            {
+                activeImage = images.get(TURNINGLEFTTHRUSTING);
+                break;
+            }
+            case TurningRightThrusting:
+            {
+                activeImage = images.get(TURNINGRIGHTTHRUSTING);
+                break;
+            }
+                
+        }
     }
 
     public boolean isMoving() {

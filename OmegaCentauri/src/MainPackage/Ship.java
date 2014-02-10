@@ -3,11 +3,17 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import java.util.ArrayList;
+import java.util.TimerTask;
 import javax.sound.sampled.Clip;
 
-// @author Michael Kieburtz and Davis Freeman
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 public abstract class Ship {
 
     protected int hull;
@@ -19,12 +25,15 @@ public abstract class Ship {
     protected Point2D.Double location;
     protected Point2D.Double nextLocation;
     protected Point2D.Double velocity = new Point2D.Double(0, 0);
+    protected Rectangle2D.Double hitbox;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;
     protected double angleIcrement;
     protected double acceleration = .15;
+    
     // File -> FileInputStream -> ImageIO -> buffered image
+    
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<Clip> sounds = new ArrayList<Clip>();
     protected BufferedImage activeImage;
@@ -32,9 +41,13 @@ public abstract class Ship {
     protected ArrayList<String> soundPaths = new ArrayList<String>();
     protected MediaLoader mediaLoader = new MediaLoader();
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
-
-    public Ship(int x, int y, Type shipType, double baseMaxVel,
-            double maxVel, double angleIncrement, double acceleration) {
+    
+    protected boolean canshoot = true;
+    protected java.util.Timer shootingTimer;
+    protected int shootingDelay;
+    
+    public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+            double angleIncrement, double acceleration, int shootingDelay) {
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
@@ -43,6 +56,9 @@ public abstract class Ship {
         this.maxVel = maxVel;
         this.angleIcrement = angleIncrement;
         this.acceleration = acceleration;
+        this.shootingDelay = shootingDelay;
+        
+        shootingTimer = new java.util.Timer();
     }
 
     public BufferedImage getImage() {
@@ -65,7 +81,12 @@ public abstract class Ship {
         transform.translate(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y);
 
         transform.scale(1, 1);
-
+        
+        updateHitbox(cameraLocation);
+        
+//        g2d.setColor(Color.WHITE);
+//        g2d.draw(hitbox);
+        
         g2d.drawImage(activeImage, transform, null);
 
     }
@@ -135,12 +156,14 @@ public abstract class Ship {
                 new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
                 velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
-        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 3.5,
-                getScreenLocationMiddle(cameraLocation).y - 3.5);
+        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 2.5 +
+                Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
+                getScreenLocationMiddle(cameraLocation).y - 8 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false)); // enemies ovveride
-
+        canshoot = false;
+        shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
     }
 
     public Point2D.Double getLocation() {
@@ -148,9 +171,6 @@ public abstract class Ship {
     }
 
     public void rotate(boolean positive) {
-        if (faceAngle == 360) {
-            faceAngle = 0;
-        }
 
         if (positive) {
             faceAngle += angleIcrement;
@@ -159,7 +179,7 @@ public abstract class Ship {
             }
         } else {
             faceAngle -= angleIcrement;
-            if (faceAngle < 0) {
+            if (faceAngle <= 0) {
                 faceAngle = 360 + faceAngle;
             }
         }
@@ -179,5 +199,35 @@ public abstract class Ship {
 
     public ArrayList<Shot> getShots() {
         return shots;
+    }
+    
+    public void setUpHitbox(Point2D.Double cameraLocation)
+    {
+        try {
+            hitbox = new Rectangle2D.Double(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y,
+                activeImage.getWidth(), activeImage.getHeight());
+        } catch (NullPointerException e) {
+            System.err.println("activeimage not initialized!");
+        }
+    }
+    
+    protected void updateHitbox(Point2D.Double cameraLocation)
+    {
+        hitbox.x = getScreenLocation(cameraLocation).x;
+        hitbox.y = getScreenLocation(cameraLocation).y;
+    }
+    
+    public boolean canShoot()
+    {
+        return canshoot;
+    }
+    
+    protected class ShootingTimerTask extends TimerTask
+    {
+        @Override
+        public void run()
+        {
+            canshoot = true;
+        }
     }
 }

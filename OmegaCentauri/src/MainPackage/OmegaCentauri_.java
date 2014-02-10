@@ -6,10 +6,14 @@ import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
 
-// @author Michael Kieburtz
+/**
+ * @author Michael Kieburtz
+ * @author Davis Freeman
+ */
+
 public class OmegaCentauri_ extends Game implements Runnable {
 
-    private String Version = "Dev 0.1.2";
+    private final String Version = "Dev 1.0.1";
     
     /*
      * GAME STATE VARIBLES:
@@ -20,7 +24,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private boolean loading = false;
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
-    private final int canShootDelay = 155;
     
     // TIMING STUFF
     private int averageFPS = 0;
@@ -29,7 +32,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private long loopTime;
     private int framesDrawn = 1;
     private final int FPSTimerDelay = 1000;
-    private boolean canUpdate, canGetFPS, canShoot = true;
+    private boolean canUpdate, canGetFPS = true;
     
     /*
      * OBJECTS:
@@ -41,7 +44,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
     // TIMERS
     private java.util.Timer FPSTimer = new java.util.Timer();
     private java.util.Timer UpdateTimer = new java.util.Timer();
-    private java.util.Timer ShootingTimer = new java.util.Timer();
     
     /*
      * LOADING VARIBLES:
@@ -51,18 +53,20 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
 
     public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer) {
+                
         this.renderer = renderer;
         camera = new Camera(width, height);
         loading = true;
-
-        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15);
         
-        enemyShips.add(new EnemyFighter(200, 0, Type.Fighter, 5, 5, 5, .15));
+        
+        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation(), 155);
+        enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 5, 5, .15, camera.getLocation(), 500));
+        syncGameStateVaribles();
+        
+        player.setUpHitbox(camera.getLocation());
         
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
-        middleOfPlayer.x = camera.getLocation().x - player.getLocation().x + player.getImage().getWidth() / 2;
-        middleOfPlayer.y = camera.getLocation().y - player.getLocation().y + player.getImage().getHeight() / 2;
         setUpWindow(width, height);
 
         loadGame();
@@ -71,9 +75,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private void setUpWindow(int width, int height) {
         setEnabled(true);
         setSize(width, height);
-        this.setLocationRelativeTo(null);
-        setResizable(false);
-        setVisible(true);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
         requestFocus();
@@ -81,6 +83,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         setTitle("Omega Centauri");
         add(panel);
         setContentPane(panel);
+        setVisible(true);
     }
 
     private void loadGame() {
@@ -164,12 +167,14 @@ public class OmegaCentauri_ extends Game implements Runnable {
             // base case
             if (starChunksLoaded == (100 * 100) * 4) {
                 loading = false;
-                break;
             }
 
             // use active rendering to draw the screen
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
-
+            
+            if (!loading)
+                break;
+            
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ex) {
@@ -184,7 +189,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         // start the timers immeatitely then start the main game thread
         FPSTimer.schedule(new FPSTimer(), 1);
         UpdateTimer.schedule(new UpdateTimer(), 1);
-        ShootingTimer.schedule(new ShootingTimer(), 1);
 
         Thread game = new Thread(this);
         game.start();
@@ -201,14 +205,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         {
             beforeTime = System.currentTimeMillis();
 
-
-            // process input and preform logic
-            if (canUpdate) {
-                gameUpdate();
-                syncGameStateVaribles();
-                canUpdate = false;
-            }
-
             // draw to buffer and to screen
             if (canGetFPS) {
                 averageFPS = getFrameRate();
@@ -219,6 +215,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 framesDrawn = 0;
             }
             
+            // process input and preform logic
             shipsToDraw.add(player);
             shipsToDraw.addAll(enemyShips);
             shipsToDraw.addAll(allyShips);
@@ -226,11 +223,19 @@ public class OmegaCentauri_ extends Game implements Runnable {
             for (Ship ship : shipsToDraw)
                 shotsToDraw.addAll(ship.getShots());
             
+            if (canUpdate) {
+                gameUpdate();
+                syncGameStateVaribles();
+                canUpdate = false;
+            }
+            
+            // draw screen with active rendering
             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                     averageFPS, stars, camera, shotsToDraw, Version);
             framesDrawn++;
             
             shipsToDraw.clear();
+            shotsToDraw.clear();
             
             afterTime = System.currentTimeMillis();
 
@@ -253,6 +258,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private void gameUpdate() {
+        
+        if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight())
+        {
+            camera.setSize(getWidth(), getHeight());
+        }
+        
         if (forward) {
             player.move(true);
         }
@@ -269,10 +280,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
             player.move(false);
         }
 
-        if (shooting && canShoot) {
+        if (shooting && player.canShoot()) {
             player.shoot(camera.getLocation());
-            canShoot = false;
-            ShootingTimer.schedule(new ShootingTimer(), canShootDelay);
         }
         
         for (Shot shot : shotsToDraw)
@@ -280,11 +289,21 @@ public class OmegaCentauri_ extends Game implements Runnable {
             shot.updateLocation();
         }
         
+        Iterator<Shot> iterator = shotsToDraw.iterator();
+        
+        while(iterator.hasNext())
+        {
+            Shot shot = iterator.next();
+            
+            if (shot.outsideScreen())
+                iterator.remove();
+        }
+        
         for (EnemyShip enemyShip : enemyShips)
         {
             enemyShip.update(player.getLocation(), camera.getLocation());
         }
-
+        
     }
     int keyCode;
 
@@ -293,37 +312,49 @@ public class OmegaCentauri_ extends Game implements Runnable {
         keyCode = e.getKeyCode();
         /*
          * 0 = stationary
-         * 1 = both thrusters
-         * 2 = right thruster
-         * 3 = left thruster
+         * 1 = thrusting
+         * 2 = turning right
+         * 3 = turning left
          */
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = true;
-                player.changeImage(1);
+                if (!rotateRight && !rotateLeft)
+                    player.changeImage(ShipState.Thrusting);
+                
+                else if (rotateLeft && !rotateRight)
+                    player.changeImage(ShipState.TurningLeftThrusting);
+                
+                else if (!rotateLeft && rotateRight)
+                    player.changeImage(ShipState.TurningRightThrusting);
             }
             break;
 
             case KeyEvent.VK_D: {
                 rotateRight = true;
-                if (!forward) {
-                    player.changeImage(3);
-                }
-                if (rotateLeft) {
-                    player.changeImage(0);
-                }
-
+                if (!forward) 
+                    player.changeImage(ShipState.TurningRight);
+                
+                else if (forward)
+                    player.changeImage(ShipState.TurningRightThrusting);
+                
+                else if (rotateLeft)
+                    player.changeImage(ShipState.Idle);
+               
             }
             break;
 
             case KeyEvent.VK_A: {
                 rotateLeft = true;
-                if (!forward) {
-                    player.changeImage(2);
-                }
-                if (rotateRight) {
-                    player.changeImage(0);
-                }
+                if (!forward) 
+                    player.changeImage(ShipState.TurningLeft);
+                
+                else if (forward)
+                    player.changeImage(ShipState.TurningLeftThrusting);
+                
+                else if (rotateRight) 
+                    player.changeImage(ShipState.Idle);
+                
             }
             break;
 
@@ -347,11 +378,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
         switch (keyCode) {
             case KeyEvent.VK_W: {
                 forward = false;
-                player.changeImage(0);
+                player.changeImage(ShipState.Idle);
                 if (rotateRight) {
-                    player.changeImage(3);
+                    player.changeImage(ShipState.TurningLeft);
                 } else if (rotateLeft) {
-                    player.changeImage(2);
+                    player.changeImage(ShipState.TurningRight);
                 }
             }
             break;
@@ -359,9 +390,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
             case KeyEvent.VK_D: {
                 rotateRight = false;
                 if (!forward) {
-                    player.changeImage(0);
+                    player.changeImage(ShipState.Idle);
                 } else {
-                    player.changeImage(1);
+                    player.changeImage(ShipState.Thrusting);
                 }
             }
             break;
@@ -369,9 +400,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
             case KeyEvent.VK_A: {
                 rotateLeft = false;
                 if (!forward) {
-                    player.changeImage(0);
+                    player.changeImage(ShipState.Idle);
                 } else {
-                    player.changeImage(1);
+                    player.changeImage(ShipState.Thrusting);
                 }
             }
 
@@ -387,7 +418,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         } // end switch
     }
-
+    
     private int getFrameRate() {
 
         return framesDrawn;
@@ -409,13 +440,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private void syncGameStateVaribles() {
-        camera.getLocation().x = player.getLocation().x - (getWidth() / 2);
-        camera.getLocation().y = player.getLocation().y - (getHeight() / 2);
+        camera.move(player.getLocation().x - (getWidth() / 2), player.getLocation().y - (getHeight() / 2));
 
         middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
     }
-
+    
     private class FPSTimer extends TimerTask {
 
         @Override
@@ -431,14 +461,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         public void run() {
             canUpdate = true;
             UpdateTimer.schedule(new UpdateTimer(), UPSDelay);
-        }
-    }
-
-    private class ShootingTimer extends TimerTask {
-
-        @Override
-        public void run() {
-            canShoot = true;
         }
     }
 }
