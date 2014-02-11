@@ -14,7 +14,6 @@ import javax.sound.sampled.Clip;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-
 public class Launcher extends JFrame implements MouseListener {
 
     private int width = 1000;
@@ -26,7 +25,6 @@ public class Launcher extends JFrame implements MouseListener {
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
-    
     private java.util.Timer refreshTimer = new java.util.Timer();
 
     public Launcher() {
@@ -34,10 +32,10 @@ public class Launcher extends JFrame implements MouseListener {
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
         imagePaths.add("src/resources/LauncherBackground.png");
         images = mediaLoader.loadImages(imagePaths);
-        
+
         soundPaths.add("src/resources/mouseClick.wav");
         sounds = mediaLoader.loadSounds(soundPaths);
-        
+
         setUpWindow(width, height);
         addButtons();
     }
@@ -48,22 +46,21 @@ public class Launcher extends JFrame implements MouseListener {
         this.setIconImage(images.get(1));
         this.setSize(width, height);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         //this.setBackground(new Color(0,0,0,0));
-        
+
         this.setLayout(null);
-        
+
         this.addMouseListener(this);
         this.setTitle("Omega Centauri Launcher");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
         this.setVisible(true);
-        
+
     }
 
-    private void addButtons()
-    {
+    private void addButtons() {
         JButton goButton = new JButton("GO!");
         goButton.setVisible(true);
         goButton.setText("GO!");
@@ -112,11 +109,10 @@ public class Launcher extends JFrame implements MouseListener {
 
     public class Panel extends JPanel {
 
-
         public Panel(int width, int height) {
             setSize(width, height);
             setVisible(true);
-            
+
             //setOpaque(false);
         }
 
@@ -133,10 +129,9 @@ public class Launcher extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent me) {
-        Rectangle rect = new Rectangle(450,450,200,100);
-        
-        if (rect.contains(new Point(me.getX(), me.getY())))
-        {
+        Rectangle rect = new Rectangle(450, 450, 200, 100);
+
+        if (rect.contains(new Point(me.getX(), me.getY()))) {
             sounds.get(0).start();
             closeWindow();
             OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer);
@@ -164,12 +159,11 @@ public class Launcher extends JFrame implements MouseListener {
     private void changeResolution(int width, int height) {
         this.setSize(width, height);
     }
-    
-    private class refreshTimer extends TimerTask
-    {
+
+    private class refreshTimer extends TimerTask {
+
         @Override
-        public void run()
-        {
+        public void run() {
             renderer.drawLauncher(panel.getGraphics(), images.get(0)); // use active rendering
             refreshTimer.schedule(new refreshTimer(), 100); // 10 fps
         }

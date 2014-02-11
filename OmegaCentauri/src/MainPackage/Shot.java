@@ -24,25 +24,24 @@ abstract class Shot {
     protected Point2D.Double velocity;
     protected int maxVel;
 
-
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
     {
-            AffineTransform original = g2d.getTransform();
-            AffineTransform transform = (AffineTransform) original.clone();
-            
-            transform.setToIdentity();
-            
-            transform.rotate(Math.toRadians(faceAngle),
-                    getScreenLocationMiddle(cameraLocation).x,
-                    getScreenLocationMiddle(cameraLocation).y);
-           
-            
-            g2d.setTransform(transform);
+        AffineTransform original = g2d.getTransform();
+        AffineTransform transform = (AffineTransform) original.clone();
 
-            g2d.drawImage(images.get(0), (int) (location.x - cameraLocation.x),
-                    (int) (location.y - cameraLocation.y), null);
+        transform.setToIdentity();
 
-            g2d.setTransform(original);
+        transform.rotate(Math.toRadians(faceAngle),
+                getScreenLocationMiddle(cameraLocation).x,
+                getScreenLocationMiddle(cameraLocation).y);
+
+
+        g2d.setTransform(transform);
+
+        g2d.drawImage(images.get(0), (int) (location.x - cameraLocation.x),
+                (int) (location.y - cameraLocation.y), null);
+
+        g2d.setTransform(original);
 
     }
 
@@ -51,10 +50,10 @@ abstract class Shot {
     }
 
     protected void updateLocation() {
-            location.x += velocity.x;
-            location.y += velocity.y;
+        location.x += velocity.x;
+        location.y += velocity.y;
 
-            
+
     }
 
     public Point2D.Double getLocation() {
@@ -84,9 +83,8 @@ abstract class Shot {
         }
         return true;
     }
-    
-    public boolean imagesLoaded()
-    {
+
+    public boolean imagesLoaded() {
         return !images.isEmpty();
     }
 }
