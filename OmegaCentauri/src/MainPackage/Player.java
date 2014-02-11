@@ -126,4 +126,13 @@ public class Player extends Ship {
     public String getName() {
         return this.name;
     }
+    
+    public void purgeShots()
+    {
+        for (int i = shots.size() - 1; i > -1; i--)
+        {
+            if (shots.get(i).outsideScreen())
+                shots.remove(i);
+        }
+    }
 }
