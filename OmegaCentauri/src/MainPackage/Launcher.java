@@ -30,7 +30,7 @@ public class Launcher extends JFrame implements MouseListener {
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
-        imagePaths.add("src/resources/LauncherBackground.png");
+        imagePaths.add("src/resources/LauncherBackground.jpg");
         images = mediaLoader.loadImages(imagePaths);
 
         soundPaths.add("src/resources/mouseClick.wav");
