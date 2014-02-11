@@ -88,9 +88,9 @@ public class Launcher extends JFrame implements MouseListener {
         });
 
         JButton resolution1440by900 = new JButton("Resoluton: 1440 x 900");
-        resolution1440by900.setText("Resolution: 1440 x 900");
+        resolution1440by900.setText("1440 x 900");
         resolution1440by900.setLocation(0, 110);
-        resolution1440by900.setSize(200, 50);
+        resolution1440by900.setSize(100, 50);
         resolution1440by900.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,7 +164,7 @@ public class Launcher extends JFrame implements MouseListener {
 
         @Override
         public void run() {
-            renderer.drawLauncher(panel.getGraphics(), images.get(0)); // use active rendering
+            renderer.drawLauncher(panel.getGraphics(), images.get(0),images.get(2)); // use active rendering
             refreshTimer.schedule(new refreshTimer(), 100); // 10 fps
         }
     }
