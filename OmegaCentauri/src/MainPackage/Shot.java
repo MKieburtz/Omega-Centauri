@@ -35,7 +35,7 @@ abstract class Shot {
                 getScreenLocationMiddle(cameraLocation).x,
                 getScreenLocationMiddle(cameraLocation).y);
 
-
+        
         g2d.setTransform(transform);
 
         g2d.drawImage(images.get(0), (int) (location.x - cameraLocation.x),

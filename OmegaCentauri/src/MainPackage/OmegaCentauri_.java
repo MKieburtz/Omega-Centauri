@@ -269,11 +269,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
         if (rotateLeft) {
             player.rotate(false); // negitive
         }
-
         if (!forward && player.isMoving()) {
             player.move(false);
         }
-
         if (shooting && player.canShoot()) {
             player.shoot(camera.getLocation());
         }
@@ -283,10 +281,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
         for (EnemyShip enemyShip : enemyShips) {
             enemyShip.update(player.getLocation(), camera.getLocation());
         }
-        System.err.println(player.getShots().size());
         if (player.getShots().size() > 0)
             player.purgeShots();
-        System.out.println(player.getShots().size());
     }
     int keyCode;
 
