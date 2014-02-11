@@ -23,7 +23,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
     // TIMING STUFF
     private int averageFPS = 0;
-    private final int UPS = 60;
+    private final int UPS = 80;
     private final int UPSDelay = 1000 / UPS;
     private long loopTime;
     private int framesDrawn = 1;
@@ -277,25 +277,16 @@ public class OmegaCentauri_ extends Game implements Runnable {
         if (shooting && player.canShoot()) {
             player.shoot(camera.getLocation());
         }
-
         for (Shot shot : shotsToDraw) {
             shot.updateLocation();
         }
-
-        Iterator<Shot> iterator = shotsToDraw.iterator();
-
-        while (iterator.hasNext()) {
-            Shot shot = iterator.next();
-
-            if (shot.outsideScreen()) {
-                iterator.remove();
-            }
-        }
-
         for (EnemyShip enemyShip : enemyShips) {
             enemyShip.update(player.getLocation(), camera.getLocation());
         }
-
+        System.err.println(player.getShots().size());
+        if (player.getShots().size() > 0)
+            player.purgeShots();
+        System.out.println(player.getShots().size());
     }
     int keyCode;
 

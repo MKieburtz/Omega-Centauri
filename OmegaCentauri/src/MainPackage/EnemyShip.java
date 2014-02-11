@@ -68,7 +68,7 @@ public abstract class EnemyShip extends Ship {
         }
         
         
-        System.out.println(dist1 + " " + dist2 + " " + targetAngle + " " + faceAngle);
+        //System.out.println(dist1 + " " + dist2 + " " + targetAngle + " " + faceAngle);
 
         if (dist1 < dist2) {
             if (dist1 > angleIcrement) {
