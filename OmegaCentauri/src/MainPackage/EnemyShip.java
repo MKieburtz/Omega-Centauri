@@ -31,10 +31,10 @@ public abstract class EnemyShip extends Ship {
             shoot(cameraLocation);
         }
 
-        if (distance < 200) {
-            move(false);
+        if (distance > 200) {
+            move(ShipState.Thrusting);
         } else {
-            move(true);
+            move(ShipState.Drifting);
         }
     }
 
@@ -72,11 +72,11 @@ public abstract class EnemyShip extends Ship {
 
         if (dist1 < dist2) {
             if (dist1 > angleIcrement) {
-                rotate(true);
+                rotate(ShipState.TurningRight);
             }
         } else {
             if (dist2 > angleIcrement) {
-                rotate(false);
+                rotate(ShipState.TurningLeft);
             }
         }
     }
