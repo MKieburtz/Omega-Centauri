@@ -19,7 +19,7 @@ public abstract class Ship {
     protected int fuel;
     protected int power;
     protected Type type;
-    protected double faceAngle = 360.0; // maybe move to Ship Class
+    protected double faceAngle = 360.0;
     protected double moveAngle = 0.0;
     protected Point2D.Double location;
     protected Point2D.Double nextLocation;
@@ -101,11 +101,11 @@ public abstract class Ship {
         return new Point2D.Double(x, y);
     }
 
-    protected void move(boolean thrusting) {
+    protected void move(ShipState state) {
 
         moveAngle = faceAngle - 90;
 
-        if (thrusting) {
+        if (state == ShipState.Thrusting) {
             velocity.x += Calculator.CalcAngleMoveX(moveAngle) * acceleration;
 
             if (velocity.x > maxVel) {
@@ -126,7 +126,7 @@ public abstract class Ship {
         velocity.x *= .99;
         velocity.y *= .99;
 
-        if (!thrusting) {
+        if (state == ShipState.Drifting) {
             if (Math.abs(velocity.x) < .1) {
                 velocity.x = 0;
             }
@@ -166,14 +166,14 @@ public abstract class Ship {
         return location;
     }
 
-    public void rotate(boolean positive) {
+    public void rotate(ShipState state) {
 
-        if (positive) {
+        if (state == ShipState.TurningRight) {
             faceAngle += angleIcrement;
             if (faceAngle > 360) {
                 faceAngle = faceAngle - 360;
             }
-        } else {
+        } else if (state == ShipState.TurningLeft){
             faceAngle -= angleIcrement;
             if (faceAngle <= 0) {
                 faceAngle = 360 + faceAngle;

@@ -8,6 +8,7 @@ public enum ShipState {
 
     Idle,
     Thrusting,
+    Drifting,
     TurningRight,
     TurningLeft,
     DriftTurningRight,

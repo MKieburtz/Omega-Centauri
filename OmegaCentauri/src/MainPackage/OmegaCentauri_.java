@@ -259,18 +259,17 @@ public class OmegaCentauri_ extends Game implements Runnable {
         }
 
         if (forward) {
-            player.move(true);
+            player.move(ShipState.Thrusting);
         }
         if (rotateRight) {
 
-            player.rotate(true); // positive
+            player.rotate(ShipState.TurningRight);
         }
-
         if (rotateLeft) {
-            player.rotate(false); // negitive
+            player.rotate(ShipState.TurningLeft);
         }
         if (!forward && player.isMoving()) {
-            player.move(false);
+            player.move(ShipState.Drifting);
         }
         if (shooting && player.canShoot()) {
             player.shoot(camera.getLocation());
