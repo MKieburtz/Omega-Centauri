@@ -9,9 +9,9 @@ import java.awt.geom.Point2D;
 public abstract class EnemyShip extends Ship {
 
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration, int shootingDelay) // delegate assigning images to the types of ships
+            double angleIncrement, double acceleration, int shootingDelay, int health) // delegate assigning images to the types of ships
     {
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay);
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
     }
 
     protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation) {

@@ -25,6 +25,7 @@ public abstract class Ship {
     protected Point2D.Double nextLocation;
     protected Point2D.Double velocity = new Point2D.Double(0, 0);
     protected Rectangle2D.Double hitbox;
+    protected int health = 100;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;
@@ -43,7 +44,7 @@ public abstract class Ship {
     protected int shootingDelay;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration, int shootingDelay) {
+            double angleIncrement, double acceleration, int shootingDelay, int health) {
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
@@ -53,6 +54,7 @@ public abstract class Ship {
         this.angleIcrement = angleIncrement;
         this.acceleration = acceleration;
         this.shootingDelay = shootingDelay;
+        this.health = health;
 
         shootingTimer = new java.util.Timer();
     }

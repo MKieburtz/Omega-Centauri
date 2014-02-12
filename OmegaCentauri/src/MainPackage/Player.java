@@ -20,9 +20,9 @@ public class Player extends Ship {
     // x and y are game positions
     public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
-            int timerDelay) {
+            int timerDelay, int health) {
 
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, timerDelay);
+        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, timerDelay, health);
 
         imagePaths.add("src/resources/FighterIdle.png");
         imagePaths.add("src/resources/FighterThrust.png");
