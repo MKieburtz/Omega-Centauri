@@ -94,7 +94,7 @@ public abstract class EnemyShip extends Ship {
                 getScreenLocationMiddle(cameraLocation).y - 10 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
 
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, true));
+        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, true, cameraLocation));
         canshoot = false;
         shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
     }

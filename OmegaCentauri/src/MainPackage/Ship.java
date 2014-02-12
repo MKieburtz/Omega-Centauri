@@ -82,8 +82,8 @@ public abstract class Ship {
 
         updateHitbox(cameraLocation);
 
-//        g2d.setColor(Color.WHITE);
-//        g2d.draw(hitbox);
+        g2d.setColor(Color.WHITE);
+        g2d.draw(hitbox);
 
         g2d.drawImage(activeImage, transform, null);
 
@@ -159,7 +159,7 @@ public abstract class Ship {
                 getScreenLocationMiddle(cameraLocation).y - 8 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
 
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false)); // enemies ovveride
+        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false, cameraLocation)); // enemies ovveride
         canshoot = false;
         shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
     }

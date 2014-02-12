@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ abstract class Shot {
     protected double faceAngle;
     protected Point2D.Double velocity;
     protected int maxVel;
+    protected Rectangle2D.Double hitbox;
 
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
     {
@@ -41,6 +43,9 @@ abstract class Shot {
         g2d.drawImage(images.get(0), (int) (location.x - cameraLocation.x),
                 (int) (location.y - cameraLocation.y), null);
 
+        updateHitbox(cameraLocation);
+        g2d.draw(hitbox);
+        
         g2d.setTransform(original);
 
     }
@@ -54,6 +59,27 @@ abstract class Shot {
         location.y += velocity.y;
 
 
+    }
+    
+    public Point2D.Double getScreenLocation(Point2D.Double cameraLocation) {
+        double x = location.x - cameraLocation.x;
+        double y = location.y - cameraLocation.y;
+
+        return new Point2D.Double(x, y);
+    }
+    
+    public void setUpHitbox(Point2D.Double cameraLocation) {
+        try {
+            hitbox = new Rectangle2D.Double(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y,
+                    images.get(0).getWidth(), images.get(0).getHeight());
+        } catch (NullPointerException e) {
+            System.err.println("activeimage not initialized!");
+        }
+    }
+
+    protected void updateHitbox(Point2D.Double cameraLocation) {
+        hitbox.x = getScreenLocation(cameraLocation).x;
+        hitbox.y = getScreenLocation(cameraLocation).y;
     }
 
     public Point2D.Double getLocation() {

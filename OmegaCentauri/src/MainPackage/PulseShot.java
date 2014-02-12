@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 public class PulseShot extends Shot {
 
     public PulseShot(int damage, int range, boolean animated, Point2D.Double location,
-            Point2D.Double velocity, double angle, boolean enemy) {
+            Point2D.Double velocity, double angle, boolean enemy, Point2D.Double cameraLocation) {
         life = 0;
 
         this.damage = damage;
@@ -28,6 +28,7 @@ public class PulseShot extends Shot {
         }
 
         loadImages(imagePaths);
-
+        
+        setUpHitbox(cameraLocation);
     }
 }
