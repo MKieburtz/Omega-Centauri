@@ -81,6 +81,11 @@ abstract class Shot {
         hitbox.x = getScreenLocation(cameraLocation).x;
         hitbox.y = getScreenLocation(cameraLocation).y;
     }
+    
+    public Rectangle2D.Double returnHitbox()
+    {
+        return hitbox;
+    }
 
     public Point2D.Double getLocation() {
         return location;

@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Michael Kieburtz
@@ -40,4 +41,9 @@ public class Calculator {
 
         return angle;
     }
+    
+    public static boolean collisionCheck(Rectangle2D.Double hitbox1,Rectangle2D.Double hitbox2)
+        {
+            return hitbox1.intersects(hitbox2);
+        }
 }
