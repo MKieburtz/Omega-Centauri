@@ -14,9 +14,6 @@ public class Calculator {
      * calculate stuff
      */
 
-    private Calculator() {
-        // never used because all methods will be static
-    }
 
     public static double CalcAngleMoveX(double angle) {
         return Math.cos(Math.toRadians(angle));
@@ -43,7 +40,31 @@ public class Calculator {
     }
     
     public static boolean collisionCheck(Rectangle2D.Double hitbox1,Rectangle2D.Double hitbox2)
-        {
+    {
             return hitbox1.intersects(hitbox2);
+    }
+    
+    public static double[] getDistancesBetweenAngles(double angle1, double angle2)
+    {
+        if (angle1 > angle2) {
+            if (angle1 + 180 >= 360) // CASE 1
+            {
+                return new double[] { Math.abs((360 - angle1) + angle2), Math.abs(angle1 - angle2) };
+            } else if (angle1 + 180 < 360) // CASE 2
+            {
+                return new double[] { Math.abs((360 - angle2) + angle1), Math.abs(angle2 - angle1) };
+            }
+        } else if (angle2 > angle1) {
+            if (angle2 + 180 >= 360) // CASE 3
+            {
+                return new double[] { Math.abs(angle2 - angle1), Math.abs(360 - (angle2 - angle1)) };
+            } else if (angle2 + 180 < 360) // CASE 4
+            {
+                return new double[] { Math.abs(angle2 - angle1), Math.abs(360 - (angle2 - angle1)) };
+            }
         }
+        
+        System.err.println("ERROR!");
+        return null;
+    }
 }
