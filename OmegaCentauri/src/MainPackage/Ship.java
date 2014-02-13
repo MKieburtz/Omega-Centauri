@@ -42,13 +42,16 @@ public abstract class Ship {
     protected boolean canshoot = true;
     protected java.util.Timer shootingTimer;
     protected int shootingDelay;
+    
+    protected Shield shield;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) {
+        
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
-
+        
         this.baseMaxVel = baseMaxVel;
         this.maxVel = maxVel;
         this.angleIcrement = angleIncrement;

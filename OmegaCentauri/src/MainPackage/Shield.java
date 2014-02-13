@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -9,7 +10,7 @@ import java.util.*;
 /**
  * @author Michael Kieburtz
  */
-abstract class Shield {
+public class Shield {
 
     private ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
@@ -17,11 +18,13 @@ abstract class Shield {
     private double angle;
     private boolean active = false;
     private int opacity = 100;
-    private Point2D.Double relitiveDistance;
-
-    public Shield(double angle, Point2D.Double relitiveDistance) {
+    private Point2D.Double screenLocationMiddle = new Point2D.Double();
+    private Ellipse2D.Double shield;
+    
+    public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation) {
         this.angle = angle;
-        this.relitiveDistance = relitiveDistance;
+        shield = new Ellipse2D.Double(location.x, location.y, 30, 30);
+        screenLocationMiddle = Calculator.getScreenLocationMiddle(cameraLocation, location, shield.getWidth(), shield.getHeight());
     }
 
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation) {
@@ -29,22 +32,8 @@ abstract class Shield {
 
         AffineTransform transform = (AffineTransform) original.clone();
 
-        transform.rotate(Math.toRadians(angle), getScreenLocationMiddle(cameraLocation, instanceLocation).x,
-                getScreenLocationMiddle(cameraLocation, instanceLocation).y);
-
-        transform.translate(getScreenLocation(cameraLocation, instanceLocation).x,
-                getScreenLocation(cameraLocation, instanceLocation).y);
-    }
-
-    protected Point2D.Double getScreenLocationMiddle(Point2D.Double cameraLocation, Point2D.Double location) {
-        return new Point2D.Double((location.x - cameraLocation.x) + (images.get(0).getWidth() / 2),
-                (location.y - cameraLocation.y) + (images.get(0).getHeight() / 2));
-    }
-
-    protected Point2D.Double getScreenLocation(Point2D.Double cameraLocation, Point2D.Double location) {
-        double x = location.x - cameraLocation.x;
-        double y = location.y - cameraLocation.y;
-
-        return new Point2D.Double(x, y);
-    }
+        transform.rotate(Math.toRadians(angle), screenLocationMiddle.x, screenLocationMiddle.y);
+       
+        transform.translate(screenLocationMiddle.x - shield.getWidth(), screenLocationMiddle.y - shield.getHeight());
+    }    
 }

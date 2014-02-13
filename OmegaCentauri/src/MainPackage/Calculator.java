@@ -67,4 +67,19 @@ public class Calculator {
         System.err.println("ERROR!");
         return null;
     }
+    
+    public static Point2D.Double getScreenLocation(Point2D.Double cameraLocation, Point2D.Double location) {
+        double x = location.x - cameraLocation.x;
+        double y = location.y - cameraLocation.y;
+
+        return new Point2D.Double(x, y);
+    }
+    
+    public static Point2D.Double getScreenLocationMiddle(Point2D.Double cameraLocation, Point2D.Double location,
+            double imageWidth, double imageHeight) {
+        double x = location.x - cameraLocation.x + (imageWidth / 2);
+        double y = location.y - cameraLocation.y + (imageHeight / 2);
+        
+        return new Point2D.Double(x, y);
+    }
 }
