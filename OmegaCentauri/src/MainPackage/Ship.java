@@ -13,7 +13,7 @@ import javax.sound.sampled.Clip;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public abstract class Ship {
+public abstract class Ship implements ICollisionListener {
 
     protected int hull;
     protected int fuel;
@@ -214,6 +214,12 @@ public abstract class Ship {
     protected void updateHitbox(Point2D.Double cameraLocation) {
         hitbox.x = getScreenLocation(cameraLocation).x;
         hitbox.y = getScreenLocation(cameraLocation).y;
+    }
+    
+    @Override
+    public void CollisionEvent()
+    {
+        System.out.println("Collision happened!");
     }
     
     public Rectangle2D.Double returnHitbox()

@@ -35,6 +35,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private Camera camera;
+    private ArrayList<ICollisionListener> collisionListeners = new ArrayList<ICollisionListener>();
+    
     // TIMERS
     private java.util.Timer FPSTimer = new java.util.Timer();
     private java.util.Timer UpdateTimer = new java.util.Timer();
@@ -57,7 +59,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
         syncGameStateVaribles();
 
         player.setUpHitbox(camera.getLocation());
-
+        
+        collisionListeners.add(player);
+        
+        for (EnemyShip enemy : enemyShips)
+            collisionListeners.add(enemy);
+        
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
         setUpWindow(width, height);
@@ -289,7 +296,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
         {
             if (Calculator.collisionCheck(player.returnHitbox(), shot.returnHitbox()))
             {
-                System.out.println("UR BAD");
+                //System.out.println("UR BAD");
+                for (ICollisionListener collisionListener : collisionListeners)
+                    collisionListener.CollisionEvent();
             }
         }
     }
