@@ -12,7 +12,7 @@ import javax.swing.*;
  */
 public class OmegaCentauri_ extends Game implements Runnable {
 
-    private final String Version = "Dev 1.0.1";
+    private final String Version = "Dev 1.0.2";
     /*
      * GAME STATE VARIBLES:
      */
@@ -298,7 +298,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             {
                 //System.out.println("UR BAD");
                 for (ICollisionListener collisionListener : collisionListeners)
-                    collisionListener.CollisionEvent();
+                    collisionListener.CollisionEvent(player, shot);
             }
         }
     }

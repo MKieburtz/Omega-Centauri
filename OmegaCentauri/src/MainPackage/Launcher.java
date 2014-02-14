@@ -56,6 +56,7 @@ public class Launcher extends JFrame implements MouseListener {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setUndecorated(true);
+        this.requestFocus();
         this.setVisible(true);
 
     }

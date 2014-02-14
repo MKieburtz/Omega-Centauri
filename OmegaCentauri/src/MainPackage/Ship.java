@@ -188,19 +188,11 @@ public abstract class Ship implements ICollisionListener {
 
     protected void playSound(int index) {
         sounds.get(index).setFramePosition(0);
-        // do some random stuff to kill a little time
-        int x;
-        int y;
-        for (x = 0; x < 5; x++) {
-            y = x;
-        }
-
+        
         sounds.get(index).start();
     }
 
-    public ArrayList<Shot> getShots() {
-        return shots;
-    }
+    
 
     public void setUpHitbox(Point2D.Double cameraLocation) {
         try {
@@ -216,8 +208,12 @@ public abstract class Ship implements ICollisionListener {
         hitbox.y = getScreenLocation(cameraLocation).y;
     }
     
+    public ArrayList<Shot> getShots() {
+        return shots;
+    }
+    
     @Override
-    public void CollisionEvent()
+    public void CollisionEvent(Object object1, Object object2)
     {
         System.out.println("Collision happened!");
     }
