@@ -42,16 +42,15 @@ public abstract class Ship implements ICollisionListener {
     protected boolean canshoot = true;
     protected java.util.Timer shootingTimer;
     protected int shootingDelay;
-    
     protected Shield shield;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) {
-        
+
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
-        
+
         this.baseMaxVel = baseMaxVel;
         this.maxVel = maxVel;
         this.angleIcrement = angleIncrement;
@@ -178,7 +177,7 @@ public abstract class Ship implements ICollisionListener {
             if (faceAngle > 360) {
                 faceAngle = faceAngle - 360;
             }
-        } else if (state == ShipState.TurningLeft){
+        } else if (state == ShipState.TurningLeft) {
             faceAngle -= angleIcrement;
             if (faceAngle <= 0) {
                 faceAngle = 360 + faceAngle;
@@ -188,11 +187,9 @@ public abstract class Ship implements ICollisionListener {
 
     protected void playSound(int index) {
         sounds.get(index).setFramePosition(0);
-        
+
         sounds.get(index).start();
     }
-
-    
 
     public void setUpHitbox(Point2D.Double cameraLocation) {
         try {
@@ -207,19 +204,42 @@ public abstract class Ship implements ICollisionListener {
         hitbox.x = getScreenLocation(cameraLocation).x;
         hitbox.y = getScreenLocation(cameraLocation).y;
     }
-    
+
     public ArrayList<Shot> getShots() {
         return shots;
     }
-    
+
     @Override
-    public void CollisionEvent(Object object1, Object object2)
-    {
-        System.out.println("Collision happened!");
+    public void CollisionEvent(Object object1, Object object2) {
+        Shot collisionShot = null;
+        
+        // this is complicated therefore it will be explained
+        
+        // first check if there is a shot between object1 and object2
+        if (!(object1 instanceof Shot && object2 instanceof Shot)
+                && (object1 instanceof Shot || object2 instanceof Shot)) {
+            
+            // if object1 is the shot and object2 is not the ship that fired it.
+            if (object1 instanceof Shot && object2 != this) {
+                collisionShot = (Shot) object1;
+            } 
+            // if object2 is the shot and object1 is not the ship that fired it.
+            else if (object2 instanceof Shot && object1 != this) {
+                collisionShot = (Shot) object2;
+            }
+        }
+        
+        // if there are any shots at all (avoids null pointers)
+        if (collisionShot != null) {
+            // if we fired the shot
+            if (shots.contains(collisionShot)) {
+                // remove it
+                shots.remove(collisionShot);
+            }
+        }
     }
-    
-    public Rectangle2D.Double returnHitbox()
-    {
+
+    public Rectangle2D.Double returnHitbox() {
         return hitbox;
     }
 

@@ -292,15 +292,29 @@ public class OmegaCentauri_ extends Game implements Runnable {
         
         //System.out.println(Calculator.collisionCheck(enemyShips.get(0).returnHitbox(), player.returnHitbox()));
         
+        
         for (Shot shot : shotsToDraw)
         {
+            // check for collisions with enemy shots and the player
             if (Calculator.collisionCheck(player.returnHitbox(), shot.returnHitbox()))
             {
                 //System.out.println("UR BAD");
                 for (ICollisionListener collisionListener : collisionListeners)
                     collisionListener.CollisionEvent(player, shot);
             }
+            
+            // check for collisions with player shots and enemys
+            
+            for (EnemyShip enemyShip : enemyShips)
+            {
+                if (Calculator.collisionCheck(enemyShip.returnHitbox(), shot.returnHitbox()))
+                {
+                    for (ICollisionListener collisionListener : collisionListeners)
+                        collisionListener.CollisionEvent(enemyShip, shot);
+                }
+            }
         }
+        
     }
     int keyCode;
 

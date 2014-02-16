@@ -13,5 +13,6 @@ public class EDTExceptionHandler implements Thread.UncaughtExceptionHandler{
     protected void handleException(String tname, Throwable thrown)
     {
         System.err.println("Exception on " + tname);
+        thrown.printStackTrace();
     }
 }
