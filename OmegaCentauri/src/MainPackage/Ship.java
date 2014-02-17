@@ -42,6 +42,7 @@ public abstract class Ship implements ICollisionListener {
     protected boolean canshoot = true;
     protected java.util.Timer shootingTimer;
     protected int shootingDelay;
+    
     protected Shield shield;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
@@ -75,10 +76,11 @@ public abstract class Ship implements ICollisionListener {
 
         transform.setToIdentity();
         transform.rotate(Math.toRadians(faceAngle),
-                getScreenLocation(cameraLocation).x + activeImage.getWidth() / 2,
-                getScreenLocation(cameraLocation).y + activeImage.getHeight() / 2);
+                Calculator.getScreenLocation(cameraLocation, location).x + activeImage.getWidth() / 2,
+                Calculator.getScreenLocation(cameraLocation, location).y + activeImage.getHeight() / 2);
 
-        transform.translate(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y);
+        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x,
+                Calculator.getScreenLocation(cameraLocation, location).y);
 
         transform.scale(1, 1);
 
@@ -90,21 +92,6 @@ public abstract class Ship implements ICollisionListener {
         g2d.drawImage(activeImage, transform, null);
 
     }
-
-    public Point2D.Double getScreenLocation(Point2D.Double cameraLocation) {
-        double x = location.x - cameraLocation.x;
-        double y = location.y - cameraLocation.y;
-
-        return new Point2D.Double(x, y);
-    }
-
-    public Point2D.Double getScreenLocationMiddle(Point2D.Double cameraLocation) {
-        double x = getScreenLocation(cameraLocation).x + cameraLocation.x + activeImage.getWidth() / 2;
-        double y = getScreenLocation(cameraLocation).y + cameraLocation.y + activeImage.getHeight() / 2;
-
-        return new Point2D.Double(x, y);
-    }
-
     protected void move(ShipState state) {
 
         moveAngle = faceAngle - 90;
@@ -156,9 +143,12 @@ public abstract class Ship implements ICollisionListener {
                 new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
                 velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
-        Point2D.Double ShotStartingPos = new Point2D.Double(getScreenLocationMiddle(cameraLocation).x - 2.5
+        Point2D.Double ShotStartingPos = new Point2D.Double(Calculator.getScreenLocationMiddle(cameraLocation,
+                location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
                 + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                getScreenLocationMiddle(cameraLocation).y - 8 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
+                
+                Calculator.getScreenLocationMiddle(cameraLocation, location,
+                activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false, cameraLocation)); // enemies ovveride
@@ -193,7 +183,7 @@ public abstract class Ship implements ICollisionListener {
 
     public void setUpHitbox(Point2D.Double cameraLocation) {
         try {
-            hitbox = new Rectangle2D.Double(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y,
+            hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x, Calculator.getScreenLocation(cameraLocation, location).y,
                     activeImage.getWidth(), activeImage.getHeight());
         } catch (NullPointerException e) {
             System.err.println("activeimage not initialized!");
@@ -201,8 +191,8 @@ public abstract class Ship implements ICollisionListener {
     }
 
     protected void updateHitbox(Point2D.Double cameraLocation) {
-        hitbox.x = getScreenLocation(cameraLocation).x;
-        hitbox.y = getScreenLocation(cameraLocation).y;
+        hitbox.x = Calculator.getScreenLocation(cameraLocation, location).x;
+        hitbox.y = Calculator.getScreenLocation(cameraLocation, location).y;
     }
 
     public ArrayList<Shot> getShots() {

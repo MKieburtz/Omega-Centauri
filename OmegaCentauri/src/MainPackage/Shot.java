@@ -34,8 +34,8 @@ abstract class Shot {
         transform.setToIdentity();
 
         transform.rotate(Math.toRadians(faceAngle),
-                getScreenLocationMiddle(cameraLocation).x,
-                getScreenLocationMiddle(cameraLocation).y);
+                Calculator.getScreenLocationMiddle(cameraLocation, location, images.get(0).getWidth(), images.get(0).getHeight()).x,
+                Calculator.getScreenLocationMiddle(cameraLocation, location, images.get(0).getWidth(), images.get(0).getHeight()).y);
 
         
         g2d.setTransform(transform);
@@ -61,16 +61,10 @@ abstract class Shot {
 
     }
     
-    public Point2D.Double getScreenLocation(Point2D.Double cameraLocation) {
-        double x = location.x - cameraLocation.x;
-        double y = location.y - cameraLocation.y;
-
-        return new Point2D.Double(x, y);
-    }
-    
     public void setUpHitbox(Point2D.Double cameraLocation) {
         try {
-            hitbox = new Rectangle2D.Double(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y,
+            hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x,
+                    Calculator.getScreenLocation(cameraLocation, location).y,
                     images.get(0).getWidth(), images.get(0).getHeight());
         } catch (NullPointerException e) {
             System.err.println("activeimage not initialized!");
@@ -78,8 +72,8 @@ abstract class Shot {
     }
 
     protected void updateHitbox(Point2D.Double cameraLocation) {
-        hitbox.x = getScreenLocation(cameraLocation).x;
-        hitbox.y = getScreenLocation(cameraLocation).y;
+        hitbox.x = Calculator.getScreenLocation(cameraLocation, location).x;
+        hitbox.y = Calculator.getScreenLocation(cameraLocation, location).y;
     }
     
     public Rectangle2D.Double returnHitbox()
@@ -98,11 +92,6 @@ abstract class Shot {
 
     public BufferedImage getImage() {
         return images.get(0);
-    }
-
-    private Point2D.Double getScreenLocationMiddle(Point2D.Double cameraLocation) {
-        return new Point2D.Double((location.x - cameraLocation.x) + (images.get(0).getWidth() / 2),
-                (location.y - cameraLocation.y) + (images.get(0).getHeight() / 2));
     }
 
     public boolean outsideScreen() // assumes a 20 thousand by 20 thousand screen
