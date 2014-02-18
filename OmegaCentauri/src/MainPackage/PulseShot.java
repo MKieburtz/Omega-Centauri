@@ -26,8 +26,9 @@ public class PulseShot extends Shot {
         } else {
             imagePaths.add("src/resources/Pulse.png");
         }
-
+        
         loadImages(imagePaths);
+        activeImage = images.get(0);
         
         setUpHitbox(cameraLocation);
     }

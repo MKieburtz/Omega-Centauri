@@ -82,4 +82,12 @@ public class Calculator {
         
         return new Point2D.Double(x, y);
     }
+    
+    public static Point2D.Double getScreenLocationMiddleForPlayer(Point2D.Double cameraLocation, Point2D.Double location,
+            double imageWidth, double imageHeight) {
+        double x = getScreenLocation(cameraLocation, location).x + cameraLocation.x + imageWidth / 2;
+        double y = getScreenLocation(cameraLocation, location).y + cameraLocation.y + imageHeight / 2;
+
+        return new Point2D.Double(x, y);
+    }
 }

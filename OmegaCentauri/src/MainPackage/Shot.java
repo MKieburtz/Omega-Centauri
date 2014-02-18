@@ -20,6 +20,7 @@ abstract class Shot {
     protected boolean animated;
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<String> imagePaths = new ArrayList<String>();
+    protected BufferedImage activeImage;
     protected Point2D.Double location;
     protected double faceAngle;
     protected Point2D.Double velocity;
@@ -34,16 +35,16 @@ abstract class Shot {
         transform.setToIdentity();
 
         transform.rotate(Math.toRadians(faceAngle),
-                getScreenLocationMiddle(cameraLocation).x,
-                getScreenLocationMiddle(cameraLocation).y);
-
+                Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
+                Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y);
         
         g2d.setTransform(transform);
-
-        g2d.drawImage(images.get(0), (int) (location.x - cameraLocation.x),
-                (int) (location.y - cameraLocation.y), null);
-
+        
+        g2d.drawImage(activeImage, (int)Calculator.getScreenLocation(cameraLocation, location).x,
+               (int)Calculator.getScreenLocation(cameraLocation, location).y, null);
+        
         updateHitbox(cameraLocation);
+        
         g2d.draw(hitbox);
         
         g2d.setTransform(original);
@@ -61,16 +62,11 @@ abstract class Shot {
 
     }
     
-    public Point2D.Double getScreenLocation(Point2D.Double cameraLocation) {
-        double x = location.x - cameraLocation.x;
-        double y = location.y - cameraLocation.y;
-
-        return new Point2D.Double(x, y);
-    }
     
     public void setUpHitbox(Point2D.Double cameraLocation) {
         try {
-            hitbox = new Rectangle2D.Double(getScreenLocation(cameraLocation).x, getScreenLocation(cameraLocation).y,
+            hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x,
+                    Calculator.getScreenLocation(cameraLocation, location).y,
                     images.get(0).getWidth(), images.get(0).getHeight());
         } catch (NullPointerException e) {
             System.err.println("activeimage not initialized!");
@@ -78,8 +74,8 @@ abstract class Shot {
     }
 
     protected void updateHitbox(Point2D.Double cameraLocation) {
-        hitbox.x = getScreenLocation(cameraLocation).x;
-        hitbox.y = getScreenLocation(cameraLocation).y;
+        hitbox.x = Calculator.getScreenLocation(cameraLocation, location).x;
+        hitbox.y = Calculator.getScreenLocation(cameraLocation, location).y;
     }
     
     public Rectangle2D.Double returnHitbox()
