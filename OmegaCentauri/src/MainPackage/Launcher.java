@@ -26,6 +26,7 @@ public class Launcher extends JFrame implements MouseListener {
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private java.util.Timer refreshTimer = new java.util.Timer();
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
@@ -95,15 +96,27 @@ public class Launcher extends JFrame implements MouseListener {
         resolution1440by900.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                width = 1440;
-                height = 900;
                 changeResolution(Settings.resolutionW(1440), Settings.resolutionH(900));
+            }
+        });
+        
+        JButton fullscreen = new JButton("Fullscreen");
+        fullscreen.setText("Fullscreen");
+        fullscreen.setLocation(0,170);
+        fullscreen.setSize(100,50);
+        fullscreen.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                changeResolution(Settings.fullscreenW((int)screenSize.getWidth()),Settings.fullscreenH((int)screenSize.getHeight()));
             }
         });
 
         this.add(goButton);
         this.add(closeButton);
         this.add(resolution1440by900);
+        this.add(fullscreen);
         this.add(panel);
         repaint();
     }

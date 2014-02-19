@@ -14,4 +14,12 @@ public class Settings extends Launcher
     {
         return lheight;
     }
+    public static int fullscreenW(int w)
+    {
+        return w;
+    }
+    public static int fullscreenH(int h)
+    {
+        return h;
+    }
 }
