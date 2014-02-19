@@ -16,8 +16,8 @@ import javax.sound.sampled.Clip;
  */
 public class Launcher extends JFrame implements MouseListener {
 
-    private int width = 1000;
-    private int height = 600;
+    protected int width = 1000;
+    protected int height = 600;
     private final Renderer renderer = new Renderer();
     private final MediaLoader mediaLoader = new MediaLoader();
     private final ArrayList<String> imagePaths = new ArrayList<String>();
@@ -97,7 +97,7 @@ public class Launcher extends JFrame implements MouseListener {
             public void actionPerformed(ActionEvent e) {
                 width = 1440;
                 height = 900;
-                changeResolution(width, height);
+                changeResolution(Settings.resolutionW(1440), Settings.resolutionH(900));
             }
         });
 
