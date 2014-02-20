@@ -374,6 +374,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
             case KeyEvent.VK_SPACE: {
                 shooting = true;
+                break;
             }
             
             case KeyEvent.VK_Q: {
