@@ -26,10 +26,12 @@ public class Launcher extends JFrame implements MouseListener {
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private java.util.Timer refreshTimer = new java.util.Timer();
-    
+
     private Settings settings;
-    
+
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+    GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
@@ -41,27 +43,26 @@ public class Launcher extends JFrame implements MouseListener {
         sounds = mediaLoader.loadSounds(soundPaths);
 
         settings = new Settings(screenSize);
-        
+
         setUpWindow(width, height);
         addButtons();
     }
 
     private void setUpWindow(int width, int height) {
 
-
         this.setIconImage(images.get(1));
         this.setSize(width, height);
+        this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //this.setBackground(new Color(0,0,0,0));
-
         this.setLayout(null);
 
         this.addMouseListener(this);
         this.setTitle("Omega Centauri Launcher");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setUndecorated(true);
+
         this.requestFocus();
         this.setVisible(true);
 
@@ -107,30 +108,36 @@ public class Launcher extends JFrame implements MouseListener {
                 ); // end changeResolution call
                 revalidate();
                 setLocationRelativeTo(null);
-                
+
             } // end event handler body
         }); // end event handler definition
-        
+
         JButton fullscreen = new JButton("Fullscreen");
         fullscreen.setText("Fullscreen");
-        fullscreen.setLocation(0,170);
-        fullscreen.setSize(100,50);
-        fullscreen.addActionListener(new ActionListener() 
-        {
+        fullscreen.setLocation(0, 170);
+        fullscreen.setSize(100, 50);
+        fullscreen.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                changeResolution(
-                        settings.getWidthAndHeightForResolution(Resolutions.FullScreen).x,
-                        settings.getWidthAndHeightForResolution(Resolutions.FullScreen).y
-                ); // end changeResolution call
-                width = getWidth();
-                height = getHeight();
-                revalidate();
-                setLocationRelativeTo(null);
+            public void actionPerformed(ActionEvent e) {
+                if (graphicsDevice.isFullScreenSupported()) {
+                    changeResolution(
+                            settings.getWidthAndHeightForResolution(Resolutions.FullScreen).x,
+                            settings.getWidthAndHeightForResolution(Resolutions.FullScreen).y
+                    ); // end changeResolution call
+                    
+                    width = getWidth();
+                    height = getHeight();
+                    
+                    revalidate();
+                    setLocationRelativeTo(null);
+                }
+                else
+                {
+                    System.err.println("Fullscreen is not supported on your system!");
+                }
             } // end event handler body
         }); // end event handler definition
-        
+
         this.add(goButton);
         this.add(closeButton);
         this.add(resolution1440by900);
@@ -189,14 +196,15 @@ public class Launcher extends JFrame implements MouseListener {
     }
 
     private void changeResolution(int width, int height) {
-        this.setSize(width, height);
+        this.setPreferredSize(new Dimension(width, height));
+        this.pack();
     }
 
     private class refreshTimer extends TimerTask {
 
         @Override
         public void run() {
-            renderer.drawLauncher(panel.getGraphics(), images.get(0),images.get(2)); // use active rendering
+            renderer.drawLauncher(panel.getGraphics(), images.get(0), images.get(2)); // use active rendering
             refreshTimer.schedule(new refreshTimer(), 100); // 10 fps
         }
     }

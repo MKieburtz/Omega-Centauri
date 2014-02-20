@@ -53,7 +53,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         camera = new Camera(width, height);
         loading = true;
 
-
         player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation(), 155, 100);
         enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 100));
         syncGameStateVaribles();
@@ -74,7 +73,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     private void setUpWindow(int width, int height) {
         setEnabled(true);
-        setSize(width, height);
+        setUndecorated(true);
+        setPreferredSize(new Dimension(width, height));
+        pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
@@ -373,6 +374,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
             case KeyEvent.VK_SPACE: {
                 shooting = true;
+            }
+            
+            case KeyEvent.VK_Q: {
+                System.exit(0);
             }
 
         } // end switch
