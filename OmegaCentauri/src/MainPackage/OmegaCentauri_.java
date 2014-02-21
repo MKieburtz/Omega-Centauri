@@ -47,7 +47,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
 
-    public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer) {
+    public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer, boolean fullScreen) {
 
         this.renderer = renderer;
         camera = new Camera(width, height);
@@ -66,14 +66,16 @@ public class OmegaCentauri_ extends Game implements Runnable {
         
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
-        setUpWindow(width, height);
+        setUpWindow(width, height, fullScreen);
 
         loadGame();
     }
 
-    private void setUpWindow(int width, int height) {
+    private void setUpWindow(int width, int height, boolean fullScreen) {
         setEnabled(true);
-        setUndecorated(true);
+        if (fullScreen)
+            setUndecorated(true);
+        
         setPreferredSize(new Dimension(width, height));
         pack();
         setLocationRelativeTo(null);
@@ -82,8 +84,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         requestFocus();
         addKeyListener(this);
         setTitle("Omega Centauri");
-        add(panel);
-        setContentPane(panel);
+        getContentPane().add(panel);
         setVisible(true);
     }
 

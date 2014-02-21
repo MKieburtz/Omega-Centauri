@@ -38,8 +38,12 @@ public class Camera {
     public boolean insideView(Point2D.Double point, Point size) {
         // use nested if statements because the conditionals are so long.
 
-        if (point.x - location.x >= 0 - size.x && point.x - location.x <= this.size.x + size.x) {
-            if (point.y + size.y - location.y >= 0 && point.y - location.y + size.y <= this.size.y + size.y) {
+        double x = point.x - location.x + size.x;
+        double y = point.y - location.y + size.y;
+        
+        
+        if (x > 0 && x <= this.size.x + size.x) {
+            if (y > 0 && y <= this.size.y + size.y) {
                 return true;
             }
         }
