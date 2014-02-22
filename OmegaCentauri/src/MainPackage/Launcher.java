@@ -26,13 +26,14 @@ public class Launcher extends JFrame implements MouseListener {
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private java.util.Timer refreshTimer = new java.util.Timer();
-
+    private boolean fullScreen = false;
     private Settings settings;
 
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-
+ 
+    
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
@@ -54,7 +55,7 @@ public class Launcher extends JFrame implements MouseListener {
         this.setSize(width, height);
         this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
         //this.setBackground(new Color(0,0,0,0));
         this.setLayout(null);
 
@@ -79,7 +80,7 @@ public class Launcher extends JFrame implements MouseListener {
             public void actionPerformed(ActionEvent e) {
                 sounds.get(0).start();
                 closeWindow();
-                OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, (width == screenSize.width && height == screenSize.height));
+                OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice);
             }
         });
 
@@ -106,7 +107,9 @@ public class Launcher extends JFrame implements MouseListener {
                         settings.getWidthAndHeightForResolution(Resolutions.Resolution1440x900).x,
                         settings.getWidthAndHeightForResolution(Resolutions.Resolution1440x900).y
                 ); // end changeResolution call
-                revalidate();
+                invalidate();
+                validate();
+                
                 setLocationRelativeTo(null);
 
             } // end event handler body
@@ -120,16 +123,7 @@ public class Launcher extends JFrame implements MouseListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (graphicsDevice.isFullScreenSupported()) {
-                    changeResolution(
-                            settings.getWidthAndHeightForResolution(Resolutions.FullScreen).x,
-                            settings.getWidthAndHeightForResolution(Resolutions.FullScreen).y
-                    ); // end changeResolution call
-                    
-                    width = getWidth();
-                    height = getHeight();
-                    
-                    revalidate();
-                    setLocationRelativeTo(null);
+                    setWindowFullScreen();
                 }
                 else
                 {
@@ -144,6 +138,12 @@ public class Launcher extends JFrame implements MouseListener {
         this.add(fullscreen);
         this.add(panel);
         repaint();
+    }
+    
+    private void setWindowFullScreen()
+    {
+        fullScreen = true;
+        graphicsDevice.setFullScreenWindow(this);
     }
 
     public class Panel extends JPanel {
@@ -173,7 +173,7 @@ public class Launcher extends JFrame implements MouseListener {
         if (rect.contains(new Point(me.getX(), me.getY()))) {
             sounds.get(0).start();
             closeWindow();
-            OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, (width == screenSize.width && height == screenSize.height));
+            OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice);
         }
     }
 

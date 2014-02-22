@@ -36,7 +36,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private Camera camera;
     private ArrayList<ICollisionListener> collisionListeners = new ArrayList<ICollisionListener>();
-    
+    private GraphicsDevice gd;
     // TIMERS
     private java.util.Timer FPSTimer = new java.util.Timer();
     private java.util.Timer UpdateTimer = new java.util.Timer();
@@ -47,8 +47,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
 
-    public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer, boolean fullScreen) {
+    public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer,
+            boolean fullScreen, GraphicsDevice gd) {
 
+        this.gd = gd;
         this.renderer = renderer;
         camera = new Camera(width, height);
         loading = true;
@@ -58,12 +60,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
         syncGameStateVaribles();
 
         player.setUpHitbox(camera.getLocation());
-        
+
         collisionListeners.add(player);
-        
-        for (EnemyShip enemy : enemyShips)
+
+        for (EnemyShip enemy : enemyShips) {
             collisionListeners.add(enemy);
-        
+        }
+
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
         setUpWindow(width, height, fullScreen);
@@ -73,11 +76,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     private void setUpWindow(int width, int height, boolean fullScreen) {
         setEnabled(true);
-        if (fullScreen)
-            setUndecorated(true);
-        
-        setPreferredSize(new Dimension(width, height));
-        pack();
+
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
@@ -85,6 +85,15 @@ public class OmegaCentauri_ extends Game implements Runnable {
         addKeyListener(this);
         setTitle("Omega Centauri");
         getContentPane().add(panel);
+
+        if (fullScreen) {
+            setUndecorated(true);
+            gd.setFullScreenWindow(this);
+        } else {
+            setPreferredSize(new Dimension(width, height));
+            pack();
+        }
+
         setVisible(true);
     }
 
@@ -289,34 +298,33 @@ public class OmegaCentauri_ extends Game implements Runnable {
         for (EnemyShip enemyShip : enemyShips) {
             enemyShip.update(player.getLocation(), camera.getLocation());
         }
-        if (player.getShots().size() > 0)
+        if (player.getShots().size() > 0) {
             player.purgeShots();
-        
+        }
+
         //System.out.println(Calculator.collisionCheck(enemyShips.get(0).returnHitbox(), player.returnHitbox()));
-        
-        
-        for (Shot shot : shotsToDraw)
-        {
+
+
+        for (Shot shot : shotsToDraw) {
             // check for collisions with enemy shots and the player
-            if (Calculator.collisionCheck(player.returnHitbox(), shot.returnHitbox()))
-            {
+            if (Calculator.collisionCheck(player.returnHitbox(), shot.returnHitbox())) {
                 //System.out.println("UR BAD");
-                for (ICollisionListener collisionListener : collisionListeners)
+                for (ICollisionListener collisionListener : collisionListeners) {
                     collisionListener.CollisionEvent(player, shot);
+                }
             }
-            
+
             // check for collisions with player shots and enemys
-            
-            for (EnemyShip enemyShip : enemyShips)
-            {
-                if (Calculator.collisionCheck(enemyShip.returnHitbox(), shot.returnHitbox()))
-                {
-                    for (ICollisionListener collisionListener : collisionListeners)
+
+            for (EnemyShip enemyShip : enemyShips) {
+                if (Calculator.collisionCheck(enemyShip.returnHitbox(), shot.returnHitbox())) {
+                    for (ICollisionListener collisionListener : collisionListeners) {
                         collisionListener.CollisionEvent(enemyShip, shot);
+                    }
                 }
             }
         }
-        
+
     }
     int keyCode;
 
@@ -377,7 +385,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 shooting = true;
                 break;
             }
-            
+
             case KeyEvent.VK_Q: {
                 System.exit(0);
             }
