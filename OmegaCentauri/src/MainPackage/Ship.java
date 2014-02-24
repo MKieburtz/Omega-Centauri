@@ -58,6 +58,7 @@ public abstract class Ship implements ICollisionListener {
         this.shootingDelay = shootingDelay;
         this.health = health;
 
+        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0));
         shootingTimer = new java.util.Timer();
     }
 
@@ -84,10 +85,8 @@ public abstract class Ship implements ICollisionListener {
 
         updateHitbox(cameraLocation);
         
-        g2d.setColor(Color.WHITE);
-        g2d.draw(hitbox);
-
-        g2d.drawImage(activeImage, transform, null);   
+        
+        g2d.drawImage(activeImage, transform, null); 
     }
     
     protected void move(ShipState state) {
@@ -218,6 +217,11 @@ public abstract class Ship implements ICollisionListener {
             }
         }
         
+        if (object1 instanceof Player || object2 instanceof Player) // check to activate the shield
+        {
+            shield.activate();
+        }
+        
         // if there are any shots at all (avoids null pointers)
         if (collisionShot != null) {
             // if we fired the shot
@@ -242,5 +246,10 @@ public abstract class Ship implements ICollisionListener {
         public void run() {
             canshoot = true;
         }
+    }
+    
+    public Shield getShield()
+    {
+        return shield;
     }
 }

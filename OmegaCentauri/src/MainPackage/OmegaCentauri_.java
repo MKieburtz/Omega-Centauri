@@ -76,9 +76,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     private void setUpWindow(int width, int height, boolean fullScreen) {
         setEnabled(true);
-
-
-        setLocationRelativeTo(null);
+        
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
         requestFocus();
@@ -93,6 +92,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             setPreferredSize(new Dimension(width, height));
             pack();
         }
+        setLocationRelativeTo(null);
 
         setVisible(true);
     }

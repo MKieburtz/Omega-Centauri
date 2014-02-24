@@ -48,18 +48,14 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int num = 0;
 
         // draw stars
         for (StarChunk starChunk : stars) {
             if (camera.insideView(starChunk.getBoundingRect())) {
                 starChunk.draw(g2d, camera.getLocation());
-                num++;
             }
         }
-
-        System.out.println(num);
-
+        
         // draw fps info
         g2d.drawImage(images.get(FPSLABEL), null, 0, 0);
         g2d.setFont(fpsFont.deriveFont(32f));

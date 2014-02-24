@@ -45,7 +45,6 @@ abstract class Shot {
         
         updateHitbox(cameraLocation);
         
-        g2d.draw(hitbox);
         
         g2d.setTransform(original);
 

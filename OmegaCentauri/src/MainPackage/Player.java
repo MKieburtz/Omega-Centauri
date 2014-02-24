@@ -1,5 +1,6 @@
 package MainPackage;
 
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -134,5 +135,12 @@ public class Player extends Ship {
             if (shots.get(i).outsideScreen())
                 shots.remove(i);
         }
+    }
+    
+    @Override
+    public void draw(Graphics2D gd, Point2D.Double cameraLocation)
+    {
+        super.draw(gd, cameraLocation);
+        shield.draw(gd, cameraLocation, location);
     }
 }
