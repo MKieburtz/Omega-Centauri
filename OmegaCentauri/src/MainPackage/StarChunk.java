@@ -14,6 +14,7 @@ public class StarChunk {
     private Point2D.Double location;
     private final int dimension = 1;
     private Rectangle2D.Double[] rects = new Rectangle2D.Double[10];
+    private Rectangle2D.Double boundingRect;
     private Random random = new Random();
 
     public StarChunk(double x, double y) {
@@ -24,6 +25,8 @@ public class StarChunk {
             num2 = ((double) random.nextInt((int) ((y + 100) - y)) + y);
             rects[i] = new Rectangle2D.Double(num1, num2, dimension, dimension);
         }
+        
+        boundingRect = new Rectangle2D.Double(location.x, location.y, 100, 100);
     }
 
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation) {
@@ -43,5 +46,10 @@ public class StarChunk {
 
     public Point getSize() {
         return new Point(100, 100);
+    }
+    
+    public Rectangle2D.Double getBoundingRect()
+    {
+        return boundingRect;
     }
 }

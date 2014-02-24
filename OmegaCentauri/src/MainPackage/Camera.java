@@ -11,15 +11,18 @@ public class Camera {
 
     private Point size;
     private Point2D.Double location;
+    private Rectangle2D.Double screenRect;
 
     public Camera(int width, int height) {
         size = new Point(width, height);
         location = new Point2D.Double(0.0, 0.0);
+        screenRect = new Rectangle2D.Double(location.x, location.y, size.x, size.y);
     }
 
     public void move(double x, double y) {
         location.x = x;
         location.y = y;
+        updateRect();
     }
 
     public Point2D.Double getLocation() {
@@ -33,20 +36,18 @@ public class Camera {
     public void setSize(int x, int y) {
         size.x = x;
         size.y = y;
+        updateRect();
     }
 
-    public boolean insideView(Point2D.Double point, Point size) {
-        // use nested if statements because the conditionals are so long.
-
-        double x = point.x - location.x + size.x;
-        double y = point.y - location.y + size.y;
-        
-        
-        if (x > 0 && x <= this.size.x + size.x) {
-            if (y > 0 && y <= this.size.y + size.y) {
-                return true;
-            }
-        }
-        return false;
+    public boolean insideView(Rectangle2D.Double r1) {
+       return screenRect.intersects(r1);
+    }
+    
+    private void updateRect()
+    {
+        screenRect.x = location.x;
+        screenRect.y = location.y;
+        screenRect.width = size.x;
+        screenRect.height = size.y;
     }
 }

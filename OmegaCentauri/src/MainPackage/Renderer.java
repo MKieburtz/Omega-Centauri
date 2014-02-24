@@ -38,7 +38,6 @@ public class Renderer {
 
         Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics(); // turns it into 2d graphics
 
-
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
 
@@ -50,17 +49,17 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         int num = 0;
-        
+
         // draw stars
         for (StarChunk starChunk : stars) {
-            if (camera.insideView(starChunk.getLocation(), starChunk.getSize())) {
+            if (camera.insideView(starChunk.getBoundingRect())) {
                 starChunk.draw(g2d, camera.getLocation());
                 num++;
             }
         }
-        
+
         System.out.println(num);
-        
+
         // draw fps info
         g2d.drawImage(images.get(FPSLABEL), null, 0, 0);
         g2d.setFont(fpsFont.deriveFont(32f));
@@ -78,15 +77,11 @@ public class Renderer {
 //        g2d.drawString("Version: " + version, camera.getSize().x - 130, 10);
 
         // move and draw the bullets
-
         for (Shot shot : shots) {
             if (shot.imagesLoaded()) {
-                if (camera.insideView(shot.getLocation(), shot.getSize())) {
-                    shot.draw(g2d, camera.getLocation());
-                }
+                shot.draw(g2d, camera.getLocation());
             }
         }
-
 
         // draw the minimap
         g2d.setColor(Color.BLACK);
@@ -113,10 +108,7 @@ public class Renderer {
             g2d.draw(minimapShip);
         }
 
-
-
         // draw the player and enemies
-
         for (Ship ship : ships) {
             ship.draw(g2d, camera.getLocation());
         }
