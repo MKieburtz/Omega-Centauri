@@ -36,7 +36,7 @@ public class Renderer {
 
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
 
-        Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics(); // turns it into 2d graphics
+        Graphics2D g2d = bufferedImage.createGraphics(); // turns it into 2d graphics
 
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
@@ -117,7 +117,7 @@ public class Renderer {
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage, BufferedImage backgroundImage) {
         BufferedImage bufferedImage = new BufferedImage(1000, 600, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
+        Graphics2D g2d = bufferedImage.createGraphics();
 
         g2d.drawImage(backgroundImage, 110, 0, null);
         g2d.drawImage(startButtonImage, 450, 450, null);
@@ -130,7 +130,7 @@ public class Renderer {
 
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
-        Graphics2D g2d = (Graphics2D) bufferedImage.getGraphics();
+        Graphics2D g2d = bufferedImage.createGraphics();
 
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);

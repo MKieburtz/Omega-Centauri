@@ -1,5 +1,7 @@
 package MainPackage;
 
+import java.awt.AlphaComposite;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -32,15 +34,27 @@ public class Shield {
 
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation) {
         if (opacity > 0) {
-            AffineTransform original = g2d.getTransform();
-
-            AffineTransform transform = (AffineTransform) original.clone();
-
+            
+            int rule = AlphaComposite.SRC_OVER;
+            
+            Composite originalComposite = g2d.getComposite();
+            Composite comp = AlphaComposite.getInstance(rule, (float)opacity/100);
+            
+            AffineTransform originalAffineTransform = g2d.getTransform();
+            AffineTransform transform = (AffineTransform) originalAffineTransform.clone();
+            
+            
+            g2d.setComposite(comp);
+            
             transform.rotate(Math.toRadians(angle), screenLocationMiddle.x, screenLocationMiddle.y);
 
             transform.translate(instanceLocation.x - cameraLocation.x, instanceLocation.y - cameraLocation.y);
 
             g2d.drawImage(activeImage, transform, null);
+            
+            opacity -= 1;
+            
+            g2d.setComposite(originalComposite);
         }
     }
 

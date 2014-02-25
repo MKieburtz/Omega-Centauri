@@ -216,8 +216,7 @@ public abstract class Ship implements ICollisionListener {
                 collisionShot = (Shot) object2;
             }
         }
-        
-        if (object1 instanceof Player || object2 instanceof Player) // check to activate the shield
+        if (object1 instanceof Player || object2 instanceof Player)
         {
             shield.activate();
         }
