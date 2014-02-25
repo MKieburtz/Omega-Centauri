@@ -11,6 +11,7 @@ import java.util.*;
 
 /**
  * @author Michael Kieburtz
+ * @author Davis Freeman
  */
 public class Shield {
 

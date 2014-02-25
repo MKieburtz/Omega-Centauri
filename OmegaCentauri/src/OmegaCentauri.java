@@ -2,7 +2,10 @@
 import MainPackage.EDTExceptionHandler;
 import MainPackage.Launcher;
 
-// @author Michael Kieburtz
+/**
+* @author Michael Kieburtz
+* @version Dev: 1.0.2
+*/
 public class OmegaCentauri {
 
     static Launcher launcher;
