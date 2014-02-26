@@ -75,7 +75,7 @@ public abstract class Ship implements ICollisionListener {
         AffineTransform transform = (AffineTransform) original.clone();
 
         transform.setToIdentity();
-        
+
         transform.rotate(Math.toRadians(faceAngle),
                 Calculator.getScreenLocation(cameraLocation, location).x + activeImage.getWidth() / 2,
                 Calculator.getScreenLocation(cameraLocation, location).y + activeImage.getHeight() / 2);
@@ -84,11 +84,10 @@ public abstract class Ship implements ICollisionListener {
                 Calculator.getScreenLocation(cameraLocation, location).y);
 
         updateHitbox(cameraLocation);
-        
-        
-        g2d.drawImage(activeImage, transform, null); 
+
+        g2d.drawImage(activeImage, transform, null);
     }
-    
+
     protected void move(ShipState state) {
 
         moveAngle = faceAngle - 90;
@@ -136,17 +135,14 @@ public abstract class Ship implements ICollisionListener {
     public void shoot(Point2D.Double cameraLocation) {
         playSound(0);
 
-        Point2D.Double ShotStartingVel =
-                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
+        Point2D.Double ShotStartingVel
+                = new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
+                        velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
-        
-        
         Point2D.Double ShotStartingPos = new Point2D.Double(
                 Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
                 + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
                 Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
-
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false, cameraLocation)); // enemies ovveride
         canshoot = false;
@@ -200,29 +196,32 @@ public abstract class Ship implements ICollisionListener {
     @Override
     public void CollisionEvent(Object object1, Object object2) {
         Shot collisionShot = null;
-        
+        Ship collisionShip = null;
+
         // this is complicated therefore it will be explained
-        
         // first check if there is a shot between object1 and object2
         if (!(object1 instanceof Shot && object2 instanceof Shot)
                 && (object1 instanceof Shot || object2 instanceof Shot)) {
-            
+
             // if object1 is the shot and object2 is not the ship that fired it.
             if (object1 instanceof Shot && object2 != this) {
                 collisionShot = (Shot) object1;
-            } 
-            // if object2 is the shot and object1 is not the ship that fired it.
+                collisionShip = (Ship) object2;
+            } // if object2 is the shot and object1 is not the ship that fired it.
             else if (object2 instanceof Shot && object1 != this) {
                 collisionShot = (Shot) object2;
+                collisionShip = (Ship) object1;
             }
         }
-        if (object1 instanceof Player || object2 instanceof Player)
-        {
-            shield.activate();
-        }
-        
+
         // if there are any shots at all (avoids null pointers)
-        if (collisionShot != null) {
+        if (collisionShot != null && collisionShip != null) {
+            
+            if (collisionShip.getClass().equals(MainPackage.Player.class)) 
+            {
+                shield.activate();
+            }
+            
             // if we fired the shot
             if (shots.contains(collisionShot)) {
                 // remove it
@@ -246,9 +245,8 @@ public abstract class Ship implements ICollisionListener {
             canshoot = true;
         }
     }
-    
-    public Shield getShield()
-    {
+
+    public Shield getShield() {
         return shield;
     }
 }
