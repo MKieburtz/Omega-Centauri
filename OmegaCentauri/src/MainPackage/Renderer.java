@@ -78,6 +78,9 @@ public class Renderer {
                 shot.draw(g2d, camera.getLocation());
             }
         }
+        
+        //draw player health
+        
 
         // draw the minimap
         g2d.setColor(Color.BLACK);
