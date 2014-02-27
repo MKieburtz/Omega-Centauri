@@ -232,10 +232,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
             shipsToDraw.add(player);
             shipsToDraw.addAll(enemyShips);
             shipsToDraw.addAll(allyShips);
-
-            collisionListeners.clear();
-            
-            collisionListeners.addAll(shipsToDraw);
             
             for (Ship ship : shipsToDraw) {
                 shotsToDraw.addAll(ship.getShots());
@@ -455,13 +451,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         public Panel(int width, int height) {
             setSize(width, height);
             setVisible(true);
-            setBackground(Color.BLACK);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
         }
     }
 

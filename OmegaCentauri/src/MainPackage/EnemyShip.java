@@ -4,6 +4,7 @@ package MainPackage;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 public abstract class EnemyShip extends Ship {
@@ -12,11 +13,14 @@ public abstract class EnemyShip extends Ship {
             double angleIncrement, double acceleration, int shootingDelay, int health) // delegate assigning images to the types of ships
     {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
+        
+        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true);
+        
     }
 
     protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation) {
         // main AI goes here
-
+        
         // move in the direction of the ship if it is far away
         // and shoot if it is in range.
 
@@ -74,5 +78,17 @@ public abstract class EnemyShip extends Ship {
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, true, cameraLocation));
         canshoot = false;
         shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
+    }
+    
+    @Override
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
+    {
+        super.draw(g2d, cameraLocation);
+        shield.draw(g2d, cameraLocation, location);
+    }
+    
+    public void activateShield()
+    {
+        shield.activate();
     }
 }

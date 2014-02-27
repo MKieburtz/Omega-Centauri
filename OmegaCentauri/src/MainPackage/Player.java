@@ -24,7 +24,9 @@ public class Player extends Ship {
             int timerDelay, int health) {
 
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, timerDelay, health);
-
+        
+        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false);
+        
         imagePaths.add("src/resources/FighterIdle.png");
         imagePaths.add("src/resources/FighterThrust.png");
         imagePaths.add("src/resources/FighterLeft.png");
@@ -138,6 +140,11 @@ public class Player extends Ship {
             if (shots.get(i).outsideScreen())
                 shots.remove(i);
         }
+    }
+    
+    public void activateShield()
+    {
+        shield.activate();
     }
     
     @Override

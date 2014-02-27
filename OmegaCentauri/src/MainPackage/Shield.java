@@ -22,15 +22,15 @@ public class Shield {
     private double angle;
     private int opacity = 0;
     private Point2D.Double screenLocationMiddle = new Point2D.Double();
-    private Ellipse2D.Double shield;
 
-    public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation) {
+    public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation, boolean enemy) {
         this.angle = angle;
-        shield = new Ellipse2D.Double(location.x, location.y, 30, 30);
-        screenLocationMiddle = Calculator.getScreenLocationMiddle(cameraLocation, location, shield.getWidth(), shield.getHeight());
-        imagePaths.add("src/resources/FILLERshield.png");
+        
+        imagePaths.add(enemy ? "src/resources/FILLERshieldEnemy.png" : "src/resources/FILLERshield.png");
         images = loader.loadImages(imagePaths);
         activeImage = images.get(0);
+        screenLocationMiddle = Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight());
+        
     }
 
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation) {
@@ -49,7 +49,7 @@ public class Shield {
             
             transform.rotate(Math.toRadians(angle), screenLocationMiddle.x, screenLocationMiddle.y);
 
-            transform.translate(instanceLocation.x - cameraLocation.x, instanceLocation.y - cameraLocation.y);
+            transform.translate(instanceLocation.x + 1 - cameraLocation.x, instanceLocation.y - cameraLocation.y);
 
             g2d.drawImage(activeImage, transform, null);
             

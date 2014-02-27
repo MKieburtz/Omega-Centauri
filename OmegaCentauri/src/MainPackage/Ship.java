@@ -57,8 +57,7 @@ public abstract class Ship implements ICollisionListener {
         this.acceleration = acceleration;
         this.shootingDelay = shootingDelay;
         this.health = health;
-
-        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0));
+        
         shootingTimer = new java.util.Timer();
     }
 
@@ -197,6 +196,13 @@ public abstract class Ship implements ICollisionListener {
     public void CollisionEvent(Ship ship, Shot shot, ArrayList<Ship> allShips) {
         
         if (ship instanceof Player)
+        {
+            if (!ship.getShots().contains(shot))
+            {
+                shield.activate();
+            }
+        }
+        else
         {
             if (!ship.getShots().contains(shot))
             {
