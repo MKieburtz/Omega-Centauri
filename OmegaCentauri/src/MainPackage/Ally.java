@@ -11,9 +11,4 @@ public class Ally extends Ship {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, 
              health);
     }
-
-    @Override
-    public void CollisionEvent(Object object1, Object object2) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

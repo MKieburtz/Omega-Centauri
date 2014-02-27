@@ -194,39 +194,20 @@ public abstract class Ship implements ICollisionListener {
     }
 
     @Override
-    public void CollisionEvent(Object object1, Object object2) {
-        Shot collisionShot = null;
-        Ship collisionShip = null;
-
-        // this is complicated therefore it will be explained
-        // first check if there is a shot between object1 and object2
-        if (!(object1 instanceof Shot && object2 instanceof Shot)
-                && (object1 instanceof Shot || object2 instanceof Shot)) {
-
-            // if object1 is the shot and object2 is not the ship that fired it.
-            if (object1 instanceof Shot && object2 != this) {
-                collisionShot = (Shot) object1;
-                collisionShip = (Ship) object2;
-            } // if object2 is the shot and object1 is not the ship that fired it.
-            else if (object2 instanceof Shot && object1 != this) {
-                collisionShot = (Shot) object2;
-                collisionShip = (Ship) object1;
-            }
-        }
-
-        // if there are any shots at all (avoids null pointers)
-        if (collisionShot != null && collisionShip != null) {
-            
-            if (collisionShip.getClass().equals(MainPackage.Player.class)) 
+    public void CollisionEvent(Ship ship, Shot shot, ArrayList<Ship> allShips) {
+        
+        if (ship instanceof Player)
+        {
+            if (!ship.getShots().contains(shot))
             {
                 shield.activate();
             }
-            
-            // if we fired the shot
-            if (shots.contains(collisionShot)) {
-                // remove it
-                shots.remove(collisionShot);
-            }
+        }
+        
+        for (Ship collisionShip : allShips)
+        {
+            if (collisionShip.getShots().contains(shot) && !collisionShip.equals(ship))
+                collisionShip.removeShot(shot);
         }
     }
 
@@ -248,5 +229,10 @@ public abstract class Ship implements ICollisionListener {
 
     public Shield getShield() {
         return shield;
+    }
+    
+    public void removeShot(Shot shotToRemove)
+    {
+        shots.remove(shotToRemove);
     }
 }

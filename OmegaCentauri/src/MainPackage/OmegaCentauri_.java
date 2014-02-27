@@ -66,7 +66,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
         for (EnemyShip enemy : enemyShips) {
             collisionListeners.add(enemy);
         }
-
+        
+        
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
         setUpWindow(width, height, fullScreen);
@@ -232,6 +233,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
             shipsToDraw.addAll(enemyShips);
             shipsToDraw.addAll(allyShips);
 
+            collisionListeners.clear();
+            
+            collisionListeners.addAll(shipsToDraw);
+            
             for (Ship ship : shipsToDraw) {
                 shotsToDraw.addAll(ship.getShots());
             }
@@ -302,15 +307,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
             player.purgeShots();
         }
 
-        //System.out.println(Calculator.collisionCheck(enemyShips.get(0).returnHitbox(), player.returnHitbox()));
 
 
         for (Shot shot : shotsToDraw) {
             // check for collisions with enemy shots and the player
             if (Calculator.collisionCheck(player.returnHitbox(), shot.returnHitbox())) {
-                //System.out.println("UR BAD");
                 for (ICollisionListener collisionListener : collisionListeners) {
-                    collisionListener.CollisionEvent(player, shot);
+                    collisionListener.CollisionEvent(player, shot, shipsToDraw);
                 }
             }
 
@@ -319,7 +322,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             for (EnemyShip enemyShip : enemyShips) {
                 if (Calculator.collisionCheck(enemyShip.returnHitbox(), shot.returnHitbox())) {
                     for (ICollisionListener collisionListener : collisionListeners) {
-                        collisionListener.CollisionEvent(enemyShip, shot);
+                        collisionListener.CollisionEvent(enemyShip, shot, shipsToDraw);
                     }
                 }
             }
