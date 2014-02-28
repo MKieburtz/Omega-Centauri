@@ -5,7 +5,6 @@ package MainPackage;
  * @author Davis Freeman
  */
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.Point2D;
 
 public abstract class EnemyShip extends Ship {
@@ -14,9 +13,6 @@ public abstract class EnemyShip extends Ship {
             double angleIncrement, double acceleration, int shootingDelay, int health) // delegate assigning images to the types of ships
     {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
-        
-        
-        
     }
 
     protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation) {

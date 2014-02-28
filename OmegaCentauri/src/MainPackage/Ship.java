@@ -169,8 +169,15 @@ public abstract class Ship implements ICollisionListener {
 
     protected void playSound(int index) {
         sounds.get(index).setFramePosition(0);
-
-        sounds.get(index).start();
+        if (!sounds.get(index).isActive())
+            sounds.get(index).start();
+        else
+        {
+            if (sounds.size() != 2)
+            sounds.add(sounds.get(0));
+            sounds.get(1).setFramePosition(0);
+            sounds.get(1).start();
+        }
     }
 
     public void setUpHitbox(Point2D.Double cameraLocation) {
