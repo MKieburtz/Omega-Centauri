@@ -80,7 +80,7 @@ public class Renderer {
         }
         
         //draw player health
-        
+        g2d.drawString(String.valueOf(Player.returnHealth()), 200, 200);
 
         // draw the minimap
         g2d.setColor(Color.BLACK);
