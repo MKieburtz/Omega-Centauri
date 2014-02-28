@@ -5,6 +5,7 @@ package MainPackage;
  * @author Davis Freeman
  */
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 
 public abstract class EnemyShip extends Ship {
@@ -14,7 +15,7 @@ public abstract class EnemyShip extends Ship {
     {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
         
-        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true);
+        
         
     }
 
@@ -85,10 +86,5 @@ public abstract class EnemyShip extends Ship {
     {
         super.draw(g2d, cameraLocation);
         shield.draw(g2d, cameraLocation, location);
-    }
-    
-    public void activateShield()
-    {
-        shield.activate();
     }
 }

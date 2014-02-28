@@ -199,14 +199,14 @@ public abstract class Ship implements ICollisionListener {
         {
             if (!ship.getShots().contains(shot))
             {
-                shield.activate();
+                ship.activateShield();
             }
         }
-        else
+        else if (ship instanceof EnemyShip)
         {
             if (!ship.getShots().contains(shot))
             {
-                shield.activate();
+                ship.activateShield();
             }
         }
         
@@ -235,6 +235,11 @@ public abstract class Ship implements ICollisionListener {
 
     public Shield getShield() {
         return shield;
+    }
+    
+    public void activateShield()
+    {
+        shield.activate();
     }
     
     public void removeShot(Shot shotToRemove)

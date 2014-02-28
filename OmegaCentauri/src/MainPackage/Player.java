@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class Player extends Ship {
 
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, timerDelay, health);
         
-        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false);
+        
         
         imagePaths.add("src/resources/FighterIdle.png");
         imagePaths.add("src/resources/FighterThrust.png");
@@ -38,7 +39,7 @@ public class Player extends Ship {
         imagePaths.add("src/resources/DangerTick.png");
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
-
+        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()));
         setUpHitbox(cameraLocation);
 
         soundPaths.add("src/resources/Pulse.wav");

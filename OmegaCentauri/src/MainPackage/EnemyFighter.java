@@ -1,5 +1,6 @@
 package MainPackage;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 
 /**
@@ -23,5 +24,6 @@ public class EnemyFighter extends EnemyShip {
         soundPaths.add("src/resources/Pulse.wav");
         sounds = mediaLoader.loadSounds(soundPaths);
 
+        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(), activeImage.getHeight()));
     }
 }
