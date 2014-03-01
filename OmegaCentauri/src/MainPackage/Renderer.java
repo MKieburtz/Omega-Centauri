@@ -38,6 +38,8 @@ public class Renderer {
 
         Graphics2D g2d = bufferedImage.createGraphics(); // turns it into 2d graphics
 
+        Player player = (Player)ships.get(0);
+        
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
 
@@ -80,7 +82,7 @@ public class Renderer {
         }
         
         //draw player health
-        g2d.drawString(String.valueOf(Player.returnHealth()), 200, 200);
+        g2d.drawString(String.valueOf(player.returnHealth()), 200, 200);
 
         // draw the minimap
         g2d.setColor(Color.BLACK);

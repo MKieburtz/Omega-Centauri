@@ -143,15 +143,12 @@ public class Player extends Ship {
         }
     }
     
-    public void activateShield()
+    public  int returnHealth()
     {
-        shield.activate();
+        return hull;
     }
     
-    public static int returnHealth()
-    {
-        return health;
-    }
+    @Override
     public void draw(Graphics2D gd, Point2D.Double cameraLocation)
     {
         super.draw(gd, cameraLocation);
