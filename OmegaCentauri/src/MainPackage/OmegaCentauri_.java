@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
 
@@ -48,7 +49,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
 
     public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer,
-            boolean fullScreen, GraphicsDevice gd) {
+            boolean fullScreen, GraphicsDevice gd, BufferedImage logo) {
 
         this.gd = gd;
         this.renderer = renderer;
@@ -70,12 +71,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
         
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
-        setUpWindow(width, height, fullScreen);
+        setUpWindow(width, height, fullScreen, logo);
 
         loadGame();
     }
 
-    private void setUpWindow(int width, int height, boolean fullScreen) {
+    private void setUpWindow(int width, int height, boolean fullScreen, BufferedImage logo) {
         setEnabled(true);
         
         
@@ -90,6 +91,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             setUndecorated(true);
             gd.setFullScreenWindow(this);
         } else {
+            setIconImage(logo);
             setPreferredSize(new Dimension(width, height));
             pack();
         }

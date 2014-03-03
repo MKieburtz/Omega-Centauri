@@ -113,4 +113,9 @@ abstract class Shot {
     public boolean imagesLoaded() {
         return !images.isEmpty();
     }
+    
+    public int getDamage()
+    {
+        return damage;
+    }
 }

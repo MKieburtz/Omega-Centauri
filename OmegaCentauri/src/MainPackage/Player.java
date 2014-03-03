@@ -143,11 +143,6 @@ public class Player extends Ship {
         }
     }
     
-    public  int returnHealth()
-    {
-        return hull;
-    }
-    
     @Override
     public void draw(Graphics2D gd, Point2D.Double cameraLocation)
     {

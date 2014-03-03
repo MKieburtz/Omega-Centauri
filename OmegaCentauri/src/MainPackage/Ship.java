@@ -201,18 +201,14 @@ public abstract class Ship implements ICollisionListener {
     @Override
     public void CollisionEvent(Ship ship, Shot shot, ArrayList<Ship> allShips) {
         
-        if (ship instanceof Player)
+        if (ship instanceof Player || ship instanceof EnemyShip)
         {
             if (!ship.getShots().contains(shot))
             {
-                ship.activateShield();
-            }
-        }
-        else if (ship instanceof EnemyShip)
-        {
-            if (!ship.getShots().contains(shot))
-            {
-                ship.activateShield();
+                if (ship.getShield().getHealth() > 0)
+                    ship.activateShield(shot.getDamage());
+                else
+                    ship.reduceHull(shot.getDamage());
             }
         }
         
@@ -243,13 +239,28 @@ public abstract class Ship implements ICollisionListener {
         return shield;
     }
     
-    public void activateShield()
+    public void activateShield(int damage)
     {
-        shield.activate();
+        shield.activate(damage);
     }
     
     public void removeShot(Shot shotToRemove)
     {
         shots.remove(shotToRemove);
+    }
+   
+    public int getShieldHealth()
+    {
+        return shield.getHealth();
+    }
+    
+    public int getHullHealth()
+    {
+        return hull;
+    }
+    
+    public void reduceHull(int damage)
+    {
+        hull -= damage;
     }
 }

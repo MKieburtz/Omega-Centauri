@@ -37,8 +37,6 @@ public class Renderer {
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = bufferedImage.createGraphics(); // turns it into 2d graphics
-
-        Player player = (Player)ships.get(0);
         
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
@@ -81,9 +79,17 @@ public class Renderer {
             }
         }
         
-        //draw player health
+        //draw player health (shield and hull)
         g2d.setColor(Color.CYAN);
-        g2d.drawString(String.valueOf(player.returnHealth()), 20, 100);
+        // first we have to find the player
+        for (Ship ship : ships)
+        {
+            if (ship instanceof Player)
+            {
+                g2d.drawString("Player Shield: " + ship.getShieldHealth() + "%", 20, 100);
+                g2d.drawString("Player Hull Integrity: " + ship.getHullHealth() + "%", 20, 110);
+            }
+        }
 
         // draw the minimap
         g2d.setColor(Color.BLACK);

@@ -24,10 +24,11 @@ public class Shield {
     private int opacity = 0;
     private double[] scaling = new double[2];
     private Point2D.Double screenLocationMiddle = new Point2D.Double();
+    private int health;
 
     public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation, boolean enemy, Point size) {
         this.angle = angle;
-        
+        health = 100;
         imagePaths.add(enemy ? "src/resources/FILLERshieldEnemy.png" : "src/resources/FILLERshield.png");
         images = loader.loadImages(imagePaths);
         activeImage = images.get(0);
@@ -64,7 +65,13 @@ public class Shield {
         }
     }
 
-    public void activate() {
+    public void activate(int damage) {
         opacity = 100;
+        health -= damage;
+    }
+    
+    public int getHealth()
+    {
+        return health;
     }
 }

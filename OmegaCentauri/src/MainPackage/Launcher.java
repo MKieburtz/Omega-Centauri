@@ -80,7 +80,7 @@ public class Launcher extends JFrame implements MouseListener {
             public void actionPerformed(ActionEvent e) {
                 sounds.get(0).start();
                 closeWindow();
-                OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice);
+                OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice, images.get(1));
             }
         });
 
@@ -173,7 +173,7 @@ public class Launcher extends JFrame implements MouseListener {
         if (rect.contains(new Point(me.getX(), me.getY()))) {
             sounds.get(0).start();
             closeWindow();
-            OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice);
+            OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice, images.get(1));
         }
     }
 
