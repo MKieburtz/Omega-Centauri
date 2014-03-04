@@ -25,7 +25,7 @@ public class Renderer {
         fontSizes.add(36f);
         fontPaths.add("src/resources/BlackHoleBB_ital.ttf");
 
-        imagePaths.add("src/resources/FPSbackground.png");
+        imagePaths.add("src/resources/healthbackground.png");
         images = loader.loadImages(imagePaths);
 
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
@@ -58,14 +58,10 @@ public class Renderer {
         
         // draw fps info
         g2d.drawImage(images.get(FPSLABEL), null, 0, 0);
-        g2d.setFont(fpsFont.deriveFont(32f));
+        g2d.setFont(fpsFont.deriveFont(14f));
         g2d.setColor(Color.CYAN);
 
-        g2d.drawString(String.valueOf(fps), 155, 33);
-
-        g2d.setFont(fpsFont.deriveFont(60f));
-
-        g2d.drawString("FPS:", 10, 50);
+        g2d.drawString(String.valueOf(fps), 3, 560);
 
         // draw version info'
         g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
@@ -80,14 +76,15 @@ public class Renderer {
         }
         
         //draw player health (shield and hull)
+        g2d.setFont(fpsFont.deriveFont(15f));
         g2d.setColor(Color.CYAN);
         // first we have to find the player
         for (Ship ship : ships)
         {
             if (ship instanceof Player)
             {
-                g2d.drawString("Player Shield: " + ship.getShieldHealth() + "%", 20, 100);
-                g2d.drawString("Player Hull Integrity: " + ship.getHullHealth() + "%", 20, 110);
+                g2d.drawString("Player Shield: " + ship.getShieldHealth() + "%", 10, 19);
+                g2d.drawString("Player Hull Integrity: " + ship.getHullHealth() + "%", 10, 35);
             }
         }
 
