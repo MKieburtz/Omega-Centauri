@@ -86,7 +86,7 @@ public class Launcher extends JFrame implements MouseListener {
 
         JButton closeButton = new JButton("Exit Game.");
         closeButton.setText("Exit Game.");
-        closeButton.setLocation(0, 55);
+        closeButton.setLocation(0, 0);
         closeButton.setSize(100, 50);
 
         closeButton.addActionListener(new ActionListener() {
@@ -98,7 +98,7 @@ public class Launcher extends JFrame implements MouseListener {
 
         JButton resolution1440by900 = new JButton("Resoluton: 1440 x 900");
         resolution1440by900.setText("1440 x 900");
-        resolution1440by900.setLocation(0, 110);
+        resolution1440by900.setLocation(0, 55);
         resolution1440by900.setSize(100, 50);
         resolution1440by900.addActionListener(new ActionListener() {
             @Override
@@ -117,7 +117,7 @@ public class Launcher extends JFrame implements MouseListener {
 
         JButton fullscreen = new JButton("Fullscreen");
         fullscreen.setText("Fullscreen");
-        fullscreen.setLocation(0, 170);
+        fullscreen.setLocation(0, 110);
         fullscreen.setSize(100, 50);
         fullscreen.addActionListener(new ActionListener() {
             @Override
@@ -132,7 +132,6 @@ public class Launcher extends JFrame implements MouseListener {
             } // end event handler body
         }); // end event handler definition
 
-        this.add(goButton);
         this.add(closeButton);
         this.add(resolution1440by900);
         this.add(fullscreen);
