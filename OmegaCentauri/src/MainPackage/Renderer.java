@@ -127,12 +127,14 @@ public class Renderer {
         g.dispose();
     }
 
-    public void drawLauncher(Graphics g, BufferedImage startButtonImage, BufferedImage backgroundImage) {
+    public void drawLauncher(Graphics g, BufferedImage startButtonImage, BufferedImage backgroundImage,
+            BufferedImage exitButtonImage) {
         BufferedImage bufferedImage = new BufferedImage(1000, 600, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bufferedImage.createGraphics();
 
         g2d.drawImage(backgroundImage, 110, 0, null);
         g2d.drawImage(startButtonImage, 450, 450, null);
+        g2d.drawImage(exitButtonImage, 700, 50, null);
         g.drawImage(bufferedImage, 0, 0, null);
         g2d.dispose();
         g.dispose();

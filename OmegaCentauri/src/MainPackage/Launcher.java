@@ -32,8 +32,7 @@ public class Launcher extends JFrame implements MouseListener {
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
- 
-    
+
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
@@ -56,7 +55,7 @@ public class Launcher extends JFrame implements MouseListener {
         this.setSize(width, height);
         this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         //this.setBackground(new Color(0,0,0,0));
         this.setLayout(null);
 
@@ -85,18 +84,6 @@ public class Launcher extends JFrame implements MouseListener {
             }
         });
 
-        JButton closeButton = new JButton("Exit Game.");
-        closeButton.setText("Exit Game.");
-        closeButton.setLocation(0, 0);
-        closeButton.setSize(100, 50);
-
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                closeWindow();
-            }
-        });
-
         JButton resolution1440by900 = new JButton("Resoluton: 1440 x 900");
         resolution1440by900.setText("1440 x 900");
         resolution1440by900.setLocation(0, 55);
@@ -110,7 +97,7 @@ public class Launcher extends JFrame implements MouseListener {
                 ); // end changeResolution call
                 invalidate();
                 validate();
-                
+
                 setLocationRelativeTo(null);
 
             } // end event handler body
@@ -125,23 +112,19 @@ public class Launcher extends JFrame implements MouseListener {
             public void actionPerformed(ActionEvent e) {
                 if (graphicsDevice.isFullScreenSupported()) {
                     setWindowFullScreen();
-                }
-                else
-                {
+                } else {
                     System.err.println("Fullscreen is not supported on your system!");
                 }
             } // end event handler body
         }); // end event handler definition
 
-        this.add(closeButton);
         this.add(resolution1440by900);
         this.add(fullscreen);
         this.add(panel);
         repaint();
     }
-    
-    private void setWindowFullScreen()
-    {
+
+    private void setWindowFullScreen() {
         fullScreen = true;
         graphicsDevice.setFullScreenWindow(this);
     }
@@ -179,10 +162,10 @@ public class Launcher extends JFrame implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        Rectangle rect = new Rectangle(700, 500, 100, 50);
+        Rectangle rect = new Rectangle(700, 500, 100, 50); // exit game
 
         if (rect.contains(new Point(me.getX(), me.getY()))) {
-            closeWindow();
+            System.exit(0);
         }
     }
 
@@ -195,8 +178,9 @@ public class Launcher extends JFrame implements MouseListener {
     }
 
     private void closeWindow() {
+        refreshTimer.purge();
         refreshTimer.cancel();
-        this.setVisible(false);
+        this.setVisible(false); 
         this.dispose();
     }
 
@@ -209,7 +193,7 @@ public class Launcher extends JFrame implements MouseListener {
 
         @Override
         public void run() {
-            renderer.drawLauncher(panel.getGraphics(), images.get(0), images.get(2)); // use active rendering
+            renderer.drawLauncher(panel.getGraphics(), images.get(0), images.get(2), images.get(images.size() - 1)); // use active rendering
             refreshTimer.schedule(new refreshTimer(), 100); // 10 fps
         }
     }
