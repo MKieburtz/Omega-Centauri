@@ -38,6 +38,7 @@ public class Launcher extends JFrame implements MouseListener {
         imagePaths.add("src/resources/GoButton.png");
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
         imagePaths.add("src/resources/LauncherBackground.jpg");
+        imagePaths.add("src/resources/CloseButton.png");
         images = mediaLoader.loadImages(imagePaths);
 
         soundPaths.add("src/resources/mouseClick.wav");
@@ -178,6 +179,11 @@ public class Launcher extends JFrame implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent me) {
+        Rectangle rect = new Rectangle(700, 500, 100, 50);
+
+        if (rect.contains(new Point(me.getX(), me.getY()))) {
+            closeWindow();
+        }
     }
 
     @Override
