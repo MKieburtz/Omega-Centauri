@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -17,7 +18,7 @@ public class Renderer {
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private Font fpsFont;
     private MediaLoader loader;
-    private final int FPSLABEL = 0;
+    private final int HEALTHLABEL = 0;
 
     public Renderer() {
 
@@ -32,7 +33,7 @@ public class Renderer {
     }
 
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
-            ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots, String version) {
+            ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots, String version, int ups) {
 
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
 
@@ -55,19 +56,26 @@ public class Renderer {
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
+        // draw the player and enemies
+        for (Ship ship : ships) {
+            ship.draw(g2d, camera.getLocation());
+        }
         
-        // draw fps info
-        g2d.drawImage(images.get(FPSLABEL), null, 0, 0);
-        g2d.setFont(fpsFont.deriveFont(14f));
-        g2d.setColor(Color.CYAN);
-
-        g2d.drawString(String.valueOf(fps), 3, 560);
-
-        // draw version info'
+        // draw fps info and other stats
         g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
         g2d.setColor(Color.WHITE);
+        
+        //version
         g2d.drawString("Version: " + version, camera.getSize().x - 130, 10);
-
+        //fps
+        g2d.drawString("FPS: " + String.valueOf(fps), camera.getSize().x - 130, 20);
+        //ups
+        g2d.drawString("UPS: " + String.valueOf(ups), camera.getSize().x - 130, 30);
+        //player game location
+        g2d.drawString("Player Location: " + convertPointToOrderedPair(ships.get(0).getLocation()),
+                camera.getSize().x - 180, 40);
+        
+        g2d.drawString("Shots: " + shots.size(), camera.getSize().x - 130, 50);
         // move and draw the bullets
         for (Shot shot : shots) {
             if (shot.imagesLoaded()) {
@@ -76,6 +84,7 @@ public class Renderer {
         }
         
         //draw player health (shield and hull)
+        g2d.drawImage(images.get(HEALTHLABEL), null, 0, 0);
         g2d.setFont(fpsFont.deriveFont(15f));
         g2d.setColor(Color.CYAN);
         // first we have to find the player
@@ -83,8 +92,8 @@ public class Renderer {
         {
             if (ship instanceof Player)
             {
-                g2d.drawString("Player Shield: " + ship.getShieldHealth() + "%", 10, 19);
-                g2d.drawString("Player Hull Integrity: " + ship.getHullHealth() + "%", 10, 35);
+                g2d.drawString("Shield Integrity: " + ship.getShieldHealth() + "%", 10, 19);
+                g2d.drawString("Hull Integrity: " + ship.getHullHealth() + "%", 10, 35);
             }
         }
 
@@ -112,12 +121,6 @@ public class Renderer {
                     camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
             g2d.draw(minimapShip);
         }
-
-        // draw the player and enemies
-        for (Ship ship : ships) {
-            ship.draw(g2d, camera.getLocation());
-        }
-
         g.drawImage(bufferedImage, 0, 0, null);
 
         g2d.dispose();
@@ -162,5 +165,11 @@ public class Renderer {
 
         g2d.dispose();
         g.dispose();
+    }
+    
+    private String convertPointToOrderedPair(Point2D.Double point)
+    {
+        DecimalFormat format = new DecimalFormat("0.#");
+        return "(" + format.format(point.x) + ", " + format.format(point.y) + ")";
     }
 }
