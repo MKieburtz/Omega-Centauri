@@ -84,26 +84,6 @@ public class Launcher extends JFrame implements MouseListener {
                 OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice, images.get(1));
             }
         });
-
-        JButton resolution1440by900 = new JButton("Resoluton: 1440 x 900");
-        resolution1440by900.setText("1440 x 900");
-        resolution1440by900.setLocation(0, 55);
-        resolution1440by900.setSize(100, 50);
-        resolution1440by900.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                changeResolution(
-                        settings.getWidthAndHeightForResolution(Resolutions.Resolution1440x900).x,
-                        settings.getWidthAndHeightForResolution(Resolutions.Resolution1440x900).y
-                ); // end changeResolution call
-                invalidate();
-                validate();
-
-                setLocationRelativeTo(null);
-
-            } // end event handler body
-        }); // end event handler definition
-        this.add(resolution1440by900);
         this.add(panel);
         repaint();
     }
@@ -119,7 +99,7 @@ public class Launcher extends JFrame implements MouseListener {
             setSize(width, height);
             setVisible(true);
 
-            //setOpaque(false);
+            setOpaque(false);
         }
 
         @Override
