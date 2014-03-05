@@ -36,7 +36,7 @@ public class Launcher extends JFrame implements MouseListener {
     public Launcher() {
         imagePaths.add("src/resources/GoButton.png");
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
-        imagePaths.add("src/resources/LauncherBackground.jpg");
+        imagePaths.add("src/resources/LauncherBackground.png");
         imagePaths.add("src/resources/CloseButton.png");
         imagePaths.add("src/resources/FullscreenButton.png");
         images = mediaLoader.loadImages(imagePaths);
@@ -115,7 +115,7 @@ public class Launcher extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent me) {
-        Rectangle rect = new Rectangle(450, 450, 200, 100);
+        Rectangle rect = new Rectangle(375, 450, 200, 100);
 
         if (rect.contains(new Point(me.getX(), me.getY()))) {
             sounds.get(0).start();
@@ -123,7 +123,7 @@ public class Launcher extends JFrame implements MouseListener {
             OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice, images.get(1));
         }
         
-        Rectangle fullrect = new Rectangle(300,500,100,50);
+        Rectangle fullrect = new Rectangle(225,500,100,50);
         if (fullrect.contains(new Point(me.getX(), me.getY())))
         {
             if (graphicsDevice.isFullScreenSupported()) {
@@ -136,7 +136,7 @@ public class Launcher extends JFrame implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        Rectangle rect = new Rectangle(700, 500, 100, 50); // exit game
+        Rectangle rect = new Rectangle(625, 500, 100, 50); // exit game
 
         if (rect.contains(new Point(me.getX(), me.getY()))) {
             System.exit(0);
