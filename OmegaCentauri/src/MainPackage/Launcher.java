@@ -38,6 +38,7 @@ public class Launcher extends JFrame implements MouseListener {
         imagePaths.add("src/resources/OmegaCentauriLogo.png");
         imagePaths.add("src/resources/LauncherBackground.jpg");
         imagePaths.add("src/resources/CloseButton.png");
+        imagePaths.add("src/resources/FullscreenButton.png");
         images = mediaLoader.loadImages(imagePaths);
 
         soundPaths.add("src/resources/mouseClick.wav");
@@ -102,24 +103,7 @@ public class Launcher extends JFrame implements MouseListener {
 
             } // end event handler body
         }); // end event handler definition
-
-        JButton fullscreen = new JButton("Fullscreen");
-        fullscreen.setText("Fullscreen");
-        fullscreen.setLocation(0, 110);
-        fullscreen.setSize(100, 50);
-        fullscreen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (graphicsDevice.isFullScreenSupported()) {
-                    setWindowFullScreen();
-                } else {
-                    System.err.println("Fullscreen is not supported on your system!");
-                }
-            } // end event handler body
-        }); // end event handler definition
-
         this.add(resolution1440by900);
-        this.add(fullscreen);
         this.add(panel);
         repaint();
     }
@@ -158,6 +142,16 @@ public class Launcher extends JFrame implements MouseListener {
             closeWindow();
             OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice, images.get(1));
         }
+        
+        Rectangle fullrect = new Rectangle(300,500,100,50);
+        if (fullrect.contains(new Point(me.getX(), me.getY())))
+        {
+            if (graphicsDevice.isFullScreenSupported()) {
+                    setWindowFullScreen();
+                } else {
+                    System.err.println("Fullscreen is not supported on your system!");
+                }
+        }
     }
 
     @Override
@@ -193,7 +187,7 @@ public class Launcher extends JFrame implements MouseListener {
 
         @Override
         public void run() {
-            renderer.drawLauncher(panel.getGraphics(), images.get(0), images.get(2), images.get(images.size() - 1)); // use active rendering
+            renderer.drawLauncher(panel.getGraphics(), images.get(0), images.get(2), images.get(images.size() - 2), images.get(4)); // use active rendering
             refreshTimer.schedule(new refreshTimer(), 100); // 10 fps
         }
     }
