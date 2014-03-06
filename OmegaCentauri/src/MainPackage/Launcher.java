@@ -24,11 +24,10 @@ public class Launcher extends JFrame implements MouseListener {
     private final ArrayList<String> soundPaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
-    private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private java.util.Timer refreshTimer = new java.util.Timer();
     private boolean fullScreen = false;
     private Settings settings;
-
+    private DrawingPanel panel = new DrawingPanel();
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -47,45 +46,36 @@ public class Launcher extends JFrame implements MouseListener {
         settings = new Settings(screenSize);
 
         setUpWindow(width, height);
-        addButtons();
     }
 
     private void setUpWindow(int width, int height) {
 
-        this.setIconImage(images.get(1));
-        this.setSize(width, height);
-        this.setUndecorated(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(images.get(1));
+        setSize(width, height);
+        setUndecorated(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //this.setBackground(new Color(0,0,0,0));
-        this.setLayout(null);
+        setBackground(new Color(0,255,0,0));
+        setLayout(new BorderLayout());
 
-        this.addMouseListener(this);
-        this.setTitle("Omega Centauri Launcher");
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
-
-        this.requestFocus();
-        this.setVisible(true);
+        addMouseListener(this);
+        setTitle("Omega Centauri Launcher");
+        setResizable(false);
+        setLocationRelativeTo(null);
+        
+        addComponents();
+        requestFocus();
+        setVisible(true);
 
     }
 
-    private void addButtons() {
-        JButton goButton = new JButton("GO!");
-        goButton.setVisible(true);
-        goButton.setText("GO!");
-        goButton.setSize(100, 50);
-
-        goButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sounds.get(0).start();
-                closeWindow();
-                OmegaCentauri_ oc = new OmegaCentauri_(width, height, 85, renderer, fullScreen, graphicsDevice, images.get(1));
-            }
-        });
-        this.add(panel);
-        repaint();
+    private void addComponents() {
+        setContentPane(new BackPanel());
+        getContentPane().setBackground(Color.BLACK);
+        getContentPane().setSize(screenSize);
+        
+        panel.setSize(screenSize);
+        add(panel);
     }
 
     private void setWindowFullScreen() {
@@ -93,17 +83,35 @@ public class Launcher extends JFrame implements MouseListener {
         graphicsDevice.setFullScreenWindow(this);
     }
 
-    public class Panel extends JPanel {
+    public class BackPanel extends JPanel {
 
-        public Panel(int width, int height) {
-            setSize(width, height);
-            setVisible(true);
-
+        public BackPanel() {
             setOpaque(false);
+            setVisible(true);
         }
 
         @Override
         protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            
+        Graphics2D overGraphics2D = (Graphics2D)g.create();
+        overGraphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
+        overGraphics2D.setColor(Color.BLACK);
+        overGraphics2D.fill(getBounds());
+        overGraphics2D.dispose();
+        }
+    }
+    
+    public class DrawingPanel extends JPanel
+    {
+        public DrawingPanel()
+        {
+            setVisible(true);
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g)
+        {
             super.paintComponent(g);
             refreshTimer.schedule(new refreshTimer(), 1);
         }
@@ -154,21 +162,24 @@ public class Launcher extends JFrame implements MouseListener {
     private void closeWindow() {
         refreshTimer.purge();
         refreshTimer.cancel();
-        this.setVisible(false); 
+        setVisible(false); 
         this.dispose();
     }
 
     private void changeResolution(int width, int height) {
-        this.setPreferredSize(new Dimension(width, height));
-        this.pack();
+        setPreferredSize(new Dimension(width, height));
+        pack();
     }
 
     private class refreshTimer extends TimerTask {
 
         @Override
         public void run() {
-            renderer.drawLauncher(panel.getGraphics(), images.get(0), images.get(2), images.get(images.size() - 2), images.get(4)); // use active rendering
-            refreshTimer.schedule(new refreshTimer(), 100); // 10 fps
+            if (panel.getGraphics() != null)
+                renderer.drawLauncher(panel.getGraphics(), images.get(0), images.get(2), images.get(images.size() - 2), images.get(4)); // use active rendering
+            panel.repaint();
+            getContentPane().repaint();
+            refreshTimer.schedule(new refreshTimer(), 100);
         }
     }
 }
