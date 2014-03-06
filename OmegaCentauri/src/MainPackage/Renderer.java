@@ -133,8 +133,6 @@ public class Renderer {
         BufferedImage bufferedImage = new BufferedImage(1000, 600, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bufferedImage.createGraphics();
         
-        
-        
         g2d.drawImage(backgroundImage, 0, 0, null);
         g2d.drawImage(startButtonImage, 375, 450, null);
         g2d.drawImage(exitButtonImage, 625, 500, null);

@@ -1,7 +1,5 @@
 package MainPackage;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -72,10 +70,11 @@ public class Launcher extends JFrame implements MouseListener {
     private void addComponents() {
         setContentPane(new BackPanel());
         getContentPane().setBackground(Color.BLACK);
-        getContentPane().setSize(screenSize);
+        setLayout(new BorderLayout());
         
         panel.setSize(screenSize);
         add(panel);
+        panel.repaint();
     }
 
     private void setWindowFullScreen() {
@@ -95,7 +94,8 @@ public class Launcher extends JFrame implements MouseListener {
             super.paintComponent(g);
             
         Graphics2D overGraphics2D = (Graphics2D)g.create();
-        overGraphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
+        
+        overGraphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.0f));
         overGraphics2D.setColor(Color.BLACK);
         overGraphics2D.fill(getBounds());
         overGraphics2D.dispose();
