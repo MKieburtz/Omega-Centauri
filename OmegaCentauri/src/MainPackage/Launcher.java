@@ -74,7 +74,6 @@ public class Launcher extends JFrame implements MouseListener {
         
         panel.setSize(screenSize);
         add(panel);
-        panel.repaint();
     }
 
     private void setWindowFullScreen() {
@@ -177,8 +176,7 @@ public class Launcher extends JFrame implements MouseListener {
         public void run() {
             if (panel.getGraphics() != null)
                 renderer.drawLauncher(panel.getGraphics(), images.get(0), images.get(2), images.get(images.size() - 2), images.get(4)); // use active rendering
-            panel.repaint();
-            getContentPane().repaint();
+            
             refreshTimer.schedule(new refreshTimer(), 100);
         }
     }
