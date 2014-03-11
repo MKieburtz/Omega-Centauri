@@ -133,10 +133,10 @@ public class Renderer {
         BufferedImage bufferedImage = new BufferedImage(1000, 600, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bufferedImage.createGraphics();
         
-        g2d.drawImage(backgroundImage, 0, 0, null);
-        g2d.drawImage(startButtonImage, 375, 450, null);
-        g2d.drawImage(exitButtonImage, 625, 500, null);
-        g2d.drawImage(fullscreenButtonImage, 225, 500, null);
+        g2d.drawImage(backgroundImage, Launcher.WIDTH + 250, Launcher.HEIGHT + 150, null);
+        g2d.drawImage(startButtonImage, Launcher.WIDTH + 50, Launcher.HEIGHT + 25, null);
+        g2d.drawImage(exitButtonImage, Launcher.WIDTH + 25, Launcher.HEIGHT + 12, null);
+        g2d.drawImage(fullscreenButtonImage, Launcher.WIDTH + 25, Launcher.HEIGHT + 12, null);
         
         g.drawImage(bufferedImage, 0, 0, null);
         
