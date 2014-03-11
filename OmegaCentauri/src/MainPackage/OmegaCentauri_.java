@@ -250,7 +250,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
             // draw screen with active rendering
             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                    averageFPS, stars, camera, shotsToDraw, Version, UPS);
+                    averageFPS, stars, camera, shotsToDraw, Version, UPS, paused);
             framesDrawn++;
 
             shipsToDraw.clear();
@@ -441,6 +441,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
             case KeyEvent.VK_SPACE: {
                 shooting = false;
+            }
+            
+            case KeyEvent.VK_ESCAPE: {
+                paused = !paused;
             }
 
         } // end switch

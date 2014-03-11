@@ -20,6 +20,7 @@ public class Renderer {
     private Font fpsFont;
     private MediaLoader loader;
     private final int HEALTHLABEL = 0;
+    private final int PAUSEMENU = 1;
 
     public Renderer() {
 
@@ -28,13 +29,14 @@ public class Renderer {
         fontPaths.add("src/resources/BlackHoleBB_ital.ttf");
 
         imagePaths.add("src/resources/healthbackground.png");
+        imagePaths.add("src/resources/PauseMenu.png");
         images = loader.loadImages(imagePaths);
 
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
     }
 
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
-            ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots, String version, int ups) {
+            ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots, String version, int ups, boolean paused) {
 
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
 
@@ -122,6 +124,13 @@ public class Renderer {
                     camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
             g2d.draw(minimapShip);
         }
+        
+        //draw pause menu
+        if (paused == true)
+        {
+            g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
+        }
+        
         g.drawImage(bufferedImage, 0, 0, null);
 
         g2d.dispose();
