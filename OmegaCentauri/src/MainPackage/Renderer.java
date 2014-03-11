@@ -129,14 +129,18 @@ public class Renderer {
     }
 
     public void drawLauncher(Graphics g, BufferedImage startButtonImage, BufferedImage backgroundImage,
-            BufferedImage exitButtonImage, BufferedImage fullscreenButtonImage) {
-        BufferedImage bufferedImage = new BufferedImage(1000, 600, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage exitButtonImage, Dimension screensize) {
+        BufferedImage bufferedImage = new BufferedImage(screensize.width, screensize.height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bufferedImage.createGraphics();
         
-        g2d.drawImage(backgroundImage, Launcher.WIDTH + 250, Launcher.HEIGHT + 150, null);
-        g2d.drawImage(startButtonImage, Launcher.WIDTH + 50, Launcher.HEIGHT + 25, null);
-        g2d.drawImage(exitButtonImage, Launcher.WIDTH + 25, Launcher.HEIGHT + 12, null);
-        g2d.drawImage(fullscreenButtonImage, Launcher.WIDTH + 25, Launcher.HEIGHT + 12, null);
+        g2d.drawImage(backgroundImage, screensize.width - screensize.width / 2 - backgroundImage.getWidth() / 2,
+                screensize.height - screensize.height / 2 - backgroundImage.getHeight() / 2 - 100, null);
+        
+        g2d.drawImage(startButtonImage, screensize.width - screensize.width / 2 - startButtonImage.getWidth() / 2,
+                screensize.height - screensize.height / 2 - startButtonImage.getWidth() / 4, null);
+        
+        g2d.drawImage(exitButtonImage, screensize.width - screensize.width / 2 - exitButtonImage.getWidth() * 4,
+                screensize.height - screensize.height / 2 - exitButtonImage.getHeight() / 2, null);
         
         g.drawImage(bufferedImage, 0, 0, null);
         
