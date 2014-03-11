@@ -68,8 +68,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
         for (EnemyShip enemy : enemyShips) {
             collisionListeners.add(enemy);
         }
-        
-        
+
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
         setUpWindow(width, height, fullScreen, logo);
@@ -79,7 +78,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     private void setUpWindow(int width, int height, boolean fullScreen, BufferedImage logo) {
         setEnabled(true);
-        
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
         requestFocus();
@@ -112,7 +111,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
              * |___|_x_|
              * |___|___|
              */
-
             if (yPositions[0] < 0) {
 
                 for (int x = 1; x < screenSize.x; x = x + 100) {
@@ -124,14 +122,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 yPositions[0] += 100;
             }
 
-
             // quadrant 2
 
             /*  _______
              * |_x_|___|
              * |___|___|
              */
-
             if (yPositions[1] < 0) {
                 for (int x = -1; x > -screenSize.x; x = x - 100) {
 
@@ -149,7 +145,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
              * |___|___|
              * |_x_|___|
              */
-
             if (yPositions[2] < 10000) {
                 for (int x = -1; x > -screenSize.x; x = x - 100) {
 
@@ -166,7 +161,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
              * |___|___|
              * |___|_x_|
              */
-
             if (yPositions[3] < 10000) {
                 for (int x = 1; x < screenSize.x; x = x + 100) {
 
@@ -176,7 +170,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
                 yPositions[3] += 100;
             }
-
 
             // base case
             if (starChunksLoaded == (100 * 100) * 4) {
@@ -236,12 +229,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
             shipsToDraw.add(player);
             shipsToDraw.addAll(enemyShips);
             shipsToDraw.addAll(allyShips);
-            
+
             for (Ship ship : shipsToDraw) {
                 shotsToDraw.addAll(ship.getShots());
             }
 
-            if (canUpdate) {
+            if (canUpdate && !paused) {
                 gameUpdate();
                 syncGameStateVaribles();
                 updates += 1;
@@ -259,7 +252,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
             afterTime = System.currentTimeMillis();
 
             timeDiff = afterTime - beforeTime;
-
 
             if (timeDiff > loopTime) {
                 continue; // don't sleep
@@ -308,8 +300,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
             player.purgeShots();
         }
 
-
-
         for (Shot shot : shotsToDraw) {
             // check for collisions with enemy shots and the player
             if (Calculator.collisionCheck(player.returnHitbox(), shot.returnHitbox())) {
@@ -319,13 +309,18 @@ public class OmegaCentauri_ extends Game implements Runnable {
             }
 
             // check for collisions with player shots and enemys
-
             for (EnemyShip enemyShip : enemyShips) {
                 if (Calculator.collisionCheck(enemyShip.returnHitbox(), shot.returnHitbox())) {
                     for (ICollisionListener collisionListener : collisionListeners) {
                         collisionListener.CollisionEvent(enemyShip, shot, shipsToDraw);
                     }
                 }
+            }
+            
+            for (Ship ship : shipsToDraw)
+            {
+                if (ship.getShield().getHealth() > 0)
+                    ship.getShield().decay();
             }
         }
 
@@ -341,61 +336,62 @@ public class OmegaCentauri_ extends Game implements Runnable {
          * 2 = turning right
          * 3 = turning left
          */
-        switch (keyCode) {
-            case KeyEvent.VK_W: {
-                forward = true;
-                if (!rotateRight && !rotateLeft) {
-                    player.changeImage(ShipState.Thrusting);
-                } else if (rotateLeft && !rotateRight) {
-                    player.changeImage(ShipState.TurningLeftThrusting);
-                } else if (!rotateLeft && rotateRight) {
-                    player.changeImage(ShipState.TurningRightThrusting);
+        if (!paused) {
+            switch (keyCode) {
+                case KeyEvent.VK_W: {
+                    forward = true;
+                    if (!rotateRight && !rotateLeft) {
+                        player.changeImage(ShipState.Thrusting);
+                    } else if (rotateLeft && !rotateRight) {
+                        player.changeImage(ShipState.TurningLeftThrusting);
+                    } else if (!rotateLeft && rotateRight) {
+                        player.changeImage(ShipState.TurningRightThrusting);
+                    }
                 }
-            }
-            break;
-
-            case KeyEvent.VK_D: {
-                rotateRight = true;
-                if (!forward) {
-                    player.changeImage(ShipState.TurningRight);
-                } else if (forward) {
-                    player.changeImage(ShipState.TurningRightThrusting);
-                } else if (rotateLeft) {
-                    player.changeImage(ShipState.Idle);
-                }
-
-            }
-            break;
-
-            case KeyEvent.VK_A: {
-                rotateLeft = true;
-                if (!forward) {
-                    player.changeImage(ShipState.TurningLeft);
-                } else if (forward) {
-                    player.changeImage(ShipState.TurningLeftThrusting);
-                } else if (rotateRight) {
-                    player.changeImage(ShipState.Idle);
-                }
-
-            }
-            break;
-
-            case KeyEvent.VK_SHIFT: {
-                player.speedBoost();
-            }
-            break;
-
-            case KeyEvent.VK_SPACE: {
-                shooting = true;
                 break;
-            }
 
-            case KeyEvent.VK_Q: {
-                System.exit(0);
-            }
+                case KeyEvent.VK_D: {
+                    rotateRight = true;
+                    if (!forward) {
+                        player.changeImage(ShipState.TurningRight);
+                    } else if (forward) {
+                        player.changeImage(ShipState.TurningRightThrusting);
+                    } else if (rotateLeft) {
+                        player.changeImage(ShipState.Idle);
+                    }
 
-        } // end switch
+                }
+                break;
 
+                case KeyEvent.VK_A: {
+                    rotateLeft = true;
+                    if (!forward) {
+                        player.changeImage(ShipState.TurningLeft);
+                    } else if (forward) {
+                        player.changeImage(ShipState.TurningLeftThrusting);
+                    } else if (rotateRight) {
+                        player.changeImage(ShipState.Idle);
+                    }
+
+                }
+                break;
+
+                case KeyEvent.VK_SHIFT: {
+                    player.speedBoost();
+                }
+                break;
+
+                case KeyEvent.VK_SPACE: {
+                    shooting = true;
+                    break;
+                }
+
+                case KeyEvent.VK_Q: {
+                    System.exit(0);
+                }
+
+            } // end switch
+        }
     } // end method
 
     @Override
@@ -438,18 +434,21 @@ public class OmegaCentauri_ extends Game implements Runnable {
             case KeyEvent.VK_SHIFT: {
                 player.stopSpeedBoosting();
             }
+            break;
 
             case KeyEvent.VK_SPACE: {
                 shooting = false;
             }
-            
+            break;
+
             case KeyEvent.VK_ESCAPE: {
                 paused = !paused;
             }
+            break;
 
         } // end switch
     }
-    
+
     public class Panel extends JPanel {
 
         public Panel(int width, int height) {

@@ -59,8 +59,6 @@ public class Shield {
             
             g2d.drawImage(activeImage, transform, null);
             
-            opacity -= 1;
-            
             g2d.setComposite(originalComposite);
         }
     }
@@ -73,5 +71,9 @@ public class Shield {
     public int getHealth()
     {
         return health;
+    }
+    public void decay()
+    {
+        opacity -= 1;
     }
 }
