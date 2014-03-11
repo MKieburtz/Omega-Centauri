@@ -319,7 +319,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             
             for (Ship ship : shipsToDraw)
             {
-                if (ship.getShield().getHealth() > 0)
+                if (ship.getShield().getHealth() >= 0)
                     ship.getShield().decay();
             }
         }
