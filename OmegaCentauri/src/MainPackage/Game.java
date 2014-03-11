@@ -32,6 +32,7 @@ abstract class Game extends JFrame implements KeyListener {
     }
 
     // WARNING: USELESS METHOD... FOR NOW
+    @Override
     public void keyTyped(KeyEvent ke) {
     }
 }

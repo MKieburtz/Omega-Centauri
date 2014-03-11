@@ -16,7 +16,7 @@ public class Launcher extends JFrame implements MouseListener {
 
     
     // constants for image drawing:
-    private final int GOBUTTON = 0;
+    private final int GO = 0;
     private final int LOGO = 1;
     private final int BACKGROUND = 2;
     private final int CLOSE = 3;
@@ -51,7 +51,7 @@ public class Launcher extends JFrame implements MouseListener {
 
     private void setUpWindow() {
 
-        setIconImage(images.get(1));
+        setIconImage(images.get(LOGO));
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(screenSize);
@@ -102,7 +102,7 @@ public class Launcher extends JFrame implements MouseListener {
         @Override
         protected void paintComponent(Graphics g)
         {
-            renderer.drawLauncher(g.create(), images.get(GOBUTTON), images.get(BACKGROUND), images.get(CLOSE), screenSize); // use active rendering            
+            renderer.drawLauncher(g.create(), images.get(GO), images.get(BACKGROUND), images.get(CLOSE), screenSize); // use active rendering            
         }
     }
 
@@ -112,28 +112,20 @@ public class Launcher extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent me) {
-        Rectangle rect = new Rectangle(375, 450, 200, 100);
+        Rectangle rect = new Rectangle(screenSize.width - screenSize.width / 2 - images.get(GO).getWidth() / 2,
+                screenSize.height - screenSize.height / 2 - images.get(GO).getHeight() / 2, 200, 100); // start game
 
         if (rect.contains(new Point(me.getX(), me.getY()))) {
             sounds.get(0).start();
             closeWindow();
             OmegaCentauri_ oc = new OmegaCentauri_(getWidth(), getHeight(), 85, renderer, fullScreen, graphicsDevice, images.get(1));
         }
-        
-        Rectangle fullrect = new Rectangle(225,500,100,50);
-        if (fullrect.contains(new Point(me.getX(), me.getY())))
-        {
-            if (graphicsDevice.isFullScreenSupported()) {
-                    setWindowFullScreen();
-                } else {
-                    System.err.println("Fullscreen is not supported on your system!");
-                }
-        }
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        Rectangle rect = new Rectangle(625, 500, 100, 50); // exit game
+        Rectangle rect = new Rectangle(screenSize.width - screenSize.width / 2 - images.get(CLOSE).getWidth() * 4,
+                screenSize.height - screenSize.height / 2 - images.get(CLOSE).getHeight() / 2, 100, 50); // exit game
 
         if (rect.contains(new Point(me.getX(), me.getY()))) {
             System.exit(0);

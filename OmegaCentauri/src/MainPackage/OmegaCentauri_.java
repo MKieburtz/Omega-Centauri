@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 public class OmegaCentauri_ extends Game implements Runnable {
 
-    private final String Version = "Dev 1.0.4";
+    private final String Version = "Dev 1.0.5";
     /*
      * GAME STATE VARIBLES:
      */
@@ -80,7 +80,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private void setUpWindow(int width, int height, boolean fullScreen, BufferedImage logo) {
         setEnabled(true);
         
-        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
         requestFocus();
@@ -93,7 +92,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
             gd.setFullScreenWindow(this);
         } else {
             setIconImage(logo);
-            setPreferredSize(new Dimension(width, height));
+            setPreferredSize(new Dimension(1000, 600));
             pack();
         }
         setLocationRelativeTo(null);
