@@ -212,6 +212,11 @@ public abstract class Ship implements ICollisionListener {
             }
         }
         
+        if (ship.getHullHealth() == 0)
+        {
+            
+        }
+        
         for (Ship collisionShip : allShips)
         {
             if (collisionShip.getShots().contains(shot) && !collisionShip.equals(ship))

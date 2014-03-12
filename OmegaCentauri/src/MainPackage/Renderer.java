@@ -23,7 +23,8 @@ public class Renderer {
     private final int HEALTHLABEL = 0;
     private final int PAUSEMENU = 1;
     private final int PAUSETOMENU = 2;
-
+    private final int GAMEOVER = 3;
+    
     public Renderer() {
 
         loader = new MediaLoader();
@@ -33,6 +34,7 @@ public class Renderer {
         imagePaths.add("src/resources/healthbackground.png");
         imagePaths.add("src/resources/PauseMenu.png");
         imagePaths.add("src/resources/PauseButton_ToMenu.png");
+        imagePaths.add("src/resources/GameOver.png");
         images = loader.loadImages(imagePaths);
 
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
@@ -64,7 +66,9 @@ public class Renderer {
         }
         // draw the player and enemies
         for (Ship ship : ships) {
-            ship.draw(g2d, camera.getLocation());
+            if (ship.getHullHealth() > 0) {
+                ship.draw(g2d, camera.getLocation());
+            }
         }
         
         // draw fps info and other stats
@@ -126,6 +130,15 @@ public class Renderer {
             Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + 100 + ship.getLocation().x / 100,
                     camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
             g2d.draw(minimapShip);
+        }
+        //draw game over
+        for (Ship ship : ships)
+        {
+            if (ship instanceof Player && ship.getHullHealth() <= 0)
+            {
+                g2d.drawImage(images.get(GAMEOVER), null, 250,125);
+                
+            }
         }
         
         //draw pause menu

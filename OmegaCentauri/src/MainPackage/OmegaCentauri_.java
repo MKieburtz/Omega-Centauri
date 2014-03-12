@@ -246,10 +246,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
             }
 
             // draw screen with active rendering
+            if (panel.getGraphics() != null) {
             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                     averageFPS, stars, camera, shotsToDraw, Version, UPS, paused);
             framesDrawn++;
-
+            }
             shipsToDraw.clear();
             shotsToDraw.clear();
 
