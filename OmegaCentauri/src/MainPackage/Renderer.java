@@ -129,7 +129,7 @@ public class Renderer {
         }
         
         //draw pause menu
-        if (paused == true)
+        if (paused)
         {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
             g2d.drawImage(images.get(PAUSETOMENU),null, 20, 110);

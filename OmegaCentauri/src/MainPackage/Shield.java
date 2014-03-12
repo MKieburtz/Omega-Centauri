@@ -72,6 +72,12 @@ public class Shield {
     {
         return health;
     }
+    
+    public boolean isActive()
+    {
+        return opacity > 0;
+    }
+    
     public void decay()
     {
         opacity -= 1;

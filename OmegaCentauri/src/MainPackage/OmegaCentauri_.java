@@ -320,13 +320,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
                     }
                 }
             }
-            
-            for (Ship ship : shipsToDraw)
+        }
+        
+        for (Ship ship : shipsToDraw)
             {
-                if (ship.getShield().getHealth() >= 0)
+                if (ship.getShield().isActive())
                     ship.getShield().decay();
             }
-        }
 
     }
     int keyCode;
