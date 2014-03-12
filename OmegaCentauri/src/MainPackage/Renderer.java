@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
@@ -21,6 +22,7 @@ public class Renderer {
     private MediaLoader loader;
     private final int HEALTHLABEL = 0;
     private final int PAUSEMENU = 1;
+    private final int PAUSETOMENU = 2;
 
     public Renderer() {
 
@@ -30,6 +32,7 @@ public class Renderer {
 
         imagePaths.add("src/resources/healthbackground.png");
         imagePaths.add("src/resources/PauseMenu.png");
+        imagePaths.add("src/resources/PauseButton_ToMenu.png");
         images = loader.loadImages(imagePaths);
 
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
@@ -129,6 +132,7 @@ public class Renderer {
         if (paused == true)
         {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
+            g2d.drawImage(images.get(PAUSETOMENU),null, 20, 110);
         }
         
         g.drawImage(bufferedImage, 0, 0, null);
@@ -184,6 +188,13 @@ public class Renderer {
 
         g2d.dispose();
         g.dispose();
+    }
+        public void mousePressed(MouseEvent me) {
+        Rectangle rect = new Rectangle(20, 110, 200, 100);
+
+        if (rect.contains(new Point(me.getX(), me.getY()))) {
+            System.out.println("BUTTON IN PAUSE MENU FUNCTIONS, TECHNICALLY");
+        }
     }
     
     private String convertPointToOrderedPair(Point2D.Double point)
