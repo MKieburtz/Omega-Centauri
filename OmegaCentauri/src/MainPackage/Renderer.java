@@ -189,13 +189,6 @@ public class Renderer {
         g2d.dispose();
         g.dispose();
     }
-        public void mousePressed(MouseEvent me) {
-        Rectangle rect = new Rectangle(20, 110, 200, 100);
-
-        if (rect.contains(new Point(me.getX(), me.getY()))) {
-            System.out.println("BUTTON IN PAUSE MENU FUNCTIONS, TECHNICALLY");
-        }
-    }
     
     private String convertPointToOrderedPair(Point2D.Double point)
     {

@@ -52,7 +52,7 @@ public class Launcher extends JFrame implements MouseListener {
     private void setUpWindow() {
 
         setIconImage(images.get(LOGO));
-        
+        settings.setResolution(Resolutions.Default);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(screenSize);
         setUndecorated(true);
@@ -68,10 +68,6 @@ public class Launcher extends JFrame implements MouseListener {
         setTitle("Omega Centauri Launcher");
         
         setVisible(true);
-    }
-
-    private void setWindowFullScreen() {
-        
     }
 
     public class BackPanel extends JPanel {
@@ -118,7 +114,7 @@ public class Launcher extends JFrame implements MouseListener {
         if (rect.contains(new Point(me.getX(), me.getY()))) {
             sounds.get(0).start();
             closeWindow();
-            OmegaCentauri_ oc = new OmegaCentauri_(getWidth(), getHeight(), 85, renderer, fullScreen, graphicsDevice, images.get(1));
+            OmegaCentauri_ oc = new OmegaCentauri_(85, renderer, fullScreen, graphicsDevice, images.get(1), settings);
         }
     }
 

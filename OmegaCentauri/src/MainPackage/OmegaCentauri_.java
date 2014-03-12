@@ -39,6 +39,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private Camera camera;
     private ArrayList<ICollisionListener> collisionListeners = new ArrayList<ICollisionListener>();
     private GraphicsDevice gd;
+    private Settings settings;
     // TIMERS
     private java.util.Timer FPSAndUPSTimer = new java.util.Timer();
     private java.util.Timer UpdateTimer = new java.util.Timer();
@@ -49,12 +50,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
 
-    public OmegaCentauri_(int width, int height, long desiredFrameRate, Renderer renderer,
-            boolean fullScreen, GraphicsDevice gd, BufferedImage logo) {
+    public OmegaCentauri_(int desiredFrameRate, Renderer renderer,
+            boolean fullScreen, GraphicsDevice gd, BufferedImage logo, Settings settings) {
 
+        this.settings = settings;
         this.gd = gd;
         this.renderer = renderer;
-        camera = new Camera(width, height);
+        camera = new Camera(settings.getResolution().width, settings.getResolution().height);
         loading = true;
 
         player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation(), 155, 100);
@@ -71,12 +73,12 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
-        setUpWindow(width, height, fullScreen, logo);
+        setUpWindow(settings.getResolution() == null, logo);
 
         loadGame();
     }
 
-    private void setUpWindow(int width, int height, boolean fullScreen, BufferedImage logo) {
+    private void setUpWindow(boolean fullScreen, BufferedImage logo) {
         setEnabled(true);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,8 +96,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
             setPreferredSize(new Dimension(1000, 600));
             pack();
         }
+        
         setLocationRelativeTo(null);
-
+        addMouseListener(this);
+        
         setVisible(true);
     }
 
@@ -447,6 +451,36 @@ public class OmegaCentauri_ extends Game implements Runnable {
             break;
 
         } // end switch
+    }
+
+    @Override
+    public void CheckMousePressed(MouseEvent me)
+    {
+        Rectangle rect = new Rectangle(20, 110, 200, 100);
+        
+        if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
+            System.out.println("BUTTON IN PAUSE MENU FUNCTIONS, TECHNICALLY");
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+       
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        
     }
 
     public class Panel extends JPanel {

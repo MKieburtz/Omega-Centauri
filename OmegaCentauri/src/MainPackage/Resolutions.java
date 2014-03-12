@@ -9,4 +9,5 @@ enum Resolutions {
 
     FullScreen,
     Resolution1440x900,
+    Default
 }
