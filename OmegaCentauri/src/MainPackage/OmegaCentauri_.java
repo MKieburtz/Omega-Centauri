@@ -459,7 +459,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
         Rectangle rect = new Rectangle(20, 110, 200, 100);
         
         if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
-            System.out.println("BUTTON IN PAUSE MENU FUNCTIONS, TECHNICALLY");
+            this.setVisible(false);
+            this.dispose();
+            new Launcher();
         }
     }
 
