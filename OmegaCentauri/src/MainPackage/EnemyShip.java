@@ -4,8 +4,13 @@ package MainPackage;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
+import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
+import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public abstract class EnemyShip extends Ship {
 
@@ -82,5 +87,27 @@ public abstract class EnemyShip extends Ship {
     {
         super.draw(g2d, cameraLocation);
         shield.draw(g2d, cameraLocation, location);
+        
+        Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float)(location.x - cameraLocation.x),
+        (float)(location.y - cameraLocation.y - 12), (float)shield.getHealth() / 1.5f, 5f);
+        
+        GradientPaint paintShield = new GradientPaint(paintRectShield.x, paintRectShield.y, Color.BLUE, paintRectShield.x + paintRectShield.width,
+                paintRectShield.y + paintRectShield.height, Color.CYAN);
+        
+        Rectangle2D.Float paintRectHull = new Rectangle2D.Float((float)(location.x - cameraLocation.x),
+        (float)(location.y - cameraLocation.y - 5), (float)hull / 1.5f, 5f);
+        
+        GradientPaint paintHull = new GradientPaint(paintRectHull.x, paintRectHull.y, new Color(92,92,92), paintRectHull.x + paintRectHull.width,
+                paintRectHull.y + paintRectHull.height, new Color(179,179,179));
+        
+        g2d.setPaint(paintShield);
+        g2d.fill(paintRectShield);
+        
+        g2d.setPaint(paintHull);
+        g2d.fill(paintRectHull);
+        //g2d.setColor(Color.BLUE);
+        //g2d.fill(new Rectangle2D.Double(location.x - cameraLocation.x, location.y - cameraLocation.y - 12, shield.getHealth() / 1.5, 5));
+        //g2d.setColor(Color.GREEN);
+        //g2d.fill(new Rectangle2D.Double(location.x - cameraLocation.x, location.y - cameraLocation.y - 5, hull / 1.5, 5));
     }
 }
