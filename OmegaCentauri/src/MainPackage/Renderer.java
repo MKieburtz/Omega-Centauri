@@ -135,6 +135,10 @@ public class Renderer {
         }
         //draw scanner module
         g2d.drawImage(images.get(SCANNERMODULE), null, 0,487);
+        g2d.setFont(fpsFont.deriveFont(15f));
+        g2d.setColor(Color.CYAN);
+        g2d.drawString("Enemy Shield Integrity:", 10, 507);
+        g2d.drawString("Enemy Hull Integrity:", 10, 537);
         //draw game over
         for (Ship ship : ships)
         {
