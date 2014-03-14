@@ -37,7 +37,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private Camera camera;
-    private ArrayList<ICollisionListener> collisionListeners = new ArrayList<ICollisionListener>();
+    private ArrayList<CollisionListener> collisionListeners = new ArrayList<CollisionListener>();
     private GraphicsDevice gd;
     private Settings settings;
     // TIMERS
@@ -96,10 +96,10 @@ public class OmegaCentauri_ extends Game implements Runnable {
             setPreferredSize(new Dimension(1000, 600));
             pack();
         }
-        
+
         setLocationRelativeTo(null);
         addMouseListener(this);
-        
+
         setVisible(true);
     }
 
@@ -247,9 +247,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
             // draw screen with active rendering
             if (panel.getGraphics() != null) {
-            renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                    averageFPS, stars, camera, shotsToDraw, Version, UPS, paused);
-            framesDrawn++;
+                renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                        averageFPS, stars, camera, shotsToDraw, Version, UPS, paused);
+                framesDrawn++;
             }
             shipsToDraw.clear();
             shotsToDraw.clear();
@@ -308,21 +308,39 @@ public class OmegaCentauri_ extends Game implements Runnable {
         for (Shot shot : shotsToDraw) {
             // check for collisions with enemy shots and the player
 
-            for (Ship ship :shipsToDraw)
-            {
-                if (Calculator.collisionCheck(ship.returnHitbox(), shot.returnHitbox()))
-                {
-                    ship.CollisionEvent(ship, shot, shipsToDraw);
+            for (Ship ship : shipsToDraw) {
+                if (Calculator.collisionCheck(ship.returnHitbox(), shot.returnHitbox())) {
+                    ship.CollisionEventWithShot(ship, shot, shipsToDraw);
                 }
             }
-            
+
         }
-        
-        for (Ship ship : shipsToDraw)
-            {
-                if (ship.getShield().isActive())
-                    ship.getShield().decay();
+
+        for (Ship ship : shipsToDraw) {
+
+            for (int i = shipsToDraw.size() - 1; i > -1; i--) {
+                if (shipsToDraw.get(i).getHullHealth() <= 0) {
+                    if (shipsToDraw.get(i) instanceof EnemyShip) {
+                        enemyShips.remove(shipsToDraw.get(i));
+                    }
+
+                    shipsToDraw.remove(i);
+                }
             }
+
+            if (ship.getShield().isActive()) {
+                ship.getShield().decay();
+            }
+
+            // unfinished ship to ship collision code:
+//            for (Ship collisionShip : shipsToDraw) {
+//                if (!collisionShip.equals(ship)) {
+//                    if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())) {
+//                        ship.CollisionEventWithShips(ship, collisionShip);
+//                    }
+//                }
+//            }
+        }
 
     }
     int keyCode;
@@ -450,10 +468,9 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     @Override
-    public void CheckMousePressed(MouseEvent me)
-    {
+    public void CheckMousePressed(MouseEvent me) {
         Rectangle rect = new Rectangle(20, 110, 200, 100);
-        
+
         if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
             this.setVisible(false);
             this.dispose();
@@ -463,22 +480,22 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        
+
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        
+
     }
 
     @Override
     public void mouseEntered(MouseEvent me) {
-       
+
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-        
+
     }
 
     public class Panel extends JPanel {

@@ -13,7 +13,7 @@ import javax.sound.sampled.Clip;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public abstract class Ship implements ICollisionListener {
+public abstract class Ship implements CollisionListener {
 
     protected int hull;
     protected int fuel;
@@ -169,13 +169,9 @@ public abstract class Ship implements ICollisionListener {
     protected void playSound(int index) {
         sounds.get(index).setFramePosition(0);
         if (!sounds.get(index).isActive())
-            sounds.get(index).start();
-        else
         {
-            if (sounds.size() != 2)
-            sounds.add(sounds.get(0));
-            sounds.get(1).setFramePosition(0);
-            sounds.get(1).start();
+            sounds.get(index).setFramePosition(0);
+            sounds.get(index).start();
         }
     }
 
@@ -199,7 +195,7 @@ public abstract class Ship implements ICollisionListener {
     }
 
     @Override
-    public void CollisionEvent(Ship ship, Shot shot, ArrayList<Ship> allShips) {
+    public void CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips) {
         
         if (ship instanceof Player || ship instanceof EnemyShip)
         {
@@ -212,15 +208,25 @@ public abstract class Ship implements ICollisionListener {
             }
         }
         
-        if (ship.getHullHealth() == 0)
-        {
-            
-        }
-        
         for (Ship collisionShip : allShips)
         {
             if (collisionShip.getShots().contains(shot) && !collisionShip.equals(ship))
                 collisionShip.removeShot(shot);
+        }
+    }
+    
+    @Override
+    public void CollisionEventWithShips(Ship ship1, Ship ship2)
+    {
+        Ship[] ships = {ship1, ship2};
+        
+        for (int i = 0; i < ships.length - 1; i++)
+        {
+            if (ships[i].getShield().getHealth() > 0)
+            {
+                ships[i].activateShield(25);
+            }
+            ships[i].reduceHull(25);
         }
     }
 
