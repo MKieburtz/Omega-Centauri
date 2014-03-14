@@ -97,8 +97,8 @@ public abstract class EnemyShip extends Ship {
         Rectangle2D.Float paintRectHull = new Rectangle2D.Float((float)(location.x - cameraLocation.x),
         (float)(location.y - cameraLocation.y - 5), (float)hull / 1.5f, 5f);
         
-        GradientPaint paintHull = new GradientPaint(paintRectHull.x, paintRectHull.y, new Color(92,92,92), paintRectHull.x + paintRectHull.width,
-                paintRectHull.y + paintRectHull.height, new Color(179,179,179));
+        GradientPaint paintHull = new GradientPaint(paintRectHull.x, paintRectHull.y, new Color(100,0,0), paintRectHull.x + paintRectHull.width,
+                paintRectHull.y + paintRectHull.height, new Color(255,0,0));
         
         g2d.setPaint(paintShield);
         g2d.fill(paintRectShield);
