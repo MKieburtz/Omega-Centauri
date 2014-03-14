@@ -24,6 +24,7 @@ public class Renderer {
     private final int PAUSEMENU = 1;
     private final int PAUSETOMENU = 2;
     private final int GAMEOVER = 3;
+    private final int SCANNERMODULE = 4;
     
     public Renderer() {
 
@@ -35,6 +36,7 @@ public class Renderer {
         imagePaths.add("src/resources/PauseMenu.png");
         imagePaths.add("src/resources/PauseButton_ToMenu.png");
         imagePaths.add("src/resources/GameOver.png");
+        imagePaths.add("src/resources/TempScannerModule.png");
         images = loader.loadImages(imagePaths);
 
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
@@ -131,6 +133,8 @@ public class Renderer {
                     camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
             g2d.draw(minimapShip);
         }
+        //draw scanner module
+        g2d.drawImage(images.get(SCANNERMODULE), null, 0,487);
         //draw game over
         for (Ship ship : ships)
         {
