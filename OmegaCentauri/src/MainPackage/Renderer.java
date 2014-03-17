@@ -59,17 +59,24 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-
         // draw stars
         for (StarChunk starChunk : stars) {
             if (camera.insideView(starChunk.getBoundingRect())) {
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
+        
+        //draw scanner module
+        g2d.drawImage(images.get(SCANNERMODULE), null, 0, camera.getSize().y - 113);
+        g2d.setFont(fpsFont.deriveFont(15f));
+        g2d.setColor(Color.CYAN);
+        g2d.drawString("Enemy Shield Integrity:", 10, camera.getSize().y - 97);
+        g2d.drawString("Enemy Hull Integrity:", 10, camera.getSize().y - 63);
+        
         // draw the player and enemies
         for (Ship ship : ships) {
             if (ship.getHullHealth() > 0) {
-                ship.draw(g2d, camera.getLocation());
+                ship.draw(g2d, camera);
             }
         }
         
@@ -133,12 +140,7 @@ public class Renderer {
                     camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
             g2d.draw(minimapShip);
         }
-        //draw scanner module
-        g2d.drawImage(images.get(SCANNERMODULE), null, 0,487);
-        g2d.setFont(fpsFont.deriveFont(15f));
-        g2d.setColor(Color.CYAN);
-        g2d.drawString("Enemy Shield Integrity:", 10, 507);
-        g2d.drawString("Enemy Hull Integrity:", 10, 537);
+        
         //draw game over
         for (Ship ship : ships)
         {

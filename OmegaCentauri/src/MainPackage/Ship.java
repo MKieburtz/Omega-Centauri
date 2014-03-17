@@ -68,20 +68,20 @@ public abstract class Ship implements CollisionListener {
         return this.images.get(index);
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation) {
+    public void draw(Graphics2D g2d, Camera camera) {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = (AffineTransform) original.clone();
 
         transform.setToIdentity();
 
         transform.rotate(Math.toRadians(faceAngle),
-                Calculator.getScreenLocation(cameraLocation, location).x + activeImage.getWidth() / 2,
-                Calculator.getScreenLocation(cameraLocation, location).y + activeImage.getHeight() / 2);
+                Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
+                Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
 
-        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x,
-                Calculator.getScreenLocation(cameraLocation, location).y);
+        transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
+                Calculator.getScreenLocation(camera.getLocation(), location).y);
 
-        updateHitbox(cameraLocation);
+        updateHitbox(camera.getLocation());
 
         g2d.drawImage(activeImage, transform, null);
     }
@@ -218,16 +218,7 @@ public abstract class Ship implements CollisionListener {
     @Override
     public void CollisionEventWithShips(Ship ship1, Ship ship2)
     {
-        Ship[] ships = {ship1, ship2};
-        
-        for (int i = 0; i < ships.length - 1; i++)
-        {
-            if (ships[i].getShield().getHealth() > 0)
-            {
-                ships[i].activateShield(25);
-            }
-            ships[i].reduceHull(25);
-        }
+        System.out.println("Ship to ship collision");
     }
 
     public Rectangle2D.Double returnHitbox() {

@@ -332,14 +332,13 @@ public class OmegaCentauri_ extends Game implements Runnable {
                 ship.getShield().decay();
             }
 
-            // unfinished ship to ship collision code:
-//            for (Ship collisionShip : shipsToDraw) {
-//                if (!collisionShip.equals(ship)) {
-//                    if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())) {
-//                        ship.CollisionEventWithShips(ship, collisionShip);
-//                    }
-//                }
-//            }
+            for (Ship collisionShip : shipsToDraw) {
+                if (!collisionShip.equals(ship)) {
+                    if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())) {
+                        ship.CollisionEventWithShips(ship, collisionShip);
+                    }
+                }
+            }
         }
 
     }

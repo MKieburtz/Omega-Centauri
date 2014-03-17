@@ -39,8 +39,8 @@ public class Camera {
         updateRect();
     }
 
-    public boolean insideView(Rectangle2D.Double r1) {
-       return screenRect.intersects(r1);
+    public boolean insideView(Rectangle2D.Double r) {
+       return screenRect.intersects(r);
     }
     
     private void updateRect()

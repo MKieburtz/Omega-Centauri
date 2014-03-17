@@ -4,11 +4,9 @@ package MainPackage;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -34,7 +32,7 @@ public abstract class EnemyShip extends Ship {
         RotateToPlayer(angle);
 
         if (distance < 500 && Math.abs((360 - angle) - faceAngle) < 45 && canshoot) {
-            shoot(cameraLocation);
+            //shoot(cameraLocation);
         }
 
         if (distance > 200) {
@@ -83,19 +81,19 @@ public abstract class EnemyShip extends Ship {
     }
     
     @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
+    public void draw(Graphics2D g2d, Camera camera)
     {
-        super.draw(g2d, cameraLocation);
-        shield.draw(g2d, cameraLocation, location);
+        super.draw(g2d, camera);
+        shield.draw(g2d, camera.getLocation(), location);
         
-        Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float)(location.x - cameraLocation.x),
-        (float)(location.y - cameraLocation.y - 12), (float)shield.getHealth() / 1.5f, 5f);
+        Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float)(camera.getSize().x - (camera.getSize().x - 10)),
+        (float)(camera.getSize().y - 85), (float)shield.getHealth() * 1.5f, 5f);
         
         GradientPaint paintShield = new GradientPaint(paintRectShield.x, paintRectShield.y, Color.BLUE, paintRectShield.x + paintRectShield.width,
                 paintRectShield.y + paintRectShield.height, Color.CYAN);
         
-        Rectangle2D.Float paintRectHull = new Rectangle2D.Float((float)(location.x - cameraLocation.x),
-        (float)(location.y - cameraLocation.y - 5), (float)hull / 1.5f, 5f);
+        Rectangle2D.Float paintRectHull = new Rectangle2D.Float((float)(camera.getSize().x - (camera.getSize().x - 10)),
+        (float)(camera.getSize().y - 55), (float)hull * 1.5f, 5f);
         
         GradientPaint paintHull = new GradientPaint(paintRectHull.x, paintRectHull.y, new Color(100,0,0), paintRectHull.x + paintRectHull.width,
                 paintRectHull.y + paintRectHull.height, new Color(255,0,0));
@@ -105,9 +103,5 @@ public abstract class EnemyShip extends Ship {
         
         g2d.setPaint(paintHull);
         g2d.fill(paintRectHull);
-        //g2d.setColor(Color.BLUE);
-        //g2d.fill(new Rectangle2D.Double(location.x - cameraLocation.x, location.y - cameraLocation.y - 12, shield.getHealth() / 1.5, 5));
-        //g2d.setColor(Color.GREEN);
-        //g2d.fill(new Rectangle2D.Double(location.x - cameraLocation.x, location.y - cameraLocation.y - 5, hull / 1.5, 5));
     }
 }

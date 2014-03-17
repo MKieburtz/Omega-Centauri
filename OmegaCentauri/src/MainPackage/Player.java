@@ -144,9 +144,9 @@ public class Player extends Ship {
     }
     
     @Override
-    public void draw(Graphics2D gd, Point2D.Double cameraLocation)
+    public void draw(Graphics2D gd, Camera camera)
     {
-        super.draw(gd, cameraLocation);
-        shield.draw(gd, cameraLocation, location);
+        super.draw(gd, camera);
+        shield.draw(gd, camera.getLocation(), location);
     }
 }

@@ -12,16 +12,11 @@ public class OmegaCentauri {
     static Launcher launcher;
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
 
-            @Override
-            public void run() {
-                Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
-                System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
+        Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
+        System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
 
-                new Launcher();
-            }
-        });
+        new Launcher();
 
     }
 }
