@@ -32,7 +32,7 @@ public abstract class EnemyShip extends Ship {
         RotateToPlayer(angle);
 
         if (distance < 500 && Math.abs((360 - angle) - faceAngle) < 45 && canshoot) {
-            //shoot(cameraLocation);
+            shoot(cameraLocation);
         }
 
         if (distance > 200) {

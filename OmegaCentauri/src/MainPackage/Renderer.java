@@ -1,7 +1,6 @@
 package MainPackage;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
@@ -24,7 +23,6 @@ public class Renderer {
     private final int PAUSEMENU = 1;
     private final int PAUSETOMENU = 2;
     private final int GAMEOVER = 3;
-    private final int SCANNERMODULE = 4;
     
     public Renderer() {
 
@@ -36,7 +34,6 @@ public class Renderer {
         imagePaths.add("src/resources/PauseMenu.png");
         imagePaths.add("src/resources/PauseButton_ToMenu.png");
         imagePaths.add("src/resources/GameOver.png");
-        imagePaths.add("src/resources/TempScannerModule.png");
         images = loader.loadImages(imagePaths);
 
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
@@ -65,13 +62,6 @@ public class Renderer {
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
-        
-        //draw scanner module
-        g2d.drawImage(images.get(SCANNERMODULE), null, 0, camera.getSize().y - 113);
-        g2d.setFont(fpsFont.deriveFont(15f));
-        g2d.setColor(Color.CYAN);
-        g2d.drawString("Enemy Shield Integrity:", 10, camera.getSize().y - 97);
-        g2d.drawString("Enemy Hull Integrity:", 10, camera.getSize().y - 63);
         
         // draw the player and enemies
         for (Ship ship : ships) {
@@ -102,19 +92,6 @@ public class Renderer {
             }
         }
         
-        //draw player health (shield and hull)
-        g2d.drawImage(images.get(HEALTHLABEL), null, 0, 0);
-        g2d.setFont(fpsFont.deriveFont(15f));
-        g2d.setColor(Color.CYAN);
-        // first we have to find the player
-        for (Ship ship : ships)
-        {
-            if (ship instanceof Player)
-            {
-                g2d.drawString("Shield Integrity: " + ship.getShieldHealth() + "%", 10, 19);
-                g2d.drawString("Hull Integrity: " + ship.getHullHealth() + "%", 10, 35);
-            }
-        }
 
         // draw the minimap
         g2d.setColor(Color.BLACK);

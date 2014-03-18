@@ -1,5 +1,6 @@
 package MainPackage;
 
+import com.sun.awt.AWTUtilities;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -204,6 +205,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         Thread game = new Thread(this);
         game.start();
+
     }
 
     @Override
@@ -213,6 +215,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
         averageFPS = framesDrawn;
         boolean running = true;
+        shipsToDraw.add(player);
         while (running) // game loop
         {
             beforeTime = System.currentTimeMillis();
@@ -230,13 +233,38 @@ public class OmegaCentauri_ extends Game implements Runnable {
             }
 
             // process input and preform logic
-            shipsToDraw.add(player);
-            shipsToDraw.addAll(enemyShips);
-            shipsToDraw.addAll(allyShips);
+            ArrayList<Ship> shipsToAdd = new ArrayList<Ship>();
 
-            for (Ship ship : shipsToDraw) {
-                shotsToDraw.addAll(ship.getShots());
+            for (EnemyShip enemyShip : enemyShips) {
+                if (!shipsToDraw.contains(enemyShip)) {
+                    shipsToAdd.add(enemyShip);
+                }
             }
+            for (Ally ally : allyShips) {
+                if (!shipsToDraw.contains(ally)) {
+                    shipsToAdd.add(ally);
+                }
+            }
+            
+            if (shipsToAdd.size() > 0) {
+                shipsToDraw.addAll(shipsToAdd);
+            }
+
+            shipsToAdd.clear();
+
+            ArrayList<Shot> shotsToAdd = new ArrayList<Shot>();
+            for (Ship ship : shipsToDraw) {
+                for (Shot shot : ship.getShots())
+                {
+                    if (!shotsToDraw.contains(shot))
+                    {
+                        shotsToAdd.add(shot);
+                    }
+                }
+            }
+            
+            shotsToDraw.addAll(shotsToAdd);
+            shotsToAdd.clear();
 
             if (canUpdate && !paused) {
                 gameUpdate();
@@ -251,9 +279,8 @@ public class OmegaCentauri_ extends Game implements Runnable {
                         averageFPS, stars, camera, shotsToDraw, Version, UPS, paused);
                 framesDrawn++;
             }
-            shipsToDraw.clear();
+            
             shotsToDraw.clear();
-
             afterTime = System.currentTimeMillis();
 
             timeDiff = afterTime - beforeTime;
@@ -323,7 +350,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
                     if (shipsToDraw.get(i) instanceof EnemyShip) {
                         enemyShips.remove(shipsToDraw.get(i));
                     }
-
                     shipsToDraw.remove(i);
                 }
             }
