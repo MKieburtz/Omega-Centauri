@@ -140,14 +140,7 @@ public class Player extends Ship {
         return this.name;
     }
     
-    public void purgeShots()
-    {
-        for (int i = shots.size() - 1; i > -1; i--)
-        {
-            if (shots.get(i).outsideScreen())
-                shots.remove(i);
-        }
-    }
+    
     
     @Override
     public void draw(Graphics2D g2d, Camera camera)

@@ -16,7 +16,7 @@ abstract class Game extends JFrame implements KeyListener, MouseListener {
     protected ArrayList<EnemyShip> enemyShips = new ArrayList<EnemyShip>();
     protected ArrayList<Ally> allyShips = new ArrayList<Ally>();
     protected ArrayList<Ship> shipsToDraw = new ArrayList<Ship>();
-    protected ArrayList<Shot> shotsToDraw = new ArrayList<Shot>();
+    protected HashSet<Shot> allShots = new HashSet<Shot>();
     protected Player player;
 
     abstract void CheckKeyPressed(KeyEvent e);

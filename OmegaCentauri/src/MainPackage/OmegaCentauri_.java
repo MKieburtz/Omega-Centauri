@@ -1,6 +1,5 @@
 package MainPackage;
 
-import com.sun.awt.AWTUtilities;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -12,7 +11,7 @@ import javax.swing.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class OmegaCentauri_ extends Game implements Runnable {
+public class OmegaCentauri_ extends Game {
 
     private final String Version = "Dev 1.0.5";
     /*
@@ -24,14 +23,11 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private final Point screenSize = new Point(10000, 10000);
     private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
     // TIMING STUFF
-    private int averageFPS = 0;
+    private int FPS = 0;
     private int UPS = 1;
     private int updates = 1;
-    private final int UPSDelay = 1000 / 80;
-    private long loopTime;
-    private int framesDrawn = 1;
-    private final int FPSTimerDelay = 1000;
-    private boolean canUpdate, canGetFPSAndUPS = true;
+    private final long loopTimeUPS = (long) Math.ceil(1000 / 70); // about 15. Change 70 for the target UPS
+    private int framesDrawn = 0;
     /*
      * OBJECTS:
      */
@@ -43,7 +39,7 @@ public class OmegaCentauri_ extends Game implements Runnable {
     private Settings settings;
     // TIMERS
     private java.util.Timer FPSAndUPSTimer = new java.util.Timer();
-    private java.util.Timer UpdateTimer = new java.util.Timer();
+    private java.util.Timer drawingTimer = new java.util.Timer();
     /*
      * LOADING VARIBLES:
      */
@@ -71,8 +67,6 @@ public class OmegaCentauri_ extends Game implements Runnable {
         for (EnemyShip enemy : enemyShips) {
             collisionListeners.add(enemy);
         }
-
-        loopTime = (long) Math.ceil(1000 / desiredFrameRate); // 12 renders for now
 
         setUpWindow(settings.getResolution() == null, logo);
 
@@ -199,108 +193,33 @@ public class OmegaCentauri_ extends Game implements Runnable {
     }
 
     private void startGame() {
-        // start the timers immeatitely then start the main game thread
-        FPSAndUPSTimer.schedule(new FPSTimer(), 1);
-        UpdateTimer.schedule(new UpdateTimer(), 1);
 
-        Thread game = new Thread(this);
-        game.start();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
 
-    }
+                shipsToDraw.add(player);
+                shipsToDraw.addAll(enemyShips);
+                shipsToDraw.addAll(allyShips);
 
-    @Override
-    public void run() {
-
-        long beforeTime, afterTime, timeDiff = 0L;
-
-        averageFPS = framesDrawn;
-        boolean running = true;
-        shipsToDraw.add(player);
-        while (running) // game loop
-        {
-            beforeTime = System.currentTimeMillis();
-
-            // draw to buffer and to screen
-            if (canGetFPSAndUPS) {
-                averageFPS = framesDrawn;
-                UPS = updates;
-                canGetFPSAndUPS = false;
-                if (averageFPS == 1) {
-                    averageFPS = 80;
-                }
-                framesDrawn = 0;
-                updates = 0;
+                FPSAndUPSTimer.schedule(new FPSAndUPSTimer(), 1);
+                drawingTimer.schedule(new UpdateTimer(), 1);
             }
+        });
 
-            // process input and preform logic
-            ArrayList<Ship> shipsToAdd = new ArrayList<Ship>();
-
-            for (EnemyShip enemyShip : enemyShips) {
-                if (!shipsToDraw.contains(enemyShip)) {
-                    shipsToAdd.add(enemyShip);
-                }
-            }
-            for (Ally ally : allyShips) {
-                if (!shipsToDraw.contains(ally)) {
-                    shipsToAdd.add(ally);
-                }
-            }
-            
-            if (shipsToAdd.size() > 0) {
-                shipsToDraw.addAll(shipsToAdd);
-            }
-
-            shipsToAdd.clear();
-
-            ArrayList<Shot> shotsToAdd = new ArrayList<Shot>();
-            for (Ship ship : shipsToDraw) {
-                for (Shot shot : ship.getShots())
-                {
-                    if (!shotsToDraw.contains(shot))
-                    {
-                        shotsToAdd.add(shot);
-                    }
-                }
-            }
-            
-            shotsToDraw.addAll(shotsToAdd);
-            shotsToAdd.clear();
-
-            if (canUpdate && !paused) {
-                gameUpdate();
-                syncGameStateVaribles();
-                updates += 1;
-                canUpdate = false;
-            }
-
-            // draw screen with active rendering
-            if (panel.getGraphics() != null) {
-                renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                        averageFPS, stars, camera, shotsToDraw, Version, UPS, paused);
-                framesDrawn++;
-            }
-            
-            shotsToDraw.clear();
-            afterTime = System.currentTimeMillis();
-
-            timeDiff = afterTime - beforeTime;
-
-            if (timeDiff > loopTime) {
-                continue; // don't sleep
-
-            } else {
-
-                try {
-                    Thread.sleep(loopTime - timeDiff);
-                } catch (InterruptedException ex) {
-                }
-
-            }
-
-        }
     }
 
     private void gameUpdate() {
+
+        if (enemyShips.size() + allyShips.size() + (player.getHullHealth() > 0 ? 1 : 0) != shipsToDraw.size()) {
+            System.err.println("wierd: " + enemyShips.size() + " " + allyShips.size() + " " + shipsToDraw.size());
+            shipsToDraw.clear();
+
+            shipsToDraw.add(player);
+            shipsToDraw.addAll(enemyShips);
+            shipsToDraw.addAll(allyShips);
+
+        }
 
         if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
             camera.setSize(getWidth(), getHeight());
@@ -322,33 +241,25 @@ public class OmegaCentauri_ extends Game implements Runnable {
         if (shooting && player.canShoot()) {
             player.shoot(camera.getLocation());
         }
-        for (Shot shot : shotsToDraw) {
-            shot.updateLocation();
-        }
         for (EnemyShip enemyShip : enemyShips) {
             enemyShip.update(player.getLocation(), camera.getLocation());
         }
-        if (player.getShots().size() > 0) {
-            player.purgeShots();
-        }
 
-        for (Shot shot : shotsToDraw) {
-            // check for collisions with enemy shots and the player
-
-            for (Ship ship : shipsToDraw) {
-                if (Calculator.collisionCheck(ship.returnHitbox(), shot.returnHitbox())) {
-                    ship.CollisionEventWithShot(ship, shot, shipsToDraw);
-                }
-            }
-
-        }
-
+        
+        allShots.clear();
         for (Ship ship : shipsToDraw) {
+
+            
+            allShots.addAll(ship.getShots());
+            
+            for (Shot shot : ship.getShots()) {
+                shot.updateLocation();
+            }
 
             for (int i = shipsToDraw.size() - 1; i > -1; i--) {
                 if (shipsToDraw.get(i).getHullHealth() <= 0) {
-                    if (shipsToDraw.get(i) instanceof EnemyShip) {
-                        enemyShips.remove(shipsToDraw.get(i));
+                    if (shipsToDraw.get(i) instanceof EnemyShip) {                    
+                        enemyShips.remove(shipsToDraw.get(i)); 
                     }
                     shipsToDraw.remove(i);
                 }
@@ -365,7 +276,23 @@ public class OmegaCentauri_ extends Game implements Runnable {
                     }
                 }
             }
+
+            ship.purgeShots();
         }
+        
+        for (Shot shot : allShots)
+        {
+            for (Ship ship : shipsToDraw)
+            {
+                if (Calculator.collisionCheck(shot.returnHitbox(), ship.returnHitbox()))
+                {
+                    ship.CollisionEventWithShot(ship, shot, shipsToDraw);
+                }
+            }
+        }
+
+
+        syncGameStateVaribles();
 
     }
     int keyCode;
@@ -505,22 +432,18 @@ public class OmegaCentauri_ extends Game implements Runnable {
 
     @Override
     public void mouseClicked(MouseEvent me) {
-
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-
     }
 
     @Override
     public void mouseEntered(MouseEvent me) {
-
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-
     }
 
     public class Panel extends JPanel {
@@ -539,21 +462,50 @@ public class OmegaCentauri_ extends Game implements Runnable {
         middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
     }
 
-    private class FPSTimer extends TimerTask {
+    private class FPSAndUPSTimer extends TimerTask {
 
         @Override
         public void run() {
-            canGetFPSAndUPS = true;
-            FPSAndUPSTimer.schedule(new FPSTimer(), FPSTimerDelay);
+
+            FPS = framesDrawn;
+            UPS = updates;
+
+            framesDrawn = 0;
+            updates = 0;
+            FPSAndUPSTimer.schedule(new FPSAndUPSTimer(), 1000);
         }
     }
 
     private class UpdateTimer extends TimerTask {
 
+        long startTime, endTime, timeDiff, sleepTime = 0L;
+
         @Override
         public void run() {
-            canUpdate = true;
-            UpdateTimer.schedule(new UpdateTimer(), UPSDelay);
+
+            if (!paused) {
+                startTime = System.currentTimeMillis();
+                gameUpdate();
+                updates++;
+
+                if (panel.getGraphics() != null) {
+                    renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                            FPS, stars, camera, Version, UPS, paused);
+                    framesDrawn++;
+
+                    endTime = System.currentTimeMillis();
+                    timeDiff = endTime - startTime;
+                    sleepTime = loopTimeUPS - timeDiff;
+
+
+                    if (sleepTime < 0) {
+                        sleepTime = 1;
+                    }
+
+                }
+
+                drawingTimer.schedule(new UpdateTimer(), sleepTime);
+            }
         }
     }
 }

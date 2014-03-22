@@ -40,11 +40,18 @@ public class Renderer {
     }
 
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
-            ArrayList<StarChunk> stars, Camera camera, ArrayList<Shot> shots, String version, int ups, boolean paused) {
+            ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused) {
 
         BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = bufferedImage.createGraphics(); // turns it into 2d graphics
+        
+        ArrayList<Shot> shots = new ArrayList<Shot>();
+        
+        for (Ship ship : ships)
+        {
+            shots.addAll(ship.getShots());
+        }
         
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
@@ -85,13 +92,17 @@ public class Renderer {
                 camera.getSize().x - 180, 40);
         
         g2d.drawString("Shots: " + shots.size(), camera.getSize().x - 130, 50);
-        // move and draw the bullets
+        try{
+        // draw the bullets
         for (Shot shot : shots) {
             if (shot.imagesLoaded()) {
                 shot.draw(g2d, camera.getLocation());
             }
         }
-        
+        } catch (ConcurrentModificationException ex)
+        {
+            System.err.println("error!");
+        }
 
         // draw the minimap
         g2d.setColor(Color.BLACK);

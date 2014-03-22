@@ -218,7 +218,7 @@ public abstract class Ship implements CollisionListener {
     @Override
     public void CollisionEventWithShips(Ship ship1, Ship ship2)
     {
-        System.out.println("Ship to ship collision");
+        //System.out.println("Ship to ship collision");
     }
 
     public Rectangle2D.Double returnHitbox() {
@@ -264,5 +264,14 @@ public abstract class Ship implements CollisionListener {
     public void reduceHull(int damage)
     {
         hull -= damage;
+    }
+    
+    public void purgeShots()
+    {
+        for (int i = shots.size() - 1; i > -1; i--)
+        {
+            if (shots.get(i).outsideScreen())
+                shots.remove(i);
+        }
     }
 }
