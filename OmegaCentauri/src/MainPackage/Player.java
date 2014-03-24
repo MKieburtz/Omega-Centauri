@@ -19,8 +19,7 @@ public class Player extends Ship {
     private final int TURNINGRIGHT = 3;
     private final int TURNINGLEFTTHRUSTING = 4;
     private final int TURNINGRIGHTTHRUSTING = 5;
-    private final int SCANNERMODULE = 6;
-    private final int HEALTHBACKGROUND = 7;
+    
     
 
     // x and y are game positions
@@ -38,11 +37,7 @@ public class Player extends Ship {
         imagePaths.add("src/resources/FighterRight.png");
         imagePaths.add("src/resources/FighterThrustLeft.png");
         imagePaths.add("src/resources/FighterThrustRight.png");
-        imagePaths.add("src/resources/TempScannerModule.png");
-        imagePaths.add("src/resources/healthbackground.png");
-        imagePaths.add("src/resources/HealthyTick.png");
-        imagePaths.add("src/resources/WarningTick.png");
-        imagePaths.add("src/resources/DangerTick.png");
+        
         images = mediaLoader.loadImages(imagePaths);
         activeImage = images.get(0);
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()));
@@ -148,12 +143,12 @@ public class Player extends Ship {
         super.draw(g2d, camera);
         shield.draw(g2d, camera.getLocation(), location);
         
-        g2d.drawImage(images.get(SCANNERMODULE), null, 0, camera.getSize().y - 113);
+        
         g2d.setColor(Color.CYAN);
         g2d.drawString("Enemy Shield Integrity:", 10, camera.getSize().y - 97);
         g2d.drawString("Enemy Hull Integrity:", 10, camera.getSize().y - 63);
         
-        g2d.drawImage(images.get(HEALTHBACKGROUND), null, 0, 0);
+        
         g2d.setColor(Color.CYAN);
         
          g2d.drawString("Shield Integrity: " + shield.getHealth() + "%", 10, 60);

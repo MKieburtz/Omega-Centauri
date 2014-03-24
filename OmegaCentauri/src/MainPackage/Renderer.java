@@ -19,10 +19,11 @@ public class Renderer {
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private Font fpsFont;
     private MediaLoader loader;
-    private final int HEALTHLABEL = 0;
-    private final int PAUSEMENU = 1;
-    private final int PAUSETOMENU = 2;
-    private final int GAMEOVER = 3;
+    private final int PAUSEMENU = 0;
+    private final int PAUSETOMENU = 1;
+    private final int GAMEOVER = 2;
+    
+    private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
     
     public Renderer() {
 
@@ -30,7 +31,6 @@ public class Renderer {
         fontSizes.add(36f);
         fontPaths.add("src/resources/BlackHoleBB_ital.ttf");
 
-        imagePaths.add("src/resources/healthbackground.png");
         imagePaths.add("src/resources/PauseMenu.png");
         imagePaths.add("src/resources/PauseButton_ToMenu.png");
         imagePaths.add("src/resources/GameOver.png");
@@ -69,6 +69,8 @@ public class Renderer {
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
+        // draw HUD including minimap rects and player health background
+        headsUpDisplayPlayer.draw(g2d, camera);
         
         // draw the player and enemies
         for (Ship ship : ships) {
@@ -76,6 +78,8 @@ public class Renderer {
                 ship.draw(g2d, camera);
             }
         }
+        
+        
         
         // draw fps info and other stats
         g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
@@ -92,28 +96,14 @@ public class Renderer {
                 camera.getSize().x - 180, 40);
         
         g2d.drawString("Shots: " + shots.size(), camera.getSize().x - 130, 50);
-        try{
-        // draw the bullets
         for (Shot shot : shots) {
             if (shot.imagesLoaded()) {
                 shot.draw(g2d, camera.getLocation());
             }
         }
-        } catch (ConcurrentModificationException ex)
-        {
-            System.err.println("error!");
-        }
 
-        // draw the minimap
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
-
-        g2d.setColor(new Color(0, 255, 0, 50));
-        g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
-
-        g2d.setColor(Color.GREEN);
-        g2d.drawRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
-
+        // draw minimap dots
+        
         for (Ship ship : ships) {
 
             if (ship instanceof Player) {
@@ -138,6 +128,8 @@ public class Renderer {
                 
             }
         }
+        
+        
         
         //draw pause menu
         if (paused)
