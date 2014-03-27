@@ -25,6 +25,7 @@ public abstract class Ship implements CollisionListener {
     protected Point2D.Double nextLocation;
     protected Point2D.Double movementVelocity = new Point2D.Double(0, 0);
     protected double angularVelocity = 0;
+    protected double maxAngularVel = 5;
     protected Rectangle2D.Double hitbox;
     protected String name;
     protected double baseMaxVel;
@@ -131,20 +132,6 @@ public abstract class Ship implements CollisionListener {
         location.y += movementVelocity.y;
     }
 
-    protected void updateAngle(ShipState state) {
-        if (state == ShipState.TurningRight) {
-            faceAngle += angularVelocity;
-            if (faceAngle > 360) {
-                faceAngle = faceAngle - 360;
-            }
-        } else if (state == ShipState.TurningLeft) {
-            faceAngle -= angularVelocity;
-            if (faceAngle <= 0) {
-                faceAngle = 360 + faceAngle;
-            }
-        }
-    }
-
     public void shoot(Point2D.Double cameraLocation) {
         playSound(0);
 
@@ -166,22 +153,35 @@ public abstract class Ship implements CollisionListener {
         return location;
     }
 
+    protected void updateAngle(ShipState state) {
+        if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight) {
+            faceAngle += angularVelocity;
+            if (faceAngle > 360) {
+                faceAngle = faceAngle - 360;
+            }
+        } else if (state == ShipState.TurningLeft || state == ShipState.AngleDriftingLeft) {
+            faceAngle -= angularVelocity;
+            if (faceAngle <= 0) {
+                faceAngle = 360 + faceAngle;
+            }
+        }
+    }
+
     public void rotate(ShipState state) {
 
-        if (state == ShipState.TurningRight) {
+        if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) {
+            
             angularVelocity += angleIcrement * acceleration;
-        } else {
-            angularVelocity += angleIcrement * acceleration;
-        }
 
-        if (angularVelocity > maxVel) {
-            angularVelocity = maxVel;
-        } else if (angularVelocity < -maxVel) {
-            angularVelocity = -maxVel;
+            if (angularVelocity > maxAngularVel) {
+                angularVelocity = maxAngularVel;
+            } else if (angularVelocity < -maxAngularVel) {
+                angularVelocity = -maxAngularVel;
+            }
         }
 
         angularVelocity *= .99;
-        
+
         updateAngle(state);
     }
 

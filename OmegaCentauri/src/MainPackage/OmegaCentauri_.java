@@ -26,7 +26,7 @@ public class OmegaCentauri_ extends Game {
     private int FPS = 0;
     private int UPS = 1;
     private int updates = 1;
-    private final long loopTimeUPS = (long) Math.ceil(1000 / 70); // about 15. Change 70 for the target UPS
+    private final long loopTimeUPS = (long) Math.ceil(1000 / 75); // about 15. Change 75 for the target UPS
     private int framesDrawn = 0;
     /*
      * OBJECTS:
@@ -211,6 +211,7 @@ public class OmegaCentauri_ extends Game {
 
     private void gameUpdate() {
 
+        System.out.println(player.angularVelocity);
         if (enemyShips.size() + allyShips.size() + (player.getHullHealth() > 0 ? 1 : 0) != shipsToDraw.size()) {
             System.err.println("wierd: " + enemyShips.size() + " " + allyShips.size() + " " + shipsToDraw.size());
             shipsToDraw.clear();
@@ -237,6 +238,10 @@ public class OmegaCentauri_ extends Game {
         }
         if (!forward && player.isMoving()) {
             player.move(ShipState.Drifting);
+        }
+        if (!rotateRight && !rotateRight && player.isRotating())
+        {
+            player.rotate(player.rotatingRight() ? ShipState.AngleDriftingRight : ShipState.AngleDriftingLeft);
         }
         if (shooting && player.canShoot()) {
             player.shoot(camera.getLocation());

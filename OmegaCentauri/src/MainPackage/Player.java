@@ -118,6 +118,16 @@ public class Player extends Ship {
         return movementVelocity.x != 0 || movementVelocity.y != 0;
     }
 
+    public boolean isRotating()
+    {
+        return angularVelocity != 0;
+    }
+    
+    public boolean rotatingRight()
+    {
+        return angularVelocity > 0;
+    }
+    
     public void speedBoost() {
         if (maxVel == baseMaxVel) {
             maxVel *= 2;
