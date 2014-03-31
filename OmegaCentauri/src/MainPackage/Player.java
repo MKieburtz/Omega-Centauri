@@ -72,12 +72,12 @@ public class Player extends Ship {
     }
 
     public Point2D.Double getVel() {
-        return this.velocity;
+        return this.movementVelocity;
     }
 
     public void setVel(int vert, int hor) {
-        this.velocity.x = vert;
-        this.velocity.y = hor;
+        this.movementVelocity.x = vert;
+        this.movementVelocity.y = hor;
     }
 
     public ArrayList getImages() {
@@ -115,9 +115,19 @@ public class Player extends Ship {
     }
 
     public boolean isMoving() {
-        return velocity.x != 0 || velocity.y != 0;
+        return movementVelocity.x != 0 || movementVelocity.y != 0;
     }
 
+    public boolean isRotating()
+    {
+        return angularVelocity != 0;
+    }
+    
+    public boolean rotatingRight()
+    {
+        return rotatingRight;
+    }
+    
     public void speedBoost() {
         if (maxVel == baseMaxVel) {
             maxVel *= 2;

@@ -64,8 +64,7 @@ public class Calculator {
             }
         }
         
-        System.err.println("ERROR!");
-        return null;
+        return new double[] {0.0, 360};
     }
     
     public static Point2D.Double getScreenLocation(Point2D.Double cameraLocation, Point2D.Double location) {

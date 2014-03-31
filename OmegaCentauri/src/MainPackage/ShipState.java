@@ -17,4 +17,6 @@ public enum ShipState {
     TurningLeftThrusting,
     DriftTurningRightThrusting,
     DriftTurningLeftThrusting,
+    AngleDriftingRight,
+    AngleDriftingLeft
 }

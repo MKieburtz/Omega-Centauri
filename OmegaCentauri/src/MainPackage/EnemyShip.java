@@ -50,7 +50,7 @@ public abstract class EnemyShip extends Ship {
         
         
         //System.out.println(dist1 + " " + dist2 + " " + targetAngle + " " + faceAngle);
-
+        
         if (distances[0] < distances[1]) {
             if (distances[0] > angleIcrement) {
                 rotate(ShipState.TurningRight);
@@ -67,8 +67,8 @@ public abstract class EnemyShip extends Ship {
         // playSound(0);
 
         Point2D.Double ShotStartingVel =
-                new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
+                new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
+        movementVelocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
         Point2D.Double ShotStartingPos = new Point2D.Double(Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 5
                 + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,

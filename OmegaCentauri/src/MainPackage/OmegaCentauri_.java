@@ -26,7 +26,7 @@ public class OmegaCentauri_ extends Game {
     private int FPS = 0;
     private int UPS = 1;
     private int updates = 1;
-    private final long loopTimeUPS = (long) Math.ceil(1000 / 70); // about 15. Change 70 for the target UPS
+    private final long loopTimeUPS = (long) Math.ceil(1000 / 75); // about 15. Change 75 for the target UPS
     private int framesDrawn = 0;
     /*
      * OBJECTS:
@@ -237,6 +237,10 @@ public class OmegaCentauri_ extends Game {
         }
         if (!forward && player.isMoving()) {
             player.move(ShipState.Drifting);
+        }
+        if (!rotateRight && !rotateLeft && player.isRotating())
+        {
+            player.rotate(player.rotatingRight() ? ShipState.AngleDriftingRight : ShipState.AngleDriftingLeft);
         }
         if (shooting && player.canShoot()) {
             player.shoot(camera.getLocation());

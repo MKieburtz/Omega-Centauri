@@ -23,7 +23,9 @@ public abstract class Ship implements CollisionListener {
     protected double moveAngle = 0.0;
     protected Point2D.Double location;
     protected Point2D.Double nextLocation;
-    protected Point2D.Double velocity = new Point2D.Double(0, 0);
+    protected Point2D.Double movementVelocity = new Point2D.Double(0, 0);
+    protected double angularVelocity = 0;
+    protected double maxAngularVel = 5;
     protected Rectangle2D.Double hitbox;
     protected String name;
     protected double baseMaxVel;
@@ -42,6 +44,7 @@ public abstract class Ship implements CollisionListener {
     protected java.util.Timer shootingTimer;
     protected int shootingDelay;
     protected Shield shield;
+    protected boolean rotatingRight = false;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) {
@@ -56,7 +59,7 @@ public abstract class Ship implements CollisionListener {
         this.acceleration = acceleration;
         this.shootingDelay = shootingDelay;
         this.hull = health;
-        
+
         shootingTimer = new java.util.Timer();
     }
 
@@ -91,33 +94,33 @@ public abstract class Ship implements CollisionListener {
         moveAngle = faceAngle - 90;
 
         if (state == ShipState.Thrusting) {
-            velocity.x += Calculator.CalcAngleMoveX(moveAngle) * acceleration;
+            movementVelocity.x += Calculator.CalcAngleMoveX(moveAngle) * acceleration;
 
-            if (velocity.x > maxVel) {
-                velocity.x = maxVel;
-            } else if (velocity.x < -maxVel) {
-                velocity.x = -maxVel;
+            if (movementVelocity.x > maxVel) {
+                movementVelocity.x = maxVel;
+            } else if (movementVelocity.x < -maxVel) {
+                movementVelocity.x = -maxVel;
             }
 
-            velocity.y += Calculator.CalcAngleMoveY(moveAngle) * acceleration;
+            movementVelocity.y += Calculator.CalcAngleMoveY(moveAngle) * acceleration;
 
-            if (velocity.y > maxVel) {
-                velocity.y = maxVel;
-            } else if (velocity.y < -maxVel) {
-                velocity.y = -maxVel;
+            if (movementVelocity.y > maxVel) {
+                movementVelocity.y = maxVel;
+            } else if (movementVelocity.y < -maxVel) {
+                movementVelocity.y = -maxVel;
             }
         }
 
-        velocity.x *= .99;
-        velocity.y *= .99;
+        movementVelocity.x *= .99;
+        movementVelocity.y *= .99;
 
         if (state == ShipState.Drifting) {
-            if (Math.abs(velocity.x) < .1) {
-                velocity.x = 0;
+            if (Math.abs(movementVelocity.x) < .1) {
+                movementVelocity.x = 0;
             }
 
-            if (Math.abs(velocity.y) < .1) {
-                velocity.y = 0;
+            if (Math.abs(movementVelocity.y) < .1) {
+                movementVelocity.y = 0;
             }
         }
 
@@ -126,16 +129,16 @@ public abstract class Ship implements CollisionListener {
     }
 
     protected void updatePosition() {
-        location.x += velocity.x;
-        location.y += velocity.y;
+        location.x += movementVelocity.x;
+        location.y += movementVelocity.y;
     }
 
     public void shoot(Point2D.Double cameraLocation) {
         playSound(0);
 
         Point2D.Double ShotStartingVel
-                = new Point2D.Double(velocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                        velocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
+                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
+                        movementVelocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
 
         Point2D.Double ShotStartingPos = new Point2D.Double(
                 Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
@@ -151,25 +154,49 @@ public abstract class Ship implements CollisionListener {
         return location;
     }
 
-    public void rotate(ShipState state) {
-
-        if (state == ShipState.TurningRight) {
-            faceAngle += angleIcrement;
+    protected void updateAngle(ShipState state) {
+        if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight) {
+            faceAngle += angularVelocity;
             if (faceAngle > 360) {
                 faceAngle = faceAngle - 360;
             }
-        } else if (state == ShipState.TurningLeft) {
-            faceAngle -= angleIcrement;
+        } else if (state == ShipState.TurningLeft || state == ShipState.AngleDriftingLeft) {
+            faceAngle -= angularVelocity;
             if (faceAngle <= 0) {
                 faceAngle = 360 + faceAngle;
             }
         }
+        
+        
+    }
+
+    public void rotate(ShipState state) {
+        
+        rotatingRight = state == ShipState.AngleDriftingRight || state == ShipState.TurningRight;
+        
+        if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) {
+            
+            angularVelocity += angleIcrement * acceleration;
+
+            if (angularVelocity > maxAngularVel) {
+                angularVelocity = maxAngularVel;
+            } else if (angularVelocity < -maxAngularVel) {
+                angularVelocity = -maxAngularVel;
+            }
+            
+            if ((angularVelocity < .01 && angularVelocity > 0) || (angularVelocity > -.01 && angularVelocity < 0))
+                angularVelocity = 0;
+        }
+        else
+            angularVelocity *= .90;
+
+        move(state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight ? ShipState.Thrusting : ShipState.Drifting);
+        updateAngle(state);
     }
 
     protected void playSound(int index) {
         sounds.get(index).setFramePosition(0);
-        if (!sounds.get(index).isActive())
-        {
+        if (!sounds.get(index).isActive()) {
             sounds.get(index).setFramePosition(0);
             sounds.get(index).start();
         }
@@ -180,7 +207,7 @@ public abstract class Ship implements CollisionListener {
             hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x,
                     Calculator.getScreenLocation(cameraLocation, location).y,
                     activeImage.getWidth(), activeImage.getHeight());
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ex) {
             System.err.println("activeimage not initialized!");
         }
     }
@@ -196,28 +223,26 @@ public abstract class Ship implements CollisionListener {
 
     @Override
     public void CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips) {
-        
-        if (ship instanceof Player || ship instanceof EnemyShip)
-        {
-            if (!ship.getShots().contains(shot))
-            {
-                if (ship.getShield().getHealth() > 0)
+
+        if (ship instanceof Player || ship instanceof EnemyShip) {
+            if (!ship.getShots().contains(shot)) {
+                if (ship.getShield().getHealth() > 0) {
                     ship.activateShield(shot.getDamage());
-                else
+                } else {
                     ship.reduceHull(shot.getDamage());
+                }
             }
         }
-        
-        for (Ship collisionShip : allShips)
-        {
-            if (collisionShip.getShots().contains(shot) && !collisionShip.equals(ship))
+
+        for (Ship collisionShip : allShips) {
+            if (collisionShip.getShots().contains(shot) && !collisionShip.equals(ship)) {
                 collisionShip.removeShot(shot);
+            }
         }
     }
-    
+
     @Override
-    public void CollisionEventWithShips(Ship ship1, Ship ship2)
-    {
+    public void CollisionEventWithShips(Ship ship1, Ship ship2) {
         //System.out.println("Ship to ship collision");
     }
 
@@ -240,38 +265,32 @@ public abstract class Ship implements CollisionListener {
     public Shield getShield() {
         return shield;
     }
-    
-    public void activateShield(int damage)
-    {
+
+    public void activateShield(int damage) {
         shield.activate(damage);
     }
-    
-    public void removeShot(Shot shotToRemove)
-    {
+
+    public void removeShot(Shot shotToRemove) {
         shots.remove(shotToRemove);
     }
-   
-    public int getShieldHealth()
-    {
+
+    public int getShieldHealth() {
         return shield.getHealth();
     }
-    
-    public int getHullHealth()
-    {
+
+    public int getHullHealth() {
         return hull;
     }
-    
-    public void reduceHull(int damage)
-    {
+
+    public void reduceHull(int damage) {
         hull -= damage;
     }
-    
-    public void purgeShots()
-    {
-        for (int i = shots.size() - 1; i > -1; i--)
-        {
-            if (shots.get(i).outsideScreen())
+
+    public void purgeShots() {
+        for (int i = shots.size() - 1; i > -1; i--) {
+            if (shots.get(i).outsideScreen()) {
                 shots.remove(i);
+            }
         }
     }
 }
