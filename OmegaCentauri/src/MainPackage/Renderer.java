@@ -133,7 +133,7 @@ public class Renderer {
         //draw out of bounds
          for (Ship ship : ships)
          {
-             if (ship instanceof Player && (ship.getLocation().x > 10000 || ship.getLocation().x < 0) && (ship.getLocation().y > 10000 || ship.getLocation().y < 0))
+             if (ship instanceof Player && (ship.getLocation().x > 10000 || ship.getLocation().x < -10000) || (ship.getLocation().y > 10000 || ship.getLocation().y < -10000))
              {
                  g2d.drawImage(images.get(RETURNTOBATTLEFIELD),null, 200, 200);
              }
