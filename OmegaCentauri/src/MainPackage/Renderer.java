@@ -22,6 +22,7 @@ public class Renderer {
     private final int PAUSEMENU = 0;
     private final int PAUSETOMENU = 1;
     private final int GAMEOVER = 2;
+    private final int RETURNTOBATTLEFIELD = 3;
     
     private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
     
@@ -34,6 +35,7 @@ public class Renderer {
         imagePaths.add("src/resources/PauseMenu.png");
         imagePaths.add("src/resources/PauseButton_ToMenu.png");
         imagePaths.add("src/resources/GameOver.png");
+        imagePaths.add("src/resourcse/ReturnToTheBattlefield.png");
         images = loader.loadImages(imagePaths);
 
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
@@ -128,7 +130,14 @@ public class Renderer {
                 
             }
         }
-        
+        //draw out of bounds
+         for (Ship ship : ships)
+         {
+             if (ship instanceof Player && (ship.getLocation().x > 10000 || ship.getLocation().x < 0) && (ship.getLocation().y > 10000 || ship.getLocation().y < 0))
+             {
+                 g2d.drawImage(images.get(RETURNTOBATTLEFIELD),null, 200, 200);
+             }
+         }
         
         
         //draw pause menu
