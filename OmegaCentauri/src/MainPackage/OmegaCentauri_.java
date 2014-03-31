@@ -211,7 +211,6 @@ public class OmegaCentauri_ extends Game {
 
     private void gameUpdate() {
 
-        System.out.println(player.angularVelocity);
         if (enemyShips.size() + allyShips.size() + (player.getHullHealth() > 0 ? 1 : 0) != shipsToDraw.size()) {
             System.err.println("wierd: " + enemyShips.size() + " " + allyShips.size() + " " + shipsToDraw.size());
             shipsToDraw.clear();
@@ -239,7 +238,7 @@ public class OmegaCentauri_ extends Game {
         if (!forward && player.isMoving()) {
             player.move(ShipState.Drifting);
         }
-        if (!rotateRight && !rotateRight && player.isRotating())
+        if (!rotateRight && !rotateLeft && player.isRotating())
         {
             player.rotate(player.rotatingRight() ? ShipState.AngleDriftingRight : ShipState.AngleDriftingLeft);
         }

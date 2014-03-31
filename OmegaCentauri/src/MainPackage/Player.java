@@ -125,7 +125,7 @@ public class Player extends Ship {
     
     public boolean rotatingRight()
     {
-        return angularVelocity > 0;
+        return rotatingRight;
     }
     
     public void speedBoost() {

@@ -44,6 +44,7 @@ public abstract class Ship implements CollisionListener {
     protected java.util.Timer shootingTimer;
     protected int shootingDelay;
     protected Shield shield;
+    protected boolean rotatingRight = false;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) {
@@ -165,10 +166,14 @@ public abstract class Ship implements CollisionListener {
                 faceAngle = 360 + faceAngle;
             }
         }
+        
+        
     }
 
     public void rotate(ShipState state) {
-
+        
+        rotatingRight = state == ShipState.AngleDriftingRight || state == ShipState.TurningRight;
+        
         if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) {
             
             angularVelocity += angleIcrement * acceleration;
@@ -178,10 +183,14 @@ public abstract class Ship implements CollisionListener {
             } else if (angularVelocity < -maxAngularVel) {
                 angularVelocity = -maxAngularVel;
             }
+            
+            if ((angularVelocity < .01 && angularVelocity > 0) || (angularVelocity > -.01 && angularVelocity < 0))
+                angularVelocity = 0;
         }
+        else
+            angularVelocity *= .90;
 
-        angularVelocity *= .99;
-
+        move(state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight ? ShipState.Thrusting : ShipState.Drifting);
         updateAngle(state);
     }
 
@@ -198,7 +207,7 @@ public abstract class Ship implements CollisionListener {
             hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x,
                     Calculator.getScreenLocation(cameraLocation, location).y,
                     activeImage.getWidth(), activeImage.getHeight());
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ex) {
             System.err.println("activeimage not initialized!");
         }
     }
