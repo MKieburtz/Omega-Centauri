@@ -35,7 +35,7 @@ public class Renderer {
         imagePaths.add("src/resources/PauseMenu.png");
         imagePaths.add("src/resources/PauseButton_ToMenu.png");
         imagePaths.add("src/resources/GameOver.png");
-        imagePaths.add("src/resourcse/ReturnToTheBattlefield.png");
+        imagePaths.add("src/resources/ReturnToTheBattlefield.png");
         images = loader.loadImages(imagePaths);
 
         fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
