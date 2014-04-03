@@ -189,8 +189,7 @@ public abstract class Ship implements CollisionListener {
         }
         else
             angularVelocity *= .90;
-
-        move(state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight ? ShipState.Thrusting : ShipState.Drifting);
+       
         updateAngle(state);
     }
 

@@ -56,7 +56,7 @@ public class OmegaCentauri_ extends Game {
         camera = new Camera(settings.getResolution().width, settings.getResolution().height);
         loading = true;
 
-        player = new Player(0, 0, MainPackage.Type.Fighter, 5, 5, 4, .15, camera.getLocation(), 155, 100);
+        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, .15, camera.getLocation(), 155, 100);
         enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 100));
         syncGameStateVaribles();
 
