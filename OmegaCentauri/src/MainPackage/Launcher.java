@@ -27,7 +27,6 @@ public class Launcher extends JFrame implements MouseListener {
     private final ArrayList<String> soundPaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
-    private java.util.Timer refreshTimer = new java.util.Timer();
     private boolean fullScreen = false;
     private Settings settings;
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -65,7 +64,6 @@ public class Launcher extends JFrame implements MouseListener {
         DrawingPanel panel = new DrawingPanel();
         add(panel);
         addMouseListener(this);
-        setTitle("Omega Centauri Launcher");
         
         setVisible(true);
     }
@@ -74,22 +72,6 @@ public class Launcher extends JFrame implements MouseListener {
 
         public BackPanel() {
             setOpaque(false);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-        // Allow super to paint
-        super.paintComponent(g);
-        System.out.println("backPanel drew");
-        // Apply our own painting effect
-        Graphics2D g2d = (Graphics2D) g.create();
-        // 50% transparent Alpha
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.0f));
-
-        g2d.setColor(getBackground());
-        g2d.fill(getBounds());
-
-        g2d.dispose();
         }
     }
     
@@ -137,8 +119,6 @@ public class Launcher extends JFrame implements MouseListener {
     }
 
     private void closeWindow() {
-        refreshTimer.purge();
-        refreshTimer.cancel();
         setVisible(false); 
         this.dispose();
     }

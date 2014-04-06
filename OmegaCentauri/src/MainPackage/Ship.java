@@ -176,7 +176,7 @@ public abstract class Ship implements CollisionListener {
         
         if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) {
             
-            angularVelocity += angleIcrement * acceleration;
+            angularVelocity += angleIcrement * .1;
 
             if (angularVelocity > maxAngularVel) {
                 angularVelocity = maxAngularVel;

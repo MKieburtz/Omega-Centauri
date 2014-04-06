@@ -74,15 +74,15 @@ public class OmegaCentauri_ extends Game {
     }
 
     private void setUpWindow(boolean fullScreen, BufferedImage logo) {
-        setEnabled(true);
-
+        //setEnabled(true);
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setFocusable(true);
-        requestFocus();
+        //setFocusable(true);
+        //requestFocus();
         addKeyListener(this);
         setTitle("Omega Centauri");
         getContentPane().add(panel);
-
+        
         if (fullScreen) {
             setUndecorated(true);
             gd.setFullScreenWindow(this);
@@ -457,6 +457,7 @@ public class OmegaCentauri_ extends Game {
             setVisible(true);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
+
     }
 
     private void syncGameStateVaribles() {
@@ -486,13 +487,13 @@ public class OmegaCentauri_ extends Game {
 
         @Override
         public void run() {
-
             if (!paused) {
                 startTime = System.currentTimeMillis();
                 gameUpdate();
                 updates++;
 
-                if (panel.getGraphics() != null) {
+                if (panel.getGraphics() != null && shipsToDraw.size() > 0) {
+                    
                     renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                             FPS, stars, camera, Version, UPS, paused);
                     framesDrawn++;
@@ -505,9 +506,8 @@ public class OmegaCentauri_ extends Game {
                     if (sleepTime < 0) {
                         sleepTime = 1;
                     }
-
                 }
-
+                
                 drawingTimer.schedule(new UpdateTimer(), sleepTime);
             }
         }
