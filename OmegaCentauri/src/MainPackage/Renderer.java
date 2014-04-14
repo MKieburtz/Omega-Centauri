@@ -15,9 +15,11 @@ public class Renderer {
 
     private ArrayList<String> fontPaths = new ArrayList<String>();
     private ArrayList<Float> fontSizes = new ArrayList<Float>();
+    private ArrayList<Font> fonts = new ArrayList<Font>();
     private ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-    private Font fpsFont;
+    private Font mainFont;
+    private Font dataFont;
     private MediaLoader loader;
     private final int PAUSEMENU = 0;
     private final int PAUSETOMENU = 1;
@@ -30,15 +32,19 @@ public class Renderer {
 
         loader = new MediaLoader();
         fontSizes.add(36f);
-        fontPaths.add("src/resources/BlackHoleBB_ital.ttf");
-
+        fontSizes.add(10f);
+        fontPaths.add("src/resources/OCR A Std.ttf");
+        fontPaths.add("src/resources/OCR A Std.ttf");
+        
         imagePaths.add("src/resources/PauseMenu.png");
         imagePaths.add("src/resources/PauseButton_ToMenu.png");
         imagePaths.add("src/resources/GameOver.png");
         imagePaths.add("src/resources/ReturnToTheBattlefield.png");
         images = loader.loadImages(imagePaths);
 
-        fpsFont = loader.loadFonts(fontPaths, fontSizes).get(0);
+        fonts = loader.loadFonts(fontPaths, fontSizes);
+        mainFont = fonts.get(0);
+        dataFont = fonts.get(1);
     }
 
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
@@ -84,7 +90,7 @@ public class Renderer {
         
         
         // draw fps info and other stats
-        g2d.setFont(new Font("Arial", Font.TRUETYPE_FONT, 12));
+        g2d.setFont(dataFont);
         g2d.setColor(Color.WHITE);
         
         //version
@@ -192,10 +198,14 @@ public class Renderer {
         g2d.setColor(Color.CYAN);
         g2d.fillRect((width / 2) - 200, (height / 2) - 50, percentDone * 4, 10);
 
-        g2d.setFont(fpsFont);
-        g2d.setColor(new Color(0x00CECE)); // hex codes rock
-        g2d.drawString("Loading...", width / 2 - 75, height / 2 - 75);
-
+        g2d.setFont(mainFont);
+        g2d.setColor(new Color(0x00CECE)); // hex codes rock this is pretty much cyan
+        //g2d.drawString("Loading", width / 2 - 175, height / 2 - 75);
+        
+        
+        for (int i = 0; i <= percentDone; i += 20)
+            g2d.drawString(".", width/2 - 180 + i * 4, height / 2 - 50);
+        
         g.drawImage(bufferedImage, 0, 0, null);
 
         g2d.dispose();
