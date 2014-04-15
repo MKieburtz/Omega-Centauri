@@ -78,7 +78,7 @@ public class OmegaCentauri_ extends Game {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
         getContentPane().add(panel);
-        
+        setBackground(Color.BLACK);
         if (fullScreen) {
             setUndecorated(true);
             gd.setFullScreenWindow(this);
@@ -182,6 +182,7 @@ public class OmegaCentauri_ extends Game {
             
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
 
+            
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ex) {
@@ -456,8 +457,9 @@ public class OmegaCentauri_ extends Game {
 
         public Panel(int width, int height) {
             setSize(width, height);
-            setVisible(true);
+            setBackground(Color.BLACK);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setVisible(true);
         }
 
     }
@@ -509,7 +511,7 @@ public class OmegaCentauri_ extends Game {
                         sleepTime = 0;
                     }
                 }
-                
+                System.out.println(timeDiff);
                 drawingTimer.schedule(new UpdateTimer(), sleepTime);
             }
         }
