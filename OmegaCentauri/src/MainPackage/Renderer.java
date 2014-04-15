@@ -28,6 +28,8 @@ public class Renderer {
     
     private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
     
+    ArrayList<Rectangle2D.Double> loadingStars = new ArrayList<Rectangle2D.Double>();
+    
     public Renderer() {
 
         loader = new MediaLoader();
@@ -190,9 +192,21 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        Random rand = new Random(314);
+        
+        loadingStars.add(new Rectangle2D.Double((rand.nextDouble() * percentDone) % width, (rand.nextDouble() * percentDone) % height, 2, 2));
+        
+        
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, width, height);
 
+        g2d.setColor(Color.white);
+        for (Rectangle2D.Double d : loadingStars)
+        {
+            g2d.draw(d);
+        }
+        
+        
         g2d.setColor(Color.BLUE);
         g2d.drawRect((width / 2) - 200, (height / 2) - 50, 400, 10);
         g2d.setColor(Color.CYAN);
