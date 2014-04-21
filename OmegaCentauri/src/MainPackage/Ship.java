@@ -45,6 +45,7 @@ public abstract class Ship implements CollisionListener {
     protected int shootingDelay;
     protected Shield shield;
     protected boolean rotatingRight = false;
+    protected boolean colliding = false;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) {
@@ -240,9 +241,8 @@ public abstract class Ship implements CollisionListener {
         }
     }
 
-    @Override
     public void CollisionEventWithShips(Ship ship1, Ship ship2) {
-        //System.out.println("Ship to ship collision");
+        
     }
 
     public Rectangle2D.Double returnHitbox() {

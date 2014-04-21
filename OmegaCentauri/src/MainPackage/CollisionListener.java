@@ -8,6 +8,4 @@ import java.util.ArrayList;
  */
 public interface CollisionListener {
     public void CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips);
-    public void CollisionEventWithShips(Ship ship1, Ship ship2);
-    
 }
