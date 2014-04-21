@@ -37,6 +37,7 @@ public class MediaLoader {
         for (FileInputStream s : streams) {
             try {
                 images.add(ImageIO.read(s));
+                s.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
                 System.err.println("Image error, bad file\n");
@@ -74,6 +75,7 @@ public class MediaLoader {
             try {
                 clip = AudioSystem.getClip();
                 clip.open(a); // this actually loads the sound
+                a.close();
             } catch (LineUnavailableException ex) {
                 ex.printStackTrace();
             } catch (IOException ex) {
