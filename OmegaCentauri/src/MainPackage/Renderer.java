@@ -217,7 +217,7 @@ public class Renderer {
         //g2d.drawString("Loading", width / 2 - 175, height / 2 - 75);
         
         
-        for (int i = 0; i <= percentDone; i += 20)
+        for (int i = 0; i < percentDone; i += 20)
             g2d.drawString(".", width/2 - 180 + i * 4, height / 2 - 50);
         
         g.drawImage(bufferedImage, 0, 0, null);

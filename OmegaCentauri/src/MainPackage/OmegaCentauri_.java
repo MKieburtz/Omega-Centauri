@@ -40,6 +40,7 @@ public class OmegaCentauri_ extends Game {
     // TIMERS
     private java.util.Timer FPSAndUPSTimer = new java.util.Timer();
     private java.util.Timer drawingTimer = new java.util.Timer();
+    private java.util.Timer loadingTimer = new java.util.Timer();
     /*
      * LOADING VARIBLES:
      */
@@ -69,8 +70,6 @@ public class OmegaCentauri_ extends Game {
         }
 
         setUpWindow(settings.getResolution() == null, logo);
-
-        loadGame();
     }
 
     private void setUpWindow(boolean fullScreen, BufferedImage logo) {
@@ -78,138 +77,37 @@ public class OmegaCentauri_ extends Game {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
         getContentPane().add(panel);
+        
+        addMouseListener(this);
+        addKeyListener(this);
+        
         setBackground(Color.BLACK);
         if (fullScreen) {
             setUndecorated(true);
             gd.setFullScreenWindow(this);
         } else {
             setIconImage(logo);
-            setPreferredSize(new Dimension(1000, 600));
-            pack();
+            setSize(1000,600);
         }
+        
+        
 
         setLocationRelativeTo(null);
-        
-        addMouseListener(this);
-        addKeyListener(this);
-        
+
         setVisible(true);
-    }
-
-    private void loadGame() {
-        while (loading) {
-            // load 100 starChunks from each quadrant
-            // load all the horizontal star chunks from each quadrant
-            // then move down 100 to the next chunk down
-
-            // quadrant 1
-
-            /*  _______
-             * |___|_x_|
-             * |___|___|
-             */
-            if (yPositions[0] < 0) {
-
-                for (int x = 1; x < screenSize.x; x = x + 100) {
-
-                    stars.add(new StarChunk(x, yPositions[0]));
-                    starChunksLoaded++;
-                }
-
-                yPositions[0] += 100;
-            }
-
-            // quadrant 2
-
-            /*  _______
-             * |_x_|___|
-             * |___|___|
-             */
-            if (yPositions[1] < 0) {
-                for (int x = -1; x > -screenSize.x; x = x - 100) {
-
-                    stars.add(new StarChunk(x, yPositions[1]));
-                    starChunksLoaded++;
-
-                }
-
-                yPositions[1] += 100;
-            }
-
-            // quadrant 3
-
-            /*  _______
-             * |___|___|
-             * |_x_|___|
-             */
-            if (yPositions[2] < 10000) {
-                for (int x = -1; x > -screenSize.x; x = x - 100) {
-
-                    stars.add(new StarChunk(x, yPositions[2]));
-                    starChunksLoaded++;
-                }
-
-                yPositions[2] += 100;
-            }
-
-            // quadrant 4
-
-            /*  _______
-             * |___|___|
-             * |___|_x_|
-             */
-            if (yPositions[3] < 10000) {
-                for (int x = 1; x < screenSize.x; x = x + 100) {
-
-                    stars.add(new StarChunk(x, yPositions[3]));
-                    starChunksLoaded++;
-                }
-
-                yPositions[3] += 100;
-            }
-
-            // base case
-            if (starChunksLoaded == (100 * 100) * 4) {
-                loading = false;
-            }
-
-            // use active rendering to draw the screen
-            renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
-
-            if (!loading) {
-                break;
-            }
-            
-            renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
-
-            
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {
-            }
-
-        }
-
+        
         startGame();
+        
     }
 
     private void startGame() {
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run() {
-                
-                renderer.drawLoadingScreen(panel.getGraphics(), 100, panel.getWidth(), panel.getHeight());
-                
-                shipsToDraw.add(player);
-                shipsToDraw.addAll(enemyShips);
-                shipsToDraw.addAll(allyShips);
-
-                FPSAndUPSTimer.schedule(new FPSAndUPSTimer(), 1);
-                drawingTimer.schedule(new UpdateTimer(), 1);
+            public void run() {  
+               loadingTimer.schedule(new LoadingTimer(), 1);
             }
         });
-
     }
 
     private void gameUpdate() {
@@ -511,8 +409,106 @@ public class OmegaCentauri_ extends Game {
                         sleepTime = 0;
                     }
                 }
-                System.out.println(timeDiff);
+                
                 drawingTimer.schedule(new UpdateTimer(), sleepTime);
+            }
+        }
+    }
+    
+    private class LoadingTimer extends TimerTask
+    {
+        @Override
+        public void run()
+        {
+            // load 100 starChunks from each quadrant
+            // load all the horizontal star chunks from each quadrant
+            // then move down 100 to the next chunk down
+
+            // quadrant 1
+
+            /*  _______
+             * |___|_x_|
+             * |___|___|
+             */
+            if (yPositions[0] < 0) {
+
+                for (int x = 1; x < screenSize.x; x = x + 100) {
+
+                    stars.add(new StarChunk(x, yPositions[0]));
+                    starChunksLoaded++;
+                }
+
+                yPositions[0] += 100;
+            }
+
+            // quadrant 2
+
+            /*  _______
+             * |_x_|___|
+             * |___|___|
+             */
+            if (yPositions[1] < 0) {
+                for (int x = -1; x > -screenSize.x; x = x - 100) {
+
+                    stars.add(new StarChunk(x, yPositions[1]));
+                    starChunksLoaded++;
+
+                }
+
+                yPositions[1] += 100;
+            }
+
+            // quadrant 3
+
+            /*  _______
+             * |___|___|
+             * |_x_|___|
+             */
+            if (yPositions[2] < 10000) {
+                for (int x = -1; x > -screenSize.x; x = x - 100) {
+
+                    stars.add(new StarChunk(x, yPositions[2]));
+                    starChunksLoaded++;
+                }
+
+                yPositions[2] += 100;
+            }
+
+            // quadrant 4
+
+            /*  _______
+             * |___|___|
+             * |___|_x_|
+             */
+            if (yPositions[3] < 10000) {
+                for (int x = 1; x < screenSize.x; x = x + 100) {
+
+                    stars.add(new StarChunk(x, yPositions[3]));
+                    starChunksLoaded++;
+                }
+
+                yPositions[3] += 100;
+            }
+
+            // base case
+            if (starChunksLoaded == (100 * 100) * 4) {
+                loading = false;
+            }
+
+            // use active rendering to draw the screen
+            renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
+            
+            if (loading)
+                loadingTimer.schedule(new LoadingTimer(), 10);
+            else
+            {
+                
+                shipsToDraw.add(player);
+                shipsToDraw.addAll(enemyShips);
+                shipsToDraw.addAll(allyShips);
+
+                FPSAndUPSTimer.schedule(new FPSAndUPSTimer(), 1);
+                drawingTimer.schedule(new UpdateTimer(), 1);
             }
         }
     }
