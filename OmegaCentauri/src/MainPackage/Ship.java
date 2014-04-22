@@ -242,6 +242,9 @@ public abstract class Ship implements CollisionListener {
     }
 
     public void CollisionEventWithShips(Ship ship1, Ship ship2) {
+        ship1.setColliding(true);
+        ship2.setColliding(true);
+        
         
     }
 
@@ -290,6 +293,16 @@ public abstract class Ship implements CollisionListener {
             if (shots.get(i).outsideScreen()) {
                 shots.remove(i);
             }
+        }
+    }
+    
+    public void setColliding(boolean colliding)
+    {
+        if (!colliding)
+        {
+        this.colliding = colliding;
+        int healthToLose = 50;
+        shield.activate(healthToLose);
         }
     }
 }
