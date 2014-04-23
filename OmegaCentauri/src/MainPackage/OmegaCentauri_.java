@@ -6,6 +6,7 @@ import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
+import java.util.concurrent.*;
 
 /**
  * @author Michael Kieburtz
@@ -41,6 +42,7 @@ public class OmegaCentauri_ extends Game {
     private java.util.Timer FPSAndUPSTimer = new java.util.Timer();
     private java.util.Timer drawingTimer = new java.util.Timer();
     private java.util.Timer loadingTimer = new java.util.Timer();
+    private ScheduledExecutorService ex;
     /*
      * LOADING VARIBLES:
      */
@@ -90,8 +92,27 @@ public class OmegaCentauri_ extends Game {
             setSize(1000,600);
         }
         
-        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we)
+            {
+                drawingTimer.cancel();
+                drawingTimer.purge();
+                FPSAndUPSTimer.cancel();
+                FPSAndUPSTimer.purge();
+                for (Ship s : shipsToDraw)
+                {
+                    s.shootingTimer.cancel();
+                    s.shootingTimer.purge();
+                }
+                dispose();
+            }
+        });
 
+        ex = Executors.newScheduledThreadPool(10);
+        
+        ex.scheduleAtFixedRate(new Service(), 1, 1, TimeUnit.SECONDS);
+        
         setLocationRelativeTo(null);
 
         setVisible(true);
@@ -512,4 +533,16 @@ public class OmegaCentauri_ extends Game {
             }
         }
     }
+    
+    class Service implements Runnable
+    {
+
+        @Override
+        public void run() {
+            System.out.println("test");
+            ex.execute(this);
+        }
+        
+    }
+    
 }
