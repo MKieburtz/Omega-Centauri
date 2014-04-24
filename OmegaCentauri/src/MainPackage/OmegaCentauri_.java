@@ -70,7 +70,7 @@ public class OmegaCentauri_ extends Game {
         for (EnemyShip enemy : enemyShips) {
             collisionListeners.add(enemy);
         }
-
+        
         setUpWindow(settings.getResolution() == null, logo);
     }
 
@@ -111,7 +111,7 @@ public class OmegaCentauri_ extends Game {
 
         ex = Executors.newScheduledThreadPool(10);
         
-        ex.scheduleAtFixedRate(new Service(), 1, 1, TimeUnit.SECONDS);
+        
         
         setLocationRelativeTo(null);
 
@@ -529,20 +529,34 @@ public class OmegaCentauri_ extends Game {
                 shipsToDraw.addAll(allyShips);
 
                 FPSAndUPSTimer.schedule(new FPSAndUPSTimer(), 1);
-                drawingTimer.schedule(new UpdateTimer(), 1);
+                //drawingTimer.schedule(new UpdateTimer(), 1);
+                ex.scheduleAtFixedRate(new Service(), 15, 15, TimeUnit.MILLISECONDS);
             }
         }
     }
     
     class Service implements Runnable
     {
-
         @Override
         public void run() {
-            System.out.println("test");
-            ex.execute(this);
+            gameUpdate();
+                updates++;
+            if (panel.getGraphics() != null && shipsToDraw.size() > 0) {
+                    
+                    renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                            FPS, stars, camera, Version, UPS, paused);
+                    framesDrawn++;
+
+//                    endTime = System.currentTimeMillis();
+//                    timeDiff = endTime - startTime;
+//                    sleepTime = loopTimeUPS - timeDiff;
+//
+//
+//                    if (sleepTime < 0) {
+//                        sleepTime = 0;
+//                    }
+                }
         }
-        
     }
     
 }
