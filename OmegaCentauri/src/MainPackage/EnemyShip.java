@@ -9,6 +9,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.concurrent.TimeUnit;
 
 public abstract class EnemyShip extends Ship {
 
@@ -77,7 +78,7 @@ public abstract class EnemyShip extends Ship {
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, true, cameraLocation));
         canshoot = false;
-        shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
+        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }
     
     @Override

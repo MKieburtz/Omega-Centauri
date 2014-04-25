@@ -6,8 +6,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import java.util.ArrayList;
-import java.util.TimerTask;
 import javax.sound.sampled.Clip;
+import java.util.concurrent.*;
 
 /**
  * @author Michael Kieburtz
@@ -41,11 +41,11 @@ public abstract class Ship implements CollisionListener {
     protected MediaLoader mediaLoader = new MediaLoader();
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
     protected boolean canshoot = true;
-    protected java.util.Timer shootingTimer;
     protected int shootingDelay;
     protected Shield shield;
     protected boolean rotatingRight = false;
     protected boolean colliding = false;
+    protected ScheduledExecutorService ex;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) {
@@ -60,8 +60,7 @@ public abstract class Ship implements CollisionListener {
         this.acceleration = acceleration;
         this.shootingDelay = shootingDelay;
         this.hull = health;
-
-        shootingTimer = new java.util.Timer();
+        ex = Executors.newScheduledThreadPool(5);
     }
 
     public BufferedImage getImage() {
@@ -148,7 +147,8 @@ public abstract class Ship implements CollisionListener {
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false, cameraLocation)); // enemies ovveride
         canshoot = false;
-        shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
+        //shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
+        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }
 
     public Point2D.Double getLocation() {
@@ -255,11 +255,12 @@ public abstract class Ship implements CollisionListener {
     public boolean canShoot() {
         return canshoot;
     }
-
-    protected class ShootingTimerTask extends TimerTask {
-
+    
+    class ShootingService implements Runnable
+    {
         @Override
-        public void run() {
+        public void run()
+        {
             canshoot = true;
         }
     }

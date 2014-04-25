@@ -123,5 +123,4 @@ public class Launcher extends JFrame implements MouseListener {
         setVisible(false); 
         this.dispose();
     }
-
 }
