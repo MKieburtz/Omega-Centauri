@@ -39,8 +39,10 @@ public class OmegaCentauri_ extends Game {
     private GraphicsDevice gd;
     private Settings settings;
     // TIMERS
-    private java.util.Timer loadingTimer = new java.util.Timer();
     private ScheduledExecutorService ex;
+    private ScheduledFuture<?> loadingFuture;
+    private ScheduledFuture<?> recordingFuture;
+    private ScheduledFuture<?> updatingFuture;
     /*
      * LOADING VARIBLES:
      */
@@ -93,8 +95,14 @@ public class OmegaCentauri_ extends Game {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
-                setVisible(false);
-                dispose();
+                try {
+                    recordingFuture.cancel(false);
+                    updatingFuture.cancel(false);
+                    setVisible(false);
+                    dispose();
+                } catch (java.awt.IllegalComponentStateException ex) {
+                    System.err.println("ERROR!");
+                }
             }
         });
 
@@ -113,93 +121,94 @@ public class OmegaCentauri_ extends Game {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                loadingTimer.schedule(new LoadingTimer(), 1);
+                loadingFuture = ex.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
             }
         });
     }
 
     private void gameUpdate() {
 
-        if (enemyShips.size() + allyShips.size() + (player.getHullHealth() > 0 ? 1 : 0) != shipsToDraw.size()) {
-            System.err.println("wierd: " + enemyShips.size() + " " + allyShips.size() + " " + shipsToDraw.size());
-            shipsToDraw.clear();
+        if (!paused) {
+            if (enemyShips.size() + allyShips.size() + (player.getHullHealth() > 0 ? 1 : 0) != shipsToDraw.size()) {
+                System.err.println("wierd: " + enemyShips.size() + " " + allyShips.size() + " " + shipsToDraw.size());
+                shipsToDraw.clear();
 
-            shipsToDraw.add(player);
-            shipsToDraw.addAll(enemyShips);
-            shipsToDraw.addAll(allyShips);
+                shipsToDraw.add(player);
+                shipsToDraw.addAll(enemyShips);
+                shipsToDraw.addAll(allyShips);
 
-        }
-
-        if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
-            camera.setSize(getWidth(), getHeight());
-        }
-
-        if (forward) {
-            player.move(ShipState.Thrusting);
-        }
-        if (rotateRight) {
-
-            player.rotate(ShipState.TurningRight);
-        }
-        if (rotateLeft) {
-            player.rotate(ShipState.TurningLeft);
-        }
-        if (!forward && player.isMoving()) {
-            player.move(ShipState.Drifting);
-        }
-        if (!rotateRight && !rotateLeft && player.isRotating()) {
-            player.rotate(player.rotatingRight() ? ShipState.AngleDriftingRight : ShipState.AngleDriftingLeft);
-        }
-        if (shooting && player.canShoot()) {
-            player.shoot(camera.getLocation());
-        }
-        for (EnemyShip enemyShip : enemyShips) {
-            enemyShip.update(player.getLocation(), camera.getLocation());
-        }
-
-        allShots.clear();
-        for (Ship ship : shipsToDraw) {
-
-            allShots.addAll(ship.getShots());
-
-            for (Shot shot : ship.getShots()) {
-                shot.updateLocation();
             }
 
-            for (int i = shipsToDraw.size() - 1; i > -1; i--) {
-                if (shipsToDraw.get(i).getHullHealth() <= 0) {
-                    if (shipsToDraw.get(i) instanceof EnemyShip) {
-                        enemyShips.remove(shipsToDraw.get(i));
-                    }
-                    shipsToDraw.remove(i);
-                }
+            if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
+                camera.setSize(getWidth(), getHeight());
             }
 
-            if (ship.getShield().isActive()) {
-                ship.getShield().decay();
+            if (forward) {
+                player.move(ShipState.Thrusting);
+            }
+            if (rotateRight) {
+
+                player.rotate(ShipState.TurningRight);
+            }
+            if (rotateLeft) {
+                player.rotate(ShipState.TurningLeft);
+            }
+            if (!forward && player.isMoving()) {
+                player.move(ShipState.Drifting);
+            }
+            if (!rotateRight && !rotateLeft && player.isRotating()) {
+                player.rotate(player.rotatingRight() ? ShipState.AngleDriftingRight : ShipState.AngleDriftingLeft);
+            }
+            if (shooting && player.canShoot()) {
+                player.shoot(camera.getLocation());
+            }
+            for (EnemyShip enemyShip : enemyShips) {
+                enemyShip.update(player.getLocation(), camera.getLocation());
             }
 
-            for (Ship collisionShip : shipsToDraw) {
-                if (!collisionShip.equals(ship)) {
-                    if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())) {
-                        ship.CollisionEventWithShips(ship, collisionShip);
-                    }
-                }
-            }
-
-            ship.purgeShots();
-        }
-
-        for (Shot shot : allShots) {
+            allShots.clear();
             for (Ship ship : shipsToDraw) {
-                if (Calculator.collisionCheck(shot.returnHitbox(), ship.returnHitbox())) {
-                    ship.CollisionEventWithShot(ship, shot, shipsToDraw);
+
+                allShots.addAll(ship.getShots());
+
+                for (Shot shot : ship.getShots()) {
+                    shot.updateLocation();
+                }
+
+                for (int i = shipsToDraw.size() - 1; i > -1; i--) {
+                    if (shipsToDraw.get(i).getHullHealth() <= 0) {
+                        if (shipsToDraw.get(i) instanceof EnemyShip) {
+                            enemyShips.remove(shipsToDraw.get(i));
+                        }
+                        shipsToDraw.remove(i);
+                    }
+                }
+
+                if (ship.getShield().isActive()) {
+                    ship.getShield().decay();
+                }
+
+                for (Ship collisionShip : shipsToDraw) {
+                    if (!collisionShip.equals(ship)) {
+                        if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())) {
+                            ship.CollisionEventWithShips(ship, collisionShip);
+                        }
+                    }
+                }
+
+                ship.purgeShots();
+            }
+
+            for (Shot shot : allShots) {
+                for (Ship ship : shipsToDraw) {
+                    if (Calculator.collisionCheck(shot.returnHitbox(), ship.returnHitbox())) {
+                        ship.CollisionEventWithShot(ship, shot, shipsToDraw);
+                    }
                 }
             }
+
+            syncGameStateVaribles();
         }
-
-        syncGameStateVaribles();
-
     }
     int keyCode;
 
@@ -212,62 +221,64 @@ public class OmegaCentauri_ extends Game {
          * 2 = turning right
          * 3 = turning left
          */
-        if (!paused) {
-            switch (keyCode) {
-                case KeyEvent.VK_W: {
-                    forward = true;
-                    if (!rotateRight && !rotateLeft) {
-                        player.changeImage(ShipState.Thrusting);
-                    } else if (rotateLeft && !rotateRight) {
-                        player.changeImage(ShipState.TurningLeftThrusting);
-                    } else if (!rotateLeft && rotateRight) {
-                        player.changeImage(ShipState.TurningRightThrusting);
-                    }
+        switch (keyCode) {
+            case KeyEvent.VK_W: {
+                forward = true;
+                if (!rotateRight && !rotateLeft) {
+                    player.changeImage(ShipState.Thrusting);
+                } else if (rotateLeft && !rotateRight) {
+                    player.changeImage(ShipState.TurningLeftThrusting);
+                } else if (!rotateLeft && rotateRight) {
+                    player.changeImage(ShipState.TurningRightThrusting);
                 }
+            }
+            break;
+
+            case KeyEvent.VK_D: {
+                rotateRight = true;
+                if (!forward) {
+                    player.changeImage(ShipState.TurningRight);
+                } else if (forward) {
+                    player.changeImage(ShipState.TurningRightThrusting);
+                } else if (rotateLeft) {
+                    player.changeImage(ShipState.Idle);
+                }
+
+            }
+            break;
+
+            case KeyEvent.VK_A: {
+                rotateLeft = true;
+                if (!forward) {
+                    player.changeImage(ShipState.TurningLeft);
+                } else if (forward) {
+                    player.changeImage(ShipState.TurningLeftThrusting);
+                } else if (rotateRight) {
+                    player.changeImage(ShipState.Idle);
+                }
+
+            }
+            break;
+
+            case KeyEvent.VK_SHIFT: {
+                player.speedBoost();
+            }
+            break;
+
+            case KeyEvent.VK_SPACE: {
+                shooting = true;
                 break;
+            }
 
-                case KeyEvent.VK_D: {
-                    rotateRight = true;
-                    if (!forward) {
-                        player.changeImage(ShipState.TurningRight);
-                    } else if (forward) {
-                        player.changeImage(ShipState.TurningRightThrusting);
-                    } else if (rotateLeft) {
-                        player.changeImage(ShipState.Idle);
-                    }
-
-                }
+            case KeyEvent.VK_Q: {
+                System.exit(0);
                 break;
+            }
+            case KeyEvent.VK_ESCAPE: {
+                paused = !paused;
+            }
 
-                case KeyEvent.VK_A: {
-                    rotateLeft = true;
-                    if (!forward) {
-                        player.changeImage(ShipState.TurningLeft);
-                    } else if (forward) {
-                        player.changeImage(ShipState.TurningLeftThrusting);
-                    } else if (rotateRight) {
-                        player.changeImage(ShipState.Idle);
-                    }
-
-                }
-                break;
-
-                case KeyEvent.VK_SHIFT: {
-                    player.speedBoost();
-                }
-                break;
-
-                case KeyEvent.VK_SPACE: {
-                    shooting = true;
-                    break;
-                }
-
-                case KeyEvent.VK_Q: {
-                    System.exit(0);
-                }
-
-            } // end switch
-        }
+        } // end switch
     } // end method
 
     @Override
@@ -317,11 +328,6 @@ public class OmegaCentauri_ extends Game {
             }
             break;
 
-            case KeyEvent.VK_ESCAPE: {
-                paused = !paused;
-            }
-            break;
-
         } // end switch
     }
 
@@ -360,7 +366,6 @@ public class OmegaCentauri_ extends Game {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setVisible(true);
         }
-
     }
 
     private void syncGameStateVaribles() {
@@ -369,12 +374,11 @@ public class OmegaCentauri_ extends Game {
         middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
         middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
     }
-    
-    class RecordingService implements Runnable
-    {
+
+    class RecordingService implements Runnable {
+
         @Override
-        public void run()
-        {
+        public void run() {
             FPS = framesDrawn;
             UPS = updates;
             framesDrawn = 0;
@@ -382,7 +386,33 @@ public class OmegaCentauri_ extends Game {
         }
     }
 
-    private class LoadingTimer extends TimerTask {
+    class UpdatingService implements Runnable {
+
+        @Override
+        public void run() {
+            gameUpdate();
+            updates++;
+
+            if (!OmegaCentauri_.this.hasFocus()) {
+                paused = true;
+            }
+
+            if (panel.getGraphics() != null && shipsToDraw.size() > 0) {
+
+                renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                        FPS, stars, camera, Version, UPS, paused);
+                framesDrawn++;
+                if (framesDrawn < updates) {
+                    renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                            FPS, stars, camera, Version, UPS, paused);
+                    framesDrawn++;
+                }
+
+            }
+        }
+    }
+
+    class LoadingService implements Runnable {
 
         @Override
         public void run() {
@@ -465,40 +495,17 @@ public class OmegaCentauri_ extends Game {
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
 
             if (loading) {
-                loadingTimer.schedule(new LoadingTimer(), 10);
+                ex.schedule(new LoadingService(), 10, TimeUnit.MILLISECONDS);
             } else {
 
                 shipsToDraw.add(player);
                 shipsToDraw.addAll(enemyShips);
                 shipsToDraw.addAll(allyShips);
 
-                ex.scheduleAtFixedRate(new RecordingService(), 1, 1, TimeUnit.SECONDS);
-                ex.scheduleAtFixedRate(new UpdatingService(), loopTimeUPS, loopTimeUPS, TimeUnit.MILLISECONDS);
+                loadingFuture.cancel(false);
+                recordingFuture = ex.scheduleAtFixedRate(new RecordingService(), 1, 1, TimeUnit.SECONDS);
+                updatingFuture = ex.scheduleAtFixedRate(new UpdatingService(), loopTimeUPS, loopTimeUPS, TimeUnit.MILLISECONDS);
             }
         }
     }
-
-    class UpdatingService implements Runnable {
-
-        @Override
-        public void run() {
-            gameUpdate();
-            updates++;
-
-            if (panel.getGraphics() != null && shipsToDraw.size() > 0) {
-
-                renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                        FPS, stars, camera, Version, UPS, paused);
-                framesDrawn++;
-                if (framesDrawn < updates)
-                {
-                    renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                        FPS, stars, camera, Version, UPS, paused);
-                framesDrawn++;
-                }
-                    
-            }
-        }
-    }
-
 }
