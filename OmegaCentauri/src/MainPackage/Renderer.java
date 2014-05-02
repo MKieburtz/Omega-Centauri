@@ -3,7 +3,6 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -101,11 +100,8 @@ public class Renderer {
         g2d.drawString("FPS: " + String.valueOf(fps), camera.getSize().x - 130, 20);
         //ups
         g2d.drawString("UPS: " + String.valueOf(ups), camera.getSize().x - 130, 30);
-        //player game location
-        g2d.drawString("Player Location: " + convertPointToOrderedPair(ships.get(0).getLocation()),
-                camera.getSize().x - 180, 40);
-        
-        g2d.drawString("Shots: " + shots.size(), camera.getSize().x - 130, 50);
+        //shots on screen
+        g2d.drawString("Shots: " + shots.size(), camera.getSize().x - 130, 40);
         for (Shot shot : shots) {
             if (shot.imagesLoaded()) {
                 shot.draw(g2d, camera.getLocation());
@@ -224,11 +220,5 @@ public class Renderer {
 
         g2d.dispose();
         g.dispose();
-    }
-    
-    private String convertPointToOrderedPair(Point2D.Double point)
-    {
-        DecimalFormat format = new DecimalFormat("0.#");
-        return "(" + format.format(point.x) + ", " + format.format(point.y) + ")";
     }
 }
