@@ -27,6 +27,10 @@ public class Renderer {
     
     private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
     
+    // Cached values:
+    private BufferedImage drawingImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+    private ArrayList<Shot> shots = new ArrayList<Shot>();
+    
     ArrayList<Rectangle2D.Double> loadingStars = new ArrayList<Rectangle2D.Double>();
     
     public Renderer() {
@@ -51,11 +55,12 @@ public class Renderer {
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused) {
 
-        BufferedImage bufferedImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g2d = bufferedImage.createGraphics(); // turns it into 2d graphics
-        
-        ArrayList<Shot> shots = new ArrayList<Shot>();
+        if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
+            drawingImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
+            
+        Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics
+       
+        shots.clear();
         
         for (Ship ship : ships)
         {
@@ -151,7 +156,7 @@ public class Renderer {
             g2d.drawImage(images.get(PAUSETOMENU),null, 20, 110);
         }
         
-        g.drawImage(bufferedImage, 0, 0, null);
+        g.drawImage(drawingImage, 0, 0, null);
 
         g2d.dispose();
         g.dispose();
