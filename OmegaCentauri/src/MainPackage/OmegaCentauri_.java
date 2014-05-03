@@ -25,7 +25,7 @@ public class OmegaCentauri_ extends Game {
     private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
     // TIMING STUFF
     private int FPS = 0;
-    private int UPS = 1;
+    private int UPS = 0;
     private int updates = 1;
     private final long loopTimeUPS = (long) Math.ceil(1000 / 75); // about 15. Change 75 for the target UPS
     private final long loopTimeFPS = 10;
@@ -100,6 +100,7 @@ public class OmegaCentauri_ extends Game {
                 try {
                     recordingFuture.cancel(false);
                     updatingFuture.cancel(false);
+                    drawingFuture.cancel(false);
                     setVisible(false);
                     dispose();
                 } catch (java.awt.IllegalComponentStateException ex) {
@@ -505,8 +506,8 @@ public class OmegaCentauri_ extends Game {
 
                 loadingFuture.cancel(false);
                 recordingFuture = ex.scheduleAtFixedRate(new RecordingService(), 1, 1, TimeUnit.SECONDS);
-                updatingFuture = ex.scheduleAtFixedRate(new UpdatingService(), loopTimeUPS, loopTimeUPS, TimeUnit.MILLISECONDS);
-                drawingFuture = ex.scheduleAtFixedRate(new DrawingService(), loopTimeFPS, loopTimeFPS, TimeUnit.MILLISECONDS);
+                updatingFuture = ex.scheduleAtFixedRate(new UpdatingService(), 1, loopTimeUPS, TimeUnit.MILLISECONDS);
+                drawingFuture = ex.scheduleAtFixedRate(new DrawingService(), 1, loopTimeFPS, TimeUnit.MILLISECONDS);
             }
         }
     }

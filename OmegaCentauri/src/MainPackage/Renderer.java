@@ -73,7 +73,6 @@ public class Renderer {
         g2d.fillRect(0, 0, camera.getSize().x, camera.getSize().y);
 
         // enable anti-aliasing
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -187,26 +186,9 @@ public class Renderer {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = bufferedImage.createGraphics();
-
-        // enable anti-aliasing
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-//        Random rand = new Random();
-//        
-//        loadingStars.add(new Rectangle2D.Double(rand.nextDouble() * width, rand.nextDouble() * height, 1, 1));
-        
         
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, width, height);
-
-//        g2d.setColor(Color.white);
-//        for (Rectangle2D.Double d : loadingStars)
-//        {
-//            g2d.draw(d);
-//        }
-//        
         
         g2d.setColor(Color.BLUE);
         g2d.drawRect((width / 2) - 200, (height / 2) - 50, 399, 10);
