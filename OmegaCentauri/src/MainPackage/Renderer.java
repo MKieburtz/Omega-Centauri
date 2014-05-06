@@ -99,7 +99,7 @@ public class Renderer {
         g2d.setColor(Color.WHITE);
         
         //version
-        g2d.drawString("Version: " + version, camera.getSize().x - 130, 10);
+        g2d.drawString("Version: " + version, camera.getSize().x - 150, 10);
         //fps
         g2d.drawString("FPS: " + String.valueOf(fps), camera.getSize().x - 130, 20);
         //ups

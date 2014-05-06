@@ -27,7 +27,7 @@ public class OmegaCentauri_ extends Game {
     private int FPS = 0;
     private int UPS = 0;
     private int updates = 1;
-    private final long loopTimeUPS = (long) Math.ceil(1000 / 75); // about 15. Change 75 for the target UPS
+    private final long loopTimeUPS = (long) Math.ceil(1000 / 60); // about 15. Change 75 for the target UPS
     private final long loopTimeFPS = 10;
     private int framesDrawn = 0;
     /*
@@ -41,10 +41,6 @@ public class OmegaCentauri_ extends Game {
     private Settings settings;
     // TIMERS
     private ScheduledExecutorService ex;
-    private ScheduledFuture<?> loadingFuture;
-    private ScheduledFuture<?> recordingFuture;
-    private ScheduledFuture<?> updatingFuture;
-    private ScheduledFuture<?> drawingFuture;
     /*
      * LOADING VARIBLES:
      */
@@ -98,9 +94,6 @@ public class OmegaCentauri_ extends Game {
             @Override
             public void windowClosing(WindowEvent we) {
                 try {
-                    recordingFuture.cancel(false);
-                    updatingFuture.cancel(false);
-                    drawingFuture.cancel(false);
                     setVisible(false);
                     dispose();
                 } catch (java.awt.IllegalComponentStateException ex) {
@@ -109,7 +102,7 @@ public class OmegaCentauri_ extends Game {
             }
         });
 
-        ex = Executors.newSingleThreadScheduledExecutor();
+        ex = Executors.newScheduledThreadPool(5);
 
         setLocationRelativeTo(null);
 
@@ -123,7 +116,7 @@ public class OmegaCentauri_ extends Game {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                loadingFuture = ex.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
+                ex.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
             }
         });
     }
@@ -385,20 +378,38 @@ public class OmegaCentauri_ extends Game {
             UPS = updates;
             framesDrawn = 0;
             updates = 0;
+            
+            ex.schedule(this, 1, TimeUnit.SECONDS);
         }
     }
 
+    long startTimeU, endtimeU, sleeptimeU;
     class UpdatingService implements Runnable {
         @Override
         public void run() {
+            
+            startTimeU = System.nanoTime();
+            
             gameUpdate();
             updates++;
-
+            
             if (!OmegaCentauri_.this.hasFocus()) {
                 paused = true;
             }
+            
+            endtimeU = System.nanoTime();
+            
+            sleeptimeU = loopTimeUPS - ((endtimeU - startTimeU) / 10000);
+            
+            System.out.println(sleeptimeU);
+            
+            if (sleeptimeU <= 0)
+                sleeptimeU = 1;
+            
+            ex.schedule(this, sleeptimeU, TimeUnit.MILLISECONDS);
         }
     }
+    long startTimeD, endtimeD, sleeptimeD;
     
     class DrawingService implements Runnable
     {
@@ -410,6 +421,7 @@ public class OmegaCentauri_ extends Game {
                         FPS, stars, camera, Version, UPS, paused);
                 framesDrawn++;
             }
+            ex.schedule(this, loopTimeFPS, TimeUnit.MILLISECONDS);
         }
         
     }
@@ -497,17 +509,16 @@ public class OmegaCentauri_ extends Game {
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
 
             if (loading) {
-                ex.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
+                ex.schedule(this, 3, TimeUnit.MILLISECONDS);
             } else {
 
                 shipsToDraw.add(player);
                 shipsToDraw.addAll(enemyShips);
                 shipsToDraw.addAll(allyShips);
 
-                loadingFuture.cancel(false);
-                recordingFuture = ex.scheduleAtFixedRate(new RecordingService(), 1, 1, TimeUnit.SECONDS);
-                updatingFuture = ex.scheduleAtFixedRate(new UpdatingService(), 1, loopTimeUPS, TimeUnit.MILLISECONDS);
-                drawingFuture = ex.scheduleAtFixedRate(new DrawingService(), 1, loopTimeFPS, TimeUnit.MILLISECONDS);
+                ex.schedule(new RecordingService(), 1, TimeUnit.MILLISECONDS);
+                ex.schedule(new UpdatingService(), 1, TimeUnit.MILLISECONDS);
+                ex.schedule(new DrawingService(), 1, TimeUnit.MILLISECONDS);
             }
         }
     }
