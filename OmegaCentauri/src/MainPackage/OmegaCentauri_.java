@@ -26,8 +26,8 @@ public class OmegaCentauri_ extends Game {
     // TIMING STUFF
     private int FPS = 0;
     private int UPS = 0;
-    private int updates = 1;
-    private final long loopTimeUPS = (long) Math.ceil(1000 / 60); // about 15. Change 75 for the target UPS
+    private int updates = 0;
+    private final long loopTimeUPS = (long) Math.floor(1000 / 300); // about 15. Change 75 for the target UPS
     private final long loopTimeFPS = 10;
     private int framesDrawn = 0;
     /*
@@ -102,7 +102,7 @@ public class OmegaCentauri_ extends Game {
             }
         });
 
-        ex = Executors.newScheduledThreadPool(5);
+        ex = Executors.newSingleThreadScheduledExecutor();
 
         setLocationRelativeTo(null);
 
@@ -388,7 +388,7 @@ public class OmegaCentauri_ extends Game {
         @Override
         public void run() {
             
-            startTimeU = System.nanoTime();
+            startTimeU = System.currentTimeMillis();
             
             gameUpdate();
             updates++;
@@ -397,9 +397,9 @@ public class OmegaCentauri_ extends Game {
                 paused = true;
             }
             
-            endtimeU = System.nanoTime();
+            endtimeU = System.currentTimeMillis();
             
-            sleeptimeU = loopTimeUPS - ((endtimeU - startTimeU) / 10000);
+            sleeptimeU = loopTimeUPS - (endtimeU - startTimeU);
             
             System.out.println(sleeptimeU);
             
@@ -423,7 +423,6 @@ public class OmegaCentauri_ extends Game {
             }
             ex.schedule(this, loopTimeFPS, TimeUnit.MILLISECONDS);
         }
-        
     }
 
     class LoadingService implements Runnable {
