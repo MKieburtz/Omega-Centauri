@@ -27,8 +27,7 @@ public class OmegaCentauri_ extends Game {
     private int FPS = 0;
     private int UPS = 0;
     private int updates = 0;
-    private final long loopTimeUPS = (long) Math.floor(1000 / 300); // about 15. Change 75 for the target UPS
-    private final long loopTimeFPS = 10;
+    private final long loopTimeUPS = (long) Math.floor(1000 / 75); // about 13. Change 75 for the target UPS
     private int framesDrawn = 0;
     /*
      * OBJECTS:
@@ -379,52 +378,41 @@ public class OmegaCentauri_ extends Game {
             framesDrawn = 0;
             updates = 0;
             
-            ex.schedule(this, 1, TimeUnit.SECONDS);
+            ex.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
         }
     }
 
-    long startTimeU, endtimeU, sleeptimeU;
+    long startTime, endtime, sleeptime;
     class UpdatingService implements Runnable {
         @Override
         public void run() {
             
-            startTimeU = System.currentTimeMillis();
+            startTime = System.currentTimeMillis();
             
             gameUpdate();
             updates++;
+            
+            renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                        FPS, stars, camera, Version, UPS, paused);
+                framesDrawn++;
             
             if (!OmegaCentauri_.this.hasFocus()) {
                 paused = true;
             }
             
-            endtimeU = System.currentTimeMillis();
+            endtime = System.currentTimeMillis();
             
-            sleeptimeU = loopTimeUPS - (endtimeU - startTimeU);
+            sleeptime = loopTimeUPS - (endtime - startTime);
             
-            System.out.println(sleeptimeU);
+            System.out.println(sleeptime);
             
-            if (sleeptimeU <= 0)
-                sleeptimeU = 1;
+            if (sleeptime <= 0)
+                sleeptime = 0;
             
-            ex.schedule(this, sleeptimeU, TimeUnit.MILLISECONDS);
+            ex.schedule(new UpdatingService(), sleeptime, TimeUnit.MILLISECONDS);
         }
     }
-    long startTimeD, endtimeD, sleeptimeD;
     
-    class DrawingService implements Runnable
-    {
-        @Override
-        public void run() {
-            if (panel.getGraphics() != null && shipsToDraw.size() > 0) {
-
-                renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                        FPS, stars, camera, Version, UPS, paused);
-                framesDrawn++;
-            }
-            ex.schedule(this, loopTimeFPS, TimeUnit.MILLISECONDS);
-        }
-    }
-
     class LoadingService implements Runnable {
 
         @Override
@@ -499,7 +487,6 @@ public class OmegaCentauri_ extends Game {
                 yPositions[3] += 100;
             }
 
-            // base case
             if (starChunksLoaded == (100 * 100) * 4) {
                 loading = false;
             }
@@ -508,7 +495,7 @@ public class OmegaCentauri_ extends Game {
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
 
             if (loading) {
-                ex.schedule(this, 3, TimeUnit.MILLISECONDS);
+                ex.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
             } else {
 
                 shipsToDraw.add(player);
@@ -516,8 +503,7 @@ public class OmegaCentauri_ extends Game {
                 shipsToDraw.addAll(allyShips);
 
                 ex.schedule(new RecordingService(), 1, TimeUnit.MILLISECONDS);
-                ex.schedule(new UpdatingService(), 1, TimeUnit.MILLISECONDS);
-                ex.schedule(new DrawingService(), 1, TimeUnit.MILLISECONDS);
+                ex.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
             }
         }
     }

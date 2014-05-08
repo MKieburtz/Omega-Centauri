@@ -1,6 +1,5 @@
 package MainPackage;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -22,15 +21,19 @@ public class Calculator {
     public static double CalcAngleMoveY(double angle) {
         return Math.sin(Math.toRadians(angle));
     }
-    //@returns distance between two points
-
+    /**
+     * @returns distance between two points
+     */
     public static double getDistance(Point2D.Double pt1, Point2D.Double pt2) {
         return Math.sqrt(Math.pow(Math.abs(pt2.x - pt1.x), 2) + Math.pow(Math.abs(pt2.y - pt1.y), 2));
     }
 
-    //@returns angle between two points IN DEGREES
+    /**
+     * @returns angle between two points IN DEGREES
+     */ 
+    static double angle;
     public static double getAngleBetweenTwoPoints(Point2D.Double pt1, Point2D.Double pt2) {
-        double angle = (double) Math.toDegrees(Math.atan2(pt2.x - pt1.x, pt2.y - pt1.y));
+        angle = (double) Math.toDegrees(Math.atan2(pt2.x - pt1.x, pt2.y - pt1.y));
 
         if (angle < 0) {
             angle += 360;
