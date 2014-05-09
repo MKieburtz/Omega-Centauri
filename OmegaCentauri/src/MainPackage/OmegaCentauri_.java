@@ -27,7 +27,7 @@ public class OmegaCentauri_ extends Game {
     private int FPS = 0;
     private int UPS = 0;
     private int updates = 0;
-    private final long loopTimeUPS = (long) Math.floor(1000 / 75); // about 13. Change 75 for the target UPS
+    private final long loopTimeUPS = (long) Math.floor(1000 / 77); // about 13. Change 75 for the target UPS
     private int framesDrawn = 0;
     /*
      * OBJECTS:
@@ -39,7 +39,8 @@ public class OmegaCentauri_ extends Game {
     private GraphicsDevice gd;
     private Settings settings;
     // TIMERS
-    private ScheduledExecutorService ex;
+    private ScheduledExecutorService timingEx;
+    private ScheduledExecutorService recordingEx;
     /*
      * LOADING VARIBLES:
      */
@@ -79,7 +80,10 @@ public class OmegaCentauri_ extends Game {
 
         addMouseListener(this);
         addKeyListener(this);
-
+        
+        setFocusable(true);
+        requestFocus();
+        
         setBackground(Color.BLACK);
         if (fullScreen) {
             setUndecorated(true);
@@ -100,9 +104,22 @@ public class OmegaCentauri_ extends Game {
                 }
             }
         });
+        
+        addFocusListener(new FocusListener() {
 
-        ex = Executors.newSingleThreadScheduledExecutor();
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
 
+            @Override
+            public void focusLost(FocusEvent e) {
+                requestFocus();
+            }
+        });
+
+        timingEx = Executors.newSingleThreadScheduledExecutor();
+
+        recordingEx = Executors.newSingleThreadScheduledExecutor();
         setLocationRelativeTo(null);
 
         setVisible(true);
@@ -115,7 +132,7 @@ public class OmegaCentauri_ extends Game {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                ex.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
+                timingEx.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
             }
         });
     }
@@ -378,7 +395,7 @@ public class OmegaCentauri_ extends Game {
             framesDrawn = 0;
             updates = 0;
             
-            ex.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
+            recordingEx.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
         }
     }
 
@@ -386,7 +403,6 @@ public class OmegaCentauri_ extends Game {
     class UpdatingService implements Runnable {
         @Override
         public void run() {
-            
             startTime = System.currentTimeMillis();
             
             gameUpdate();
@@ -406,10 +422,12 @@ public class OmegaCentauri_ extends Game {
             
             System.out.println(sleeptime);
             
+            
+            
             if (sleeptime <= 0)
                 sleeptime = 0;
             
-            ex.schedule(new UpdatingService(), sleeptime, TimeUnit.MILLISECONDS);
+            timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.MILLISECONDS);
         }
     }
     
@@ -437,7 +455,7 @@ public class OmegaCentauri_ extends Game {
 
                 yPositions[0] += 100;
             }
-
+            
             // quadrant 2
 
             /*  _______
@@ -487,23 +505,23 @@ public class OmegaCentauri_ extends Game {
                 yPositions[3] += 100;
             }
 
+            // use active rendering to draw the screen
+            renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
+            
             if (starChunksLoaded == (100 * 100) * 4) {
                 loading = false;
             }
 
-            // use active rendering to draw the screen
-            renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
-
             if (loading) {
-                ex.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
+                timingEx.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
             } else {
 
                 shipsToDraw.add(player);
                 shipsToDraw.addAll(enemyShips);
                 shipsToDraw.addAll(allyShips);
-
-                ex.schedule(new RecordingService(), 1, TimeUnit.MILLISECONDS);
-                ex.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
+                
+                recordingEx.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
+                timingEx.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
             }
         }
     }
