@@ -140,15 +140,6 @@ public class OmegaCentauri_ extends Game {
     private void gameUpdate() {
 
         if (!paused) {
-            if (enemyShips.size() + allyShips.size() + (player.getHullHealth() > 0 ? 1 : 0) != shipsToDraw.size()) {
-                System.err.println("wierd: " + enemyShips.size() + " " + allyShips.size() + " " + shipsToDraw.size());
-                shipsToDraw.clear();
-
-                shipsToDraw.add(player);
-                shipsToDraw.addAll(enemyShips);
-                shipsToDraw.addAll(allyShips);
-
-            }
 
             if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
                 camera.setSize(getWidth(), getHeight());
@@ -420,12 +411,9 @@ public class OmegaCentauri_ extends Game {
             
             sleeptime = loopTimeUPS - (endtime - startTime);
             
-            System.out.println(sleeptime);
-            
-            
-            
             if (sleeptime <= 0)
                 sleeptime = 0;
+            
             
             timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.MILLISECONDS);
         }
