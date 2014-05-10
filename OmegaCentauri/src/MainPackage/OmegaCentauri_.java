@@ -27,7 +27,7 @@ public class OmegaCentauri_ extends Game {
     private int FPS = 0;
     private int UPS = 0;
     private int updates = 0;
-    private final long loopTimeUPS = (long) Math.floor(1000 / 77); // about 13. Change 75 for the target UPS
+    private final long loopTimeUPS = (long)((1000.0 / 77) * 1000000); // about 13. Change 75 for the target UPS
     private int framesDrawn = 0;
     /*
      * OBJECTS:
@@ -117,7 +117,7 @@ public class OmegaCentauri_ extends Game {
             }
         });
 
-        timingEx = Executors.newSingleThreadScheduledExecutor();
+        timingEx = Executors.newScheduledThreadPool(2);
 
         recordingEx = Executors.newSingleThreadScheduledExecutor();
         setLocationRelativeTo(null);
@@ -394,7 +394,8 @@ public class OmegaCentauri_ extends Game {
     class UpdatingService implements Runnable {
         @Override
         public void run() {
-            startTime = System.currentTimeMillis();
+            try {
+            startTime = System.nanoTime();
             
             gameUpdate();
             updates++;
@@ -407,15 +408,23 @@ public class OmegaCentauri_ extends Game {
                 paused = true;
             }
             
-            endtime = System.currentTimeMillis();
+            
+            endtime = System.nanoTime();
+            
             
             sleeptime = loopTimeUPS - (endtime - startTime);
             
             if (sleeptime <= 0)
                 sleeptime = 0;
             
+            System.out.println(sleeptime);
             
-            timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.MILLISECONDS);
+            timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
+            
+            } catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
         }
     }
     
@@ -423,6 +432,7 @@ public class OmegaCentauri_ extends Game {
 
         @Override
         public void run() {
+            try {
             // load 100 starChunks from each quadrant
             // load all the horizontal star chunks from each quadrant
             // then move down 100 to the next chunk down
@@ -491,25 +501,33 @@ public class OmegaCentauri_ extends Game {
                 }
 
                 yPositions[3] += 100;
-            }
-
+            }   
+            
+            
+            
             // use active rendering to draw the screen
             renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
             
             if (starChunksLoaded == (100 * 100) * 4) {
                 loading = false;
+                
             }
 
             if (loading) {
                 timingEx.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
             } else {
-
                 shipsToDraw.add(player);
                 shipsToDraw.addAll(enemyShips);
                 shipsToDraw.addAll(allyShips);
                 
+                
                 recordingEx.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
                 timingEx.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
+            }
+            
+            } catch (Exception ex)
+            {
+                ex.printStackTrace();
             }
         }
     }
