@@ -21,6 +21,7 @@ public abstract class Ship implements CollisionListener {
     protected Type type;
     protected double faceAngle = 360.0;
     protected double moveAngle = 0.0;
+    protected final int collisionDamage = 50;
     protected Point2D.Double location;
     protected Point2D.Double nextLocation;
     protected Point2D.Double movementVelocity = new Point2D.Double(0, 0);
@@ -147,7 +148,7 @@ public abstract class Ship implements CollisionListener {
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, false, cameraLocation)); // enemies ovveride
         canshoot = false;
-        //shootingTimer.schedule(new ShootingTimerTask(), shootingDelay);
+
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }
 
@@ -167,16 +168,15 @@ public abstract class Ship implements CollisionListener {
                 faceAngle = 360 + faceAngle;
             }
         }
-        
-        
+
     }
 
     public void rotate(ShipState state) {
-        
+
         rotatingRight = state == ShipState.AngleDriftingRight || state == ShipState.TurningRight;
-        
+
         if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) {
-            
+
             angularVelocity += angleIcrement * .1;
 
             if (angularVelocity > maxAngularVel) {
@@ -184,13 +184,14 @@ public abstract class Ship implements CollisionListener {
             } else if (angularVelocity < -maxAngularVel) {
                 angularVelocity = -maxAngularVel;
             }
-            
-            if ((angularVelocity < .01 && angularVelocity > 0) || (angularVelocity > -.01 && angularVelocity < 0))
+
+            if ((angularVelocity < .01 && angularVelocity > 0) || (angularVelocity > -.01 && angularVelocity < 0)) {
                 angularVelocity = 0;
-        }
-        else
+            }
+        } else {
             angularVelocity *= .90;
-       
+        }
+
         updateAngle(state);
     }
 
@@ -241,11 +242,8 @@ public abstract class Ship implements CollisionListener {
         }
     }
 
-    public void CollisionEventWithShips(Ship ship1, Ship ship2) {
-        ship1.setColliding(true);
-        ship2.setColliding(true);
-        
-        
+    public void CollisionEventWithShip(Ship other) {
+        setColliding(true);
     }
 
     public Rectangle2D.Double returnHitbox() {
@@ -255,12 +253,11 @@ public abstract class Ship implements CollisionListener {
     public boolean canShoot() {
         return canshoot;
     }
-    
-    class ShootingService implements Runnable
-    {
+
+    class ShootingService implements Runnable {
+
         @Override
-        public void run()
-        {
+        public void run() {
             canshoot = true;
         }
     }
@@ -296,14 +293,18 @@ public abstract class Ship implements CollisionListener {
             }
         }
     }
-    
-    public void setColliding(boolean colliding)
-    {
-        if (!colliding)
-        {
-        this.colliding = colliding;
-        int healthToLose = 50;
-        shield.activate(healthToLose);
+
+    public void setColliding(boolean colliding) {
+        if (!this.colliding && colliding) {
+            this.colliding = colliding;
+            int healthToLose = 50;
+            activateShield(healthToLose);
+        } else if (this.colliding && !colliding) {
+            this.colliding = colliding;
         }
+    }
+
+    public boolean isColliding() {
+        return colliding;
     }
 }
