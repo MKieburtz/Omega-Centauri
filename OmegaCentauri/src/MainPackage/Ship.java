@@ -223,7 +223,7 @@ public abstract class Ship implements CollisionListener {
     }
 
     @Override
-    public void CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips) {
+    public boolean CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips) {
 
         if (ship instanceof Player || ship instanceof EnemyShip) {
             if (!ship.getShots().contains(shot)) {
@@ -231,6 +231,9 @@ public abstract class Ship implements CollisionListener {
                     ship.activateShield(shot.getDamage());
                 } else {
                     ship.reduceHull(shot.getDamage());
+                    
+                    if (hull <= 0)
+                        return true;
                 }
             }
         }
@@ -240,10 +243,11 @@ public abstract class Ship implements CollisionListener {
                 collisionShip.removeShot(shot);
             }
         }
+        return false;
     }
 
-    public void CollisionEventWithShip(Ship other) {
-        setColliding(true);
+    public boolean CollisionEventWithShip() {
+        return setColliding(true);
     }
 
     public Rectangle2D.Double returnHitbox() {
@@ -294,7 +298,7 @@ public abstract class Ship implements CollisionListener {
         }
     }
 
-    public void setColliding(boolean colliding) {
+    public boolean setColliding(boolean colliding) {
         if (!this.colliding && colliding) {
             this.colliding = colliding;
             
@@ -311,11 +315,16 @@ public abstract class Ship implements CollisionListener {
                     shield.activate(healthToLoseShield);
                 
                 reduceHull(healthToLoseHull);
+                
+                if (hull <= 0)
+                    return true;
             }
             
         } else if (this.colliding && !colliding) {
             this.colliding = colliding;
         }
+        
+        return false;
     }
 
     public boolean isColliding() {

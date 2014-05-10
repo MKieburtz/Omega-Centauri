@@ -3,7 +3,6 @@ package MainPackage;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
 import java.util.concurrent.*;
@@ -12,7 +11,7 @@ import java.util.concurrent.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class OmegaCentauri_ extends Game {
+public class OmegaCentauri extends Game {
 
     private final String Version = "Dev 1.0.5";
     /*
@@ -21,7 +20,7 @@ public class OmegaCentauri_ extends Game {
     private boolean forward, rotateRight, rotateLeft, shooting = false; // movement booleans 
     private boolean paused = false;
     private boolean loading = false;
-    private final Point screenSize = new Point(10000, 10000);
+    private final Point screenSize = new Point(10000, 10000); // game screensize
     private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
     // TIMING STUFF
     private int FPS = 0;
@@ -37,7 +36,6 @@ public class OmegaCentauri_ extends Game {
     private Camera camera;
     private ArrayList<CollisionListener> collisionListeners = new ArrayList<CollisionListener>();
     private GraphicsDevice gd;
-    private Settings settings;
     // TIMERS
     private ScheduledExecutorService timingEx;
     private ScheduledExecutorService recordingEx;
@@ -47,14 +45,14 @@ public class OmegaCentauri_ extends Game {
     private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<StarChunk>();
+    private ArrayList<Ship> deadShips = new ArrayList<Ship>();
 
-    public OmegaCentauri_(int desiredFrameRate, Renderer renderer,
-            boolean fullScreen, GraphicsDevice gd, BufferedImage logo, Settings settings) {
-
-        this.settings = settings;
-        this.gd = gd;
-        this.renderer = renderer;
-        camera = new Camera(settings.getResolution().width, settings.getResolution().height);
+    public OmegaCentauri() {
+        
+        gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        renderer = new Renderer();
+        
+        camera = new Camera(1000, 600);
         loading = true;
 
         player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, .15, camera.getLocation(), 155, 100);
@@ -69,10 +67,10 @@ public class OmegaCentauri_ extends Game {
             collisionListeners.add(enemy);
         }
 
-        setUpWindow(settings.getResolution() == null, logo);
+        setUpWindow();
     }
 
-    private void setUpWindow(boolean fullScreen, BufferedImage logo) {
+    private void setUpWindow() {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
@@ -85,13 +83,8 @@ public class OmegaCentauri_ extends Game {
         requestFocus();
 
         setBackground(Color.BLACK);
-        if (fullScreen) {
-            setUndecorated(true);
-            gd.setFullScreenWindow(this);
-        } else {
-            setIconImage(logo);
-            setSize(1000, 600);
-        }
+        
+        setSize(1000,600);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -167,23 +160,24 @@ public class OmegaCentauri_ extends Game {
             for (EnemyShip enemyShip : enemyShips) {
                 enemyShip.update(player.getLocation(), camera.getLocation());
             }
-
+            
             allShots.clear();
+            
+            for (Ship s : deadShips)
+            {
+                if (enemyShips.contains(s))
+                    enemyShips.remove(s);
+                shipsToDraw.remove(s);
+            }
+            
+            deadShips.clear();
+            
             for (Ship ship : shipsToDraw) {
 
                 allShots.addAll(ship.getShots());
 
                 for (Shot shot : ship.getShots()) {
                     shot.updateLocation();
-                }
-
-                for (int i = shipsToDraw.size() - 1; i > -1; i--) {
-                    if (shipsToDraw.get(i).getHullHealth() <= 0) {
-                        if (shipsToDraw.get(i) instanceof EnemyShip) {
-                            enemyShips.remove(shipsToDraw.get(i));
-                        }
-                        shipsToDraw.remove(i);
-                    }
                 }
 
                 if (ship.getShield().isActive()) {
@@ -193,8 +187,10 @@ public class OmegaCentauri_ extends Game {
                 for (Ship collisionShip : shipsToDraw) {
                     if (!collisionShip.equals(ship)) {
                         if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())) {
-                            ship.CollisionEventWithShip(collisionShip);
-                            collisionShip.CollisionEventWithShip(ship);
+                            if (ship.CollisionEventWithShip())
+                                deadShips.add(ship);
+                            if (collisionShip.CollisionEventWithShip())
+                                deadShips.add(collisionShip);
                         }
                         else
                         {
@@ -212,7 +208,8 @@ public class OmegaCentauri_ extends Game {
             for (Shot shot : allShots) {
                 for (Ship ship : shipsToDraw) {
                     if (Calculator.collisionCheck(shot.returnHitbox(), ship.returnHitbox())) {
-                        ship.CollisionEventWithShot(ship, shot, shipsToDraw);
+                        if (ship.CollisionEventWithShot(ship, shot, shipsToDraw))
+                            deadShips.add(ship);
                     }
                 }
             }
@@ -344,7 +341,6 @@ public class OmegaCentauri_ extends Game {
         if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
             this.setVisible(false);
             this.dispose();
-            new Launcher();
         }
     }
 
@@ -410,7 +406,7 @@ public class OmegaCentauri_ extends Game {
                         FPS, stars, camera, Version, UPS, paused);
                 framesDrawn++;
 
-                if (!OmegaCentauri_.this.hasFocus()) {
+                if (!OmegaCentauri.this.hasFocus()) {
                     paused = true;
                 }
 
@@ -528,5 +524,13 @@ public class OmegaCentauri_ extends Game {
                 ex.printStackTrace();
             }
         }
+    }
+    
+    public static void main(String[] args)
+    {
+        Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
+        System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
+        
+        new OmegaCentauri();
     }
 }

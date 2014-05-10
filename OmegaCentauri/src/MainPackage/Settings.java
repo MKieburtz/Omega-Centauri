@@ -2,7 +2,6 @@ package MainPackage;
 
 import java.awt.*;
 import java.util.*;
-import javax.print.attribute.ResolutionSyntax;
 
 /**
  *
