@@ -297,8 +297,22 @@ public abstract class Ship implements CollisionListener {
     public void setColliding(boolean colliding) {
         if (!this.colliding && colliding) {
             this.colliding = colliding;
-            int healthToLose = 50;
-            activateShield(healthToLose);
+            
+            if (shield.getHealth() - collisionDamage >= 0)
+            {
+                shield.activate(collisionDamage);
+            }
+            else
+            {
+                int healthToLoseShield = collisionDamage - Math.abs(shield.getHealth() - collisionDamage);
+                int healthToLoseHull = Math.abs(shield.getHealth() - collisionDamage);
+                
+                if (healthToLoseShield > 0)
+                    shield.activate(healthToLoseShield);
+                
+                reduceHull(healthToLoseHull);
+            }
+            
         } else if (this.colliding && !colliding) {
             this.colliding = colliding;
         }
