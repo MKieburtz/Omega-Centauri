@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class OmegaCentauri extends Game {
+public class OmegaCentauri extends Game implements GameStartListener{
 
     private final String Version = "Dev 1.0.5";
     /*
@@ -36,6 +36,7 @@ public class OmegaCentauri extends Game {
     private Camera camera;
     private ArrayList<CollisionListener> collisionListeners = new ArrayList<CollisionListener>();
     private GraphicsDevice gd;
+    private MainMenu mainMenu;
     // TIMERS
     private ScheduledExecutorService timingEx;
     private ScheduledExecutorService recordingEx;
@@ -48,10 +49,10 @@ public class OmegaCentauri extends Game {
     private ArrayList<Ship> deadShips = new ArrayList<Ship>();
 
     public OmegaCentauri() {
-        
+
         gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         renderer = new Renderer();
-        
+
         camera = new Camera(1000, 600);
         loading = true;
 
@@ -83,8 +84,8 @@ public class OmegaCentauri extends Game {
         requestFocus();
 
         setBackground(Color.BLACK);
-        
-        setSize(1000,600);
+
+        setSize(1000, 600);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -116,18 +117,19 @@ public class OmegaCentauri extends Game {
         setLocationRelativeTo(null);
 
         setVisible(true);
-
-        startGame();
+        
+        mainMenu = new MainMenu(this);
+        
+        timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
     }
 
+    @Override
+    public void gameStart() {
+        startGame();
+    }
+    
     private void startGame() {
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                timingEx.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
-            }
-        });
+        timingEx.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
     }
 
     private void gameUpdate() {
@@ -160,18 +162,18 @@ public class OmegaCentauri extends Game {
             for (EnemyShip enemyShip : enemyShips) {
                 enemyShip.update(player.getLocation(), camera.getLocation());
             }
-            
+
             allShots.clear();
-            
-            for (Ship s : deadShips)
-            {
-                if (enemyShips.contains(s))
+
+            for (Ship s : deadShips) {
+                if (enemyShips.contains(s)) {
                     enemyShips.remove(s);
+                }
                 shipsToDraw.remove(s);
             }
-            
+
             deadShips.clear();
-            
+
             for (Ship ship : shipsToDraw) {
 
                 allShots.addAll(ship.getShots());
@@ -187,17 +189,19 @@ public class OmegaCentauri extends Game {
                 for (Ship collisionShip : shipsToDraw) {
                     if (!collisionShip.equals(ship)) {
                         if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())) {
-                            if (ship.CollisionEventWithShip())
+                            if (ship.CollisionEventWithShip()) {
                                 deadShips.add(ship);
-                            if (collisionShip.CollisionEventWithShip())
+                            }
+                            if (collisionShip.CollisionEventWithShip()) {
                                 deadShips.add(collisionShip);
-                        }
-                        else
-                        {
-                            if (ship.isColliding())
+                            }
+                        } else {
+                            if (ship.isColliding()) {
                                 ship.setColliding(false);
-                            if (collisionShip.isColliding())
+                            }
+                            if (collisionShip.isColliding()) {
                                 ship.setColliding(false);
+                            }
                         }
                     }
                 }
@@ -208,8 +212,9 @@ public class OmegaCentauri extends Game {
             for (Shot shot : allShots) {
                 for (Ship ship : shipsToDraw) {
                     if (Calculator.collisionCheck(shot.returnHitbox(), ship.returnHitbox())) {
-                        if (ship.CollisionEventWithShot(ship, shot, shipsToDraw))
+                        if (ship.CollisionEventWithShot(ship, shot, shipsToDraw)) {
                             deadShips.add(ship);
+                        }
                     }
                 }
             }
@@ -268,22 +273,22 @@ public class OmegaCentauri extends Game {
                 }
                 break;
 
-            case KeyEvent.VK_SHIFT: 
+            case KeyEvent.VK_SHIFT:
                 if (!paused) {
-                player.speedBoost();
+                    player.speedBoost();
                 }
                 break;
 
-            case KeyEvent.VK_SPACE: 
+            case KeyEvent.VK_SPACE:
                 if (!paused) {
-                shooting = true;
+                    shooting = true;
                 }
                 break;
-                
+
             case KeyEvent.VK_Q:
                 System.exit(0);
                 break;
-                
+
             case KeyEvent.VK_ESCAPE:
                 paused = !paused;
                 break;
@@ -314,7 +319,7 @@ public class OmegaCentauri extends Game {
                 }
                 break;
 
-            case KeyEvent.VK_A: 
+            case KeyEvent.VK_A:
                 rotateLeft = false;
                 if (!forward) {
                     player.changeImage(ShipState.Idle);
@@ -323,7 +328,7 @@ public class OmegaCentauri extends Game {
                 }
                 break;
 
-            case KeyEvent.VK_SHIFT: 
+            case KeyEvent.VK_SHIFT:
                 player.stopSpeedBoosting();
                 break;
 
@@ -396,33 +401,39 @@ public class OmegaCentauri extends Game {
 
         @Override
         public void run() {
-            try {
-                startTime = System.nanoTime();
+            SwingUtilities.invokeLater(new Runnable() {
 
-                gameUpdate();
-                updates++;
-                
-                renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                        FPS, stars, camera, Version, UPS, paused);
-                framesDrawn++;
+                @Override
+                public void run() {
+                    try {
+                        startTime = System.nanoTime();
 
-                if (!OmegaCentauri.this.hasFocus()) {
-                    paused = true;
+                        gameUpdate();
+                        updates++;
+
+                        renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                                FPS, stars, camera, Version, UPS, paused);
+                        framesDrawn++;
+
+                        if (!OmegaCentauri.this.hasFocus()) {
+                            paused = true;
+                        }
+
+                        endtime = System.nanoTime();
+
+                        sleeptime = loopTimeUPS - (endtime - startTime);
+
+                        if (sleeptime <= 0) {
+                            sleeptime = 0;
+                        }
+
+                        timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
-
-                endtime = System.nanoTime();
-
-                sleeptime = loopTimeUPS - (endtime - startTime);
-
-                if (sleeptime <= 0) {
-                    sleeptime = 0;
-                }
-
-                timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            });
         }
     }
 
@@ -430,107 +441,128 @@ public class OmegaCentauri extends Game {
 
         @Override
         public void run() {
-            try {
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
             // load 100 starChunks from each quadrant
-                // load all the horizontal star chunks from each quadrant
-                // then move down 100 to the next chunk down
+                        // load all the horizontal star chunks from each quadrant
+                        // then move down 100 to the next chunk down
 
                 // quadrant 1
 
-                /*  _______
-                 * |___|_x_|
-                 * |___|___|
-                 */
-                if (yPositions[0] < 0) {
+                        /*  _______
+                         * |___|_x_|
+                         * |___|___|
+                         */
+                        if (yPositions[0] < 0) {
 
-                    for (int x = 1; x < screenSize.x; x = x + 100) {
+                            for (int x = 1; x < screenSize.x; x = x + 100) {
 
-                        stars.add(new StarChunk(x, yPositions[0]));
-                        starChunksLoaded++;
-                    }
+                                stars.add(new StarChunk(x, yPositions[0]));
+                                starChunksLoaded++;
+                            }
 
-                    yPositions[0] += 100;
-                }
+                            yPositions[0] += 100;
+                        }
 
                 // quadrant 2
 
-                /*  _______
-                 * |_x_|___|
-                 * |___|___|
-                 */
-                if (yPositions[1] < 0) {
-                    for (int x = -1; x > -screenSize.x; x = x - 100) {
+                        /*  _______
+                         * |_x_|___|
+                         * |___|___|
+                         */
+                        if (yPositions[1] < 0) {
+                            for (int x = -1; x > -screenSize.x; x = x - 100) {
 
-                        stars.add(new StarChunk(x, yPositions[1]));
-                        starChunksLoaded++;
+                                stars.add(new StarChunk(x, yPositions[1]));
+                                starChunksLoaded++;
 
-                    }
+                            }
 
-                    yPositions[1] += 100;
-                }
+                            yPositions[1] += 100;
+                        }
 
                 // quadrant 3
 
-                /*  _______
-                 * |___|___|
-                 * |_x_|___|
-                 */
-                if (yPositions[2] < 10000) {
-                    for (int x = -1; x > -screenSize.x; x = x - 100) {
+                        /*  _______
+                         * |___|___|
+                         * |_x_|___|
+                         */
+                        if (yPositions[2] < 10000) {
+                            for (int x = -1; x > -screenSize.x; x = x - 100) {
 
-                        stars.add(new StarChunk(x, yPositions[2]));
-                        starChunksLoaded++;
-                    }
+                                stars.add(new StarChunk(x, yPositions[2]));
+                                starChunksLoaded++;
+                            }
 
-                    yPositions[2] += 100;
-                }
+                            yPositions[2] += 100;
+                        }
 
                 // quadrant 4
 
-                /*  _______
-                 * |___|___|
-                 * |___|_x_|
-                 */
-                if (yPositions[3] < 10000) {
-                    for (int x = 1; x < screenSize.x; x = x + 100) {
+                        /*  _______
+                         * |___|___|
+                         * |___|_x_|
+                         */
+                        if (yPositions[3] < 10000) {
+                            for (int x = 1; x < screenSize.x; x = x + 100) {
 
-                        stars.add(new StarChunk(x, yPositions[3]));
-                        starChunksLoaded++;
+                                stars.add(new StarChunk(x, yPositions[3]));
+                                starChunksLoaded++;
+                            }
+
+                            yPositions[3] += 100;
+                        }
+
+                        // use active rendering to draw the screen
+                        renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
+
+                        if (starChunksLoaded == (100 * 100) * 4) {
+                            loading = false;
+
+                        }
+
+                        if (loading) {
+                            timingEx.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
+                        } else {
+                            shipsToDraw.add(player);
+                            shipsToDraw.addAll(enemyShips);
+                            shipsToDraw.addAll(allyShips);
+
+                            recordingEx.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
+                            timingEx.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-
-                    yPositions[3] += 100;
                 }
-
-                // use active rendering to draw the screen
-                renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
-
-                if (starChunksLoaded == (100 * 100) * 4) {
-                    loading = false;
-
-                }
-
-                if (loading) {
-                    timingEx.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
-                } else {
-                    shipsToDraw.add(player);
-                    shipsToDraw.addAll(enemyShips);
-                    shipsToDraw.addAll(allyShips);
-
-                    recordingEx.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
-                    timingEx.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
-                }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            });
         }
     }
     
-    public static void main(String[] args)
+    class MainMenuService implements Runnable
     {
+        @Override
+        public void run() {
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    mainMenu.draw(panel.getGraphics());
+                    
+                    timingEx.schedule(new MainMenuService(), 10, TimeUnit.MILLISECONDS);
+                }
+            });
+        }
+    }
+
+    public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
         System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
-        
+
         new OmegaCentauri();
     }
 }

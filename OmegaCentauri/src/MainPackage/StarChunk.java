@@ -11,15 +11,15 @@ import java.util.Random;
  */
 public class StarChunk {
 
-    private Point2D.Double location;
-    private final int dimension = 1;
-    private Rectangle2D.Double[] rects = new Rectangle2D.Double[10];
-    private Rectangle2D.Double boundingRect;
-    private Random random = new Random();
+    protected Point2D.Double location;
+    protected final int dimension = 1;
+    protected Rectangle2D.Double[] rects = new Rectangle2D.Double[3];
+    protected Rectangle2D.Double boundingRect;
+    protected Random random = new Random();
 
     public StarChunk(double x, double y) {
         location = new Point2D.Double(x, y);
-        double num1, num2 = 0;
+        double num1 = 0, num2 = 0;
         for (int i = 0; i < 3; i++) {
             num1 = ((double) random.nextInt((int) ((x + 100) - x)) + x);
             num2 = ((double) random.nextInt((int) ((y + 100) - y)) + y);
