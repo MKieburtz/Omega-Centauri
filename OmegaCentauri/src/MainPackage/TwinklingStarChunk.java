@@ -13,22 +13,22 @@ public class TwinklingStarChunk extends StarChunk {
 
     private Random random = new Random();
 
-    private int opacity = 100;
-    private HashMap<Rectangle2D.Double, Integer> starOpacity = new HashMap<Rectangle2D.Double, Integer>();
+    private float opacity = 100f;
+    private HashMap<Rectangle2D.Double, Float> starOpacity = new HashMap<Rectangle2D.Double, Float>();
     private HashMap<Rectangle2D.Double, Boolean> fading = new HashMap<Rectangle2D.Double, Boolean>();
-    private HashMap<Rectangle2D.Double, Integer> rate = new HashMap<Rectangle2D.Double, Integer>();
+    private HashMap<Rectangle2D.Double, Float> rate = new HashMap<Rectangle2D.Double, Float>();
 
     private final int startingTime = random.nextInt(100) + 1;
     private int time = 0;
-    private int[] delays = {1, 2, 4, 5, 10};
+    private float[] delays = {.5f, 1, 2, 4};
 
     public TwinklingStarChunk(double x, double y) {
-        super(x, y);
-
-        for (int i = 0; i < rects.length; i++) {
-            starOpacity.put(rects[i], opacity);
-            fading.put(rects[i], Boolean.TRUE);
-            rate.put(rects[i], delays[random.nextInt(delays.length)]); // or maybe zero
+        super(x, y - 200);
+        
+        for (Rectangle2D.Double rect : rects) {
+            starOpacity.put(rect, opacity);
+            fading.put(rect, Boolean.TRUE);
+            rate.put(rect, delays[random.nextInt(delays.length)]);
         }
     }
 
