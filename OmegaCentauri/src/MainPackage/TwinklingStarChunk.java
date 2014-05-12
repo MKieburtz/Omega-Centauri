@@ -23,7 +23,7 @@ public class TwinklingStarChunk extends StarChunk {
     private float[] delays = {.5f, 1, 2, 4};
 
     public TwinklingStarChunk(double x, double y) {
-        super(x, y - 200);
+        super(x, y - 133);
         
         for (Rectangle2D.Double rect : rects) {
             starOpacity.put(rect, opacity);
