@@ -29,6 +29,9 @@ public class MainMenu implements MouseListener {
     private final int START = 0;
     private final int CLOSE = 1;
     
+    private Rectangle startRectangle;
+    private Rectangle closeRectangle;
+    
     public MainMenu(OmegaCentauri game)
     {
         loader = new MediaLoader();
@@ -49,6 +52,10 @@ public class MainMenu implements MouseListener {
                 stars.add(new TwinklingStarChunk(x, y));
             }
         }
+        
+        startRectangle = new Rectangle(0, 1000 - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
+        closeRectangle = new Rectangle(1000 - 30 - images.get(CLOSE).getWidth(),
+                600 - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
     }
     
     public void draw(Graphics g)
@@ -76,6 +83,14 @@ public class MainMenu implements MouseListener {
     
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (startRectangle.contains(e.getPoint()))
+        {
+            startListener.gameStart();
+        }
+        if (closeRectangle.contains(e.getPoint()))
+        {
+            System.exit(0);
+        }
     }
 
     @Override
