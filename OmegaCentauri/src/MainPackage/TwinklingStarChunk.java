@@ -16,9 +16,11 @@ public class TwinklingStarChunk extends StarChunk {
     private int opacity = 100;
     private HashMap<Rectangle2D.Double, Integer> starOpacity = new HashMap<Rectangle2D.Double, Integer>();
     private HashMap<Rectangle2D.Double, Boolean> fading = new HashMap<Rectangle2D.Double, Boolean>();
+    private HashMap<Rectangle2D.Double, Integer> rate = new HashMap<Rectangle2D.Double, Integer>();
 
-    private final int startingTime = random.nextInt(20) + 1;
+    private final int startingTime = random.nextInt(100) + 1;
     private int time = 0;
+    private int[] delays = {1, 2, 4, 5, 10};
 
     public TwinklingStarChunk(double x, double y) {
         super(x, y);
@@ -26,6 +28,7 @@ public class TwinklingStarChunk extends StarChunk {
         for (int i = 0; i < rects.length; i++) {
             starOpacity.put(rects[i], opacity);
             fading.put(rects[i], Boolean.TRUE);
+            rate.put(rects[i], delays[random.nextInt(delays.length)]); // or maybe zero
         }
     }
 
@@ -35,19 +38,28 @@ public class TwinklingStarChunk extends StarChunk {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         for (Rectangle2D.Double rect : rects) {
-//            if (time <= startingTime * 3) {
-//                switch (time / startingTime) {
-//                    case 3: // don't break
-//                        drawStar(g2d, rect);
-//                    case 2:
-//                        drawStar(g2d, rect);
-//                    case 1:
-//                        drawStar(g2d, rect);
-//                }
-//            } else {
-//                drawStar(g2d, rect);
-//            }
-            drawStar(g2d, rect);
+            if (time != 0) {
+                if (time <= startingTime * 3) {
+                    switch (time / startingTime) {
+                        case 3: // don't break
+                            drawStar(g2d, rect);
+                            break;
+                        case 2:
+                            drawStar(g2d, rect);
+                            break;
+                        case 1:
+                            drawStar(g2d, rect);
+                            break;
+                    }
+                } else {
+                    drawStar(g2d, rect);
+                }
+                drawStar(g2d, rect);
+            }else
+            {
+                drawStar(g2d, rect);
+            }
+            
         }
         time++;
     }
@@ -64,12 +76,12 @@ public class TwinklingStarChunk extends StarChunk {
         g2d.draw(rect);
         g2d.setComposite(originalComposite);
         if (fading.get(rect)) {
-            starOpacity.put(rect, starOpacity.get(rect) - 2);
+            starOpacity.put(rect, starOpacity.get(rect) - rate.get(rect));
             if (starOpacity.get(rect) == 0) {
                 fading.put(rect, Boolean.FALSE);
             }
         } else if (!fading.get(rect)) {
-            starOpacity.put(rect, starOpacity.get(rect) + 2);
+            starOpacity.put(rect, starOpacity.get(rect) + rate.get(rect));
             if (starOpacity.get(rect) == 100) {
                 fading.put(rect, Boolean.TRUE);
             }
