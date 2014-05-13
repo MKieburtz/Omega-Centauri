@@ -11,7 +11,7 @@ import javax.swing.JFrame;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-abstract class Game extends JFrame implements KeyListener, MouseListener {
+abstract class Game extends JFrame implements MouseListener {
 
     protected ArrayList<EnemyShip> enemyShips = new ArrayList<EnemyShip>();
     protected ArrayList<Ally> allyShips = new ArrayList<Ally>();
@@ -19,28 +19,8 @@ abstract class Game extends JFrame implements KeyListener, MouseListener {
     protected HashSet<Shot> allShots = new HashSet<Shot>();
     protected Player player;
 
-    abstract void CheckKeyPressed(KeyEvent e);
-
-    abstract void CheckKeyReleased(KeyEvent e);
-
     abstract void CheckMousePressed(MouseEvent me);
     
-    @Override
-    public void keyPressed(KeyEvent e) {
-        CheckKeyPressed(e);
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        CheckKeyReleased(e);
-    }
-
-    // WARNING: USELESS METHOD... FOR NOW
-    @Override
-    public void keyTyped(KeyEvent ke) {
-    }
-
-
     @Override
     public void mousePressed(MouseEvent me) {
         CheckMousePressed(me);

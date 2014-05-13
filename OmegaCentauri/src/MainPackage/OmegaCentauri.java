@@ -17,7 +17,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
     /*
      * GAME STATE VARIBLES:
      */
-    private boolean forward, rotateRight, rotateLeft, shooting = false; // movement booleans 
+    private boolean forward, rotateRight, rotateLeft, shooting = false; // movement booleans
     private boolean paused = false;
     private boolean loading = false;
     private final Point screenSize = new Point(10000, 10000); // game screensize
@@ -75,14 +75,13 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
+        
+        setInputMaps();
+        
         getContentPane().add(panel);
-
+        
         addMouseListener(this);
-        addKeyListener(this);
-
-        setFocusable(true);
-        requestFocus();
-
+        
         setBackground(Color.BLACK);
 
         setSize(1000, 600);
@@ -123,7 +122,131 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
     }
+    
+    private void setInputMaps()
+    {
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "W");
+        panel.getActionMap().put("W", new AbstractAction() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                wPressed();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "Wr");
+        panel.getActionMap().put("Wr", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                wReleased();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false), "D");
+        panel.getActionMap().put("D", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dPressed();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "Dr");
+        panel.getActionMap().put("Dr", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dReleased();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "A");
+        panel.getActionMap().put("A", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aPressed();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "Ar");
+        panel.getActionMap().put("Ar", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aReleased();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, false), "Shift");
+        panel.getActionMap().put("Shift", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shiftPressed();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "Shiftr");
+        panel.getActionMap().put("Shiftr", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                shiftReleased();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false), "Space");
+        panel.getActionMap().put("Space", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                spacePressed();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "Spacer");
+        panel.getActionMap().put("Spacer", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                spaceReleased();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0, false), "Q");
+        panel.getActionMap().put("Q", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                qPressed();
+            }
+        });
+        
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "Esc");
+        panel.getActionMap().put("Esc", new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                escapePressed();
+            }
+        });
+    }
+    
     @Override
     public void gameStart() {
         startGame();
@@ -134,7 +257,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
     }
 
     private void gameUpdate() {
-
+        
         if (!paused) {
 
             if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
@@ -223,121 +346,106 @@ public class OmegaCentauri extends Game implements GameStartListener {
             syncGameStateVaribles();
         }
     }
-    int keyCode;
 
-    @Override
-    public void CheckKeyPressed(KeyEvent e) {
-        keyCode = e.getKeyCode();
-        /*
-         * 0 = stationary
-         * 1 = thrusting
-         * 2 = turning right
-         * 3 = turning left
-         */
-        switch (keyCode) {
-            case KeyEvent.VK_W:
-                if (!paused) {
-                    forward = true;
-                    if (!rotateRight && !rotateLeft) {
-                        player.changeImage(ShipState.Thrusting);
-                    } else if (rotateLeft && !rotateRight) {
-                        player.changeImage(ShipState.TurningLeftThrusting);
-                    } else if (!rotateLeft && rotateRight) {
-                        player.changeImage(ShipState.TurningRightThrusting);
-                    }
-                }
-                break;
+    /*
+     * 0 = stationary
+     * 1 = thrusting
+     * 2 = turning right
+     * 3 = turning left
+     */
+    private void wPressed() {
+        if (!paused) {
+            forward = true;
+            if (!rotateRight && !rotateLeft) {
+                player.changeImage(ShipState.Thrusting);
+            } else if (rotateLeft && !rotateRight) {
+                player.changeImage(ShipState.TurningLeftThrusting);
+            } else if (!rotateLeft && rotateRight) {
+                player.changeImage(ShipState.TurningRightThrusting);
+            }
+        }
+    }
 
-            case KeyEvent.VK_D:
-                if (!paused) {
-                    rotateRight = true;
-                    if (!forward) {
-                        player.changeImage(ShipState.TurningRight);
-                    } else if (forward) {
-                        player.changeImage(ShipState.TurningRightThrusting);
-                    } else if (rotateLeft) {
-                        player.changeImage(ShipState.Idle);
-                    }
-                }
-                break;
+    private void wReleased() {
+        forward = false;
+        player.changeImage(ShipState.Idle);
+        if (rotateRight) {
+            player.changeImage(ShipState.TurningLeft);
+        } else if (rotateLeft) {
+            player.changeImage(ShipState.TurningRight);
+        }
+    }
 
-            case KeyEvent.VK_A:
-                if (!paused) {
-                    rotateLeft = true;
-                    if (!forward) {
-                        player.changeImage(ShipState.TurningLeft);
-                    } else if (forward) {
-                        player.changeImage(ShipState.TurningLeftThrusting);
-                    } else if (rotateRight) {
-                        player.changeImage(ShipState.Idle);
-                    }
-                }
-                break;
-
-            case KeyEvent.VK_SHIFT:
-                if (!paused) {
-                    player.speedBoost();
-                }
-                break;
-
-            case KeyEvent.VK_SPACE:
-                if (!paused) {
-                    shooting = true;
-                }
-                break;
-
-            case KeyEvent.VK_Q:
-                System.exit(0);
-                break;
-
-            case KeyEvent.VK_ESCAPE:
-                paused = !paused;
-                break;
-
-        } // end switch
-    } // end method
-
-    @Override
-    public void CheckKeyReleased(KeyEvent e) {
-        keyCode = e.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.VK_W:
-                forward = false;
+    private void dPressed() {
+        if (!paused) {
+            rotateRight = true;
+            if (!forward) {
+                player.changeImage(ShipState.TurningRight);
+            } else if (forward) {
+                player.changeImage(ShipState.TurningRightThrusting);
+            } else if (rotateLeft) {
                 player.changeImage(ShipState.Idle);
-                if (rotateRight) {
-                    player.changeImage(ShipState.TurningLeft);
-                } else if (rotateLeft) {
-                    player.changeImage(ShipState.TurningRight);
-                }
-                break;
+            }
+        }
+    }
 
-            case KeyEvent.VK_D:
-                rotateRight = false;
-                if (!forward) {
-                    player.changeImage(ShipState.Idle);
-                } else {
-                    player.changeImage(ShipState.Thrusting);
-                }
-                break;
+    private void dReleased() {
+        rotateRight = false;
+        if (!forward) {
+            player.changeImage(ShipState.Idle);
+        } else {
+            player.changeImage(ShipState.Thrusting);
+        }
+    }
 
-            case KeyEvent.VK_A:
-                rotateLeft = false;
-                if (!forward) {
-                    player.changeImage(ShipState.Idle);
-                } else {
-                    player.changeImage(ShipState.Thrusting);
-                }
-                break;
+    private void aPressed() {
+        if (!paused) {
+            rotateLeft = true;
+            if (!forward) {
+                player.changeImage(ShipState.TurningLeft);
+            } else if (forward) {
+                player.changeImage(ShipState.TurningLeftThrusting);
+            } else if (rotateRight) {
+                player.changeImage(ShipState.Idle);
+            }
+        }
+    }
 
-            case KeyEvent.VK_SHIFT:
-                player.stopSpeedBoosting();
-                break;
+    private void aReleased() {
+        rotateLeft = false;
+        if (!forward) {
+            player.changeImage(ShipState.Idle);
+        } else {
+            player.changeImage(ShipState.Thrusting);
+        }
+    }
 
-            case KeyEvent.VK_SPACE:
-                shooting = false;
-                break;
+    private void shiftPressed() {
+        if (!paused) {
+            player.speedBoost();
+        }
+    }
 
-        } // end switch
+    private void shiftReleased() {
+        player.stopSpeedBoosting();
+    }
+
+    private void spacePressed() {
+        if (!paused) {
+            shooting = true;
+        }
+    }
+
+    private void spaceReleased() {
+        shooting = false;
+    }
+
+    private void qPressed() {
+        System.exit(0);
+    }
+
+    private void escapePressed() {
+        paused = !paused;
     }
 
     @Override
