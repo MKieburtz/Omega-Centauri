@@ -34,7 +34,6 @@ public class OmegaCentauri extends Game implements GameStartListener {
     private final Renderer renderer;
     private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
     private Camera camera;
-    private ArrayList<CollisionListener> collisionListeners = new ArrayList<CollisionListener>();
     private GraphicsDevice gd;
     private MainMenu mainMenu;
     // TIMERS
@@ -56,32 +55,31 @@ public class OmegaCentauri extends Game implements GameStartListener {
         camera = new Camera(1000, 600);
         loading = true;
 
+        addShips();
+        
+        setUpWindow();
+    }
+
+    private void addShips()
+    {
         player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, .15, camera.getLocation(), 155, 100);
         enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 100));
         syncGameStateVaribles();
 
         player.setUpHitbox(camera.getLocation());
-
-        collisionListeners.add(player);
-
-        for (EnemyShip enemy : enemyShips) {
-            collisionListeners.add(enemy);
-        }
-
-        setUpWindow();
     }
-
+    
     private void setUpWindow() {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
-        
+
         setInputMaps();
-        
+
         getContentPane().add(panel);
-        
+
         addMouseListener(this);
-        
+
         setBackground(Color.BLACK);
 
         setSize(1000, 600);
@@ -122,20 +120,19 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
     }
-    
-    private void setInputMaps()
-    {
+
+    private void setInputMaps() {
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "W");
         panel.getActionMap().put("W", new AbstractAction() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 wPressed();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "Wr");
         panel.getActionMap().put("Wr", new AbstractAction() {
@@ -145,7 +142,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 wReleased();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false), "D");
         panel.getActionMap().put("D", new AbstractAction() {
@@ -155,7 +152,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 dPressed();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "Dr");
         panel.getActionMap().put("Dr", new AbstractAction() {
@@ -165,7 +162,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 dReleased();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "A");
         panel.getActionMap().put("A", new AbstractAction() {
@@ -175,7 +172,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 aPressed();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "Ar");
         panel.getActionMap().put("Ar", new AbstractAction() {
@@ -185,7 +182,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 aReleased();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, false), "Shift");
         panel.getActionMap().put("Shift", new AbstractAction() {
@@ -195,7 +192,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 shiftPressed();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "Shiftr");
         panel.getActionMap().put("Shiftr", new AbstractAction() {
@@ -205,7 +202,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 shiftReleased();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false), "Space");
         panel.getActionMap().put("Space", new AbstractAction() {
@@ -215,7 +212,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 spacePressed();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "Spacer");
         panel.getActionMap().put("Spacer", new AbstractAction() {
@@ -225,7 +222,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 spaceReleased();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0, false), "Q");
         panel.getActionMap().put("Q", new AbstractAction() {
@@ -235,7 +232,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 qPressed();
             }
         });
-        
+
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "Esc");
         panel.getActionMap().put("Esc", new AbstractAction() {
@@ -246,7 +243,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
             }
         });
     }
-    
+
     @Override
     public void gameStart() {
         startGame();
@@ -257,7 +254,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
     }
 
     private void gameUpdate() {
-        
+
         if (!paused) {
 
             if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
@@ -453,8 +450,9 @@ public class OmegaCentauri extends Game implements GameStartListener {
         Rectangle rect = new Rectangle(20, 110, 200, 100);
 
         if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
-            this.setVisible(false);
-            this.dispose();
+            resetGame();
+            mainMenu.setActive(true);
+            timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -515,29 +513,30 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 @Override
                 public void run() {
                     try {
-                        startTime = System.nanoTime();
+                        if (!mainMenu.isActive()) {
+                            startTime = System.nanoTime();
 
-                        gameUpdate();
-                        updates++;
+                            gameUpdate();
+                            updates++;
 
-                        renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                                FPS, stars, camera, Version, UPS, paused);
-                        framesDrawn++;
+                            renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                                    FPS, stars, camera, Version, UPS, paused);
+                            framesDrawn++;
 
-                        if (!OmegaCentauri.this.hasFocus()) {
-                            paused = true;
+                            if (!OmegaCentauri.this.hasFocus()) {
+                                paused = true;
+                            }
+
+                            endtime = System.nanoTime();
+
+                            sleeptime = loopTimeUPS - (endtime - startTime);
+
+                            if (sleeptime <= 0) {
+                                sleeptime = 0;
+                            }
+
+                            timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
                         }
-
-                        endtime = System.nanoTime();
-
-                        sleeptime = loopTimeUPS - (endtime - startTime);
-
-                        if (sleeptime <= 0) {
-                            sleeptime = 0;
-                        }
-
-                        timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
-
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -662,12 +661,26 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 public void run() {
                     if (mainMenu.isActive()) {
                         mainMenu.draw(panel.getGraphics());
-
                         timingEx.schedule(new MainMenuService(), 10, TimeUnit.MILLISECONDS);
                     }
                 }
             });
         }
+    }
+    
+    private void resetGame()
+    {
+        shipsToDraw.clear();
+        enemyShips.clear();
+        allyShips.clear();
+        addShips();
+        
+        paused = false;
+        
+        FPS = 0;
+        UPS = 0;
+        framesDrawn = 0;
+        updates = 0;
     }
 
     public static void main(String[] args) {

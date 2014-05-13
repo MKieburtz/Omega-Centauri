@@ -120,4 +120,9 @@ public class MainMenu implements MouseListener {
     {
         return active;
     }
+    
+    public void setActive(boolean active)
+    {
+        this.active = active;
+    }
 }
