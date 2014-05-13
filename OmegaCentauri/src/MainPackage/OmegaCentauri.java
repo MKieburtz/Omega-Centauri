@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class OmegaCentauri extends Game implements GameStartListener{
+public class OmegaCentauri extends Game implements GameStartListener {
 
     private final String Version = "Dev 1.0.5";
     /*
@@ -117,9 +117,10 @@ public class OmegaCentauri extends Game implements GameStartListener{
         setLocationRelativeTo(null);
 
         setVisible(true);
-        
+
         mainMenu = new MainMenu(this);
-        
+        addMouseListener(mainMenu);
+
         timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
     }
 
@@ -127,7 +128,7 @@ public class OmegaCentauri extends Game implements GameStartListener{
     public void gameStart() {
         startGame();
     }
-    
+
     private void startGame() {
         timingEx.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
     }
@@ -450,7 +451,7 @@ public class OmegaCentauri extends Game implements GameStartListener{
                         // load all the horizontal star chunks from each quadrant
                         // then move down 100 to the next chunk down
 
-                // quadrant 1
+                        // quadrant 1
 
                         /*  _______
                          * |___|_x_|
@@ -467,7 +468,7 @@ public class OmegaCentauri extends Game implements GameStartListener{
                             yPositions[0] += 100;
                         }
 
-                // quadrant 2
+                        // quadrant 2
 
                         /*  _______
                          * |_x_|___|
@@ -484,7 +485,7 @@ public class OmegaCentauri extends Game implements GameStartListener{
                             yPositions[1] += 100;
                         }
 
-                // quadrant 3
+                        // quadrant 3
 
                         /*  _______
                          * |___|___|
@@ -500,7 +501,7 @@ public class OmegaCentauri extends Game implements GameStartListener{
                             yPositions[2] += 100;
                         }
 
-                // quadrant 4
+                        // quadrant 4
 
                         /*  _______
                          * |___|___|
@@ -542,18 +543,20 @@ public class OmegaCentauri extends Game implements GameStartListener{
             });
         }
     }
-    
-    class MainMenuService implements Runnable
-    {
+
+    class MainMenuService implements Runnable {
+
         @Override
         public void run() {
             SwingUtilities.invokeLater(new Runnable() {
 
                 @Override
                 public void run() {
-                    mainMenu.draw(panel.getGraphics());
-                    
-                    timingEx.schedule(new MainMenuService(), 10, TimeUnit.MILLISECONDS);
+                    if (mainMenu.isActive()) {
+                        mainMenu.draw(panel.getGraphics());
+
+                        timingEx.schedule(new MainMenuService(), 10, TimeUnit.MILLISECONDS);
+                    }
                 }
             });
         }

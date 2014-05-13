@@ -3,7 +3,6 @@ package MainPackage;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.sound.sampled.Clip;
@@ -32,8 +31,11 @@ public class MainMenu implements MouseListener {
     private Rectangle startRectangle;
     private Rectangle closeRectangle;
     
+    private boolean active;
+    
     public MainMenu(OmegaCentauri game)
     {
+        active = true;
         loader = new MediaLoader();
         startListener = game;
         
@@ -53,7 +55,7 @@ public class MainMenu implements MouseListener {
             }
         }
         
-        startRectangle = new Rectangle(0, 1000 - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
+        startRectangle = new Rectangle(0, 600 - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
         closeRectangle = new Rectangle(1000 - 30 - images.get(CLOSE).getWidth(),
                 600 - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
     }
@@ -74,6 +76,9 @@ public class MainMenu implements MouseListener {
         g2d.setColor(Color.CYAN);
         g2d.drawLine(0, 466, 1000, 466);
         
+//        g2d.draw(startRectangle);
+//        g2d.draw(closeRectangle);
+        
         g2d.drawImage(images.get(START), 0, drawingImage.getHeight() - 30 - images.get(START).getHeight() - 3, null);
         
         g2d.drawImage(images.get(CLOSE), drawingImage.getWidth() - 30 - images.get(CLOSE).getWidth(), 
@@ -85,6 +90,7 @@ public class MainMenu implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (startRectangle.contains(e.getPoint()))
         {
+            active = false;
             startListener.gameStart();
         }
         if (closeRectangle.contains(e.getPoint()))
@@ -109,4 +115,9 @@ public class MainMenu implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
+    
+    public boolean isActive()
+    {
+        return active;
+    }
 }
