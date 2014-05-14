@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.sound.sampled.Clip;
@@ -10,7 +11,7 @@ import javax.sound.sampled.Clip;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class MainMenu implements MouseListener {
+public class MainMenu implements MouseListener, MouseMotionListener {
 
     private GameStartListener startListener;
     
@@ -28,6 +29,8 @@ public class MainMenu implements MouseListener {
     private int START = 0;
     private final int STARTHOVER = 1; //filler so hover doesn't turn into the close button :3
     private final int CLOSE = 2;
+    
+    private boolean hovering = false;
     
     private Rectangle startRectangle;
     private Rectangle closeRectangle;
@@ -77,19 +80,27 @@ public class MainMenu implements MouseListener {
         }
         g2d.setColor(Color.CYAN);
         g2d.drawLine(0, 466, 1000, 466);
+       
         
-//        g2d.draw(startRectangle);
-//        g2d.draw(closeRectangle);
         
-        g2d.drawImage(images.get(START), 0, drawingImage.getHeight() - 30 - images.get(START).getHeight() - 3, null);
+        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START), 0, drawingImage.getHeight() - 30 - images.get(START).getHeight() - 3, null);
         
         g2d.drawImage(images.get(CLOSE), drawingImage.getWidth() - 30 - images.get(CLOSE).getWidth(), 
                 drawingImage.getHeight() - 13 - images.get(CLOSE).getHeight() * 2, null);
+                        
+//        g2d.draw(startRectangle);
+//        g2d.draw(closeRectangle);
+        
         g.drawImage(drawingImage, 0, 0, null);
     }
     
     @Override
     public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println(e.getLocationOnScreen() + " " + e.getX() + " " + e.getY());
         if (startRectangle.contains(e.getPoint()))
         {
             active = false;
@@ -102,23 +113,32 @@ public class MainMenu implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
     public void mouseReleased(MouseEvent e) {
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        MainMenu.this.START = 1;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        MainMenu.this.START = 0;
+        hovering = false;
     }
 
+        @Override
+    public void mouseDragged(MouseEvent me) {
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent me) {
+        if (startRectangle.contains(me.getPoint()))
+        {
+            hovering = true;
+        } else if (!startRectangle.contains(me.getPoint()))
+        {
+            hovering = false;
+        }
+    }
     
     public boolean isActive()
     {

@@ -6,6 +6,8 @@ import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
 import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Michael Kieburtz
@@ -116,8 +118,10 @@ public class OmegaCentauri extends Game implements GameStartListener {
         setVisible(true);
 
         mainMenu = new MainMenu(this);
+        
         addMouseListener(mainMenu);
-
+        addMouseMotionListener(mainMenu);
+        
         timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
     }
 
@@ -684,6 +688,13 @@ public class OmegaCentauri extends Game implements GameStartListener {
     }
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
         Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
         System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
 
