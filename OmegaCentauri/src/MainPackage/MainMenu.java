@@ -39,7 +39,7 @@ public class MainMenu implements MouseListener {
         loader = new MediaLoader();
         startListener = game;
         
-        imagePaths.add("src/resources/GoButton.png");
+        imagePaths.add("src/resources/GoButtonUnhovered.png");
         imagePaths.add("src/resources/CloseButton.png");
         images = loader.loadImages(imagePaths);
         
