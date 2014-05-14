@@ -25,8 +25,9 @@ public class MainMenu implements MouseListener {
     
     private Settings settings;
             
-    private final int START = 0;
-    private final int CLOSE = 1;
+    private int START = 0;
+    private final int STARTHOVER = 1; //filler so hover doesn't turn into the close button :3
+    private final int CLOSE = 2;
     
     private Rectangle startRectangle;
     private Rectangle closeRectangle;
@@ -40,6 +41,7 @@ public class MainMenu implements MouseListener {
         startListener = game;
         
         imagePaths.add("src/resources/GoButtonUnhovered.png");
+        imagePaths.add("src/resources/GoButtonFullyHovered.png");
         imagePaths.add("src/resources/CloseButton.png");
         images = loader.loadImages(imagePaths);
         
@@ -109,10 +111,12 @@ public class MainMenu implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        MainMenu.this.START = 1;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
+        MainMenu.this.START = 0;
     }
 
     
