@@ -79,11 +79,13 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             s.draw(g2d);
         }
         g2d.setColor(Color.CYAN);
-        g2d.drawLine(0, 466, 1000, 466);
+        g2d.drawLine(0, 460, 1000, 460);
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 461, 1000, 600);
        
         
         
-        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START), 0, drawingImage.getHeight() - 30 - images.get(START).getHeight() - 3, null);
+        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
         
         g2d.drawImage(images.get(CLOSE), drawingImage.getWidth() - 30 - images.get(CLOSE).getWidth(), 
                 drawingImage.getHeight() - 13 - images.get(CLOSE).getHeight() * 2, null);
