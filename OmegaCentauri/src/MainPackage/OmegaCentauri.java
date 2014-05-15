@@ -34,7 +34,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
      * OBJECTS:
      */
     private final Renderer renderer;
-    private final Panel panel = new Panel(1000, 600); // this will be changed when we do resolution things
+    private Panel panel; // this will be changed when we do resolution things
     private Camera camera;
     private GraphicsDevice gd;
     private MainMenu mainMenu;
@@ -58,29 +58,30 @@ public class OmegaCentauri extends Game implements GameStartListener {
         loading = true;
 
         addShips();
-        
+
         setUpWindow();
     }
 
-    private void addShips()
-    {
+    private void addShips() {
         player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, .15, camera.getLocation(), 155, 100);
         enemyShips.add(new EnemyFighter(200, 0, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 100));
         syncGameStateVaribles();
 
         player.setUpHitbox(camera.getLocation());
     }
-    
+
     private void setUpWindow() {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
 
+        mainMenu = new MainMenu(this);
+        
+        panel = new Panel(1000, 600);
+        
         setInputMaps();
 
         getContentPane().add(panel);
-
-        addMouseListener(this);
 
         setBackground(Color.BLACK);
 
@@ -117,11 +118,6 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         setVisible(true);
 
-        mainMenu = new MainMenu(this);
-        
-        addMouseListener(mainMenu);
-        addMouseMotionListener(mainMenu);
-        
         timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
     }
 
@@ -449,40 +445,45 @@ public class OmegaCentauri extends Game implements GameStartListener {
         paused = !paused;
     }
 
-    @Override
-    public void CheckMousePressed(MouseEvent me) {
-        Rectangle rect = new Rectangle(20, 110, 200, 100);
-
-        if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
-            resetGame();
-            mainMenu.setActive(true);
-            timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
-        }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent me) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent me) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent me) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent me) {
-    }
-
-    public class Panel extends JPanel {
+    public class Panel extends JPanel implements MouseListener {
 
         public Panel(int width, int height) {
             setSize(width, height);
             setBackground(Color.BLACK);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            addMouseListener(this);
+            addMouseListener(mainMenu);
+            addMouseMotionListener(mainMenu);
+            
             setVisible(true);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent me) {
+            Rectangle rect = new Rectangle(20, 110, 200, 100);
+
+            if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
+                resetGame();
+                mainMenu.setActive(true);
+                timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
+            }
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent me) {
         }
     }
 
@@ -671,16 +672,15 @@ public class OmegaCentauri extends Game implements GameStartListener {
             });
         }
     }
-    
-    private void resetGame()
-    {
+
+    private void resetGame() {
         shipsToDraw.clear();
         enemyShips.clear();
         allyShips.clear();
         addShips();
-        
+
         paused = false;
-        
+
         FPS = 0;
         UPS = 0;
         framesDrawn = 0;
@@ -690,11 +690,10 @@ public class OmegaCentauri extends Game implements GameStartListener {
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
         System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
 
