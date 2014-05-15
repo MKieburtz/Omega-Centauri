@@ -107,7 +107,11 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
             @Override
             public void focusLost(FocusEvent e) {
-                requestFocus();
+                shooting = false;
+                rotateLeft = false;
+                rotateRight = false;
+                forward = false;
+
             }
         });
 
