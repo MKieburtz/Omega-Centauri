@@ -82,6 +82,7 @@ public class Renderer {
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
+        
         // draw HUD including minimap rects and player health background
         headsUpDisplayPlayer.draw(g2d, camera);
         

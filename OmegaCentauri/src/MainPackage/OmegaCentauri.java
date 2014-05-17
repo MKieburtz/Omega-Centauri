@@ -670,7 +670,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 public void run() {
                     if (mainMenu.isActive()) {
                         mainMenu.draw(panel.getGraphics());
-                        timingEx.schedule(new MainMenuService(), 10, TimeUnit.MILLISECONDS);
+                        timingEx.schedule(new MainMenuService(), 15, TimeUnit.MILLISECONDS);
                     }
                 }
             });
