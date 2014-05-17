@@ -18,7 +18,6 @@ public class StarChunk {
     protected Rectangle2D.Double boundingRect;
     protected Random random = new Random();
     
-    protected int[] possibleSizes = {1,2,3};
     
     public StarChunk(double x, double y) {
         location = new Point2D.Double(x, y);
@@ -35,7 +34,7 @@ public class StarChunk {
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation) {
         for (int i = 0; i < 3; i++) {
             g2d.setColor(Color.WHITE);
-            g2d.fill(stars[i]);
+            g2d.fillOval((int) (stars[i].x - cameraLocation.x), (int) (stars[i].y - cameraLocation.y), 1, 1);
         }
     }
 
