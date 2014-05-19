@@ -40,6 +40,9 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     
     private boolean active;
     
+    private Point size;
+    private Dimension screenSize;
+    
     public MainMenu(OmegaCentauri game)
     {
         active = true;
@@ -48,22 +51,24 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         
         imagePaths.add("src/resources/GoButtonUnhovered.png");
         imagePaths.add("src/resources/GoButtonFullyHovered.png");
-        imagePaths.add("src/resources/LoadingTiles.png");
+        imagePaths.add("src/resources/StartButtonTileframe.png");
         imagePaths.add("src/resources/CloseButton.png");
         images = loader.loadImages(imagePaths);
         
         soundPaths.add("src/resources/mouseClick.wav");
         sounds = loader.loadSounds(soundPaths);
         
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         
-        for (int x = 0; x < 1000; x += 100)
+        // load enough stars for the entire screen;
+        for (int x = 0; x < screenSize.width; x += 100)
         {
-            for (int y = 0; y < 600; y += 100)
+            for (int y = 0; y < screenSize.height; y += 100)
             {
-                stars.add(new TwinklingStarChunk(x, y));
+                //stars.add(new TwinklingStarChunk(x, y));
             }
         }
-        
+        stars.add(new TwinklingStarChunk(0, 0));
         startRectangle = new Rectangle(0, 600 - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
         closeRectangle = new Rectangle(1000 - 30 - images.get(CLOSE).getWidth(),
                 600 - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
@@ -75,9 +80,12 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         
         Graphics2D g2d = drawingImage.createGraphics();
         
+        
+        
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, 1000, 600);
-        
+        g2d.setColor(Color.RED);
+        g2d.drawRect(0, 0, 100, 100);
         for (TwinklingStarChunk s : stars)
         {
             s.draw(g2d);
@@ -89,7 +97,9 @@ public class MainMenu implements MouseListener, MouseMotionListener {
        
         
         
-        g2d.drawImage(hovering ? getSubimage(): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
+//        g2d.drawImage(hovering ? getSubimage(): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
+        
+        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
         
         g2d.drawImage(images.get(CLOSE), drawingImage.getWidth() - 30 - images.get(CLOSE).getWidth(), 
                 drawingImage.getHeight() - 13 - images.get(CLOSE).getHeight() * 2, null);
@@ -111,6 +121,8 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         {
             active = false;
             startListener.gameStart();
+            sounds.get(0).setFramePosition(0);
+            sounds.get(0).start();
         }
         if (closeRectangle.contains(e.getPoint()))
         {
@@ -155,16 +167,18 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     {
         this.active = active;
     }
-
-    private Image getSubimage() {
-        
-        images.get(FULLSTART);
-        if (hovered == 3600)
-        {
-            return (3600,0,200,100);
-        }
-        else{
-            return (hovered + 200, 0, 200, 100);
-        }
-    }
+// Hint for Davis: we want our images to be BUFFERED
+//             _______________________________|
+//             !
+//    private Image getSubimage() {
+//        
+//        images.get(FULLSTART);
+//        if (hovered == 3600)
+//        {
+//            return (3600,0,200,100);
+//        }
+//        else{
+//            return (hovered + 200, 0, 200, 100);
+//        }
+//    }
 }

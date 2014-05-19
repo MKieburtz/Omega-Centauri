@@ -2,7 +2,7 @@ package MainPackage;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -22,25 +22,30 @@ public class TwinklingStarChunk extends StarChunk {
     private final int startingTime = random.nextInt(100) + 1;
     private int time = 0;
     private float[] delays = {.5f, 1, 2};
-    protected int[] possibleSizes = {1, 2, 3};
+    protected ArrayList<Integer> possibleSizes = new ArrayList<Integer>();
     
     public TwinklingStarChunk(double x, double y) {
-        super(x, y - 133);
+        super(x, y);
+        possibleSizes.add(1);
+        possibleSizes.add(2);
+        possibleSizes.add(3);
         
         for (Ellipse2D.Double star : stars) {
-            int size = possibleSizes[random.nextInt(possibleSizes.length)];
+            int size = possibleSizes.get(random.nextInt(possibleSizes.size()));
+            System.out.println(possibleSizes.size() + " " + size);
+            possibleSizes.remove(new Integer(size));
             star.setFrame(star.getX(), star.getY(), size, size);
             
             starOpacity.put(star, opacity);
             fading.put(star, Boolean.TRUE);
             rate.put(star, delays[random.nextInt(delays.length)]);
         }
+        
     }
 
     public void draw(Graphics2D g2d) {
 
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         for (Ellipse2D.Double star : stars) {
             if (time != 0) {

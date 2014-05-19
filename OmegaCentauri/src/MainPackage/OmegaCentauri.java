@@ -74,11 +74,12 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
+        setMinimumSize(new Dimension(600, 600));
 
         mainMenu = new MainMenu(this);
-        
+
         panel = new Panel(1000, 600);
-        
+
         setInputMaps();
 
         getContentPane().add(panel);
@@ -455,11 +456,11 @@ public class OmegaCentauri extends Game implements GameStartListener {
             setSize(width, height);
             setBackground(Color.BLACK);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            
+
             addMouseListener(this);
             addMouseListener(mainMenu);
             addMouseMotionListener(mainMenu);
-            
+
             setVisible(true);
         }
 
@@ -668,9 +669,13 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
                 @Override
                 public void run() {
-                    if (mainMenu.isActive()) {
-                        mainMenu.draw(panel.getGraphics());
-                        timingEx.schedule(new MainMenuService(), 15, TimeUnit.MILLISECONDS);
+                    try {
+                        if (mainMenu.isActive()) {
+                            mainMenu.draw(panel.getGraphics());
+                            timingEx.schedule(new MainMenuService(), 15, TimeUnit.MILLISECONDS);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 }
             });
