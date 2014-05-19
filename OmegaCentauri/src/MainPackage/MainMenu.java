@@ -28,7 +28,10 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             
     private int START = 0;
     private final int STARTHOVER = 1; //filler so hover doesn't turn into the close button :3
-    private final int CLOSE = 2;
+    private final int FULLSTART = 2;
+    private final int CLOSE = 3;
+    
+    private int hovered = -200;
     
     private boolean hovering = false;
     
@@ -45,6 +48,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         
         imagePaths.add("src/resources/GoButtonUnhovered.png");
         imagePaths.add("src/resources/GoButtonFullyHovered.png");
+        imagePaths.add("src/resources/LoadingTiles.png");
         imagePaths.add("src/resources/CloseButton.png");
         images = loader.loadImages(imagePaths);
         
@@ -85,7 +89,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
        
         
         
-        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
+        g2d.drawImage(hovering ? getSubimage(): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
         
         g2d.drawImage(images.get(CLOSE), drawingImage.getWidth() - 30 - images.get(CLOSE).getWidth(), 
                 drawingImage.getHeight() - 13 - images.get(CLOSE).getHeight() * 2, null);
@@ -150,5 +154,17 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     public void setActive(boolean active)
     {
         this.active = active;
+    }
+
+    private Image getSubimage() {
+        
+        images.get(FULLSTART);
+        if (hovered == 3600)
+        {
+            return (3600,0,200,100);
+        }
+        else{
+            return (hovered + 200, 0, 200, 100);
+        }
     }
 }
