@@ -5,7 +5,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
 /**
  * @author Michael Kieburtz
@@ -97,7 +99,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
        
         g2d.setColor(Color.RED);
         
-//        g2d.drawImage(hovering ? getSubimage(): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
+        g2d.drawImage(hovering ? images.get(STARTHOVER): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
         
         g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
         
@@ -187,18 +189,4 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         closeRectangle.setBounds(size.x - 30 - images.get(CLOSE).getWidth(),
                 size.y - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
     }
-// Hint for Davis: we want our images to be BUFFERED
-//             _______________________________|
-//             !
-//    private Image getSubimage() {
-//        
-//        images.get(FULLSTART);
-//        if (hovered == 3600)
-//        {
-//            return (3600,0,200,100); // And this isn't an image...
-//        }
-//        else{
-//            return (hovered + 200, 0, 200, 100);
-//        }
-//    }
 }
