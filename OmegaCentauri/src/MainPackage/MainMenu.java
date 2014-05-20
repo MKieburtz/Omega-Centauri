@@ -59,6 +59,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         sounds = loader.loadSounds(soundPaths);
         
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        size = new Point(game.getWidth(), game.getHeight());
         
         // load enough stars for the entire screen;
         for (int x = 0; x < screenSize.width; x += 100)
@@ -69,43 +70,42 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             }
         }
         
-        startRectangle = new Rectangle(0, 600 - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
-        closeRectangle = new Rectangle(1000 - 30 - images.get(CLOSE).getWidth(),
-                600 - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
+        startRectangle = new Rectangle(0, size.y - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
+        closeRectangle = new Rectangle(size.x - 30 - images.get(CLOSE).getWidth(),
+                size.y - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
     }
     
     public void draw(Graphics g)
     {
-        BufferedImage drawingImage = new BufferedImage(1000, 600, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage drawingImage = new BufferedImage(screenSize.width, screenSize.height, BufferedImage.TYPE_INT_ARGB);
         
         Graphics2D g2d = drawingImage.createGraphics();
         
         
         
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0, 1000, 600);
-        g2d.setColor(Color.RED);
-        g2d.drawRect(0, 0, 100, 100);
+        g2d.fillRect(0, 0, size.x, size.y);
+        
         for (TwinklingStarChunk s : stars)
         {
             s.draw(g2d);
         }
         g2d.setColor(Color.CYAN);
-        g2d.drawLine(0, 460, 1000, 460);
+        g2d.drawLine(0, size.y - 140, size.x, size.y - 140);
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 461, 1000, 600);
+        g2d.fillRect(0, size.y - 139, size.x, size.y - 139);
        
-        
+        g2d.setColor(Color.RED);
         
 //        g2d.drawImage(hovering ? getSubimage(): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
         
-        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
+        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
         
-        g2d.drawImage(images.get(CLOSE), drawingImage.getWidth() - 30 - images.get(CLOSE).getWidth(), 
-                drawingImage.getHeight() - 13 - images.get(CLOSE).getHeight() * 2, null);
+        g2d.drawImage(images.get(CLOSE), size.x - 30 - images.get(CLOSE).getWidth(), 
+                size.y - 13 - images.get(CLOSE).getHeight() * 2, null);
                         
-//        g2d.draw(startRectangle);
-//        g2d.draw(closeRectangle);
+        g2d.draw(startRectangle);
+        g2d.draw(closeRectangle);
         
         g.drawImage(drawingImage, 0, 0, null);
     }
@@ -126,6 +126,8 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         }
         if (closeRectangle.contains(e.getPoint()))
         {
+            sounds.get(0).setFramePosition(0);
+            sounds.get(0).start();
             System.exit(0);
         }
     }
@@ -167,6 +169,24 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     {
         this.active = active;
     }
+    
+    public Point getSize()
+    {
+        return size;
+    }
+    
+    public void setSize(int width, int height)
+    {
+        size.setLocation(width, height);
+        resetRects();
+    }
+    
+    private void resetRects()
+    {
+        startRectangle.setBounds(0, size.y - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
+        closeRectangle.setBounds(size.x - 30 - images.get(CLOSE).getWidth(),
+                size.y - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
+    }
 // Hint for Davis: we want our images to be BUFFERED
 //             _______________________________|
 //             !
@@ -175,7 +195,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 //        images.get(FULLSTART);
 //        if (hovered == 3600)
 //        {
-//            return (3600,0,200,100);
+//            return (3600,0,200,100); // And this isn't an image...
 //        }
 //        else{
 //            return (hovered + 200, 0, 200, 100);
