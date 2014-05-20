@@ -33,7 +33,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     private final int FULLSTART = 2;
     private final int CLOSE = 3;
     
-    private int hovered = -200;
+    private int hovered = 0;
     
     private boolean hovering = false;
     
@@ -99,11 +99,11 @@ public class MainMenu implements MouseListener, MouseMotionListener {
        
         g2d.setColor(Color.RED);
         
-        g2d.drawImage(hovering ? images.get(FULLSTART).getSubimage(hovered+200, 0, 200, 100): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
+        g2d.drawImage(hovering ? images.get(FULLSTART).getSubimage(hovered, 0, 200, 100): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
         
-        g2d.drawImage(hovering ? images.get(FULLSTART).getSubimage(hovered+200, 0, 200, 100): images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
+        g2d.drawImage(hovering ? images.get(FULLSTART).getSubimage(hovered, 0, 200, 100): images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
         if (hovered < 3600)
-            hovered += 200;
+            MainMenu.this.hovered += 200;
         g2d.drawImage(images.get(CLOSE), size.x - 30 - images.get(CLOSE).getWidth(), 
                 size.y - 13 - images.get(CLOSE).getHeight() * 2, null);
                         
