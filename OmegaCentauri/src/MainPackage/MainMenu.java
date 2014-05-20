@@ -65,10 +65,10 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         {
             for (int y = 0; y < screenSize.height; y += 100)
             {
-                //stars.add(new TwinklingStarChunk(x, y));
+                stars.add(new TwinklingStarChunk(x, y));
             }
         }
-        stars.add(new TwinklingStarChunk(0, 0));
+        
         startRectangle = new Rectangle(0, 600 - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
         closeRectangle = new Rectangle(1000 - 30 - images.get(CLOSE).getWidth(),
                 600 - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());

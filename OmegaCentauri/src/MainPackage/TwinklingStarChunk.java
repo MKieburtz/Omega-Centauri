@@ -21,7 +21,7 @@ public class TwinklingStarChunk extends StarChunk {
     
     private final int startingTime = random.nextInt(100) + 1;
     private int time = 0;
-    private float[] delays = {.5f, 1, 2};
+    private ArrayList<Float> possibleDelays = new ArrayList<Float>();
     protected ArrayList<Integer> possibleSizes = new ArrayList<Integer>();
     
     public TwinklingStarChunk(double x, double y) {
@@ -30,15 +30,21 @@ public class TwinklingStarChunk extends StarChunk {
         possibleSizes.add(2);
         possibleSizes.add(3);
         
+        possibleDelays.add(.5f);
+        possibleDelays.add(1f);
+        possibleDelays.add(2f);
+        
         for (Ellipse2D.Double star : stars) {
             int size = possibleSizes.get(random.nextInt(possibleSizes.size()));
-            System.out.println(possibleSizes.size() + " " + size);
             possibleSizes.remove(new Integer(size));
             star.setFrame(star.getX(), star.getY(), size, size);
             
             starOpacity.put(star, opacity);
             fading.put(star, Boolean.TRUE);
-            rate.put(star, delays[random.nextInt(delays.length)]);
+            
+            Float starRate = possibleDelays.get(random.nextInt(possibleDelays.size()));
+            rate.put(star, starRate);
+            possibleDelays.remove(starRate);
         }
         
     }
