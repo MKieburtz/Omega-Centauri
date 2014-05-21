@@ -99,7 +99,6 @@ public class MainMenu implements MouseListener, MouseMotionListener {
        
         g2d.setColor(Color.RED);
         
-        g2d.drawImage(hovering ? images.get(FULLSTART).getSubimage(hovered, 0, 200, 100): images.get(START), 0, drawingImage.getHeight() - 36 - images.get(START).getHeight() - 3, null);
         
         g2d.drawImage(hovering ? images.get(FULLSTART).getSubimage(hovered, 0, 200, 100): images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
         if (hovered < 3600)
@@ -160,6 +159,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         } else if (!startRectangle.contains(me.getPoint()))
         {
             hovering = false;
+            MainMenu.this.hovered = 0;
         }
     }
     
