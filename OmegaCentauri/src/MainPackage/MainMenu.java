@@ -115,10 +115,14 @@ public class MainMenu implements MouseListener, MouseMotionListener {
                 
         //g2d.drawImage(hovering ? hovered == subimages.size() - 1 ? images.get(STARTHOVER) : subimages.get(hovered): images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
         
-        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START),0, size.y - 36 - images.get(START).getHeight() - 3, null);
+        //g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START),0, size.y - 36 - images.get(START).getHeight() - 3, null);
         
-        if (hovered < subimages.size() - 1 && hovering)
-            hovered += 1;
+        if(hovering)
+        {
+            g2d.drawImage(images.get(STARTHOVER), size.x - 400 - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, null);
+        } else {
+            g2d.drawImage(images.get(START), size.x - 400 - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, null);
+        }
         
         g2d.drawImage(images.get(CLOSE), size.x - 30 - images.get(CLOSE).getWidth(), 
                 size.y - 13 - images.get(CLOSE).getHeight() * 2, null);
