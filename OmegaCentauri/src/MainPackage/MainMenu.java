@@ -79,7 +79,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             }
         }
         
-        startRectangle = new Rectangle(0, size.y - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
+        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
         closeRectangle = new Rectangle(size.x - 30 - images.get(CLOSE).getWidth(),
                 size.y - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
     }
@@ -209,7 +209,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     
     private void resetRects()
     {
-        startRectangle.setBounds(0, size.y - 30 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
+        startRectangle.setBounds((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
         closeRectangle.setBounds(size.x - 30 - images.get(CLOSE).getWidth(),
                 size.y - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
         screenRect.setBounds(0, 0, size.x, size.y);

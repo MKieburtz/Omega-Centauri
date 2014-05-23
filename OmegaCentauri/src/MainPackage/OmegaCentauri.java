@@ -118,7 +118,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
             }
         });
 
-        timingEx = Executors.newScheduledThreadPool(2);
+        timingEx = Executors.newScheduledThreadPool(4);
 
         recordingEx = Executors.newSingleThreadScheduledExecutor();
         setLocationRelativeTo(null);
@@ -643,7 +643,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             loading = false;
 
                         }
-
+                        
                         if (loading) {
                             timingEx.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
                         } else {

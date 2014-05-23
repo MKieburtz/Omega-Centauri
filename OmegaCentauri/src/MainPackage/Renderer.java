@@ -55,6 +55,7 @@ public class Renderer {
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused) {
 
+        
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
             drawingImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
             
