@@ -54,8 +54,10 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         loader = new MediaLoader();
         startListener = game;
         
-        imagePaths.add("src/resources/GoButtonUnhovered.png");
-        imagePaths.add("src/resources/GoButtonFullyHovered.png");
+//        imagePaths.add("src/resources/GoButtonUnhovered.png");
+//        imagePaths.add("src/resources/GoButtonFullyHovered.png");
+        imagePaths.add("src/resources/StartButtonNoHover.png");
+        imagePaths.add("src/resources/StartButtonHover.png");
         imagePaths.add("src/resources/StartButtonTileframe.png");
         imagePaths.add("src/resources/CloseButton.png");
         images = loader.loadImages(imagePaths);
@@ -111,7 +113,9 @@ public class MainMenu implements MouseListener, MouseMotionListener {
        
         g2d.setColor(Color.RED);
                 
-        g2d.drawImage(hovering ? hovered == subimages.size() - 1 ? images.get(STARTHOVER) : subimages.get(hovered): images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
+        //g2d.drawImage(hovering ? hovered == subimages.size() - 1 ? images.get(STARTHOVER) : subimages.get(hovered): images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
+        
+        g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START),0, size.y - 36 - images.get(START).getHeight() - 3, null);
         
         if (hovered < subimages.size() - 1 && hovering)
             hovered += 1;
