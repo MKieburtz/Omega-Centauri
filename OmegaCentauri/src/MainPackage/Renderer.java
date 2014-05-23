@@ -33,6 +33,8 @@ public class Renderer {
     
     ArrayList<Rectangle2D.Double> loadingStars = new ArrayList<Rectangle2D.Double>();
     
+    
+    
     public Renderer() {
 
         loader = new MediaLoader();
@@ -55,13 +57,19 @@ public class Renderer {
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused) {
 
+//        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//        GraphicsDevice device = env.getDefaultScreenDevice();
+//        GraphicsConfiguration config = device.getDefaultConfiguration();
+//        BufferedImage buffed = config.createCompatibleImage(drawingImage.getWidth(), drawingImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
         
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
             drawingImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
             
         Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics
        
+        long start = System.currentTimeMillis();
         shots.clear();
+        
         
         for (Ship ship : ships)
         {
@@ -76,7 +84,7 @@ public class Renderer {
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+        
         // draw stars
         for (StarChunk starChunk : stars) {
             if (camera.insideView(starChunk.getBoundingRect())) {
@@ -94,8 +102,6 @@ public class Renderer {
             }
         }
         
-        
-        
         // draw fps info and other stats
         g2d.setFont(dataFont);
         g2d.setColor(Color.WHITE);
@@ -108,12 +114,13 @@ public class Renderer {
         g2d.drawString("UPS: " + String.valueOf(ups), camera.getSize().x - 130, 30);
         //shots on screen
         g2d.drawString("Shots: " + shots.size(), camera.getSize().x - 130, 40);
+        //TODO: CHECK FOR INSIDE CAMERA
         for (Shot shot : shots) {
             if (shot.imagesLoaded()) {
                 shot.draw(g2d, camera.getLocation());
             }
         }
-
+        
         // draw minimap dots
         
         for (Ship ship : ships) {
@@ -156,9 +163,11 @@ public class Renderer {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
             g2d.drawImage(images.get(PAUSETOMENU),null, 20, 110);
         }
-        
+        // this is the most expensive call
         g.drawImage(drawingImage, 0, 0, null);
-
+        
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
         g2d.dispose();
         g.dispose();
     }

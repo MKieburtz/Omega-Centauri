@@ -261,7 +261,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
     }
 
     private void gameUpdate() {
-
+        
         if (!paused) {
 
             if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
@@ -714,7 +714,11 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
         System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
-
+//        System.setProperty("sun.java2d.opengl", "true");
+//        System.setProperty("sun.java2d.ddscale", "true");
+//        System.setProperty("sun.java2d.translaccel", "true");
+        
+        
         new OmegaCentauri();
     }
 }
