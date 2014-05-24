@@ -30,11 +30,9 @@ public class Renderer {
     // Cached values:
     private ArrayList<Shot> shots = new ArrayList<Shot>();
     
+   GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     
-        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice device = env.getDefaultScreenDevice();
-        GraphicsConfiguration config = device.getDefaultConfiguration();
-        BufferedImage drawingImage = config.createCompatibleImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage drawingImage = config.createCompatibleImage(1, 1, Transparency.TRANSLUCENT);
     
     public Renderer() {
 
@@ -59,7 +57,10 @@ public class Renderer {
             ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused) {
 
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
+        {
             drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y, Transparency.TRANSLUCENT);
+            System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
+        }
             
         Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics
        
@@ -72,11 +73,12 @@ public class Renderer {
 
         g2d.fillRect(0, 0, camera.getSize().x, camera.getSize().y);
 
+        
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // draw stars. Costs 3-5 millis'
+        // draw stars. Costs 3-5 ms
         for (StarChunk starChunk : stars) {
             if (camera.insideView(starChunk.getBoundingRect())) {
                 starChunk.draw(g2d, camera.getLocation());
@@ -117,7 +119,7 @@ public class Renderer {
                 }
             }
         }
-        // draw shots
+        // draw shots TODO: check if on screen.
         for (Shot shot : shots) {
             if (shot.imagesLoaded()) {
                 shot.draw(g2d, camera.getLocation());
