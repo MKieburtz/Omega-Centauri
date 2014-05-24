@@ -534,7 +534,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                                     FPS, stars, camera, Version, UPS, paused);
                             framesDrawn++;
-
+                            
                             if (!OmegaCentauri.this.hasFocus()) {
                                 paused = true;
                             }

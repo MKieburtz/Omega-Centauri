@@ -28,12 +28,13 @@ public class Renderer {
     private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
     
     // Cached values:
-    private BufferedImage drawingImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private ArrayList<Shot> shots = new ArrayList<Shot>();
     
-    ArrayList<Rectangle2D.Double> loadingStars = new ArrayList<Rectangle2D.Double>();
     
-    
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = env.getDefaultScreenDevice();
+        GraphicsConfiguration config = device.getDefaultConfiguration();
+        BufferedImage drawingImage = config.createCompatibleImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     
     public Renderer() {
 
@@ -57,25 +58,15 @@ public class Renderer {
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused) {
 
-//        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//        GraphicsDevice device = env.getDefaultScreenDevice();
-//        GraphicsConfiguration config = device.getDefaultConfiguration();
-//        BufferedImage buffed = config.createCompatibleImage(drawingImage.getWidth(), drawingImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
-            drawingImage = new BufferedImage(camera.getSize().x, camera.getSize().y, BufferedImage.TYPE_INT_ARGB);
+            drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y, Transparency.TRANSLUCENT);
             
         Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics
        
         long start = System.currentTimeMillis();
+        
         shots.clear();
-        
-        
-        for (Ship ship : ships)
-        {
-            shots.addAll(ship.getShots());
-        }
-        
+
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
 
@@ -85,20 +76,51 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // draw stars
+        // draw stars. Costs 3-5 millis'
         for (StarChunk starChunk : stars) {
             if (camera.insideView(starChunk.getBoundingRect())) {
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
-        
-        // draw HUD including minimap rects and player health background
+        // draw HUD
         headsUpDisplayPlayer.draw(g2d, camera);
         
-        // draw the player and enemies
-        for (Ship ship : ships) {
+        for (Ship ship : ships)
+        {
+            shots.addAll(ship.getShots());
+            
             if (ship.getHullHealth() > 0) {
                 ship.draw(g2d, camera);
+            }
+            
+            if (ship instanceof Player) {
+                g2d.setColor(Color.CYAN);
+            } else if (ship instanceof EnemyShip) {
+                g2d.setColor(Color.RED);
+            } else {
+                g2d.setColor(Color.YELLOW);
+            }
+
+            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + 100 + ship.getLocation().x / 100,
+                    camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
+            g2d.draw(minimapShip);
+            
+            if (ship instanceof Player)
+            {
+                if (ship.getHullHealth() <= 0)
+                {
+                    g2d.drawImage(images.get(GAMEOVER), null, 250,125);
+                }
+                else if ((ship.getLocation().x > 10000 || ship.getLocation().x < -10000) || (ship.getLocation().y > 10000 || ship.getLocation().y < -10000))
+                {
+                            g2d.drawImage(images.get(RETURNTOBATTLEFIELD),null, 200, 200);
+                }
+            }
+        }
+        // draw shots
+        for (Shot shot : shots) {
+            if (shot.imagesLoaded()) {
+                shot.draw(g2d, camera.getLocation());
             }
         }
         
@@ -115,46 +137,6 @@ public class Renderer {
         //shots on screen
         g2d.drawString("Shots: " + shots.size(), camera.getSize().x - 130, 40);
         //TODO: CHECK FOR INSIDE CAMERA
-        for (Shot shot : shots) {
-            if (shot.imagesLoaded()) {
-                shot.draw(g2d, camera.getLocation());
-            }
-        }
-        
-        // draw minimap dots
-        
-        for (Ship ship : ships) {
-
-            if (ship instanceof Player) {
-                g2d.setColor(Color.CYAN);
-            } else if (ship instanceof EnemyShip) {
-                g2d.setColor(Color.RED);
-            } else {
-                g2d.setColor(Color.YELLOW);
-            }
-
-            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + 100 + ship.getLocation().x / 100,
-                    camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
-            g2d.draw(minimapShip);
-        }
-        
-        //draw game over
-        for (Ship ship : ships)
-        {
-            if (ship instanceof Player && ship.getHullHealth() <= 0)
-            {
-                g2d.drawImage(images.get(GAMEOVER), null, 250,125);
-                
-            }
-        }
-        //draw out of bounds
-         for (Ship ship : ships)
-         {
-             if (ship instanceof Player && (ship.getLocation().x > 10000 || ship.getLocation().x < -10000) || (ship.getLocation().y > 10000 || ship.getLocation().y < -10000))
-             {
-                 g2d.drawImage(images.get(RETURNTOBATTLEFIELD),null, 200, 200);
-             }
-         }
         
         
         //draw pause menu
@@ -163,13 +145,16 @@ public class Renderer {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
             g2d.drawImage(images.get(PAUSETOMENU),null, 20, 110);
         }
+        
+        
         // this is the most expensive call
         g.drawImage(drawingImage, 0, 0, null);
         
-        long end = System.currentTimeMillis();
-        System.out.println(end - start);
+        
         g2d.dispose();
         g.dispose();
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
     }
     
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
