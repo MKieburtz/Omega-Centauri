@@ -28,10 +28,8 @@ public class OmegaCentauri extends Game implements GameStartListener {
     private int FPS = 0;
     private int UPS = 0;
     private int updates = 0;
-    private long loopTimeUPS = (long) ((1000.0 / 77) * 1000000); // about 13. Change 77 for the target UPS
+    private final long loopTimeUPS = (long) ((1000.0 / 77) * 1000000); // about 13. Change 75 for the target UPS
     private int framesDrawn = 0;
-    private ArrayList<Integer> UpdateList = new ArrayList<Integer>();
-    private int averageUPS = -1;
     /*
      * OBJECTS:
      */
@@ -78,18 +76,20 @@ public class OmegaCentauri extends Game implements GameStartListener {
         setTitle("Omega Centauri");
         setMinimumSize(new Dimension(600, 600));
 
+        
+
         setBackground(Color.BLACK);
 
         setSize(1000, 600);
-
+        
         mainMenu = new MainMenu(this);
 
         panel = new Panel(1000, 600);
-
+        
         setInputMaps();
 
         getContentPane().add(panel);
-
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
@@ -99,15 +99,6 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 } catch (java.awt.IllegalComponentStateException ex) {
                     System.err.println("ERROR!");
                 }
-            }
-        });
-
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent event)
-            {
-                averageUPS = 0;
-                UpdateList.clear();
             }
         });
 
@@ -270,8 +261,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
     }
 
     private void gameUpdate() {
-        //long start = System.currentTimeMillis();
-
+        
         if (!paused) {
 
             if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
@@ -359,8 +349,6 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
             syncGameStateVaribles();
         }
-//        long end = System.currentTimeMillis();
-//        System.out.println(end - start);
     }
 
     /*
@@ -517,26 +505,12 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         @Override
         public void run() {
-            FPS = framesDrawn * 4;
-            UPS = updates * 4;
+            FPS = framesDrawn;
+            UPS = updates;
             framesDrawn = 0;
             updates = 0;
 
-            UpdateList.add(UPS < 30 ? UPS * 2 : UPS);
-            if (UpdateList.size() > 30) {
-                UpdateList.remove(0);
-            }
-            
-            averageUPS = Calculator.getAverage(UpdateList);
-            if (averageUPS < 70 && averageUPS != -1) {
-                if (!Calculator.closeToNumber(70, averageUPS, 2))
-                    loopTimeUPS -= 20000;
-            } else if (averageUPS > 70 && averageUPS != -1) {
-                if (!Calculator.closeToNumber(70, averageUPS, 2))
-                    loopTimeUPS += 20000;
-            }
-            System.out.println(loopTimeUPS + " " + averageUPS);
-            recordingEx.schedule(new RecordingService(), 250, TimeUnit.MILLISECONDS);
+            recordingEx.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
         }
     }
 
@@ -560,7 +534,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                                     FPS, stars, camera, Version, UPS, paused);
                             framesDrawn++;
-
+                            
                             if (!OmegaCentauri.this.hasFocus()) {
                                 paused = true;
                             }
@@ -669,7 +643,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             loading = false;
 
                         }
-
+                        
                         if (loading) {
                             timingEx.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
                         } else {
@@ -677,7 +651,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             shipsToDraw.addAll(enemyShips);
                             shipsToDraw.addAll(allyShips);
 
-                            recordingEx.schedule(new RecordingService(), 250, TimeUnit.MILLISECONDS);
+                            recordingEx.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
                             timingEx.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
                         }
 
@@ -699,12 +673,13 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 public void run() {
                     try {
                         if (mainMenu.isActive()) {
-
-                            if (mainMenu.getSize().x != OmegaCentauri.this.getWidth()
-                                    || mainMenu.getSize().y != OmegaCentauri.this.getHeight()) {
+                            
+                            if (mainMenu.getSize().x != OmegaCentauri.this.getWidth() || 
+                                    mainMenu.getSize().y != OmegaCentauri.this.getHeight())
+                            {
                                 mainMenu.setSize(OmegaCentauri.this.getWidth(), OmegaCentauri.this.getHeight());
                             }
-
+                            
                             mainMenu.draw(panel.getGraphics());
                             timingEx.schedule(new MainMenuService(), 15, TimeUnit.MILLISECONDS);
                         }
@@ -742,6 +717,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
 //        System.setProperty("sun.java2d.opengl", "true");
 //        System.setProperty("sun.java2d.ddscale", "true");
 //        System.setProperty("sun.java2d.translaccel", "true");
+        
         
         new OmegaCentauri();
     }
