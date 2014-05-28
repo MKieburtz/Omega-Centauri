@@ -32,7 +32,7 @@ public class Renderer {
     
    GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     
-    BufferedImage drawingImage = config.createCompatibleImage(1, 1, Transparency.TRANSLUCENT);
+    BufferedImage drawingImage = config.createCompatibleImage(1, 1);
     
     public Renderer() {
 
@@ -73,7 +73,7 @@ public class Renderer {
 
         g2d.fillRect(0, 0, camera.getSize().x, camera.getSize().y);
         
-        System.out.println(ups);
+        //System.out.println(ups);
         
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);

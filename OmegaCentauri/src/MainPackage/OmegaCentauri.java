@@ -28,7 +28,8 @@ public class OmegaCentauri extends Game implements GameStartListener {
     private int FPS = 0;
     private int UPS = 0;
     private int updates = 0;
-    private final long loopTimeUPS = (long) ((1000.0 / 77) * 1000000); // about 13. Change 75 for the target UPS
+    private final int TARGETFPS = 70;
+    private final long loopTimeUPS = (long) ((1000.0 / TARGETFPS) * 1000000); // Change the constant
     private int framesDrawn = 0;
     /*
      * OBJECTS:
@@ -514,40 +515,41 @@ public class OmegaCentauri extends Game implements GameStartListener {
         }
     }
 
-    long startTime, endtime, sleeptime;
-
+    long startTime, endtime, sleeptime, additionalTime;
+    
     class UpdatingService implements Runnable {
 
         @Override
         public void run() {
             SwingUtilities.invokeLater(new Runnable() {
-
+                
                 @Override
                 public void run() {
                     try {
                         if (!mainMenu.isActive()) {
                             startTime = System.nanoTime();
-
+                            
+                            if (endtime != 0)
+                                additionalTime = Math.abs(sleeptime - (startTime - endtime));
+                            
+                            //System.out.println(additionalTime);
+                            
                             gameUpdate();
                             updates++;
 
                             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                                     FPS, stars, camera, Version, UPS, paused);
                             framesDrawn++;
-                            
+
                             if (!OmegaCentauri.this.hasFocus()) {
                                 paused = true;
                             }
-
+                            
                             endtime = System.nanoTime();
-
-                            sleeptime = loopTimeUPS - (endtime - startTime);
-
-                            if (sleeptime <= 0) {
-                                sleeptime = 0;
-                            }
-
+                            sleeptime = loopTimeUPS - (endtime - startTime) - additionalTime;
+                            
                             timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
+                            endtime = System.nanoTime();
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
