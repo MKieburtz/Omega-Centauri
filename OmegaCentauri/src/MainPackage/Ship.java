@@ -61,7 +61,7 @@ public abstract class Ship implements CollisionListener {
         this.acceleration = acceleration;
         this.shootingDelay = shootingDelay;
         this.hull = health;
-        ex = Executors.newScheduledThreadPool(5);
+        ex = Executors.newSingleThreadScheduledExecutor();
     }
 
     public BufferedImage getImage() {

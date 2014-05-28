@@ -58,13 +58,13 @@ public class Renderer {
 
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
         {
-            drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y, Transparency.TRANSLUCENT);
+            drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y);
             System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
         }
             
         Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics
        
-        long start = System.currentTimeMillis();
+        //long start = System.currentTimeMillis();
         
         shots.clear();
 
@@ -72,7 +72,8 @@ public class Renderer {
         g2d.setColor(Color.BLACK);
 
         g2d.fillRect(0, 0, camera.getSize().x, camera.getSize().y);
-
+        
+        System.out.println(ups);
         
         // enable anti-aliasing
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -155,8 +156,8 @@ public class Renderer {
         
         g2d.dispose();
         g.dispose();
-        long end = System.currentTimeMillis();
-        System.out.println(end - start);
+//        long end = System.currentTimeMillis();
+//        System.out.println(end - start);
     }
     
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
