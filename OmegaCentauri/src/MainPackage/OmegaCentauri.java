@@ -87,6 +87,9 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         panel = new Panel(1000, 600);
         
+//        setUndecorated(true);
+//        gd.setFullScreenWindow(this);
+        
         setInputMaps();
 
         getContentPane().add(panel);

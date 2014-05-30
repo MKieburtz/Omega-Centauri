@@ -32,11 +32,13 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     private int START = 0;
     private final int STARTHOVER = 1; //filler so hover doesn't turn into the close button :3
     private final int HOVERTILES = 2;
-    private final int CLOSE = 3;
+    private final int CLOSENOHOVER = 3;
+    private final int CLOSEHOVER = 4;
     
     private int hovered = 0;
     
-    private boolean hovering = false;
+    private boolean startHover = false;
+    private boolean closeHover = false;
     
     private Rectangle startRectangle;
     private Rectangle closeRectangle;
@@ -54,12 +56,12 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         loader = new MediaLoader();
         startListener = game;
         
-//        imagePaths.add("src/resources/GoButtonUnhovered.png");
-//        imagePaths.add("src/resources/GoButtonFullyHovered.png");
+
         imagePaths.add("src/resources/StartButtonNoHover.png");
         imagePaths.add("src/resources/StartButtonHover.png");
         imagePaths.add("src/resources/StartButtonTileframe.png");
-        imagePaths.add("src/resources/CloseButton.png");
+        imagePaths.add("src/resources/CloseButtonNoHover.png");
+        imagePaths.add("src/resources/CloseButtonHover.png");
         images = loader.loadImages(imagePaths);
         loadSubimages();
         soundPaths.add("src/resources/mouseClick.wav");
@@ -79,9 +81,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             }
         }
         
-        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
-        closeRectangle = new Rectangle(size.x - 30 - images.get(CLOSE).getWidth(),
-                size.y - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
+        setRects();
     }
     
     private void loadSubimages()
@@ -117,15 +117,20 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         
         //g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START),0, size.y - 36 - images.get(START).getHeight() - 3, null);
         
-        if(hovering)
+        if(startHover)
         {
             g2d.drawImage(images.get(STARTHOVER), (size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, null);
         } else {
             g2d.drawImage(images.get(START), (size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, null);
         }
-        
-        g2d.drawImage(images.get(CLOSE), size.x - 30 - images.get(CLOSE).getWidth(), 
-                size.y - 13 - images.get(CLOSE).getHeight() * 2, null);
+        if (closeHover)
+        {
+            g2d.drawImage(images.get(CLOSEHOVER), size.x - images.get(CLOSEHOVER).getWidth() / 2, 
+                size.y -  images.get(CLOSEHOVER).getHeight() / 2, null);
+        } else{
+            g2d.drawImage(images.get(CLOSENOHOVER), size.x - 30 - images.get(CLOSENOHOVER).getWidth(), 
+                size.y - 13 - images.get(CLOSENOHOVER).getHeight() * 2 + 100, null);
+        }
                         
 //        g2d.draw(startRectangle);
 //        g2d.draw(closeRectangle);
@@ -139,7 +144,6 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println(e.getLocationOnScreen() + " " + e.getX() + " " + e.getY());
         if (startRectangle.contains(e.getPoint()))
         {
             active = false;
@@ -165,7 +169,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-        hovering = false;
+        startHover = false;
         hovered = 0;
     }
 
@@ -177,11 +181,14 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     public void mouseMoved(MouseEvent me) {
         if (startRectangle.contains(me.getPoint()))
         {
-            hovering = true;
+            startHover = true;
+        } else if (closeRectangle.contains(me.getPoint()))
+        {
+            closeHover = true;
         } else
         {
-            hovering = false;
-            hovered = 0;
+            startHover = false;
+            closeHover = false;
         }
     }
     
@@ -204,14 +211,14 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     public void setSize(int width, int height)
     {
         size.setLocation(width, height);
-        resetRects();
+        setRects();
     }
     
-    private void resetRects()
+    private void setRects()
     {
-        startRectangle.setBounds((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
-        closeRectangle.setBounds(size.x - 30 - images.get(CLOSE).getWidth(),
-                size.y - 13 - images.get(CLOSE).getHeight() * 2, images.get(CLOSE).getWidth(), images.get(CLOSE).getHeight());
+        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
+        closeRectangle = new Rectangle(size.x - 30 - images.get(CLOSENOHOVER).getWidth(),
+                size.y - 13 - images.get(CLOSENOHOVER).getHeight() * 2, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
         screenRect.setBounds(0, 0, size.x, size.y);
     }
 }
