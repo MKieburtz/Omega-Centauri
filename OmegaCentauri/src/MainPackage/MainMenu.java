@@ -119,21 +119,23 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         
         if(startHover)
         {
-            g2d.drawImage(images.get(STARTHOVER), (size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, null);
+            g2d.drawImage(images.get(STARTHOVER), size.x / 2 - images.get(STARTHOVER).getWidth() / 2, size.y - 139, null);
         } else {
-            g2d.drawImage(images.get(START), (size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, null);
+            g2d.drawImage(images.get(START), size.x / 2 - images.get(START).getWidth() / 2, size.y - 139, null);
         }
+        
+        //System.out.println(images.get(CLOSEHOVER).getHeight());
         if (closeHover)
         {
-            g2d.drawImage(images.get(CLOSEHOVER), size.x - images.get(CLOSEHOVER).getWidth() / 2, 
-                size.y -  images.get(CLOSEHOVER).getHeight() / 2, null);
+            g2d.drawImage(images.get(CLOSEHOVER), size.x - images.get(CLOSEHOVER).getWidth() - 30, 
+                size.y - 13 - images.get(CLOSEHOVER).getHeight() * 2 + 100, null);
         } else{
             g2d.drawImage(images.get(CLOSENOHOVER), size.x - 30 - images.get(CLOSENOHOVER).getWidth(), 
                 size.y - 13 - images.get(CLOSENOHOVER).getHeight() * 2 + 100, null);
         }
                         
-//        g2d.draw(startRectangle);
-//        g2d.draw(closeRectangle);
+        g2d.draw(startRectangle);
+        g2d.draw(closeRectangle);
         
         g.drawImage(drawingImage, 0, 0, null);
     }
@@ -217,8 +219,8 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     private void setRects()
     {
         startRectangle = new Rectangle((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 36 - images.get(START).getHeight() - 3, images.get(START).getWidth(), images.get(START).getHeight());
-        closeRectangle = new Rectangle(size.x - 30 - images.get(CLOSENOHOVER).getWidth(),
-                size.y - 13 - images.get(CLOSENOHOVER).getHeight() * 2, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
+        closeRectangle = new Rectangle(size.x - images.get(CLOSEHOVER).getWidth() - 30, 
+                size.y - 13 - images.get(CLOSEHOVER).getHeight() * 2 + 100, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
         screenRect.setBounds(0, 0, size.x, size.y);
     }
 }
