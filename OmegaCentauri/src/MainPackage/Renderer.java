@@ -51,6 +51,8 @@ public class Renderer {
         fonts = loader.loadFonts(fontPaths, fontSizes);
         mainFont = fonts.get(0);
         dataFont = fonts.get(1);
+        
+        images = Calculator.toCompatibleImages(images);
     }
 
     public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
@@ -61,9 +63,9 @@ public class Renderer {
             drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y);
             System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
         }
-            
+        
         Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics
-       
+        //System.out.println(images.get(0).getColorModel().equals(config.getColorModel()));
         //long start = System.currentTimeMillis();
         
         shots.clear();
@@ -152,7 +154,6 @@ public class Renderer {
         
         // this is the most expensive call
         g.drawImage(drawingImage, 0, 0, null);
-        
         
         g2d.dispose();
         g.dispose();

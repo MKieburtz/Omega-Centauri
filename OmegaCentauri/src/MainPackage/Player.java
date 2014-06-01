@@ -39,6 +39,8 @@ public class Player extends Ship {
         imagePaths.add("src/resources/FighterThrustRight.png");
         
         images = mediaLoader.loadImages(imagePaths);
+        images = Calculator.toCompatibleImages(images);
+        
         activeImage = images.get(0);
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()));
         setUpHitbox(cameraLocation);

@@ -1,7 +1,12 @@
 package MainPackage;
 
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * @author Michael Kieburtz
@@ -91,5 +96,23 @@ public class Calculator {
         double y = getScreenLocation(cameraLocation, location).y + cameraLocation.y + imageHeight / 2;
 
         return new Point2D.Double(x, y);
+    }
+    
+    public static ArrayList<BufferedImage> toCompatibleImages(ArrayList<BufferedImage> images)
+    {
+        GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        
+        for (int i = 0; i < images.size(); i++)
+        {
+            BufferedImage tempImage = config.createCompatibleImage(images.get(i).getWidth(), images.get(i).getHeight());
+            Graphics2D g2d = tempImage.createGraphics();
+            
+            g2d.drawImage(images.get(i), 0, 0, null);
+            images.set(i, tempImage);
+
+            g2d.dispose();
+        }
+        
+        return images;
     }
 }

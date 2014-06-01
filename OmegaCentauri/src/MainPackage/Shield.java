@@ -31,6 +31,7 @@ public class Shield {
         health = 100;
         imagePaths.add(enemy ? "src/resources/FILLERshieldEnemy.png" : "src/resources/FILLERshield.png");
         images = loader.loadImages(imagePaths);
+        images = Calculator.toCompatibleImages(images);
         activeImage = images.get(0);
         screenLocationMiddle = Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight());
         scaling[0] = (double)size.x / activeImage.getWidth();

@@ -6,8 +6,6 @@ import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
 import java.util.concurrent.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Michael Kieburtz
@@ -75,9 +73,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
-        setMinimumSize(new Dimension(600, 600));
-
-        
+        setMinimumSize(new Dimension(600, 600));     
 
         setBackground(Color.BLACK);
 
@@ -550,8 +546,10 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             
                             endtime = System.nanoTime();
                             sleeptime = loopTimeUPS - (endtime - startTime) - additionalTime;
-                            
+                                  
                             timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
+                            if (sleeptime < 0 )
+                                sleeptime = 0;
                             endtime = System.nanoTime();
                         }
                     } catch (Exception ex) {

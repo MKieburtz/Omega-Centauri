@@ -52,6 +52,7 @@ abstract class Shot {
 
     protected void loadImages(ArrayList<String> imagePaths) {
         images = imageLoader.loadImages(imagePaths);
+        images = Calculator.toCompatibleImages(images);
     }
 
     protected void updateLocation() {

@@ -28,6 +28,7 @@ public class HeadsUpDisplayPlayer {
         imagePaths.add("src/resources/DangerTick.png");
         
         images = loader.loadImages(imagePaths);
+        images = Calculator.toCompatibleImages(images);
     }
     
     public void draw(Graphics2D g2d, Camera camera)

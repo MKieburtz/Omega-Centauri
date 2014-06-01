@@ -63,6 +63,8 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         imagePaths.add("src/resources/CloseButtonNoHover.png");
         imagePaths.add("src/resources/CloseButtonHover.png");
         images = loader.loadImages(imagePaths);
+        images = Calculator.toCompatibleImages(images);
+        
         loadSubimages();
         soundPaths.add("src/resources/mouseClick.wav");
         sounds = loader.loadSounds(soundPaths);

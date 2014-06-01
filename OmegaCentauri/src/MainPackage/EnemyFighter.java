@@ -17,8 +17,9 @@ public class EnemyFighter extends EnemyShip {
 
         imagePaths.add("src/resources/EnemyShip.png");
         images = mediaLoader.loadImages(imagePaths);
+        images = Calculator.toCompatibleImages(images);
         activeImage = images.get(0);
-
+        
         setUpHitbox(cameraLocation);
 
         soundPaths.add("src/resources/Pulse.wav");
