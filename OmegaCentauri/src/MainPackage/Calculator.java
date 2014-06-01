@@ -104,7 +104,7 @@ public class Calculator {
         
         for (int i = 0; i < images.size(); i++)
         {
-            BufferedImage tempImage = config.createCompatibleImage(images.get(i).getWidth(), images.get(i).getHeight());
+            BufferedImage tempImage = config.createCompatibleImage(images.get(i).getWidth(), images.get(i).getHeight(), images.get(i).getTransparency());
             Graphics2D g2d = tempImage.createGraphics();
             
             g2d.drawImage(images.get(i), 0, 0, null);
