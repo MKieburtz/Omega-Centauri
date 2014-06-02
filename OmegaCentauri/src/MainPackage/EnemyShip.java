@@ -30,19 +30,46 @@ public abstract class EnemyShip extends Ship {
         double angle = Calculator.getAngleBetweenTwoPoints(playerLocation, location);
 
         //System.out.println(angle);
-        RotateToPlayer(angle);
+        
 
-        if (distance < 500 && Math.abs((360 - angle) - faceAngle) < 45 && canshoot) {
-            shoot(cameraLocation);
+        if (hull > 30)
+        {
+            RotateToPlayer(angle);
+            if (distance < 500 && Math.abs((360 - angle) - faceAngle) < 45 && canshoot) {
+                shoot(cameraLocation);
+            }
+            if (distance > 200) {
+                 move(ShipState.Thrusting);
+            } else {
+                move(ShipState.Drifting);
+            }
         }
-
-        if (distance > 200) {
-            move(ShipState.Thrusting);
-        } else {
-            move(ShipState.Drifting);
+        else{
+            RotateFromPlayer(angle);
+            if (distance < 500) {
+                move(ShipState.Thrusting);
+            } else {
+                move(ShipState.Drifting);
+            }
         }
     }
 
+    protected void RotateFromPlayer(double angle) {
+        double targetAngle = 0 + angle;
+        
+        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, targetAngle);
+        
+        if (distances[0] < distances[1]) {
+            if (distances[0] > angleIcrement) {
+                rotate(ShipState.TurningLeft);
+            }
+        } else {
+            if (distances[1] > angleIcrement) {
+                rotate(ShipState.TurningRight);
+            }
+        }
+    }
+    
     protected void RotateToPlayer(double angle) {
 
         double targetAngle = 360 - angle;
