@@ -108,10 +108,9 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             if (s.getBoundingRect().intersects(screenRect))
                 s.draw(g2d);
         }
-        g2d.setColor(Color.CYAN);
-        g2d.drawLine(0, size.y - 114, size.x, size.y - 114);
+        
         g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, size.y - 112, size.x, size.y - 112);
+        g2d.fillRect(0, size.y - 100, size.x, size.y - 100);
        
         g2d.setColor(Color.RED);
                 
@@ -121,21 +120,23 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         
         if(startHover)
         {
-            g2d.drawImage(images.get(STARTHOVER), size.x / 2 - images.get(STARTHOVER).getWidth() / 2, size.y - 13 - images.get(START).getHeight() * 2 + 100, null);
+            g2d.drawImage(images.get(STARTHOVER), startRectangle.x, startRectangle.y, null);
         } else {
-            g2d.drawImage(images.get(START), size.x / 2 - images.get(START).getWidth() / 2, size.y - 13 - images.get(START).getHeight() * 2 + 100, null);
+            g2d.drawImage(images.get(START), startRectangle.x, startRectangle.y, null);
         }
         
         //System.out.println(images.get(CLOSEHOVER).getHeight());
         if (closeHover)
         {
-            g2d.drawImage(images.get(CLOSEHOVER), size.x - images.get(CLOSEHOVER).getWidth() - 30, 
-                size.y - 13 - images.get(CLOSEHOVER).getHeight() * 2 + 100, null);
+            g2d.drawImage(images.get(CLOSEHOVER), closeRectangle.x, closeRectangle.y, null);
         } else{
-            g2d.drawImage(images.get(CLOSENOHOVER), size.x - 30 - images.get(CLOSENOHOVER).getWidth(), 
-                size.y - 13 - images.get(CLOSENOHOVER).getHeight() * 2 + 100, null);
+            g2d.drawImage(images.get(CLOSENOHOVER), closeRectangle.x, closeRectangle.y, null);
         }
-                        
+        
+        g2d.setColor(Color.CYAN);
+        g2d.drawLine(0, size.y - 100, size.x, size.y - 100);     
+        
+//        g2d.setColor(Color.RED);
 //        g2d.draw(startRectangle);
 //        g2d.draw(closeRectangle);
         
@@ -220,9 +221,10 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     
     private void setRects()
     {
-        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 13 - images.get(START).getHeight() * 2 + 100, images.get(START).getWidth(), images.get(START).getHeight());
+        
+        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 13 - images.get(START).getHeight() * 2 + 25, images.get(START).getWidth(), images.get(START).getHeight());
         closeRectangle = new Rectangle(size.x - images.get(CLOSEHOVER).getWidth() - 30, 
-                size.y - 13 - images.get(CLOSEHOVER).getHeight() * 2 + 100, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
+                size.y - 13 - images.get(CLOSEHOVER).getHeight() * 2 + 25, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
         screenRect.setBounds(0, 0, size.x, size.y);
     }
 }
