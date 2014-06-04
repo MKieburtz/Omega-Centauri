@@ -532,13 +532,13 @@ public class OmegaCentauri extends Game implements GameStartListener {
                                 additionalTime = Math.abs(sleeptime - (startTime - endtime));
                             
                             //System.out.println(additionalTime);
-                            
                             gameUpdate();
                             updates++;
 
                             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                                     FPS, stars, camera, Version, UPS, paused);
                             framesDrawn++;
+                            Toolkit.getDefaultToolkit().sync();
 
                             if (!OmegaCentauri.this.hasFocus()) {
                                 paused = true;
