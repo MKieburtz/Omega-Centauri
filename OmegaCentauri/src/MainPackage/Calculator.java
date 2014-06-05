@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.Transparency;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -104,7 +105,7 @@ public class Calculator {
         
         for (int i = 0; i < images.size(); i++)
         {
-            BufferedImage tempImage = config.createCompatibleImage(images.get(i).getWidth(), images.get(i).getHeight(), images.get(i).getTransparency());
+            BufferedImage tempImage = config.createCompatibleImage(images.get(i).getWidth(), images.get(i).getHeight(), System.getProperty("os.name").contains("OS X") ? Transparency.TRANSLUCENT : images.get(i).getTransparency());
             Graphics2D g2d = tempImage.createGraphics();
             
             g2d.drawImage(images.get(i), 0, 0, null);

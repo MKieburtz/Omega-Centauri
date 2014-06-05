@@ -33,6 +33,7 @@ public class Renderer {
    GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     
     BufferedImage drawingImage = config.createCompatibleImage(1, 1);
+    boolean isMac;
     
     public Renderer() {
 
@@ -52,6 +53,8 @@ public class Renderer {
         mainFont = fonts.get(0);
         dataFont = fonts.get(1);
         
+        isMac = System.getProperty("os.name").contains("OS X");
+        
         images = Calculator.toCompatibleImages(images);
     }
 
@@ -60,7 +63,11 @@ public class Renderer {
 
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
         {
-            drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y);
+            if (isMac)
+                drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y, Transparency.TRANSLUCENT);
+            else
+                drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y);
+
             System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
         }
         
