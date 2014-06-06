@@ -9,6 +9,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public abstract class EnemyShip extends Ship {
@@ -91,16 +92,22 @@ public abstract class EnemyShip extends Ship {
     public void shoot(Point2D.Double cameraLocation) {
         // playSound(0);
 
+        Random rand = new Random();
+        
+        double angle = faceAngle + rand.nextInt(20) - 10;
+        
         Point2D.Double ShotStartingVel
-                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                        movementVelocity.y + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
+                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle - 90) * 20,
+                        movementVelocity.y + Calculator.CalcAngleMoveY(angle - 90) * 20);
 
-        Point2D.Double ShotStartingPos = new Point2D.Double(Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 5
-                + Calculator.CalcAngleMoveX(faceAngle - 90) * 20,
-                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 10 + Calculator.CalcAngleMoveY(faceAngle - 90) * 20);
+        Point2D.Double ShotStartingPos = new Point2D.Double(
+                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
+                + Calculator.CalcAngleMoveX(angle - 90) * 20,
+                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle - 90) * 20);
 
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, faceAngle, true, cameraLocation));
+        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, true, cameraLocation)); // enemies ovveride
         canshoot = false;
+
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }
 
