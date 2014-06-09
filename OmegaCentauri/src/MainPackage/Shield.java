@@ -51,8 +51,6 @@ public class Shield {
             
             
             g2d.setComposite(comp);
-            
-            transform.rotate(Math.toRadians(angle), screenLocationMiddle.x, screenLocationMiddle.y);
 
             transform.translate(instanceLocation.x + 1 - cameraLocation.x, instanceLocation.y - cameraLocation.y);
             
