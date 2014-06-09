@@ -20,7 +20,7 @@ public abstract class Ship implements CollisionListener {
     protected int fuel;
     protected int power;
     protected Type type;
-    protected double faceAngle = 360.0;
+    protected double faceAngle = 90;
     protected double moveAngle = 0.0;
     protected final int collisionDamage = 50;
     protected Point2D.Double location;
@@ -78,7 +78,7 @@ public abstract class Ship implements CollisionListener {
         AffineTransform transform = (AffineTransform) original.clone();
 
         transform.setToIdentity();
-
+        
         transform.rotate(Math.toRadians(faceAngle),
                 Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
                 Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
@@ -93,10 +93,8 @@ public abstract class Ship implements CollisionListener {
 
     protected void move(ShipState state) {
 
-        moveAngle = faceAngle - 90;
-
         if (state == ShipState.Thrusting) {
-            movementVelocity.x += Calculator.CalcAngleMoveX(moveAngle) * acceleration;
+            movementVelocity.x += Calculator.CalcAngleMoveX(faceAngle) * acceleration;
 
             if (movementVelocity.x > maxVel) {
                 movementVelocity.x = maxVel;
@@ -104,7 +102,7 @@ public abstract class Ship implements CollisionListener {
                 movementVelocity.x = -maxVel;
             }
 
-            movementVelocity.y += Calculator.CalcAngleMoveY(moveAngle) * acceleration;
+            movementVelocity.y += Calculator.CalcAngleMoveY(faceAngle) * acceleration;
 
             if (movementVelocity.y > maxVel) {
                 movementVelocity.y = maxVel;
@@ -143,13 +141,13 @@ public abstract class Ship implements CollisionListener {
         double angle = faceAngle + rand.nextInt(20) - 10;
         
         Point2D.Double ShotStartingVel
-                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle - 90) * 20,
-                        movementVelocity.y + Calculator.CalcAngleMoveY(angle - 90) * 20);
+                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
+                        movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
 
         Point2D.Double ShotStartingPos = new Point2D.Double(
                 Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
-                + Calculator.CalcAngleMoveX(angle - 90) * 20,
-                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle - 90) * 20);
+                + Calculator.CalcAngleMoveX(angle) * 20,
+                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle) * 20);
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, false, cameraLocation)); // enemies ovveride
         canshoot = false;

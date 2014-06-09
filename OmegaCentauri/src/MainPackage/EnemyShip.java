@@ -20,7 +20,7 @@ public abstract class EnemyShip extends Ship {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
     }
 
-    protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation) {
+    protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation, double playerAngle) {
         // main AI goes here
 
         // move in the direction of the ship if it is far away
@@ -28,7 +28,7 @@ public abstract class EnemyShip extends Ship {
         double distance = Calculator.getDistance(location, playerLocation);
 
         double angle = Calculator.getAngleBetweenTwoPoints(playerLocation, location);
-
+        
         //System.out.println(angle);
         if (hull > 30) {
             RotateToPlayer(angle);
@@ -42,7 +42,7 @@ public abstract class EnemyShip extends Ship {
             }
         } else {
             RotateFromPlayer(angle);
-            if (distance < 500) {
+            if (distance > 500) {
                 move(ShipState.Thrusting);
             } else {
                 move(ShipState.Drifting);
@@ -97,13 +97,13 @@ public abstract class EnemyShip extends Ship {
         double angle = faceAngle + rand.nextInt(20) - 10;
         
         Point2D.Double ShotStartingVel
-                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle - 90) * 20,
-                        movementVelocity.y + Calculator.CalcAngleMoveY(angle - 90) * 20);
+                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
+                        movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
 
         Point2D.Double ShotStartingPos = new Point2D.Double(
                 Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
-                + Calculator.CalcAngleMoveX(angle - 90) * 20,
-                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle - 90) * 20);
+                + Calculator.CalcAngleMoveX(angle) * 20,
+                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle) * 20);
 
         shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, true, cameraLocation)); // enemies ovveride
         canshoot = false;

@@ -288,7 +288,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 player.shoot(camera.getLocation());
             }
             for (EnemyShip enemyShip : enemyShips) {
-                enemyShip.update(player.getLocation(), camera.getLocation());
+                enemyShip.update(player.getLocation(), camera.getLocation(), player.getAngle());
             }
 
             allShots.clear();
@@ -534,6 +534,9 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             //System.out.println(additionalTime);
                             gameUpdate();
                             updates++;
+                            
+                            if (!OmegaCentauri.this.hasFocus())
+                                System.out.println("no focus!");
 
                             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                                     FPS, stars, camera, Version, UPS, paused);
