@@ -39,7 +39,7 @@ public class Calculator {
      */ 
     static double angle;
     public static double getAngleBetweenTwoPoints(Point2D.Double pt1, Point2D.Double pt2) {
-        angle = (double) Math.toDegrees(Math.atan2(pt2.x - pt1.x, pt2.y - pt1.y));
+        angle = (double) Math.toDegrees(Math.atan2(pt2.x - pt1.x, pt2.y - pt1.y)) - 90;
 
         if (angle < 0) {
             angle += 360;
@@ -53,23 +53,23 @@ public class Calculator {
             return hitbox1.intersects(hitbox2);
     }
     
-    public static double[] getDistancesBetweenAngles(double angle1, double angle2)
+    public static double[] getDistancesBetweenAngles(double currentAngle, double targetAngle) // decides whether an angle or coterminal angle is faster
     {
-        if (angle1 > angle2) {
-            if (angle1 + 180 >= 360) // CASE 1
+        if (currentAngle > targetAngle) {
+            if (currentAngle + 180 >= 360) // CASE 1
             {
-                return new double[] { Math.abs((360 - angle1) + angle2), Math.abs(angle1 - angle2) };
-            } else if (angle1 + 180 < 360) // CASE 2
+                return new double[] { Math.abs((360 - currentAngle) + targetAngle), Math.abs(currentAngle - targetAngle) };
+            } else if (currentAngle + 180 < 360) // CASE 2
             {
-                return new double[] { Math.abs((360 - angle2) + angle1), Math.abs(angle2 - angle1) };
+                return new double[] { Math.abs((360 - targetAngle) + currentAngle), Math.abs(targetAngle - currentAngle) };
             }
-        } else if (angle2 > angle1) {
-            if (angle2 + 180 >= 360) // CASE 3
+        } else if (targetAngle > currentAngle) {
+            if (targetAngle + 180 >= 360) // CASE 3
             {
-                return new double[] { Math.abs(angle2 - angle1), Math.abs(360 - (angle2 - angle1)) };
-            } else if (angle2 + 180 < 360) // CASE 4
+                return new double[] { Math.abs(targetAngle - currentAngle), Math.abs(360 - (targetAngle - currentAngle)) };
+            } else if (targetAngle + 180 < 360) // CASE 4
             {
-                return new double[] { Math.abs(angle2 - angle1), Math.abs(360 - (angle2 - angle1)) };
+                return new double[] { Math.abs(targetAngle - currentAngle), Math.abs(360 - (targetAngle - currentAngle)) };
             }
         }
         

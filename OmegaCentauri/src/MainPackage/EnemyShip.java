@@ -27,13 +27,14 @@ public abstract class EnemyShip extends Ship {
         // and shoot if it is in range.
         double distance = Calculator.getDistance(location, playerLocation);
 
-        double angle = Calculator.getAngleBetweenTwoPoints(playerLocation, location);
-        System.out.println(angle);
-        shoot(cameraLocation);
+        double angle = Calculator.getAngleBetweenTwoPoints(location, playerLocation);
+        //System.out.println(angle + " " + faceAngle);
+        
         //System.out.println(angle);
         if (hull > 30) {
             RotateToPlayer(angle);
-            if (distance < 500 && Math.abs((360 - angle) - faceAngle) < 45 && canshoot) {
+            //System.out.println(Math.abs((360 - angle + 90) - faceAngle));
+            if (distance < 500 && Math.abs((angle + 90) - faceAngle) < 45 && canshoot) {
                 shoot(cameraLocation);
             }
             if (distance > 200) {
@@ -71,19 +72,22 @@ public abstract class EnemyShip extends Ship {
 
     protected void RotateToPlayer(double angle) {
 
-        double targetAngle = 360 - angle;
-
-        double[] distances = Calculator.getDistancesBetweenAngles(360 - faceAngle, targetAngle);
-
+        double targetAngle = angle;
+        
+        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, targetAngle);
+        
+        System.out.println(faceAngle + " " + targetAngle + " " + distances[0] + " " + distances[1]);
+        
         //System.out.println(dist1 + " " + dist2 + " " + targetAngle + " " + faceAngle);
-        if (Math.abs((360 - targetAngle) - 360 - faceAngle) >= 5) {
+        //System.out.println(distances[0] + " " + distances[1]);
+        if (Math.abs(targetAngle - faceAngle) >= 5) {
             if (distances[0] < distances[1]) {
                 if (distances[0] > angleIcrement) {
-                    rotate(ShipState.TurningRight);
+                    rotate(ShipState.TurningLeft);
                 }
             } else {
                 if (distances[1] > angleIcrement) {
-                    rotate(ShipState.TurningLeft);
+                    rotate(ShipState.TurningRight);
                 }
             }
         }

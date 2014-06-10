@@ -724,7 +724,6 @@ public class OmegaCentauri extends Game implements GameStartListener {
 //        System.setProperty("sun.java2d.ddscale", "true");
 //        System.setProperty("sun.java2d.translaccel", "true");
         
-        
         new OmegaCentauri();
     }
 }
