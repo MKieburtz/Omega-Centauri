@@ -19,6 +19,8 @@ public class Calculator {
      * calculate stuff
      */
 
+    private Calculator(){}
+    
 
     public static double CalcAngleMoveX(double angle) {
         return Math.cos(Math.toRadians(angle));
@@ -55,22 +57,13 @@ public class Calculator {
     
     public static double[] getDistancesBetweenAngles(double currentAngle, double targetAngle) // decides whether an angle or coterminal angle is faster
     {
-        if (currentAngle > targetAngle) {
-            if (currentAngle + 180 >= 360) // CASE 1
-            {
-                return new double[] { Math.abs((360 - currentAngle) + targetAngle), Math.abs(currentAngle - targetAngle) };
-            } else if (currentAngle + 180 < 360) // CASE 2
-            {
-                return new double[] { Math.abs((360 - targetAngle) + currentAngle), Math.abs(targetAngle - currentAngle) };
-            }
-        } else if (targetAngle > currentAngle) {
-            if (targetAngle + 180 >= 360) // CASE 3
-            {
-                return new double[] { Math.abs(targetAngle - currentAngle), Math.abs(360 - (targetAngle - currentAngle)) };
-            } else if (targetAngle + 180 < 360) // CASE 4
-            {
-                return new double[] { Math.abs(targetAngle - currentAngle), Math.abs(360 - (targetAngle - currentAngle)) };
-            }
+        if (targetAngle > currentAngle)
+        {
+            return new double[] {targetAngle - currentAngle, 360 - (targetAngle - currentAngle)};
+            
+        } else if (currentAngle > targetAngle)
+        {
+            return new double[] {360 - (currentAngle - targetAngle), currentAngle - targetAngle };
         }
         
         return new double[] {0.0, 360};
