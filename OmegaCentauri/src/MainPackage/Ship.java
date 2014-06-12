@@ -76,10 +76,10 @@ public abstract class Ship implements CollisionListener {
     public void draw(Graphics2D g2d, Camera camera) {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = (AffineTransform) original.clone();
-
+        
         transform.setToIdentity();
         
-        transform.rotate(Math.toRadians(faceAngle),
+        transform.rotate(Math.toRadians(360 - faceAngle),
                 Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
                 Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
 
@@ -94,7 +94,7 @@ public abstract class Ship implements CollisionListener {
     protected void move(ShipState state) {
 
         if (state == ShipState.Thrusting) {
-            movementVelocity.x += Calculator.CalcAngleMoveX(faceAngle) * acceleration;
+            movementVelocity.x += Calculator.CalcAngleMoveX(360 - faceAngle) * acceleration;
 
             if (movementVelocity.x > maxVel) {
                 movementVelocity.x = maxVel;
@@ -102,7 +102,7 @@ public abstract class Ship implements CollisionListener {
                 movementVelocity.x = -maxVel;
             }
 
-            movementVelocity.y += Calculator.CalcAngleMoveY(faceAngle) * acceleration;
+            movementVelocity.y += Calculator.CalcAngleMoveY(360 - faceAngle) * acceleration;
 
             if (movementVelocity.y > maxVel) {
                 movementVelocity.y = maxVel;
@@ -134,11 +134,11 @@ public abstract class Ship implements CollisionListener {
     }
 
     public void shoot(Point2D.Double cameraLocation) {
-        playSound(0);
+        //playSound(0);
 
         Random rand = new Random();
         
-        double angle = faceAngle + rand.nextInt(20) - 10;
+        double angle = 360 - faceAngle + rand.nextInt(20) - 10;
         
         Point2D.Double ShotStartingVel
                 = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
@@ -161,14 +161,14 @@ public abstract class Ship implements CollisionListener {
 
     protected void updateAngle(ShipState state) {
         if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight) {
-            faceAngle += angularVelocity;
-            if (faceAngle > 360) {
-                faceAngle = faceAngle - 360;
-            }
-        } else if (state == ShipState.TurningLeft || state == ShipState.AngleDriftingLeft) {
             faceAngle -= angularVelocity;
             if (faceAngle <= 0) {
                 faceAngle = 360 + faceAngle;
+            }
+        } else if (state == ShipState.TurningLeft || state == ShipState.AngleDriftingLeft) {
+            faceAngle += angularVelocity;
+            if (faceAngle >= 360) {
+                faceAngle = faceAngle - 360;
             }
         }
 

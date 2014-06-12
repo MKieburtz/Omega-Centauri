@@ -535,8 +535,8 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             gameUpdate();
                             updates++;
                             
-                            if (!OmegaCentauri.this.hasFocus())
-                                System.out.println("no focus!");
+//                            if (!OmegaCentauri.this.hasFocus())
+//                                System.out.println("no focus!");
 
                             renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                                     FPS, stars, camera, Version, UPS, paused);
@@ -723,7 +723,6 @@ public class OmegaCentauri extends Game implements GameStartListener {
 //        System.setProperty("sun.java2d.opengl", "true");
 //        System.setProperty("sun.java2d.ddscale", "true");
 //        System.setProperty("sun.java2d.translaccel", "true");
-        
         
         new OmegaCentauri();
     }
