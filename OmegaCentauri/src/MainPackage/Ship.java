@@ -76,7 +76,7 @@ public abstract class Ship implements CollisionListener {
     public void draw(Graphics2D g2d, Camera camera) {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = (AffineTransform) original.clone();
-
+        
         transform.setToIdentity();
         
         transform.rotate(Math.toRadians(360 - faceAngle),
@@ -134,7 +134,7 @@ public abstract class Ship implements CollisionListener {
     }
 
     public void shoot(Point2D.Double cameraLocation) {
-        playSound(0);
+        //playSound(0);
 
         Random rand = new Random();
         
@@ -162,13 +162,13 @@ public abstract class Ship implements CollisionListener {
     protected void updateAngle(ShipState state) {
         if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight) {
             faceAngle -= angularVelocity;
-            if (faceAngle > 360) {
-                faceAngle = faceAngle - 360;
+            if (faceAngle <= 0) {
+                faceAngle = 360 + faceAngle;
             }
         } else if (state == ShipState.TurningLeft || state == ShipState.AngleDriftingLeft) {
             faceAngle += angularVelocity;
-            if (faceAngle <= 0) {
-                faceAngle = 360 + faceAngle;
+            if (faceAngle >= 360) {
+                faceAngle = faceAngle - 360;
             }
         }
 

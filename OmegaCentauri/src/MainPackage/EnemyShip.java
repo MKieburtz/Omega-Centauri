@@ -30,10 +30,10 @@ public abstract class EnemyShip extends Ship {
         double angle = Calculator.getAngleBetweenTwoPoints(location, playerLocation);
         //System.out.println(angle + " " + faceAngle);
         
-        //System.out.println(angle);
+        System.out.println(angle);
         if (hull > 30) {
             RotateToPlayer(angle);
-            //System.out.println(Math.abs((360 - angle + 90) - faceAngle));
+            
             if (distance < 500 && Math.abs((angle + 90) - faceAngle) < 45 && canshoot) {
                 shoot(cameraLocation);
             }
@@ -76,7 +76,7 @@ public abstract class EnemyShip extends Ship {
         
         double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, targetAngle);
         
-        System.out.println(faceAngle + " " + targetAngle + " " + distances[0] + " " + distances[1]);
+        //System.out.println(faceAngle + " " + targetAngle + " " + distances[0] + " " + distances[1]);
         
         //System.out.println(dist1 + " " + dist2 + " " + targetAngle + " " + faceAngle);
         //System.out.println(distances[0] + " " + distances[1]);
