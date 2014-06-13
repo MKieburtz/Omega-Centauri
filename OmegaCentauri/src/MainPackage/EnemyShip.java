@@ -21,6 +21,7 @@ public abstract class EnemyShip extends Ship {
     }
 
     protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation, double playerAngle) {
+        shield.regenRate = .05;
         // main AI goes here
 
         // move in the direction of the ship if it is far away
@@ -49,7 +50,10 @@ public abstract class EnemyShip extends Ship {
             } else {
                 move(ShipState.Thrusting);
             }
-        }
+            
+            }
+        if (shield.getHealth() < 100) { shield.setHealth(shield.getHealth() + shield.regenRate);        
+            }
     }
 
     protected void RotateFromPlayer(double angle) {

@@ -281,7 +281,7 @@ public abstract class Ship implements CollisionListener {
         shots.remove(shotToRemove);
     }
 
-    public int getShieldHealth() {
+    public double getShieldHealth() {
         return shield.getHealth();
     }
 
@@ -289,7 +289,7 @@ public abstract class Ship implements CollisionListener {
         return hull;
     }
 
-    public void reduceHull(int damage) {
+    public void reduceHull(double damage) {
         hull -= damage;
     }
 
@@ -311,8 +311,8 @@ public abstract class Ship implements CollisionListener {
             }
             else
             {
-                int healthToLoseShield = collisionDamage - Math.abs(shield.getHealth() - collisionDamage);
-                int healthToLoseHull = Math.abs(shield.getHealth() - collisionDamage);
+                double healthToLoseShield = collisionDamage - Math.abs(shield.getHealth() - collisionDamage);
+                double healthToLoseHull = Math.abs(shield.getHealth() - collisionDamage);
                 
                 if (healthToLoseShield > 0)
                     shield.activate(healthToLoseShield);
