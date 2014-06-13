@@ -138,7 +138,7 @@ public abstract class Ship implements CollisionListener {
 
         Random rand = new Random();
         
-        double angle = 360 - faceAngle + rand.nextInt(20) - 10;
+        double angle = 360 - faceAngle + rand.nextInt(10) - 5;
         
         Point2D.Double ShotStartingVel
                 = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
