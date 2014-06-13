@@ -7,6 +7,7 @@ package MainPackage;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
@@ -14,21 +15,27 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class EnemyShip extends Ship {
 
+    private Point2D.Double playerLocation = new Point2D.Double(0, 0);
+    private Point dimensions = new Point(0,0);
+    
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) // delegate assigning images to the types of ships
     {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
     }
 
-    protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation, double playerAngle) {
+    protected void update(Player player, Point2D.Double cameraLocation) {
         shield.regenRate = .05;
         // main AI goes here
-
+        this.playerLocation = player.getLocation();
+        this.dimensions.x = player.getActiveImage().getWidth();
+        this.dimensions.y = player.getActiveImage().getHeight();
+        
         // move in the direction of the ship if it is far away
         // and shoot if it is in range.
-        double distance = Calculator.getDistance(location, playerLocation);
+        double distance = Calculator.getDistance(location, player.getLocation());
 
-        double angle = Calculator.getAngleBetweenTwoPoints(location, playerLocation);
+        double angle = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
         //System.out.println(angle + " " + faceAngle);
         
         //System.out.println(angle);
@@ -125,6 +132,16 @@ public abstract class EnemyShip extends Ship {
     @Override
     public void draw(Graphics2D g2d, Camera camera) {
         super.draw(g2d, camera);
+        
+        Point2D.Double middleOfPlayer = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), playerLocation, dimensions.x, dimensions.y);
+        Point2D.Double middleOfSelf = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
+        
+        g2d.setColor(Color.red);
+        g2d.drawLine((int)(middleOfPlayer.x - camera.getLocation().x), (int)(middleOfPlayer.y - camera.getLocation().y),
+                (int)(middleOfSelf.x - camera.getLocation().x), (int)(middleOfSelf.y - camera.getLocation().y));
+        
+        g2d.drawString("ϴ", 100, 100);
+        
         shield.draw(g2d, camera.getLocation(), location);
 
         Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),

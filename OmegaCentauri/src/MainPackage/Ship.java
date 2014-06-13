@@ -333,4 +333,9 @@ public abstract class Ship implements CollisionListener {
     public boolean isColliding() {
         return colliding;
     }
+    
+    public BufferedImage getActiveImage()
+    {
+        return activeImage;
+    }
 }
