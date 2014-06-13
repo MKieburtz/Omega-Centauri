@@ -24,7 +24,8 @@ public class Shield {
     private int opacity = 0;
     private double[] scaling = new double[2];
     private Point2D.Double screenLocationMiddle = new Point2D.Double();
-    private int health;
+    private double health;
+    double regenRate;
 
     public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation, boolean enemy, Point size) {
         this.angle = angle;
@@ -62,14 +63,19 @@ public class Shield {
         }
     }
 
-    public void activate(int damage) {
+    public void activate(double damage) {
         opacity = 100;
         health -= damage;
     }
     
-    public int getHealth()
+    public double getHealth()
     {
         return health;
+    }
+    
+    public void setHealth(double x)
+    {
+        Shield.this.health = x;
     }
     
     public boolean isActive()
