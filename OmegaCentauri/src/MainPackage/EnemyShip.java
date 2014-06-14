@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -140,7 +141,15 @@ public abstract class EnemyShip extends Ship {
         g2d.drawLine((int)(middleOfPlayer.x - camera.getLocation().x), (int)(middleOfPlayer.y - camera.getLocation().y),
                 (int)(middleOfSelf.x - camera.getLocation().x), (int)(middleOfSelf.y - camera.getLocation().y));
         
-        g2d.drawString("ϴ", 100, 100);
+        g2d.drawLine((int)(middleOfPlayer.x - camera.getLocation().x), (int)(middleOfPlayer.y - camera.getLocation().y),
+                (int)(middleOfSelf.x - camera.getLocation().x), (int)(middleOfPlayer.y - camera.getLocation().y));
+        
+        g2d.drawLine((int)(middleOfSelf.x - camera.getLocation().x), (int)(middleOfSelf.y - camera.getLocation().y),
+                (int)(middleOfSelf.x - camera.getLocation().x), (int)(middleOfPlayer.y - camera.getLocation().y));
+        
+        DecimalFormat f = new DecimalFormat("0.#");
+        
+        g2d.drawString("\u03F4 = " + f.format(Calculator.getAngleBetweenTwoPoints(location, playerLocation)), 100, 100);
         
         shield.draw(g2d, camera.getLocation(), location);
 
