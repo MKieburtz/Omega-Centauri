@@ -21,6 +21,7 @@ public abstract class EnemyShip extends Ship {
     private Point dimensions = new Point(0,0);
     private ArrayList<EnemyShip> ships = new ArrayList<EnemyShip>();
     private ArrayList<Point2D.Double> locations = new ArrayList<Point2D.Double>();
+    private double targetingAngle = 0;
     
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) // delegate assigning images to the types of ships
@@ -43,6 +44,7 @@ public abstract class EnemyShip extends Ship {
         double distance = Calculator.getDistance(location, player.getLocation());
 
         double angle = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
+        targetingAngle = angle;
         //System.out.println(angle + " " + faceAngle);
         
         //System.out.println(angle);
@@ -91,6 +93,7 @@ public abstract class EnemyShip extends Ship {
     protected void RotateToPlayer(double angle) {
 
         double targetAngle = angle;
+        //targetingAngle = targetAngle;
         
         double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, targetAngle);
         
@@ -148,7 +151,7 @@ public abstract class EnemyShip extends Ship {
             locations.set(i, ships.get(i).getLocation());
         }
         
-        g2d.setColor(Calculator.getDistance(playerLocation, location) < 150 ? Color.RED : Color.GREEN);
+        g2d.setColor(Calculator.getDistance(locations.get(0), locations.get(1)) < 150 ? Color.RED : Color.GREEN);
         g2d.drawLine((int)(locations.get(0).x - camera.getLocation().x), (int)(locations.get(0).y - camera.getLocation().y),
                 (int)(locations.get(1).x - camera.getLocation().x), (int)(locations.get(1).y - camera.getLocation().y));
         
@@ -160,12 +163,17 @@ public abstract class EnemyShip extends Ship {
         g2d.drawLine((int)(locations.get(1).x - camera.getLocation().x), (int)(locations.get(1).y - camera.getLocation().y),
                 (int)(locations.get(1).x - camera.getLocation().x), (int)(locations.get(0).y - camera.getLocation().y));
         
+        g2d.setColor(Color.BLUE);
+        
+        g2d.drawLine((int)(location.x - camera.getLocation().x), (int)(location.y - camera.getLocation().y),
+                (int)((middleOfSelf.x + Math.cos(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().x),
+                (int)((middleOfSelf.y - Math.sin(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().y));
         
         DecimalFormat f = new DecimalFormat("0.#");
         
         g2d.setColor(Color.BLUE);
         
-        g2d.drawString("\u03F4 = " + f.format(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1)) % 90),
+        g2d.drawString("\u03F4 = " + f.format(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1))),
                 (int)((locations.get(0).x - camera.getLocation().x) + Math.cos(Math.toRadians(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1)))) * 70),
                 (int)((locations.get(0).y - camera.getLocation().y) + Math.sin(Math.toRadians(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1)))) * 70));
         
