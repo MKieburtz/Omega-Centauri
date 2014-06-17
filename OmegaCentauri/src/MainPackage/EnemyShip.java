@@ -49,7 +49,7 @@ public abstract class EnemyShip extends Ship {
         
         //System.out.println(angle);
         if (hull > 30) {
-            RotateToPlayer(angle);
+            rotateToAngle(angle);
             
             if (distance < 500 && Math.abs(angle - faceAngle) < 45) {
                 shoot(cameraLocation);
@@ -60,7 +60,7 @@ public abstract class EnemyShip extends Ship {
                 move(ShipState.Drifting);
             }
         } else {
-            RotateFromPlayer(angle);
+            rotateToAngle((angle + 180) % 360);
             if (distance > 500) {
                 move(ShipState.Drifting);
             } else {
@@ -71,38 +71,12 @@ public abstract class EnemyShip extends Ship {
         if (shield.getHealth() < 100) { shield.setHealth(shield.getHealth() + shield.regenRate);        
             }
     }
-
-    protected void RotateFromPlayer(double angle) {
-        double targetAngle = (angle + 180) % 360;
-        //System.out.println(targetAngle + " " + faceAngle);
-        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, targetAngle);
-
-        if (Math.abs(targetAngle - faceAngle) >= 5) {
-            if (distances[0] <= distances[1]) {
-                if (distances[0] > angleIcrement) {
-                    rotate(ShipState.TurningLeft);
-                }
-            } else {
-                if (distances[1] > angleIcrement) {
-                    rotate(ShipState.TurningRight);
-                }
-            }
-        }
-    }
-
-    protected void RotateToPlayer(double angle) {
-
-        double targetAngle = angle;
-        //targetingAngle = targetAngle;
+    
+    protected void rotateToAngle(double angle)
+    {
+        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, angle);
         
-        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, targetAngle);
-        
-        //System.out.println(distances[0] + " " + distances[1] + " " + faceAngle + " " + targetAngle);
-        
-        //System.out.println(faceAngle + " " + targetAngle + " " + distances[0] + " " + distances[1]);
-        
-        //System.out.println(distances[0] + " " + distances[1]);
-        if (Math.abs(targetAngle - faceAngle) >= 5) {
+        if (Math.abs(angle - faceAngle) >= 5) {
             if (distances[0] < distances[1]) {
                 if (distances[0] > angleIcrement) {
                     rotate(ShipState.TurningLeft);
