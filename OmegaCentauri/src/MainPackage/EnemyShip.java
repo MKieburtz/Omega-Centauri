@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
@@ -18,17 +19,17 @@ import java.util.concurrent.TimeUnit;
 public abstract class EnemyShip extends Ship {
 
     private Point2D.Double playerLocation = new Point2D.Double(0, 0);
-    private Point dimensions = new Point(0,0);
-    private ArrayList<EnemyShip> ships = new ArrayList<EnemyShip>();
-    private ArrayList<Point2D.Double> locations = new ArrayList<Point2D.Double>();
+    private Point dimensions = new Point(0, 0);
+    //private ArrayList<EnemyShip> ships = new ArrayList<EnemyShip>();
+    private ArrayList<EnemyShip> others = new ArrayList<EnemyShip>();
+    private boolean incorrectAngle = false;
+
     private double targetingAngle = 0;
-    
+
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) // delegate assigning images to the types of ships
     {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
-        locations.add(new Point2D.Double(0, 0));
-        locations.add(new Point2D.Double(0, 0));
     }
 
     protected void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> enemyShips) {
@@ -37,20 +38,40 @@ public abstract class EnemyShip extends Ship {
         this.playerLocation = player.getLocation();
         this.dimensions.x = player.getActiveImage().getWidth();
         this.dimensions.y = player.getActiveImage().getHeight();
-        this.ships = enemyShips;
-        
+
         // move in the direction of the ship if it is far away
         // and shoot if it is in range.
         double distance = Calculator.getDistance(location, player.getLocation());
 
         double angle = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
-        targetingAngle = angle;
         //System.out.println(angle + " " + faceAngle);
-        
+
         //System.out.println(angle);
+        others = (ArrayList<EnemyShip>) enemyShips.clone();
+        others.remove(this);
+
+        if (!others.isEmpty()) {
+            for (EnemyShip s : others) {
+                if (Calculator.getAngleBetweenTwoPoints(location, s.getLocation()) - faceAngle < 45
+                        && Calculator.getDistance(location, s.getLocation()) < 400) {
+                    if (!incorrectAngle)
+                    {
+                    incorrectAngle = true;
+                    targetingAngle = faceAngle - 45;
+                    }
+                } else {
+                    targetingAngle = angle;
+                    incorrectAngle = false;
+                }
+
+            }
+        } else {
+            targetingAngle = angle;
+        }
+
         if (hull > 30) {
-            rotateToAngle(angle);
-            
+            rotateToAngle(targetingAngle);
+
             if (distance < 500 && Math.abs(angle - faceAngle) < 45) {
                 shoot(cameraLocation);
             }
@@ -60,22 +81,22 @@ public abstract class EnemyShip extends Ship {
                 move(ShipState.Drifting);
             }
         } else {
-            rotateToAngle((angle + 180) % 360);
+            rotateToAngle((targetingAngle + 180) % 360);
             if (distance > 500) {
                 move(ShipState.Drifting);
             } else {
                 move(ShipState.Thrusting);
             }
-            
-            }
-        if (shield.getHealth() < 100) { shield.setHealth(shield.getHealth() + shield.regenRate);        
-            }
+
+        }
+        if (shield.getHealth() < 100) {
+            shield.setHealth(shield.getHealth() + shield.regenRate);
+        }
     }
-    
-    protected void rotateToAngle(double angle)
-    {
+
+    protected void rotateToAngle(double angle) {
         double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, angle);
-        
+
         if (Math.abs(angle - faceAngle) >= 5) {
             if (distances[0] < distances[1]) {
                 if (distances[0] > angleIcrement) {
@@ -106,7 +127,7 @@ public abstract class EnemyShip extends Ship {
                     + Calculator.CalcAngleMoveX(angle) * 20,
                     Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle) * 20);
 
-            shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, true, cameraLocation));
+            //shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, true, cameraLocation));
             canshoot = false;
 
             ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
@@ -116,51 +137,49 @@ public abstract class EnemyShip extends Ship {
     @Override
     public void draw(Graphics2D g2d, Camera camera) {
         super.draw(g2d, camera);
-        
+
         Point2D.Double middleOfPlayer = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), playerLocation, dimensions.x, dimensions.y);
         Point2D.Double middleOfSelf = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
-                
-        for (int i = 0; i < ships.size(); i++) // only for two!
-        {
-            locations.set(i, ships.get(i).getLocation());
+
+        for (EnemyShip s : others) {
+            g2d.setColor(Calculator.getDistance(location, s.getLocation()) < 400 ? Color.RED : Color.GREEN);
+            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
+                    (int) (s.getLocation().x - camera.getLocation().x), (int) (s.getLocation().y - camera.getLocation().y));
+
+            g2d.setColor(Color.YELLOW);
+
+            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
+                    (int) (s.getLocation().x - camera.getLocation().x), (int) (location.y - camera.getLocation().y));
+
+            g2d.drawLine((int) (s.getLocation().x - camera.getLocation().x), (int) (s.getLocation().y - camera.getLocation().y),
+                    (int) (s.getLocation().x - camera.getLocation().x), (int) (location.y - camera.getLocation().y));
+
+            g2d.setColor(Color.BLUE);
+
+            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
+                    (int) ((middleOfSelf.x + Math.cos(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().x),
+                    (int) ((middleOfSelf.y - Math.sin(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().y));
+
+            DecimalFormat f = new DecimalFormat("0.#");
+
+            g2d.setColor(Color.GREEN);
+
+            g2d.drawString("\u03F4 = " + f.format(Calculator.getAngleBetweenTwoPoints(location, s.getLocation())),
+                    (int) ((location.x - camera.getLocation().x) + Math.cos(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()))) * 70),
+                    (int) ((location.y - camera.getLocation().y) + Math.sin(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()))) * 70));
+
+            g2d.setColor(Color.BLUE);
+
+            g2d.drawString("Hypotnuse distance = " + f.format(Calculator.getDistance(location, s.getLocation())), 100, 100);
+
+            double legDistH = Math.cos(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()) % 90)) * Calculator.getDistance(location, s.getLocation());
+            double legDistV = Math.sin(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()) % 90)) * Calculator.getDistance(location, s.getLocation());
+
+            g2d.drawString("Leg distance Horizontal = " + f.format(legDistH), 100, 120);
+
+            g2d.drawString("Leg distance Vertical = " + f.format(legDistV), 100, 140);
         }
-        
-        g2d.setColor(Calculator.getDistance(locations.get(0), locations.get(1)) < 150 ? Color.RED : Color.GREEN);
-        g2d.drawLine((int)(locations.get(0).x - camera.getLocation().x), (int)(locations.get(0).y - camera.getLocation().y),
-                (int)(locations.get(1).x - camera.getLocation().x), (int)(locations.get(1).y - camera.getLocation().y));
-        
-        g2d.setColor(Color.YELLOW);
-        
-        g2d.drawLine((int)(locations.get(0).x - camera.getLocation().x), (int)(locations.get(0).y - camera.getLocation().y),
-                (int)(locations.get(1).x - camera.getLocation().x), (int)(locations.get(0).y - camera.getLocation().y));
-        
-        g2d.drawLine((int)(locations.get(1).x - camera.getLocation().x), (int)(locations.get(1).y - camera.getLocation().y),
-                (int)(locations.get(1).x - camera.getLocation().x), (int)(locations.get(0).y - camera.getLocation().y));
-        
-        g2d.setColor(Color.BLUE);
-        
-        g2d.drawLine((int)(location.x - camera.getLocation().x), (int)(location.y - camera.getLocation().y),
-                (int)((middleOfSelf.x + Math.cos(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().x),
-                (int)((middleOfSelf.y - Math.sin(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().y));
-        
-        DecimalFormat f = new DecimalFormat("0.#");
-        
-        g2d.setColor(Color.BLUE);
-        
-        g2d.drawString("\u03F4 = " + f.format(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1))),
-                (int)((locations.get(0).x - camera.getLocation().x) + Math.cos(Math.toRadians(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1)))) * 70),
-                (int)((locations.get(0).y - camera.getLocation().y) + Math.sin(Math.toRadians(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1)))) * 70));
-        
-        g2d.drawString("Hypotnuse distance = " + f.format(Calculator.getDistance(locations.get(0), locations.get(1))), 100, 100);
-        
-        double legDistH = Math.cos(Math.toRadians(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1)) % 90)) * Calculator.getDistance(locations.get(0), locations.get(1));
-        double legDistV = Math.sin(Math.toRadians(Calculator.getAngleBetweenTwoPoints(locations.get(0), locations.get(1)) % 90)) * Calculator.getDistance(locations.get(0), locations.get(1));
-        
-        g2d.drawString("Leg distance Horizontal = " + f.format(legDistH), 100, 120);
-        
-        g2d.drawString("Leg distance Vertical = " + f.format(legDistV), 100, 140);
-       
-        
+
         shield.draw(g2d, camera.getLocation(), location);
 
         Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),

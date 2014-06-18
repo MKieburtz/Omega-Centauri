@@ -338,4 +338,9 @@ public abstract class Ship implements CollisionListener {
     {
         return activeImage;
     }
+    
+    public double getFaceAngle()
+    {
+        return faceAngle;
+    }
 }
