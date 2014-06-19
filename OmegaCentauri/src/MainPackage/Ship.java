@@ -303,7 +303,7 @@ public abstract class Ship implements CollisionListener {
 
     public boolean setColliding(boolean colliding) {
         if (!this.colliding && colliding) {
-            this.colliding = colliding;
+            this.colliding = true;
             
             if (shield.getHealth() - collisionDamage >= 0)
             {
