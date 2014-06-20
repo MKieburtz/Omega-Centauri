@@ -167,9 +167,9 @@ public abstract class EnemyShip extends Ship {
         Point2D.Double middleOfSelf = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
 
         for (EnemyShip s : others) {
-//            g2d.setColor(Calculator.getDistance(location, s.getLocation()) < 400 ? Color.RED : Color.GREEN);
-//            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
-//                    (int) (s.getLocation().x - camera.getLocation().x), (int) (s.getLocation().y - camera.getLocation().y));
+            g2d.setColor(Calculator.getDistance(location, s.getLocation()) < 400 ? Color.RED : Color.GREEN);
+            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
+                    (int) (s.getLocation().x - camera.getLocation().x), (int) (s.getLocation().y - camera.getLocation().y));
 //
 //            g2d.setColor(Color.YELLOW);
 //
@@ -179,12 +179,12 @@ public abstract class EnemyShip extends Ship {
 //            g2d.drawLine((int) (s.getLocation().x - camera.getLocation().x), (int) (s.getLocation().y - camera.getLocation().y),
 //                    (int) (s.getLocation().x - camera.getLocation().x), (int) (location.y - camera.getLocation().y));
 //
-//            g2d.setColor(Color.BLUE);
-//
-//            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
-//                    (int) ((middleOfSelf.x + Math.cos(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().x),
-//                    (int) ((middleOfSelf.y - Math.sin(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().y));
-//
+            g2d.setColor(Color.BLUE);
+
+            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
+                    (int) ((middleOfSelf.x + Math.cos(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().x),
+                    (int) ((middleOfSelf.y - Math.sin(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().y));
+
 //            DecimalFormat f = new DecimalFormat("0.#");
 //
 //            g2d.setColor(Color.GREEN);

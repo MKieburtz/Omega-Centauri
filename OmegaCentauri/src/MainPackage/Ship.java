@@ -228,7 +228,15 @@ public abstract class Ship implements CollisionListener {
     @Override
     public boolean CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips) {
 
-        if (ship instanceof Player || ship instanceof EnemyShip) {
+        for (Ship s : allShips) {
+            if (s.getShots().contains(shot) && !s.equals(ship)) {
+                if (!(ship instanceof EnemyShip && s instanceof EnemyShip))
+                    s.removeShot(shot); // removing because it collided
+                else
+                    return false;
+            }
+        }
+        
             if (!ship.getShots().contains(shot)) {
                 if (ship.getShield().getHealth() > 0) {
                     ship.activateShield(shot.getDamage());
@@ -239,17 +247,11 @@ public abstract class Ship implements CollisionListener {
                         return true;
                 }
             }
-        }
 
-        for (Ship collisionShip : allShips) {
-            if (collisionShip.getShots().contains(shot) && !collisionShip.equals(ship)) {
-                collisionShip.removeShot(shot);
-            }
-        }
         return false;
     }
 
-    public boolean CollisionEventWithShip() {
+    public boolean CollisionEventWithShip() { // title is self-documenting
         return setColliding(true);
     }
 

@@ -304,9 +304,13 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
             deadShips.clear();
             
+            for (Ship ship : shipsToDraw)
+            {
+                allShots.addAll(ship.getShots());
+            }
+            
             for (Ship ship : shipsToDraw) {
 
-                allShots.addAll(ship.getShots());
 
                 for (Shot shot : ship.getShots()) {
                     shot.updateLocation();
@@ -336,19 +340,19 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 }
                 if (!collision)
                     ship.setColliding(false);
-
-                ship.purgeShots();
-            }
-            System.out.println("");
-            for (Shot shot : allShots) {
-                for (Ship ship : shipsToDraw) {
+                
+                for (Shot shot : allShots) {
                     if (Calculator.collisionCheck(shot.returnHitbox(), ship.returnHitbox())) {
                         if (ship.CollisionEventWithShot(ship, shot, shipsToDraw)) {
                             deadShips.add(ship);
                         }
-                    }
                 }
             }
+
+                ship.purgeShots();
+            }
+            
+            
 
             syncGameStateVaribles();
         }
