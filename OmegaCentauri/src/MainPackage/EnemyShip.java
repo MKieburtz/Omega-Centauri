@@ -21,10 +21,8 @@ public abstract class EnemyShip extends Ship {
 
     private Point2D.Double playerLocation = new Point2D.Double(0, 0);
     private Point dimensions = new Point(0, 0);
-    //private ArrayList<EnemyShip> ships = new ArrayList<EnemyShip>();
     private ArrayList<EnemyShip> others = new ArrayList<EnemyShip>();
     private boolean incorrectAngle = false;
-    private int steps = 0;
 
     private double targetingAngle = 0;
 
@@ -51,7 +49,6 @@ public abstract class EnemyShip extends Ship {
         //System.out.println(angle);
         others = (ArrayList<EnemyShip>) enemyShips.clone();
         others.remove(this);
-        int[] stepArray = {5,10,15};
         if (!others.isEmpty()) {
             double shortest = Calculator.getDistance(location, others.get(0).getLocation());
             for (EnemyShip s : others) {
@@ -71,46 +68,31 @@ public abstract class EnemyShip extends Ship {
                 }
 
             }
-            if (incorrectAngle && !Arrays.asList(stepArray).contains(steps)) { // if steps != 5,10,15
-                if (shortest <= 100) {
-                    steps = 150;
-                } else if (shortest > 100 && shortest <= 300) {
-                    steps = 75;
-                } else if (shortest > 300 && shortest <= 600)
-                {
-                    steps = 50;
-                }
-            }
         } else {
             targetingAngle = angle;
         }
 
         if (hull > 30) {
-            if (steps == 0) {
-                rotateToAngle(targetingAngle);
-            }
+            rotateToAngle(targetingAngle);
 
             if (distance < 500 && Math.abs(angle - faceAngle) < 45) {
                 shoot(cameraLocation);
             }
             if (distance > 200) {
-                move(ShipState.Thrusting);
-                if (steps > 0)
-                    steps--;
+                if (!incorrectAngle)
+                    move(ShipState.Thrusting);
+                else
+                    move(ShipState.Drifting);
             } else {
                 move(ShipState.Drifting);
             }
         } else {
-            if (steps == 0) {
-                rotateToAngle((targetingAngle + 180) % 360);
-            }
+            rotateToAngle((targetingAngle + 180) % 360);
 
             if (distance > 500) {
                 move(ShipState.Drifting);
             } else {
                 move(ShipState.Thrusting);
-                if (steps > 0)
-                    steps--;
             }
 
         }
@@ -192,7 +174,6 @@ public abstract class EnemyShip extends Ship {
 //            g2d.drawString("\u03F4 = " + f.format(Calculator.getAngleBetweenTwoPoints(location, s.getLocation())),
 //                    (int) ((location.x - camera.getLocation().x) + Math.cos(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()))) * 70),
 //                    (int) ((location.y - camera.getLocation().y) + Math.sin(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()))) * 70));
-
 //            g2d.setColor(Color.BLUE);
 //
 //            g2d.drawString("Hypotnuse distance = " + f.format(Calculator.getDistance(location, s.getLocation())), 100, 100);
