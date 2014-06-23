@@ -40,13 +40,13 @@ public class Renderer {
         loader = new MediaLoader();
         fontSizes.add(36f);
         fontSizes.add(10f);
-        fontPaths.add("src/resources/OCR A Std.ttf");
-        fontPaths.add("src/resources/OCR A Std.ttf");
+        fontPaths.add("resources/OCR A Std.ttf");
+        fontPaths.add("resources/OCR A Std.ttf");
         
-        imagePaths.add("src/resources/PauseMenu.png");
-        imagePaths.add("src/resources/PauseButton_ToMenu.png");
-        imagePaths.add("src/resources/GameOver.png");
-        imagePaths.add("src/resources/ReturnToTheBattlefield.png");
+        imagePaths.add("resources/PauseMenu.png");
+        imagePaths.add("resources/PauseButton_ToMenu.png");
+        imagePaths.add("resources/GameOver.png");
+        imagePaths.add("resources/ReturnToTheBattlefield.png");
         images = loader.loadImages(imagePaths);
 
         fonts = loader.loadFonts(fontPaths, fontSizes);

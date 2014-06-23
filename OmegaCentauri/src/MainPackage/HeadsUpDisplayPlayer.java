@@ -21,11 +21,11 @@ public class HeadsUpDisplayPlayer {
     
     public HeadsUpDisplayPlayer()
     {
-        imagePaths.add("src/resources/TempScannerModule.png");
-        imagePaths.add("src/resources/healthbackground.png");
-        imagePaths.add("src/resources/HealthyTick.png");
-        imagePaths.add("src/resources/WarningTick.png");
-        imagePaths.add("src/resources/DangerTick.png");
+        imagePaths.add("resources/TempScannerModule.png");
+        imagePaths.add("resources/healthbackground.png");
+        imagePaths.add("resources/HealthyTick.png");
+        imagePaths.add("resources/WarningTick.png");
+        imagePaths.add("resources/DangerTick.png");
         
         images = loader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);

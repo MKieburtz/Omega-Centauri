@@ -31,12 +31,12 @@ public class Player extends Ship {
         
         
         
-        imagePaths.add("src/resources/FighterIdle.png");
-        imagePaths.add("src/resources/FighterThrust.png");
-        imagePaths.add("src/resources/FighterLeft.png");
-        imagePaths.add("src/resources/FighterRight.png");
-        imagePaths.add("src/resources/FighterThrustLeft.png");
-        imagePaths.add("src/resources/FighterThrustRight.png");
+        imagePaths.add("resources/FighterIdle.png");
+        imagePaths.add("resources/FighterThrust.png");
+        imagePaths.add("resources/FighterLeft.png");
+        imagePaths.add("resources/FighterRight.png");
+        imagePaths.add("resources/FighterThrustLeft.png");
+        imagePaths.add("resources/FighterThrustRight.png");
         
         images = mediaLoader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
@@ -45,7 +45,7 @@ public class Player extends Ship {
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()));
         setUpHitbox(cameraLocation);
 
-        soundPaths.add("src/resources/Pulse.wav");
+        soundPaths.add("resources/Pulse.wav");
 
         sounds = mediaLoader.loadSounds(soundPaths);
     }

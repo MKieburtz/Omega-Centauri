@@ -30,7 +30,7 @@ public class Shield {
     public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation, boolean enemy, Point size) {
         this.angle = angle;
         health = 100;
-        imagePaths.add(enemy ? "src/resources/FILLERshieldEnemy.png" : "src/resources/FILLERshield.png");
+        imagePaths.add(enemy ? "resources/FILLERshieldEnemy.png" : "resources/FILLERshield.png");
         images = loader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
         activeImage = images.get(0);

@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.image.*;
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
@@ -16,91 +17,62 @@ public class MediaLoader {
     }
 
     public ArrayList<BufferedImage> loadImages(ArrayList<String> paths) {
-        ArrayList<File> files = new ArrayList<File>();
-        ArrayList<FileInputStream> streams = new ArrayList<FileInputStream>();
         ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-
-        // path -> file -> FileInputStream -> BufferedImage
-        for (String p : paths) {
-            files.add(new File(p));
+        ArrayList<InputStream> streams = new ArrayList<InputStream>();
+        for (String s : paths) {
+            streams.add(getClass().getResourceAsStream(s));
         }
-
-        for (File f : files) {
-            try {
-                streams.add(new FileInputStream(f));
-            } catch (FileNotFoundException ex) {
-                System.err.println("Error reading file: " + f.getPath() + "\n");
-                ex.printStackTrace();
-            }
-        }
-
-        for (FileInputStream s : streams) {
+        for (InputStream s : streams) {
             try {
                 images.add(ImageIO.read(s));
                 s.close();
             } catch (IOException ex) {
-                ex.printStackTrace();
-                System.err.println("Image error, bad file\n");
+                System.err.println("image loading problem");
             }
         }
-
         return images;
     }
 
     public ArrayList<Clip> loadSounds(ArrayList<String> paths) {
-        ArrayList<File> files = new ArrayList<File>();
-        ArrayList<AudioInputStream> streams = new ArrayList<AudioInputStream>();
-        ArrayList<Clip> sounds = new ArrayList<Clip>();
-
-        for (String p : paths) {
-            files.add(new File(p));
+        ArrayList<Clip> sounds = new ArrayList<>();
+        ArrayList<URL> urls = new ArrayList<>();
+        
+        for (String s : paths) {
+            urls.add(getClass().getResource(s));
         }
-
-        for (File f : files) {
+        for (URL url : urls) {
             try {
-                try {
-                    streams.add(AudioSystem.getAudioInputStream(f));
-                } catch (IOException ex) {
-                    System.err.println("Error reading file: " + f.getPath() + "\n");
-                }
-            } catch (UnsupportedAudioFileException ex) {
-                System.err.println("Error reading file: " + f.getPath() + "\n");
+                AudioInputStream a = AudioSystem.getAudioInputStream(url);
+ 
+                    Clip c = AudioSystem.getClip();
+                    c.open(a);
+                    sounds.add(c);
+            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ex) {
+                System.err.println("error loading sound");
                 ex.printStackTrace();
-            } // end catch
-        } // end foreach loop
-
-        for (AudioInputStream a : streams) {
-            Clip clip = null;
-
-            try {
-                clip = AudioSystem.getClip();
-                clip.open(a); // this actually loads the sound
-                a.close();
-            } catch (LineUnavailableException ex) {
-                ex.printStackTrace();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println("\n");
+                
             }
-
-            sounds.add(clip);
         }
-
         return sounds;
+
     } // end method
 
-    public ArrayList<Font> loadFonts(ArrayList<String> paths, ArrayList<Float> sizes) {
-        ArrayList<File> files = new ArrayList<File>();
-        ArrayList<Font> fonts = new ArrayList<Font>();
+    
 
+    public ArrayList<Font> loadFonts(ArrayList<String> paths, ArrayList<Float> sizes) {
+        ArrayList<Font> fonts = new ArrayList<Font>();
+        ArrayList<InputStream> streams = new ArrayList<>();
+        
         for (String path : paths) {
-            files.add(new File(path));
+            streams.add(getClass().getResourceAsStream(path));
         }
 
-
         try {
-            for (int i = 0; i < files.size(); i++) // use for loop to access each size 
+            for (int i = 0; i < streams.size(); i++) // use for loop to access each size 
             {
-                fonts.add(Font.createFont(Font.TRUETYPE_FONT, files.get(i)).deriveFont(sizes.get(i)));
+                fonts.add(Font.createFont(Font.TRUETYPE_FONT, streams.get(i)).deriveFont(sizes.get(i)));
+                streams.get(i).close();
             }
 
         } catch (FontFormatException ex) {

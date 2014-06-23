@@ -1018,10 +1018,10 @@ is divided into following sections:
     <target depends="init,compile,-pre-pre-jar,-pre-jar,-do-jar-create-manifest,-do-jar-copy-manifest,-do-jar-set-mainclass,-do-jar-set-profile,-do-jar-set-splashscreen,-do-jar-copylibs,-do-jar-delete-manifest" name="-do-jar-with-libraries"/>
     <target name="-post-jar">
         
-        <mkdir dir="${dist.dir}/src/resources"/>
+        <!--<mkdir dir="${dist.dir}/src/resources"/>
         <copy todir="${dist.dir}/src/resources">
             <fileset dir="${basedir}/src/resources"/>
-        </copy>
+        </copy> -->
         
         
     </target>
