@@ -50,7 +50,6 @@ public class MediaLoader {
             } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ex) {
                 System.err.println("error loading sound");
                 ex.printStackTrace();
-                System.out.println("\n");
                 
             }
         }
