@@ -20,16 +20,18 @@ public abstract class EnemyShip extends Ship {
     private ArrayList<EnemyShip> others = new ArrayList<EnemyShip>();
     //private boolean incorrectAngle = false;
     private boolean movingAway;
+    private int id; // for use with formations
 
     private double targetingAngle = 0;
 
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration, int shootingDelay, int health) // delegate assigning images to the types of ships
+            double angleIncrement, double acceleration, int shootingDelay, int health, int id) // delegate assigning images to the types of ships
     {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
+        this.id = id;
     }
 
-    protected void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> enemyShips) {
+    protected void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) {
         shield.regenRate = .05;
         // main AI goes here
         this.playerLocation = player.getLocation();
@@ -44,9 +46,10 @@ public abstract class EnemyShip extends Ship {
         //System.out.println(angleToPlayer + " " + faceAngle);
 
         //System.out.println(angleToPlayer);
-        others = (ArrayList<EnemyShip>) enemyShips.clone();
+        others = (ArrayList<EnemyShip>) otherShips.clone();
         others.remove(this);
         
+        // this block sets movingAway
         if (!movingAway)
             targetingAngle = angleToPlayer;
         
@@ -57,20 +60,36 @@ public abstract class EnemyShip extends Ship {
                 targetingAngle = (angleToPlayer + 180) % 360;
             else if (distanceToPlayer < 200)
             {
-                targetingAngle = (faceAngle + 90) % 360;
+                targetingAngle = (angleToPlayer + 90) % 360;
             }
-        }
-        
-        else if (distanceToPlayer > 400 && movingAway)
+        } else if (distanceToPlayer > 400 && movingAway)
         {
             movingAway = false;
             targetingAngle = angleToPlayer;
+        } else if (distanceToPlayer < 250 && movingAway)
+        {
+            if (Math.abs((angleToPlayer + 180) % 360 - faceAngle) > 5)
+                targetingAngle = (angleToPlayer + 180) % 360;
         }
         
+        // this block performs logic based on movingAway
         if (!movingAway)
         {
+            for (EnemyShip ship : others)
+            {
+                if (Calculator.getDistance(location, ship.getLocation()) < 200) {
+                    double angle = Calculator.getAngleBetweenTwoPoints(location, ship.getLocation()); 
+                    if (id < ship.getID())
+                        targetingAngle = angle > faceAngle ? targetingAngle - 45 : targetingAngle + 45;
+                }
+            }
+            
             rotateToAngle(targetingAngle);
-            move(ShipState.Thrusting);
+            
+            if (distanceToPlayer > 200)
+                move(ShipState.Thrusting);
+            else
+                move(ShipState.Drifting);
             
             if (Math.abs(angleToPlayer - faceAngle) < 45)
             {
@@ -81,11 +100,14 @@ public abstract class EnemyShip extends Ship {
             if (Math.abs(faceAngle - targetingAngle) >= 5)
                 rotateToAngle(targetingAngle);
             
-            move(ShipState.Thrusting);
+            if (distanceToPlayer > 200)
+                move(ShipState.Thrusting);
+            else
+                move(ShipState.Drifting);
         }
         
-        
-        if (shield.getHealth() < 100) {
+        // regen shield
+        if (shield.getHealth() <= 100) {
             shield.setHealth(shield.getHealth() + shield.regenRate);
         }
     }
@@ -133,46 +155,16 @@ public abstract class EnemyShip extends Ship {
     @Override
     public void draw(Graphics2D g2d, Camera camera) {
         super.draw(g2d, camera);
-//
-//        Point2D.Double middleOfPlayer = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), playerLocation, dimensions.x, dimensions.y);
-//        Point2D.Double middleOfSelf = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
-//
+
+        Point2D.Double middleOfPlayer = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), playerLocation, dimensions.x, dimensions.y);
+        Point2D.Double middleOfSelf = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
+
 //        for (EnemyShip s : others) {
-//            g2d.setColor(Calculator.getDistance(location, s.getLocation()) < 400 ? Color.RED : Color.GREEN);
-//            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
-//                    (int) (s.getLocation().x - camera.getLocation().x), (int) (s.getLocation().y - camera.getLocation().y));
-//
-//            g2d.setColor(Color.YELLOW);
-//
-//            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
-//                    (int) (s.getLocation().x - camera.getLocation().x), (int) (location.y - camera.getLocation().y));
-//
-//            g2d.drawLine((int) (s.getLocation().x - camera.getLocation().x), (int) (s.getLocation().y - camera.getLocation().y),
-//                    (int) (s.getLocation().x - camera.getLocation().x), (int) (location.y - camera.getLocation().y));
-//
 //            g2d.setColor(Color.BLUE);
 //
 //            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
 //                    (int) ((middleOfSelf.x + Math.cos(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().x),
 //                    (int) ((middleOfSelf.y - Math.sin(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().y));
-
-//            DecimalFormat f = new DecimalFormat("0.#");
-//
-//            g2d.setColor(Color.GREEN);
-//
-//            g2d.drawString("\u03F4 = " + f.format(Calculator.getAngleBetweenTwoPoints(location, s.getLocation())),
-//                    (int) ((location.x - camera.getLocation().x) + Math.cos(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()))) * 70),
-//                    (int) ((location.y - camera.getLocation().y) + Math.sin(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()))) * 70));
-//            g2d.setColor(Color.BLUE);
-//
-//            g2d.drawString("Hypotnuse distance = " + f.format(Calculator.getDistance(location, s.getLocation())), 100, 100);
-//
-//            double legDistH = Math.cos(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()) % 90)) * Calculator.getDistance(location, s.getLocation());
-//            double legDistV = Math.sin(Math.toRadians(Calculator.getAngleBetweenTwoPoints(location, s.getLocation()) % 90)) * Calculator.getDistance(location, s.getLocation());
-//
-//            g2d.drawString("Leg distance Horizontal = " + f.format(legDistH), 100, 120);
-//
-//            g2d.drawString("Leg distance Vertical = " + f.format(legDistV), 100, 140);
 //        }
 
         shield.draw(g2d, camera.getLocation(), location);
@@ -194,5 +186,15 @@ public abstract class EnemyShip extends Ship {
 
         g2d.setPaint(paintHull);
         g2d.fill(paintRectHull);
+    }
+    
+    public boolean isMovingAway()
+    {
+        return movingAway;
+    }
+    
+    public int getID()
+    {
+        return id;
     }
 }
