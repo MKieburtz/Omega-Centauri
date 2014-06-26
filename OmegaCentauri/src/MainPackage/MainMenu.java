@@ -29,19 +29,22 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     
     private Settings settings;
             
-    private int START = 0;
+    private int STARTNOHOVER = 0;
     private final int STARTHOVER = 1; //filler so hover doesn't turn into the close button :3
-    private final int HOVERTILES = 2;
-    private final int CLOSENOHOVER = 3;
-    private final int CLOSEHOVER = 4;
+    private final int CLOSENOHOVER = 2;
+    private final int CLOSEHOVER = 3;
+    private final int SETTINGSNOHOVER = 4;
+    private final int SETTINGSHOVER = 5;
     
     private int hovered = 0;
     
     private boolean startHover = false;
     private boolean closeHover = false;
+    private boolean settingsHover = false;
     
     private Rectangle startRectangle;
     private Rectangle closeRectangle;
+    private Rectangle settingsRectangle;
     
     private boolean active;
     
@@ -58,13 +61,14 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
         imagePaths.add("resources/StartButtonNoHover.png");
         imagePaths.add("resources/StartButtonHover.png");
-        imagePaths.add("resources/StartButtonTileframe.png");
         imagePaths.add("resources/CloseButtonNoHover.png");
         imagePaths.add("resources/CloseButtonHover.png");
+        imagePaths.add("resources/SettingsButtonNoHover.png");
+        imagePaths.add("resources/SettingsButtonHover.png");
+        
         images = loader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
         
-        loadSubimages();
         soundPaths.add("resources/mouseclick.wav");
         sounds = loader.loadSounds(soundPaths);
         
@@ -83,14 +87,6 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         }
         
         setRects();
-    }
-    
-    private void loadSubimages()
-    {
-        for (int i = 0; i < 3600; i+=200)
-        {
-            subimages.add(images.get(HOVERTILES).getSubimage(i, 0, 200, 100));
-        }
     }
     
     public void draw(Graphics g)
@@ -113,23 +109,25 @@ public class MainMenu implements MouseListener, MouseMotionListener {
        
         g2d.setColor(Color.RED);
                 
-        //g2d.drawImage(hovering ? hovered == subimages.size() - 1 ? images.get(STARTHOVER) : subimages.get(hovered): images.get(START), 0, size.y - 36 - images.get(START).getHeight() - 3, null);
-        
-        //g2d.drawImage(hovering ? images.get(STARTHOVER) : images.get(START),0, size.y - 36 - images.get(START).getHeight() - 3, null);
-        
         if(startHover)
         {
             g2d.drawImage(images.get(STARTHOVER), startRectangle.x, startRectangle.y, null);
         } else {
-            g2d.drawImage(images.get(START), startRectangle.x, startRectangle.y, null);
+            g2d.drawImage(images.get(STARTNOHOVER), startRectangle.x, startRectangle.y, null);
         }
         
-        //System.out.println(images.get(CLOSEHOVER).getHeight());
         if (closeHover)
         {
             g2d.drawImage(images.get(CLOSEHOVER), closeRectangle.x, closeRectangle.y, null);
         } else{
             g2d.drawImage(images.get(CLOSENOHOVER), closeRectangle.x, closeRectangle.y, null);
+        }
+        
+        if (settingsHover)
+        {
+            g2d.drawImage(images.get(SETTINGSHOVER), settingsRectangle.x, settingsRectangle.y, null);
+        } else {
+            g2d.drawImage(images.get(SETTINGSNOHOVER), settingsRectangle.x, settingsRectangle.y, null);
         }
         
         g2d.setColor(Color.CYAN);
@@ -138,6 +136,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 //        g2d.setColor(Color.RED);
 //        g2d.draw(startRectangle);
 //        g2d.draw(closeRectangle);
+//        g2d.draw(settingsRectangle);
         
         g.drawImage(drawingImage, 0, 0, null);
     }
@@ -160,6 +159,11 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             sounds.get(0).setFramePosition(0);
             sounds.get(0).start();
             System.exit(0);
+        }
+        if (settingsRectangle.contains(e.getPoint()))
+        {
+            sounds.get(0).setFramePosition(0);
+            sounds.get(0).start();
         }
     }
 
@@ -189,10 +193,15 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         } else if (closeRectangle.contains(me.getPoint()))
         {
             closeHover = true;
-        } else
+        } else if (settingsRectangle.contains(me.getPoint()))
+        {
+            settingsHover = true;
+        }
+        else
         {
             startHover = false;
             closeHover = false;
+            settingsHover = false;
         }
     }
     
@@ -221,9 +230,13 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     private void setRects()
     {
         
-        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(START).getWidth(), size.y - 13 - images.get(START).getHeight() * 2 + 25, images.get(START).getWidth(), images.get(START).getHeight());
+        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(STARTNOHOVER).getWidth(), size.y - 13 - images.get(STARTNOHOVER).getHeight() * 2 + 25, images.get(STARTNOHOVER).getWidth(), images.get(STARTNOHOVER).getHeight());
+        
         closeRectangle = new Rectangle(size.x - images.get(CLOSEHOVER).getWidth() - 30, 
                 size.y - 13 - images.get(CLOSEHOVER).getHeight() * 2 + 25, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
+        
+        settingsRectangle = new Rectangle(images.get(SETTINGSNOHOVER).getWidth() - (images.get(SETTINGSNOHOVER).getWidth() - 30), size.y - images.get(SETTINGSNOHOVER).getHeight() * 2 + 12, images.get(SETTINGSNOHOVER).getWidth(), images.get(SETTINGSNOHOVER).getHeight());
+        
         screenRect.setBounds(0, 0, size.x, size.y);
     }
 }

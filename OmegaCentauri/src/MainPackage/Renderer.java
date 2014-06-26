@@ -58,7 +58,7 @@ public class Renderer {
         images = Calculator.toCompatibleImages(images);
     }
 
-    public void drawScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
+    public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused) {
 
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)

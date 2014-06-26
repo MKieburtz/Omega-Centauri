@@ -545,7 +545,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
 //                            if (!OmegaCentauri.this.hasFocus())
 //                                System.out.println("no focus!");
-                            renderer.drawScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                            renderer.drawGameScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
                                     FPS, stars, camera, Version, UPS, paused);
                             framesDrawn++;
                             Toolkit.getDefaultToolkit().sync();
