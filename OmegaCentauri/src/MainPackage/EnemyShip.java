@@ -7,85 +7,115 @@ package MainPackage;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 
 public abstract class EnemyShip extends Ship {
 
+    private Point2D.Double playerLocation = new Point2D.Double(0, 0);
+    private Point dimensions = new Point(0, 0);
+    private ArrayList<EnemyShip> others = new ArrayList<EnemyShip>();
+    //private boolean incorrectAngle = false;
+    private boolean movingAway;
+    private int id; // for use with formations
+
+    private double targetingAngle = 0;
+
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double angleIncrement, double acceleration, int shootingDelay, int health) // delegate assigning images to the types of ships
+            double angleIncrement, double acceleration, int shootingDelay, int health, int id) // delegate assigning images to the types of ships
     {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
+        this.id = id;
     }
 
-    protected void update(Point2D.Double playerLocation, Point2D.Double cameraLocation, double playerAngle) {
+    protected void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) {
         shield.regenRate = .05;
         // main AI goes here
+        this.playerLocation = player.getLocation();
+        this.dimensions.x = player.getActiveImage().getWidth();
+        this.dimensions.y = player.getActiveImage().getHeight();
 
         // move in the direction of the ship if it is far away
         // and shoot if it is in range.
-        double distance = Calculator.getDistance(location, playerLocation);
+        double distanceToPlayer = Calculator.getDistance(location, player.getLocation());
 
-        double angle = Calculator.getAngleBetweenTwoPoints(location, playerLocation);
-        //System.out.println(angle + " " + faceAngle);
+        double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
+        //System.out.println(angleToPlayer + " " + faceAngle);
+
+        //System.out.println(angleToPlayer);
+        others = (ArrayList<EnemyShip>) otherShips.clone();
+        others.remove(this);
         
-        //System.out.println(angle);
-        if (hull > 30) {
-            RotateToPlayer(angle);
+        // this block sets movingAway
+        if (!movingAway)
+            targetingAngle = angleToPlayer;
+        
+        if (!movingAway && (distanceToPlayer < 200 || hull < 30))
+        {
+            movingAway = true;
+            if (hull < 30)
+                targetingAngle = (angleToPlayer + 180) % 360;
+            else if (distanceToPlayer < 200)
+            {
+                targetingAngle = (angleToPlayer + 90) % 360;
+            }
+        } else if (distanceToPlayer > 400 && movingAway)
+        {
+            movingAway = false;
+            targetingAngle = angleToPlayer;
+        } else if (distanceToPlayer < 250 && movingAway)
+        {
+            if (Math.abs((angleToPlayer + 180) % 360 - faceAngle) > 5)
+                targetingAngle = (angleToPlayer + 180) % 360;
+        }
+        
+        // this block performs logic based on movingAway
+        if (!movingAway)
+        {
+            for (EnemyShip ship : others)
+            {
+                if (Calculator.getDistance(location, ship.getLocation()) < 200) {
+                    double angle = Calculator.getAngleBetweenTwoPoints(location, ship.getLocation()); 
+                    if (id < ship.getID())
+                        targetingAngle = angle > faceAngle ? targetingAngle - 45 : targetingAngle + 45;
+                }
+            }
             
-            if (distance < 500 && Math.abs(angle - faceAngle) < 45) {
+            rotateToAngle(targetingAngle);
+            
+            if (distanceToPlayer > 200)
+                move(ShipState.Thrusting);
+            else
+                move(ShipState.Drifting);
+            
+            if (Math.abs(angleToPlayer - faceAngle) < 45)
+            {
                 shoot(cameraLocation);
             }
-            if (distance > 200) {
-                move(ShipState.Thrusting);
-            } else {
-                move(ShipState.Drifting);
-            }
-        } else {
-            RotateFromPlayer(angle);
-            if (distance > 500) {
-                move(ShipState.Drifting);
-            } else {
-                move(ShipState.Thrusting);
-            }
+        } else
+        {
+            if (Math.abs(faceAngle - targetingAngle) >= 5)
+                rotateToAngle(targetingAngle);
             
-            }
-        if (shield.getHealth() < 100) { shield.setHealth(shield.getHealth() + shield.regenRate);        
-            }
-    }
-
-    protected void RotateFromPlayer(double angle) {
-        double targetAngle = (angle + 180) % 360;
-        //System.out.println(targetAngle + " " + faceAngle);
-        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, targetAngle);
-
-        if (Math.abs(targetAngle - faceAngle) >= 5) {
-            if (distances[0] <= distances[1]) {
-                if (distances[0] > angleIcrement) {
-                    rotate(ShipState.TurningLeft);
-                }
-            } else {
-                if (distances[1] > angleIcrement) {
-                    rotate(ShipState.TurningRight);
-                }
-            }
+            if (distanceToPlayer > 200)
+                move(ShipState.Thrusting);
+            else
+                move(ShipState.Drifting);
+        }
+        
+        // regen shield
+        if (shield.getHealth() <= 100) {
+            shield.setHealth(shield.getHealth() + shield.regenRate);
         }
     }
 
-    protected void RotateToPlayer(double angle) {
+    protected void rotateToAngle(double angle) {
+        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, angle);
 
-        double targetAngle = angle;
-        
-        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, targetAngle);
-        
-        //System.out.println(distances[0] + " " + distances[1] + " " + faceAngle + " " + targetAngle);
-        
-        //System.out.println(faceAngle + " " + targetAngle + " " + distances[0] + " " + distances[1]);
-        
-        //System.out.println(distances[0] + " " + distances[1]);
-        if (Math.abs(targetAngle - faceAngle) >= 5) {
+        if (Math.abs(angle - faceAngle) >= 5) {
             if (distances[0] < distances[1]) {
                 if (distances[0] > angleIcrement) {
                     rotate(ShipState.TurningLeft);
@@ -125,6 +155,18 @@ public abstract class EnemyShip extends Ship {
     @Override
     public void draw(Graphics2D g2d, Camera camera) {
         super.draw(g2d, camera);
+
+        Point2D.Double middleOfPlayer = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), playerLocation, dimensions.x, dimensions.y);
+        Point2D.Double middleOfSelf = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
+
+//        for (EnemyShip s : others) {
+//            g2d.setColor(Color.BLUE);
+//
+//            g2d.drawLine((int) (location.x - camera.getLocation().x), (int) (location.y - camera.getLocation().y),
+//                    (int) ((middleOfSelf.x + Math.cos(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().x),
+//                    (int) ((middleOfSelf.y - Math.sin(Math.toRadians(targetingAngle)) * Calculator.getDistance(location, playerLocation)) - camera.getLocation().y));
+//        }
+
         shield.draw(g2d, camera.getLocation(), location);
 
         Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
@@ -144,5 +186,15 @@ public abstract class EnemyShip extends Ship {
 
         g2d.setPaint(paintHull);
         g2d.fill(paintRectHull);
+    }
+    
+    public boolean isMovingAway()
+    {
+        return movingAway;
+    }
+    
+    public int getID()
+    {
+        return id;
     }
 }

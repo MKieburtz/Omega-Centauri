@@ -21,9 +21,9 @@ public class PulseShot extends Shot {
         this.maxVel = 5;
 
         if (enemy) {
-            imagePaths.add("src/resources/EnemyShot.png");
+            imagePaths.add("resources/EnemyShot.png");
         } else {
-            imagePaths.add("src/resources/Pulse.png");
+            imagePaths.add("resources/Pulse.png");
         }
         
         loadImages(imagePaths);

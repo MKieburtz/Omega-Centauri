@@ -55,18 +55,17 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         active = true;
         loader = new MediaLoader();
         startListener = game;
-        
 
-        imagePaths.add("src/resources/StartButtonNoHover.png");
-        imagePaths.add("src/resources/StartButtonHover.png");
-        imagePaths.add("src/resources/StartButtonTileframe.png");
-        imagePaths.add("src/resources/CloseButtonNoHover.png");
-        imagePaths.add("src/resources/CloseButtonHover.png");
+        imagePaths.add("resources/StartButtonNoHover.png");
+        imagePaths.add("resources/StartButtonHover.png");
+        imagePaths.add("resources/StartButtonTileframe.png");
+        imagePaths.add("resources/CloseButtonNoHover.png");
+        imagePaths.add("resources/CloseButtonHover.png");
         images = loader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
         
         loadSubimages();
-        soundPaths.add("src/resources/mouseClick.wav");
+        soundPaths.add("resources/mouseclick.wav");
         sounds = loader.loadSounds(soundPaths);
         
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
