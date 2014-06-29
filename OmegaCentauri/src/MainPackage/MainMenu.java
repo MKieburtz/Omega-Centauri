@@ -124,6 +124,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
             g2d.setColor(Color.CYAN);
             g2d.drawLine(0, size.y - 100, size.x, size.y - 100);
+//            g2d.drawLine(settingsRectangle.x, settingsRectangle.y + settingsRectangle.height, size.x, settingsRectangle.y + settingsRectangle.height);
 
 //        g2d.setColor(Color.RED);
 //        g2d.draw(startRectangle);
@@ -216,10 +217,10 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     private void setRects() {
 
-        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(STARTNOHOVER).getWidth(), size.y - 13 - images.get(STARTNOHOVER).getHeight() * 2 + 25, images.get(STARTNOHOVER).getWidth(), images.get(STARTNOHOVER).getHeight());
+        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(STARTNOHOVER).getWidth(), size.y - 11 - images.get(STARTNOHOVER).getHeight() * 2 + 25, images.get(STARTNOHOVER).getWidth(), images.get(STARTNOHOVER).getHeight());
 
         closeRectangle = new Rectangle(size.x - images.get(CLOSEHOVER).getWidth() - 30,
-                size.y - 13 - images.get(CLOSEHOVER).getHeight() * 2 + 25, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
+                size.y - 11 - images.get(CLOSEHOVER).getHeight() * 2 + 25, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
 
         settingsRectangle = new Rectangle(images.get(SETTINGSNOHOVER).getWidth() - (images.get(SETTINGSNOHOVER).getWidth() - 30), size.y - images.get(SETTINGSNOHOVER).getHeight() * 2 + 12, images.get(SETTINGSNOHOVER).getWidth(), images.get(SETTINGSNOHOVER).getHeight());
 
