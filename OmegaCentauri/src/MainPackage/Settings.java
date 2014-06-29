@@ -1,7 +1,9 @@
 package MainPackage;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
+import javax.sound.sampled.Clip;
 
 /**
  *
@@ -9,28 +11,71 @@ import java.util.*;
  */
 public class Settings {
 
-    private Map<Resolutions, Point> resolutions = new EnumMap<Resolutions, Point>(Resolutions.class);
 
-    private Dimension resolution = new Dimension();
+    private Dimension screenResolution = new Dimension();
+    private Dimension windowResolution = new Dimension();
     
-    public Settings(Dimension screenSize) {
-        resolutions.put(Resolutions.FullScreen, new Point(screenSize.width, screenSize.height));
-        resolutions.put(Resolutions.Resolution1440x900, new Point(screenSize.width, screenSize.height));
-        resolutions.put(Resolutions.Default, new Point(screenSize.width / 2, screenSize.height / 2));
-    }
-
-    public Point getWidthAndHeightForResolution(Resolutions r) {
-        return resolutions.get(r);
-    }
+    private MediaLoader loader;
+    private boolean active = false;
     
-    public void setResolution(Resolutions r)
-    {
+    private ArrayList<String> imagePaths = new ArrayList<String>();
+    private ArrayList<String> soundPaths = new ArrayList<String>();
+    private ArrayList<String> fontPaths = new ArrayList<String>();
+    private ArrayList<Float> fontSizes = new ArrayList<Float>();
+    
+    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private ArrayList<Clip> sounds = new ArrayList<Clip>();
+    private ArrayList<Font> fonts = new ArrayList<Font>();
+    
+    private final int RADIOBUTTONENABLED = 0;
+    private final int RADIOBUTTONDISABLED = 1;
+    
+    public Settings(Dimension screenSize, Dimension windowSize) {
+        this.screenResolution = screenSize;
+        this.windowResolution = windowSize;
         
-        resolution = r.equals(Resolutions.Resolution1440x900) ? null : new Dimension(getWidthAndHeightForResolution(r).x, getWidthAndHeightForResolution(r).y);
+        loader = new MediaLoader();
+        
+        imagePaths.add("resources/RadioButtonEnabled.png");
+        imagePaths.add("resources/RadioButtonDisabled.png");
+        
+        images = loader.loadImages(imagePaths);
+        
+        soundPaths.add("resources/mouseclick.wav");
+        
+        sounds = loader.loadSounds(soundPaths);
+        
+        fontSizes.add(32f);
+        fontPaths.add("resources/OCR A Std.ttf");
+        
+        fonts = loader.loadFonts(fontPaths, fontSizes);
+    }
+
+    public void draw(Graphics g)
+    {
+        BufferedImage drawingImage = new BufferedImage(screenResolution.width, screenResolution.height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = drawingImage.createGraphics();
+        
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 0, windowResolution.width, windowResolution.height);
+        
+        g2d.drawImage(images.get(RADIOBUTTONENABLED), 100, 100, null);
+        
+        g.drawImage(drawingImage, 0, 0, null);
     }
     
-    public Dimension getResolution()
+    public void setActive(boolean active)
     {
-        return resolution;
+        this.active = active;
+    }
+    
+    public boolean isActive()
+    {
+        return active;
+    }
+    
+    public void setWindowSize(Dimension windowSize)
+    {
+        this.windowResolution = windowSize;
     }
 }
