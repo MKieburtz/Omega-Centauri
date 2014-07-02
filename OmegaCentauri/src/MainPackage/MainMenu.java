@@ -124,7 +124,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
             g2d.setColor(Color.CYAN);
             g2d.drawLine(0, size.y - 100, size.x, size.y - 100);
-            g2d.drawLine(settingsRectangle.x, settingsRectangle.y + settingsRectangle.height, size.x, settingsRectangle.y + settingsRectangle.height);
+            //g2d.drawLine(settingsRectangle.x, settingsRectangle.y + settingsRectangle.height, size.x, settingsRectangle.y + settingsRectangle.height);
 
 //        g2d.setColor(Color.RED);
 //        g2d.draw(startRectangle);
@@ -185,16 +185,18 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent me) {
-        if (startRectangle.contains(me.getPoint())) {
-            startHover = true;
-        } else if (closeRectangle.contains(me.getPoint())) {
-            closeHover = true;
-        } else if (settingsRectangle.contains(me.getPoint())) {
-            settingsHover = true;
-        } else {
-            startHover = false;
-            closeHover = false;
-            settingsHover = false;
+        if (active) {
+            if (startRectangle.contains(me.getPoint())) {
+                startHover = true;
+            } else if (closeRectangle.contains(me.getPoint())) {
+                closeHover = true;
+            } else if (settingsRectangle.contains(me.getPoint())) {
+                settingsHover = true;
+            } else {
+                startHover = false;
+                closeHover = false;
+                settingsHover = false;
+            }
         }
     }
 
@@ -225,5 +227,9 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         settingsRectangle = new Rectangle(images.get(SETTINGSNOHOVER).getWidth() - (images.get(SETTINGSNOHOVER).getWidth() - 30), size.y - images.get(SETTINGSNOHOVER).getHeight() * 2 + 12, images.get(SETTINGSNOHOVER).getWidth(), images.get(SETTINGSNOHOVER).getHeight());
 
         screenRect.setBounds(0, 0, size.x, size.y);
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 }
