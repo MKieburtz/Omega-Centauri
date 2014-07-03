@@ -142,7 +142,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (!settings.isActive()) {
+        if (!settings.isActive() && active) {
             if (startRectangle.contains(e.getPoint())) {
                 active = false;
                 startListener.gameStart();
@@ -160,6 +160,10 @@ public class MainMenu implements MouseListener, MouseMotionListener {
                 settings.setActive(true);
             }
         }
+        else if (settings.isActive())
+        {
+            settings.checkMousePressed(e.getPoint());
+        }
     }
 
     @Override
@@ -172,10 +176,14 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if (active) {
+        if (!settings.isActive() && active) {
             startHover = false;
             closeHover = false;
             settingsHover = false;
+        } 
+        else if (settings.isActive())
+        {
+            settings.checkMouseExited();
         }
     }
 
@@ -185,7 +193,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent me) {
-        if (active) {
+        if (!settings.isActive() && active) {
             if (startRectangle.contains(me.getPoint())) {
                 startHover = true;
             } else if (closeRectangle.contains(me.getPoint())) {
@@ -197,6 +205,9 @@ public class MainMenu implements MouseListener, MouseMotionListener {
                 closeHover = false;
                 settingsHover = false;
             }
+        } else if (settings.isActive())
+        {
+            settings.checkMouseMoved(me.getPoint());
         }
     }
 
@@ -219,12 +230,26 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     private void setRects() {
 
-        startRectangle = new Rectangle((size.x / 2 + 100) - images.get(STARTNOHOVER).getWidth(), size.y - 13 - images.get(STARTNOHOVER).getHeight() * 2 + 25, images.get(STARTNOHOVER).getWidth(), images.get(STARTNOHOVER).getHeight());
+        startRectangle = new Rectangle(
+                size.x / 2  - images.get(STARTNOHOVER).getWidth() / 2,
+                size.y - 75,
+                images.get(STARTNOHOVER).getWidth(),
+                images.get(STARTNOHOVER).getHeight()
+        );
 
-        closeRectangle = new Rectangle(size.x - images.get(CLOSEHOVER).getWidth() - 30,
-                size.y - 13 - images.get(CLOSEHOVER).getHeight() * 2 + 25, images.get(CLOSENOHOVER).getWidth(), images.get(CLOSENOHOVER).getHeight());
+        closeRectangle = new Rectangle(
+                size.x - 100 - images.get(CLOSENOHOVER).getWidth(),
+                size.y - 75,
+                images.get(CLOSENOHOVER).getWidth(),
+                images.get(CLOSENOHOVER).getHeight()
+        );
 
-        settingsRectangle = new Rectangle(images.get(SETTINGSNOHOVER).getWidth() - (images.get(SETTINGSNOHOVER).getWidth() - 30), size.y - images.get(SETTINGSNOHOVER).getHeight() * 2 + 12, images.get(SETTINGSNOHOVER).getWidth(), images.get(SETTINGSNOHOVER).getHeight());
+        settingsRectangle = new Rectangle(
+                100,
+                size.y - 75,
+                images.get(SETTINGSNOHOVER).getWidth(),
+                images.get(SETTINGSNOHOVER).getHeight()
+        );
 
         screenRect.setBounds(0, 0, size.x, size.y);
     }

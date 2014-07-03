@@ -1,9 +1,6 @@
 package MainPackage;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.sound.sampled.Clip;
@@ -13,7 +10,7 @@ import quicktime.Errors;
  *
  * @author Davis Freeman
  */
-public class Settings implements MouseListener, MouseMotionListener{
+public class Settings {
 
 
     private Dimension screenResolution = new Dimension();
@@ -111,7 +108,7 @@ public class Settings implements MouseListener, MouseMotionListener{
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, windowResolution.width, windowResolution.height);
         
-        g2d.setColor(Color.GRAY);
+        g2d.setColor(new Color(81,81,81));
         g2d.setFont(fonts.get(TITLEFONT));
         g2d.drawString("OPTIONS", windowResolution.width / 2 - 125, 75);
         
@@ -219,79 +216,52 @@ public class Settings implements MouseListener, MouseMotionListener{
     private void setRects()
     {
         controlsRectangle = new Rectangle(720, 220, images.get(CONTROLSBUTTONNOHOVER).getWidth(), images.get(CONTROLSBUTTONNOHOVER).getHeight());
+        
         lowGraphicsRectangle = new Rectangle(100, 230, 120, 20);
+        
         highGraphicsRectangle = new Rectangle(100, 260, 120, 20);
+        
         windowedResolutionRectangle = new Rectangle(400, 230, 210, 20);
+        
         fullscreenResolutionRectangle = new Rectangle(400, 260, 210, 20);
-        backRectangle = new Rectangle(100, windowResolution.height - 100, images.get(BACKBUTTONNOHOVER).getWidth(), images.get(BACKBUTTONNOHOVER).getHeight());
-        saveRectangle = new Rectangle(windowResolution.width / 2 - images.get(SAVEBUTTONNOHOVER).getWidth() / 2,
-                windowResolution.height - 100, images.get(SAVEBUTTONNOHOVER).getWidth(), images.get(SAVEBUTTONNOHOVER).getHeight());
-        resetRectangle = new Rectangle(windowResolution.width - 100 - images.get(RESETBUTTONNOHOVER).getWidth(),
-                windowResolution.height - 100, images.get(RESETBUTTONNOHOVER).getWidth(), images.get(RESETBUTTONNOHOVER).getHeight());
+        
+        backRectangle = new Rectangle(
+                100,
+                windowResolution.height - 75,
+                images.get(BACKBUTTONNOHOVER).getWidth(),
+                images.get(BACKBUTTONNOHOVER).getHeight()
+        );
+        
+        saveRectangle = new Rectangle(
+                windowResolution.width / 2 - images.get(SAVEBUTTONNOHOVER).getWidth() / 2,
+                windowResolution.height - 75,
+                images.get(SAVEBUTTONNOHOVER).getWidth(),
+                images.get(SAVEBUTTONNOHOVER).getHeight()
+        );
+        
+        resetRectangle = new Rectangle(
+                windowResolution.width - 100 - images.get(RESETBUTTONNOHOVER).getWidth(),
+                windowResolution.height - 75,
+                images.get(RESETBUTTONNOHOVER).getWidth(),
+                images.get(RESETBUTTONNOHOVER).getHeight()
+        );
         
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {        
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (lowGraphicsRectangle.contains(e.getPoint()))
-        {
-            graphicsQualityLow = true;
-        } else if (highGraphicsRectangle.contains(e.getPoint()))
-        {
-            graphicsQualityLow = false;
-        } else if (windowedResolutionRectangle.contains(e.getPoint()))
-        {
-            windowed = true;
-        } else if (fullscreenResolutionRectangle.contains(e.getPoint()))
-        {
-            windowed = false;
-        } else if (backRectangle.contains(e.getPoint()))
-        {
-            sounds.get(CLICKSOUND).setFramePosition(0);
-            sounds.get(CLICKSOUND).start();
-            active = false;
-        } else if (resetRectangle.contains(e.getPoint()))
-        {
-            sounds.get(CLICKSOUND).setFramePosition(0);
-            sounds.get(CLICKSOUND).start();
-            resetDefaults();
-        }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
+    
+    public void checkMouseMoved(Point location)
+    {
         if (active)
         {
-            if (controlsRectangle.contains(e.getPoint()))
+            if (controlsRectangle.contains(location))
             {
                 controlHover = true;
-            } else if (backRectangle.contains(e.getPoint()))
+            } else if (backRectangle.contains(location))
             {
                 backHover = true;
-            } else if (saveRectangle.contains(e.getPoint()))
+            } else if (saveRectangle.contains(location))
             {
                 saveHover = true;
-            } else if (resetRectangle.contains(e.getPoint()))
+            } else if (resetRectangle.contains(location))
             {
                 resetHover = true;
             }
@@ -303,6 +273,41 @@ public class Settings implements MouseListener, MouseMotionListener{
                 resetHover = false;
             }
         }
+    }
+    
+    public void checkMousePressed(Point location)
+    {
+        if (lowGraphicsRectangle.contains(location))
+        {
+            graphicsQualityLow = true;
+        } else if (highGraphicsRectangle.contains(location))
+        {
+            graphicsQualityLow = false;
+        } else if (windowedResolutionRectangle.contains(location))
+        {
+            windowed = true;
+        } else if (fullscreenResolutionRectangle.contains(location))
+        {
+            windowed = false;
+        } else if (backRectangle.contains(location))
+        {
+            sounds.get(CLICKSOUND).setFramePosition(0);
+            sounds.get(CLICKSOUND).start();
+            active = false;
+        } else if (resetRectangle.contains(location))
+        {
+            sounds.get(CLICKSOUND).setFramePosition(0);
+            sounds.get(CLICKSOUND).start();
+            resetDefaults();
+        }
+    }
+    
+    public void checkMouseExited()
+    {
+        controlHover = false;
+        backHover = false;
+        saveHover = false;
+        resetHover = false;
     }
     
     private void resetDefaults()

@@ -469,8 +469,6 @@ public class OmegaCentauri extends Game implements GameStartListener {
             addMouseListener(this);
             addMouseListener(mainMenu);
             addMouseMotionListener(mainMenu);
-            addMouseListener(mainMenu.getSettings());
-            addMouseMotionListener(mainMenu.getSettings());
 
             setVisible(true);
         }
