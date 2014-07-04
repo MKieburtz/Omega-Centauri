@@ -33,7 +33,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
      * OBJECTS:
      */
     private final Renderer renderer;
-    private Panel panel; // this will be changed when we do resolution things
+    private Panel panel; 
     private Camera camera;
     private GraphicsDevice gd;
     private MainMenu mainMenu;

@@ -32,7 +32,7 @@ public abstract class EnemyShip extends Ship {
     }
 
     protected void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) {
-        shield.regenRate = .05;
+        shield.setRegenRate(.05);
         // main AI goes here
         this.playerLocation = player.getLocation();
         this.dimensions.x = player.getActiveImage().getWidth();
@@ -108,7 +108,7 @@ public abstract class EnemyShip extends Ship {
         
         // regen shield
         if (shield.getHealth() <= 100) {
-            shield.setHealth(shield.getHealth() + shield.regenRate);
+            shield.setHealth(shield.getHealth() + shield.getRegenRate());
         }
     }
 
