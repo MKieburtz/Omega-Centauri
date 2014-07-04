@@ -96,7 +96,7 @@ public class Settings {
       
         settingsData = new SettingsData();
         
-        File f = new File("data/settings.dat");
+        File f = new File("Data/settings.ser");
         if (f.exists())
         {
             load();
@@ -283,15 +283,14 @@ public class Settings {
 
     private void save() {
         try {
-            OutputStream output = new FileOutputStream("data/settings.dat");
+            OutputStream output = new FileOutputStream("Data/settings.ser");
             OutputStream buffer = new BufferedOutputStream(output);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(buffer);
             
             objectOutputStream.writeObject(settingsData);
             
-//            output.close();
-//            buffer.close();
-//            objectOutputStream.close();
+            objectOutputStream.close();
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -300,7 +299,7 @@ public class Settings {
     private void load() {
         SettingsData settings;
         try {
-            InputStream input = new FileInputStream("data/settings.dat");
+            InputStream input = new FileInputStream("Data/settings.ser");
             InputStream buffer = new BufferedInputStream(input);
             ObjectInputStream objectInputStream = new ObjectInputStream(buffer);
             
@@ -308,6 +307,8 @@ public class Settings {
             settings = (SettingsData)objectInputStream.readObject();
             
             settingsData = settings;
+            
+            objectInputStream.close();
             
         } catch (Exception ex) {
             ex.printStackTrace();
