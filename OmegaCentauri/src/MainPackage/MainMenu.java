@@ -31,6 +31,8 @@ public class MainMenu {
     private final int CLOSEHOVER = 3;
     private final int SETTINGSNOHOVER = 4;
     private final int SETTINGSHOVER = 5;
+    
+    private final int CLICKSOUND = 0;
 
     private boolean startHover = false;
     private boolean closeHover = false;
@@ -140,17 +142,17 @@ public class MainMenu {
             if (startRectangle.contains(location)) {
                 active = false;
                 startListener.gameStart();
-                sounds.get(0).setFramePosition(0);
-                sounds.get(0).start();
+                sounds.get(CLICKSOUND).setFramePosition(0);
+                sounds.get(CLICKSOUND).start();
             }
             if (closeRectangle.contains(location)) {
-//                sounds.get(0).setFramePosition(0);
-//                sounds.get(0).start();                
+//                sounds.get(CLICKSOUND).setFramePosition(0);
+//                sounds.get(CLICKSOUND).start();                
                 System.exit(0);
             }
             if (settingsRectangle.contains(location)) {
-                sounds.get(0).setFramePosition(0);
-                sounds.get(0).start();
+                sounds.get(CLICKSOUND).setFramePosition(0);
+                sounds.get(CLICKSOUND).start();
                 settings.setActive(true);
             }
         }
