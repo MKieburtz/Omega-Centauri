@@ -79,7 +79,7 @@ public class Settings {
 
         images = loader.loadImages(imagePaths);
 
-        soundPaths.add("resources/mouseclick.wav");
+        soundPaths.add("resources/Mouseclick.wav");
 
         sounds = loader.loadSounds(soundPaths);
 

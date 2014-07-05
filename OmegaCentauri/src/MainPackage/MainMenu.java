@@ -64,7 +64,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         images = loader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
 
-        soundPaths.add("resources/mouseclick.wav");
+        soundPaths.add("resources/Mouseclick.wav");
         sounds = loader.loadSounds(soundPaths);
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -151,7 +151,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             }
             if (closeRectangle.contains(e.getPoint())) {
                 sounds.get(0).setFramePosition(0);
-                sounds.get(0).start();
+                sounds.get(0).start();                
                 System.exit(0);
             }
             if (settingsRectangle.contains(e.getPoint())) {
