@@ -2,8 +2,6 @@ package MainPackage;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.sound.sampled.Clip;
@@ -12,7 +10,7 @@ import javax.sound.sampled.Clip;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class MainMenu implements MouseListener, MouseMotionListener {
+public class MainMenu {
 
     private GameStartListener startListener;
 
@@ -28,7 +26,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
     private Settings settings;
 
     private int STARTNOHOVER = 0;
-    private final int STARTHOVER = 1; //filler so hover doesn't turn into the close button :3
+    private final int STARTHOVER = 1; 
     private final int CLOSENOHOVER = 2;
     private final int CLOSEHOVER = 3;
     private final int SETTINGSNOHOVER = 4;
@@ -135,26 +133,22 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             settings.draw(g);
         }
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
+    
+    public void checkMousePressed(Point location)
+    {
         if (!settings.isActive() && active) {
-            if (startRectangle.contains(e.getPoint())) {
+            if (startRectangle.contains(location)) {
                 active = false;
                 startListener.gameStart();
                 sounds.get(0).setFramePosition(0);
                 sounds.get(0).start();
             }
-            if (closeRectangle.contains(e.getPoint())) {
+            if (closeRectangle.contains(location)) {
 //                sounds.get(0).setFramePosition(0);
 //                sounds.get(0).start();                
                 System.exit(0);
             }
-            if (settingsRectangle.contains(e.getPoint())) {
+            if (settingsRectangle.contains(location)) {
                 sounds.get(0).setFramePosition(0);
                 sounds.get(0).start();
                 settings.setActive(true);
@@ -162,21 +156,21 @@ public class MainMenu implements MouseListener, MouseMotionListener {
         }
         else if (settings.isActive())
         {
-            settings.checkMousePressed(e.getPoint());
+            settings.checkMousePressed(location);
         }
     }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
+    public void checkMouseExited()
+    {
         if (!settings.isActive() && active) {
+            startHover = false;
+            closeHover = false;
+            settingsHover = false;
+        } 
+        else if (settings.isActive())
+        {
+            settings.checkMouseExited();
+        }if (!settings.isActive() && active) {
             startHover = false;
             closeHover = false;
             settingsHover = false;
@@ -186,19 +180,15 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             settings.checkMouseExited();
         }
     }
-
-    @Override
-    public void mouseDragged(MouseEvent me) {
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent me) {
+    
+    public void checkMouseMoved(Point location)
+    {
         if (!settings.isActive() && active) {
-            if (startRectangle.contains(me.getPoint())) {
+            if (startRectangle.contains(location)) {
                 startHover = true;
-            } else if (closeRectangle.contains(me.getPoint())) {
+            } else if (closeRectangle.contains(location)) {
                 closeHover = true;
-            } else if (settingsRectangle.contains(me.getPoint())) {
+            } else if (settingsRectangle.contains(location)) {
                 settingsHover = true;
             } else {
                 startHover = false;
@@ -207,7 +197,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
             }
         } else if (settings.isActive())
         {
-            settings.checkMouseMoved(me.getPoint());
+            settings.checkMouseMoved(location);
         }
     }
 
@@ -225,6 +215,7 @@ public class MainMenu implements MouseListener, MouseMotionListener {
 
     public void setSize(int width, int height) {
         size.setLocation(width, height);
+        settings.setWindowSize(new Dimension(width, height));
         setRects();
     }
 

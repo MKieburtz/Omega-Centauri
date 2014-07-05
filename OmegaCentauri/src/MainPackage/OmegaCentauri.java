@@ -33,7 +33,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
      * OBJECTS:
      */
     private final Renderer renderer;
-    private Panel panel; 
+    private Panel panel;
     private Camera camera;
     private GraphicsDevice gd;
     private MainMenu mainMenu;
@@ -303,14 +303,12 @@ public class OmegaCentauri extends Game implements GameStartListener {
             }
 
             deadShips.clear();
-            
-            for (Ship ship : shipsToDraw)
-            {
+
+            for (Ship ship : shipsToDraw) {
                 allShots.addAll(ship.getShots());
             }
-            
-            for (Ship ship : shipsToDraw) {
 
+            for (Ship ship : shipsToDraw) {
 
                 for (Shot shot : ship.getShots()) {
                     shot.updateLocation();
@@ -327,7 +325,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                                 && !(ship instanceof EnemyShip && collisionShip instanceof EnemyShip)) {
                             collision = true;
                             if (!ship.isColliding() && !collisionShip.isColliding()) {
-                                
+
                                 if (ship.CollisionEventWithShip()) {
                                     deadShips.add(ship);
                                 } else if (collisionShip.CollisionEventWithShip()) {
@@ -338,21 +336,20 @@ public class OmegaCentauri extends Game implements GameStartListener {
                         }
                     }
                 }
-                if (!collision)
+                if (!collision) {
                     ship.setColliding(false);
-                
+                }
+
                 for (Shot shot : allShots) {
                     if (Calculator.collisionCheck(shot.returnHitbox(), ship.returnHitbox())) {
                         if (ship.CollisionEventWithShot(ship, shot, shipsToDraw)) {
                             deadShips.add(ship);
                         }
+                    }
                 }
-            }
 
                 ship.purgeShots();
             }
-            
-            
 
             syncGameStateVaribles();
         }
@@ -459,7 +456,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
         paused = !paused;
     }
 
-    public class Panel extends JPanel implements MouseListener {
+    public class Panel extends JPanel implements MouseListener, MouseMotionListener {
 
         public Panel(int width, int height) {
             setSize(width, height);
@@ -467,20 +464,25 @@ public class OmegaCentauri extends Game implements GameStartListener {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             addMouseListener(this);
-            addMouseListener(mainMenu);
-            addMouseMotionListener(mainMenu);
+            addMouseMotionListener(this);
 
             setVisible(true);
         }
 
         @Override
         public void mousePressed(MouseEvent me) {
-            Rectangle rect = new Rectangle(20, 110, 200, 100);
+            if (!mainMenu.isActive()) {
+                Rectangle rect = new Rectangle(20, 110, 200, 100);
 
-            if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
-                resetGame();
-                mainMenu.setActive(true);
-                timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
+                if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
+                    resetGame();
+                    mainMenu.setActive(true);
+                    timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
+                }
+            }
+            else
+            {
+                mainMenu.checkMousePressed(me.getPoint());
             }
         }
 
@@ -498,6 +500,22 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         @Override
         public void mouseExited(MouseEvent me) {
+            if (mainMenu.isActive())
+            {
+                mainMenu.checkMouseExited();
+            }
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            if (mainMenu.isActive())
+            {
+                mainMenu.checkMouseMoved(e.getPoint());
+            }
         }
     }
 
