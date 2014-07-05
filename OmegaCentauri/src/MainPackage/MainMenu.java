@@ -150,8 +150,8 @@ public class MainMenu implements MouseListener, MouseMotionListener {
                 sounds.get(0).start();
             }
             if (closeRectangle.contains(e.getPoint())) {
-                sounds.get(0).setFramePosition(0);
-                sounds.get(0).start();                
+//                sounds.get(0).setFramePosition(0);
+//                sounds.get(0).start();                
                 System.exit(0);
             }
             if (settingsRectangle.contains(e.getPoint())) {
