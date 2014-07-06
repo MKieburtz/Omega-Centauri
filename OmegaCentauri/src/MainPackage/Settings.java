@@ -41,6 +41,7 @@ public class Settings {
     private final int TITLEFONT = 0;
     private final int SUBTITLEFONT = 1;
     private final int TEXTFONT = 2;
+    private final int SMALLTEXTFONT = 3;
 
     private final int CLICKSOUND = 0;
 
@@ -48,6 +49,8 @@ public class Settings {
     private boolean backHover = false;
     private boolean resetHover = false;
     private boolean saveHover = false;
+    
+    private boolean changed = false;
 
     private Rectangle controlsRectangle;
     private Rectangle backRectangle;
@@ -59,6 +62,10 @@ public class Settings {
     private Rectangle fullscreenResolutionRectangle;
 
     private SettingsData settingsData;
+    
+    private enum SettingsTypes { graphicsQualityLow, resolutionWindowed };
+    
+    private final HashMap<SettingsTypes, Boolean> changes = new HashMap<SettingsTypes, Boolean>();
 
     public Settings(Dimension screenSize, Dimension windowSize) {
         this.screenResolution = screenSize;
@@ -77,6 +84,7 @@ public class Settings {
         imagePaths.add("resources/SaveButtonHover.png");
         imagePaths.add("resources/SaveButtonNoHover.png");
 
+
         images = loader.loadImages(imagePaths);
 
         soundPaths.add("resources/Mouseclick.wav");
@@ -88,6 +96,8 @@ public class Settings {
         fontSizes.add(32f);
         fontPaths.add("resources/OCR A Std.ttf");
         fontSizes.add(24f);
+        fontPaths.add("resources/OCR A Std.ttf");
+        fontSizes.add(16f);
         fontPaths.add("resources/OCR A Std.ttf");
 
         fonts = loader.loadFonts(fontPaths, fontSizes);
@@ -101,6 +111,9 @@ public class Settings {
         {
             load();
         }
+        
+        changes.put(SettingsTypes.graphicsQualityLow, settingsData.getGraphicsQualityLow());
+        changes.put(SettingsTypes.resolutionWindowed, settingsData.getWindowed());
     }
 
     public void draw(Graphics g) {
@@ -123,6 +136,13 @@ public class Settings {
         g2d.drawString("LOW", 100, 250);
         g2d.drawString("HIGH", 100, 280);
 
+        if (changed)
+        {
+            g2d.setFont(fonts.get(SMALLTEXTFONT));
+            g2d.setColor(Color.RED);
+            g2d.drawString("There are unsaved changes!", windowResolution.width - 310, 20);
+        }
+        
         if (settingsData.getGraphicsQualityLow()) {
             g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, 230, null);
             g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, 260, null);
@@ -131,6 +151,8 @@ public class Settings {
             g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, 260, null);
         }
 
+        g2d.setColor(new Color(81, 81, 81));
+        
         g2d.setFont(fonts.get(SUBTITLEFONT));
         g2d.drawString("RESOLUTION", 400, 200);
 
@@ -272,6 +294,9 @@ public class Settings {
             
             save();
         }
+        
+        changed = changes.get(SettingsTypes.graphicsQualityLow) != settingsData.getGraphicsQualityLow() ||
+                changes.get(SettingsTypes.resolutionWindowed) != settingsData.getWindowed();
     }
 
     public void checkMouseExited() {
@@ -294,6 +319,9 @@ public class Settings {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        
+        changes.put(SettingsTypes.graphicsQualityLow, settingsData.getGraphicsQualityLow());
+        changes.put(SettingsTypes.resolutionWindowed, settingsData.getWindowed());
     }
 
     private void load() {
