@@ -154,18 +154,18 @@ public class Settings {
         g2d.setColor(new Color(81, 81, 81));
         
         g2d.setFont(fonts.get(SUBTITLEFONT));
-        g2d.drawString("RESOLUTION", 400, 200);
+        g2d.drawString("RESOLUTION", windowResolution.width / 2 - 110, 200);
 
         g2d.setFont(fonts.get(TEXTFONT));
-        g2d.drawString("WINDOWED", 400, 250);
-        g2d.drawString("FULLSCREEN", 400, 280);
+        g2d.drawString("WINDOWED", windowResolution.width / 2 - 110, 250);
+        g2d.drawString("FULLSCREEN", windowResolution.width / 2 - 110, 280);
 
         if (settingsData.getWindowed()) {
-            g2d.drawImage(images.get(RADIOBUTTONENABLED), 590, 230, null);
-            g2d.drawImage(images.get(RADIOBUTTONDISABLED), 590, 260, null);
+            g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, 230, null);
+            g2d.drawImage(images.get(RADIOBUTTONDISABLED), windowResolution.width / 2 + 90, 260, null);
         } else {
-            g2d.drawImage(images.get(RADIOBUTTONDISABLED), 590, 230, null);
-            g2d.drawImage(images.get(RADIOBUTTONENABLED), 590, 260, null);
+            g2d.drawImage(images.get(RADIOBUTTONDISABLED), windowResolution.width / 2 + 90, 230, null);
+            g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, 260, null);
         }
 
         if (controlHover) {
@@ -219,8 +219,6 @@ public class Settings {
     }
 
     private void setRects() {
-        controlsRectangle = new Rectangle(720, 220, images.get(CONTROLSBUTTONNOHOVER).getWidth(), images.get(CONTROLSBUTTONNOHOVER).getHeight());
-
         lowGraphicsRectangle = new Rectangle(100, 230, 120, 20);
 
         highGraphicsRectangle = new Rectangle(100, 260, 120, 20);
@@ -229,6 +227,13 @@ public class Settings {
 
         fullscreenResolutionRectangle = new Rectangle(400, 260, 210, 20);
 
+        controlsRectangle = new Rectangle(
+                windowResolution.width / 2 + 220,
+                220,
+                images.get(CONTROLSBUTTONNOHOVER).getWidth(),
+                images.get(CONTROLSBUTTONNOHOVER).getHeight()
+        );
+        
         backRectangle = new Rectangle(
                 100,
                 windowResolution.height - 75,
