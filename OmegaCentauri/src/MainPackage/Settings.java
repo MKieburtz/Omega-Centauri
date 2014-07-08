@@ -130,11 +130,11 @@ public class Settings {
         g2d.drawString("OPTIONS", windowResolution.width / 2 - 125, 75);
 
         g2d.setFont(fonts.get(SUBTITLEFONT));
-        g2d.drawString("GRAPHICS", 100, 200);
+        g2d.drawString("GRAPHICS", 100, windowResolution.height / 2 - 100);
 
         g2d.setFont(fonts.get(TEXTFONT));
-        g2d.drawString("LOW", 100, 250);
-        g2d.drawString("HIGH", 100, 280);
+        g2d.drawString("LOW", 100,  windowResolution.height / 2 - 50);
+        g2d.drawString("HIGH", 100, windowResolution.height / 2 - 20);
 
         if (changed)
         {
@@ -144,28 +144,29 @@ public class Settings {
         }
         
         if (settingsData.getGraphicsQualityLow()) {
-            g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, 230, null);
-            g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, 260, null);
+            g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, windowResolution.height / 2 - 70, null);
+            g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, windowResolution.height / 2 - 40, null);
         } else {
-            g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, 230, null);
-            g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, 260, null);
+            g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, windowResolution.height / 2 - 70, null);
+            g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, windowResolution.height / 2 - 40, null);
         }
 
         g2d.setColor(new Color(81, 81, 81));
         
         g2d.setFont(fonts.get(SUBTITLEFONT));
-        g2d.drawString("RESOLUTION", windowResolution.width / 2 - 110, 200);
+        g2d.drawString("RESOLUTION", windowResolution.width / 2 - 110, windowResolution.height / 2 - 100);
 
         g2d.setFont(fonts.get(TEXTFONT));
-        g2d.drawString("WINDOWED", windowResolution.width / 2 - 110, 250);
-        g2d.drawString("FULLSCREEN", windowResolution.width / 2 - 110, 280);
+        g2d.drawString("WINDOWED", windowResolution.width / 2 - 110,   windowResolution.height / 2 - 50);
+        g2d.drawString("FULLSCREEN", windowResolution.width / 2 - 110, windowResolution.height / 2 - 20);
 
+        
         if (settingsData.getWindowed()) {
-            g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, 230, null);
-            g2d.drawImage(images.get(RADIOBUTTONDISABLED), windowResolution.width / 2 + 90, 260, null);
+            g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 70, null);
+            g2d.drawImage(images.get(RADIOBUTTONDISABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 40, null);
         } else {
-            g2d.drawImage(images.get(RADIOBUTTONDISABLED), windowResolution.width / 2 + 90, 230, null);
-            g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, 260, null);
+            g2d.drawImage(images.get(RADIOBUTTONDISABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 70, null);
+            g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 40, null);
         }
 
         if (controlHover) {
@@ -228,8 +229,8 @@ public class Settings {
         fullscreenResolutionRectangle = new Rectangle(400, 260, 210, 20);
 
         controlsRectangle = new Rectangle(
-                windowResolution.width / 2 + 220,
-                220,
+                windowResolution.width - 100 - images.get(CONTROLSBUTTONNOHOVER).getWidth(),
+                windowResolution.height / 2 - 80,
                 images.get(CONTROLSBUTTONNOHOVER).getWidth(),
                 images.get(CONTROLSBUTTONNOHOVER).getHeight()
         );
