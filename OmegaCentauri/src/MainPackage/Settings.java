@@ -349,4 +349,9 @@ public class Settings {
         }
         
     }
+    
+    public SettingsData getData()
+    {
+        return settingsData;
+    }
 }

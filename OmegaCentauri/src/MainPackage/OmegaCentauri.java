@@ -6,6 +6,7 @@ import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
 import java.util.concurrent.*;
+import com.apple.eawt.*;
 
 /**
  * @author Michael Kieburtz
@@ -78,20 +79,25 @@ public class OmegaCentauri extends Game implements GameStartListener {
         setTitle("Omega Centauri");
         setMinimumSize(new Dimension(600, 600));
 
-        setBackground(Color.BLACK);
-
-        setSize(1000, 600);
-
         mainMenu = new MainMenu(this);
 
-        panel = new Panel(1000, 600);
+        if (!mainMenu.getSettings().getData().getWindowed()) // if fullscreen
+        {
+            setUndecorated(true);
+            gd.setFullScreenWindow(this);
+            this.setVisible(false);
+            panel = new Panel(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+        } else {
+            setSize(1000, 600);
+            panel = new Panel(1000, 600);
+        }
 
-//        setUndecorated(true);
-//        gd.setFullScreenWindow(this);
+        setBackground(Color.BLACK);
         setInputMaps();
 
         getContentPane().add(panel);
 
+        //requestFocus();
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
@@ -116,6 +122,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                 rotateLeft = false;
                 rotateRight = false;
                 forward = false;
+                requestFocus();
 
             }
         });
@@ -456,66 +463,47 @@ public class OmegaCentauri extends Game implements GameStartListener {
         paused = !paused;
     }
 
-    public class Panel extends JPanel implements MouseListener, MouseMotionListener {
+    public class Panel extends JPanel {
 
         public Panel(int width, int height) {
             setSize(width, height);
             setBackground(Color.BLACK);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            addMouseListener(this);
-            addMouseMotionListener(this);
+            addMouseMotionListener(new MouseAdapter() {
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    if (mainMenu.isActive()) {
+                        mainMenu.checkMouseMoved(e.getPoint());
+                        
+                    }
+                }
+            });
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (!mainMenu.isActive()) {
+                        Rectangle rect = new Rectangle(20, 110, 200, 100);
+                        if (rect.contains(e.getPoint()) && paused) {
+                            resetGame();
+                            mainMenu.setActive(true);
+                            timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
+                        }
+                    } else {
+                        mainMenu.checkMousePressed(e.getPoint());
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (mainMenu.isActive()) {
+                        mainMenu.checkMouseExited();
+                    }
+                }
+            });
 
             setVisible(true);
-        }
-
-        @Override
-        public void mousePressed(MouseEvent me) {
-            if (!mainMenu.isActive()) {
-                Rectangle rect = new Rectangle(20, 110, 200, 100);
-
-                if (rect.contains(new Point(me.getX(), me.getY())) && paused) {
-                    resetGame();
-                    mainMenu.setActive(true);
-                    timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
-                }
-            }
-            else
-            {
-                mainMenu.checkMousePressed(me.getPoint());
-            }
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent me) {
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent me) {
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent me) {
-        }
-
-        @Override
-        public void mouseExited(MouseEvent me) {
-            if (mainMenu.isActive())
-            {
-                mainMenu.checkMouseExited();
-            }
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            if (mainMenu.isActive())
-            {
-                mainMenu.checkMouseMoved(e.getPoint());
-            }
         }
     }
 

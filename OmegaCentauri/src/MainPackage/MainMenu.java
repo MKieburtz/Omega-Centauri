@@ -1,7 +1,6 @@
 package MainPackage;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.sound.sampled.Clip;
@@ -48,6 +47,7 @@ public class MainMenu {
     private Dimension screenSize;
 
     private Rectangle screenRect;
+    
 
     public MainMenu(OmegaCentauri game) {
         active = true;
@@ -130,6 +130,7 @@ public class MainMenu {
 //        g2d.draw(startRectangle);
 //        g2d.draw(closeRectangle);
 //        g2d.draw(settingsRectangle);
+        
             g.drawImage(drawingImage, 0, 0, null);
         } else {
             settings.draw(g);
