@@ -12,7 +12,6 @@ import java.io.*;
  */
 public class Settings {
 
-    private Dimension screenResolution = new Dimension();
     private Dimension windowResolution = new Dimension();
 
     private MediaLoader loader;
@@ -67,8 +66,7 @@ public class Settings {
     
     private final HashMap<SettingsTypes, Boolean> changes = new HashMap<SettingsTypes, Boolean>();
 
-    public Settings(Dimension screenSize, Dimension windowSize) {
-        this.screenResolution = screenSize;
+    public Settings(Dimension windowSize) {
         this.windowResolution = windowSize;
 
         loader = new MediaLoader();
@@ -194,14 +192,15 @@ public class Settings {
         }
 
         g2d.setColor(Color.RED);
-//        g2d.draw(controlsRectangle);
-//        g2d.draw(lowGraphicsRectangle);
-//        g2d.draw(highGraphicsRectangle);
-//        g2d.draw(windowedResolutionRectangle);
-//        g2d.draw(fullscreenResolutionRectangle);
-//        g2d.draw(backRectangle);
-//        g2d.draw(saveRectangle);
-//        g2d.draw(resetRectangle);
+        g2d.draw(controlsRectangle);
+        g2d.draw(lowGraphicsRectangle);
+        g2d.draw(highGraphicsRectangle);
+        g2d.draw(windowedResolutionRectangle);
+        g2d.draw(fullscreenResolutionRectangle);
+        g2d.draw(backRectangle);
+        g2d.draw(saveRectangle);
+        g2d.draw(resetRectangle);
+        System.out.println(windowResolution);
 //        
         g.drawImage(drawingImage, 0, 0, null);
     }
@@ -220,13 +219,33 @@ public class Settings {
     }
 
     private void setRects() {
-        lowGraphicsRectangle = new Rectangle(100, 230, 120, 20);
+        lowGraphicsRectangle = new Rectangle(
+                100,
+                windowResolution.height / 2 - 70,
+                120,
+                20
+        );
 
-        highGraphicsRectangle = new Rectangle(100, 260, 120, 20);
+        highGraphicsRectangle = new Rectangle(
+                100,
+                windowResolution.height / 2 - 40,
+                120,
+                20
+        );
 
-        windowedResolutionRectangle = new Rectangle(400, 230, 210, 20);
+        windowedResolutionRectangle = new Rectangle(
+                windowResolution.width / 2 - 100,
+                windowResolution.height / 2 - 70,
+                210,
+                20
+        );
 
-        fullscreenResolutionRectangle = new Rectangle(400, 260, 210, 20);
+        fullscreenResolutionRectangle = new Rectangle(
+                windowResolution.width / 2 - 100,
+                windowResolution.height / 2 - 40,
+                210,
+                20
+        );
 
         controlsRectangle = new Rectangle(
                 windowResolution.width - 100 - images.get(CONTROLSBUTTONNOHOVER).getWidth(),

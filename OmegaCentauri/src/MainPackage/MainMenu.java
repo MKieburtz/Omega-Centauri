@@ -70,7 +70,7 @@ public class MainMenu {
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         size = new Point(game.getWidth(), game.getHeight());
 
-        settings = new Settings(screenSize, new Dimension(size.x, size.y));
+        settings = new Settings(new Dimension(size.x, size.y));
 
         screenRect = new Rectangle(0, 0, size.x, size.y);
 
