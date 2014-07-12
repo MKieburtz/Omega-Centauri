@@ -23,13 +23,16 @@ public class Shield {
     private double angle;
     private int opacity = 0;
     private double[] scaling = new double[2];
-    private double health;
     private double regenRate;
     private int strengh;
+    private int energy;
+    private int maxEnergy;
 
-    public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation, boolean enemy, Point size) {
+    public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation, boolean enemy, Point size, int strength, int energy) {
         this.angle = angle;
-        health = 100;
+        this.energy = energy;
+        this.maxEnergy = energy; // start at max power
+        this.strengh = strength;
         imagePaths.add(enemy ? "resources/FILLERshieldEnemy.png" : "resources/FILLERshield.png");
         images = loader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
@@ -64,17 +67,35 @@ public class Shield {
 
     public void activate(double damage) {
         opacity = 100;
-        health -= damage;
+        
+        int damageToLose = (int)Math.ceil(damage * (strengh / 10));
+        
+        energy -= damageToLose;
     }
     
-    public double getHealth()
+    public double getEnergy()
     {
-        return health;
+        return energy;
     }
     
-    public void setHealth(double x)
+    public void setEnergy(int newEnergy)
     {
-        Shield.this.health = x;
+        energy = newEnergy;
+    }
+    
+    public void setMaxEnergy(int newMax)
+    {
+        maxEnergy = newMax;
+    }
+    
+    public int getMaxEnergy()
+    {
+        return maxEnergy;
+    }
+    
+    public void setStrength(int newStrength)
+    {
+        strengh = newStrength;
     }
     
     public boolean isActive()
@@ -90,6 +111,11 @@ public class Shield {
     public double getRegenRate()
     {
         return regenRate;
+    }
+    
+    public void regen()
+    {
+        energy += regenRate;
     }
     
     public void setRegenRate(double regenRate)

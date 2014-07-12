@@ -68,7 +68,7 @@ public class Renderer {
             else
                 drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y);
 
-            System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
+            //System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
         }
         
         Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics

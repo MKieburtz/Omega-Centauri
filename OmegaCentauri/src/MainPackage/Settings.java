@@ -61,6 +61,7 @@ public class Settings {
     private Rectangle fullscreenResolutionRectangle;
 
     private SettingsData settingsData;
+    private boolean saved = false;
     
     private enum SettingsTypes { graphicsQualityLow, resolutionWindowed };
     
@@ -139,6 +140,11 @@ public class Settings {
             g2d.setFont(fonts.get(SMALLTEXTFONT));
             g2d.setColor(Color.RED);
             g2d.drawString("There are unsaved changes!", windowResolution.width - 310, 20);
+        } else if (saved)
+        {
+            g2d.setFont(fonts.get(SMALLTEXTFONT));
+            g2d.setColor(Color.GREEN);
+            g2d.drawString("Changes saved!", windowResolution.width - 310, 20);
         }
         
         if (settingsData.getGraphicsQualityLow()) {
@@ -191,17 +197,16 @@ public class Settings {
             g2d.drawImage(images.get(RESETBUTTONNOHOVER), resetRectangle.x, resetRectangle.y, null);
         }
 
-        g2d.setColor(Color.RED);
-        g2d.draw(controlsRectangle);
-        g2d.draw(lowGraphicsRectangle);
-        g2d.draw(highGraphicsRectangle);
-        g2d.draw(windowedResolutionRectangle);
-        g2d.draw(fullscreenResolutionRectangle);
-        g2d.draw(backRectangle);
-        g2d.draw(saveRectangle);
-        g2d.draw(resetRectangle);
-        System.out.println(windowResolution);
-//        
+//        g2d.setColor(Color.RED);
+//        g2d.draw(controlsRectangle);
+//        g2d.draw(lowGraphicsRectangle);
+//        g2d.draw(highGraphicsRectangle);
+//        g2d.draw(windowedResolutionRectangle);
+//        g2d.draw(fullscreenResolutionRectangle);
+//        g2d.draw(backRectangle);
+//        g2d.draw(saveRectangle);
+//        g2d.draw(resetRectangle);
+        
         g.drawImage(drawingImage, 0, 0, null);
     }
 
@@ -319,9 +324,13 @@ public class Settings {
             
             save();
         }
-        
+        boolean wasChanged = changed;
         changed = changes.get(SettingsTypes.graphicsQualityLow) != settingsData.getGraphicsQualityLow() ||
                 changes.get(SettingsTypes.resolutionWindowed) != settingsData.getWindowed();
+        if (wasChanged && !changed)
+            saved = true;
+        else
+            saved = false;
     }
 
     public void checkMouseExited() {

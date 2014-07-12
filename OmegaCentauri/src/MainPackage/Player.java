@@ -42,7 +42,8 @@ public class Player extends Ship {
         images = Calculator.toCompatibleImages(images);
         
         activeImage = images.get(0);
-        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()));
+        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
+        10, 100);
         setUpHitbox(cameraLocation);
 
         soundPaths.add("resources/Pulse.wav");
@@ -163,7 +164,7 @@ public class Player extends Ship {
         
         g2d.setColor(Color.CYAN);
         
-         g2d.drawString("Shield Integrity: " + shield.getHealth() + "%", 10, 60);
-         g2d.drawString("Hull Integrity: " + hull + "%", 10, 75);
+         g2d.drawString("Shield Integrity: " + shield.getEnergy() + " / " + shield.getMaxEnergy(), 10, 60);
+         g2d.drawString("Hull Integrity: " + hullDurability + " / " + maxhullDurabilty, 10, 75);
     }
 }

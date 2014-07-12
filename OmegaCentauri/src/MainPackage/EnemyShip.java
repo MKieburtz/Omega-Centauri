@@ -53,10 +53,10 @@ public abstract class EnemyShip extends Ship {
         if (!movingAway)
             targetingAngle = angleToPlayer;
         
-        if (!movingAway && (distanceToPlayer < 200 || hull < 30))
+        if (!movingAway && distanceToPlayer < 200)
         {
             movingAway = true;
-            if (hull < 30)
+            if (hullDurability < 30)
                 targetingAngle = (angleToPlayer + 180) % 360;
             else if (distanceToPlayer < 200)
             {
@@ -107,8 +107,8 @@ public abstract class EnemyShip extends Ship {
         }
         
         // regen shield
-        if (shield.getHealth() <= 100) {
-            shield.setHealth(shield.getHealth() + shield.getRegenRate());
+        if (shield.getEnergy() <= 100) {
+            shield.regen();
         }
     }
 
@@ -170,13 +170,13 @@ public abstract class EnemyShip extends Ship {
         shield.draw(g2d, camera.getLocation(), location);
 
         Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
-                (float) (camera.getSize().y - 85), (float) shield.getHealth() * 1.5f, 5f);
+                (float) (camera.getSize().y - 85), (float) shield.getEnergy() * 1.5f, 5f);
 
         GradientPaint paintShield = new GradientPaint(paintRectShield.x, paintRectShield.y, Color.BLUE, paintRectShield.x + paintRectShield.width,
                 paintRectShield.y + paintRectShield.height, Color.CYAN);
 
         Rectangle2D.Float paintRectHull = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
-                (float) (camera.getSize().y - 55), (float) hull * 1.5f, 5f);
+                (float) (camera.getSize().y - 55), (float) hullDurability * 1.5f, 5f);
 
         GradientPaint paintHull = new GradientPaint(paintRectHull.x, paintRectHull.y, new Color(100, 0, 0), paintRectHull.x + paintRectHull.width,
                 paintRectHull.y + paintRectHull.height, new Color(255, 0, 0));

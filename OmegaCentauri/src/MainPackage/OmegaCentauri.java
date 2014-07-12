@@ -64,10 +64,10 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
     private void addShips() {
         player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, .15, camera.getLocation(), 155, 100);
-        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 100, 1));
-        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 100, 2));
-        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 100, 3));
-        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 100, 4));
+        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 20, 1));
+        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 20, 2));
+        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 20, 3));
+        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, .15, camera.getLocation(), 500, 20, 4));
         syncGameStateVaribles();
 
         player.setUpHitbox(camera.getLocation());

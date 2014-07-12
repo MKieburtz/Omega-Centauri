@@ -16,7 +16,8 @@ import java.util.concurrent.*;
  */
 public abstract class Ship implements CollisionListener {
 
-    protected int hull;
+    protected int hullDurability;
+    protected int maxhullDurabilty;
     protected int fuel;
     protected int power;
     protected Type type;
@@ -34,7 +35,7 @@ public abstract class Ship implements CollisionListener {
     protected double maxVel;
     protected double angleIcrement;
     protected double acceleration = .15;
-    // File -> FileInputStream -> ImageIO -> buffered image
+    
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<Clip> sounds = new ArrayList<Clip>();
     protected BufferedImage activeImage;
@@ -42,6 +43,7 @@ public abstract class Ship implements CollisionListener {
     protected ArrayList<String> soundPaths = new ArrayList<String>();
     protected MediaLoader mediaLoader = new MediaLoader();
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
+    
     protected boolean canshoot = true;
     protected int shootingDelay;
     protected Shield shield;
@@ -61,7 +63,8 @@ public abstract class Ship implements CollisionListener {
         this.angleIcrement = angleIncrement;
         this.acceleration = acceleration;
         this.shootingDelay = shootingDelay;
-        this.hull = health;
+        this.hullDurability = health;
+        this.maxhullDurabilty = health;
         ex = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -198,20 +201,12 @@ public abstract class Ship implements CollisionListener {
         updateAngle(state);
     }
 
-    protected void playSound(int index) {
-        sounds.get(index).setFramePosition(0);
-        if (!sounds.get(index).isActive()) {
-            sounds.get(index).setFramePosition(0);
-            sounds.get(index).start();
-        }
-    }
-
     public void setUpHitbox(Point2D.Double cameraLocation) {
         try {
             hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x,
                     Calculator.getScreenLocation(cameraLocation, location).y,
                     activeImage.getWidth(), activeImage.getHeight());
-        } catch (NullPointerException ex) {
+        } catch (NullPointerException exception) {
             System.err.println("activeimage not initialized!");
         }
     }
@@ -238,12 +233,12 @@ public abstract class Ship implements CollisionListener {
         }
         
             if (!ship.getShots().contains(shot)) {
-                if (ship.getShield().getHealth() > 0) {
+                if (ship.getShield().getEnergy() > 0) {
                     ship.activateShield(shot.getDamage());
                 } else {
                     ship.reduceHull(shot.getDamage());
                     
-                    if (hull <= 0)
+                    if (hullDurability <= 0)
                         return true;
                 }
             }
@@ -251,7 +246,7 @@ public abstract class Ship implements CollisionListener {
         return false;
     }
 
-    public boolean CollisionEventWithShip() { // title is self-documenting
+    public boolean CollisionEventWithShip() { 
         return setColliding(true);
     }
 
@@ -284,15 +279,15 @@ public abstract class Ship implements CollisionListener {
     }
 
     public double getShieldHealth() {
-        return shield.getHealth();
+        return shield.getEnergy();
     }
 
     public int getHullHealth() {
-        return hull;
+        return hullDurability;
     }
 
     public void reduceHull(double damage) {
-        hull -= damage;
+        hullDurability -= damage;
     }
 
     public void purgeShots() {
@@ -307,21 +302,21 @@ public abstract class Ship implements CollisionListener {
         if (!this.colliding && colliding) {
             this.colliding = true;
             
-            if (shield.getHealth() - collisionDamage >= 0)
+            if (shield.getEnergy() - collisionDamage >= 0)
             {
                 shield.activate(collisionDamage);
             }
             else
             {
-                double healthToLoseShield = collisionDamage - Math.abs(shield.getHealth() - collisionDamage);
-                double healthToLoseHull = Math.abs(shield.getHealth() - collisionDamage);
+                double healthToLoseShield = collisionDamage - Math.abs(shield.getEnergy() - collisionDamage);
+                double healthToLoseHull = Math.abs(shield.getEnergy() - collisionDamage);
                 
                 if (healthToLoseShield > 0)
                     shield.activate(healthToLoseShield);
                 
                 reduceHull(healthToLoseHull);
                 
-                if (hull <= 0)
+                if (hullDurability <= 0)
                     return true;
             }
             
