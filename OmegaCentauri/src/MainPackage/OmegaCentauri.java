@@ -96,8 +96,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
         setInputMaps();
 
         getContentPane().add(panel);
-
-        //requestFocus();
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
@@ -110,20 +109,20 @@ public class OmegaCentauri extends Game implements GameStartListener {
             }
         });
 
-        addFocusListener(new FocusListener() {
+        addWindowFocusListener(new WindowFocusListener() {
 
             @Override
-            public void focusGained(FocusEvent e) {
+            public void windowGainedFocus(WindowEvent e) {
             }
 
             @Override
-            public void focusLost(FocusEvent e) {
-                shooting = false;
-                rotateLeft = false;
-                rotateRight = false;
-                forward = false;
+            public void windowLostFocus(WindowEvent e) {
+//                shooting = false;
+//                rotateLeft = false;
+//                rotateRight = false;
+//                forward = false;
+                
                 requestFocus();
-
             }
         });
 
@@ -131,7 +130,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
         recordingEx = Executors.newSingleThreadScheduledExecutor();
         setLocationRelativeTo(null);
-
+        
         setVisible(true);
 
         timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
@@ -262,6 +261,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
     @Override
     public void gameStart() {
+        System.gc();
         startGame();
     }
 
@@ -271,8 +271,9 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
     private void gameUpdate() {
 
+        //long start = 0;
         if (!paused) {
-
+        //start = System.currentTimeMillis();
             if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
                 camera.setSize(getWidth(), getHeight());
             }
@@ -299,9 +300,8 @@ public class OmegaCentauri extends Game implements GameStartListener {
             for (EnemyShip enemyShip : enemyShips) {
                 enemyShip.update(player, camera.getLocation(), enemyShips);
             }
-
             allShots.clear();
-
+            
             for (Ship s : deadShips) {
                 if (enemyShips.contains(s)) {
                     enemyShips.remove(s);
@@ -343,6 +343,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                         }
                     }
                 }
+                
                 if (!collision) {
                     ship.setColliding(false);
                 }
@@ -357,9 +358,11 @@ public class OmegaCentauri extends Game implements GameStartListener {
 
                 ship.purgeShots();
             }
-
             syncGameStateVaribles();
         }
+        
+//        long end = System.currentTimeMillis();
+//        System.out.println(end - start);
     }
 
     /*
@@ -544,18 +547,19 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             if (endtime != 0) {
                                 additionalTime = Math.abs(sleeptime - (startTime - endtime));
                             }
-
+                            
                             //System.out.println(additionalTime);
+                            //long startUpdateTime = System.nanoTime();
                             gameUpdate();
                             updates++;
-
-//                            if (!OmegaCentauri.this.hasFocus())
-//                                System.out.println("no focus!");
+                            //System.out.println("update time: " + (System.nanoTime() - startUpdateTime));
+                            
+                            //long startRenderTime = System.nanoTime();
                             renderer.drawGameScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                                    FPS, stars, camera, Version, UPS, paused);
+                                    FPS, stars, camera, Version, UPS, paused, allShots);
                             framesDrawn++;
-                            Toolkit.getDefaultToolkit().sync();
-
+                            //System.out.println("render time: " + (System.nanoTime() - startRenderTime));
+                            
                             if (!OmegaCentauri.this.hasFocus()) {
                                 paused = true;
                             }
@@ -563,6 +567,9 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             endtime = System.nanoTime();
                             sleeptime = loopTimeUPS - (endtime - startTime) - additionalTime;
 
+                            if (sleeptime < 0)
+                                Toolkit.getDefaultToolkit().beep();
+                            
                             timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
                             if (sleeptime < 0) {
                                 sleeptime = 0;
@@ -736,7 +743,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
 //        System.setProperty("sun.java2d.opengl", "true");
 //        System.setProperty("sun.java2d.ddscale", "true");
 //        System.setProperty("sun.java2d.translaccel", "true");
-
+        
         new OmegaCentauri();
     }
 }

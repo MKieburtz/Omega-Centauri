@@ -27,8 +27,6 @@ public class Renderer {
     
     private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
     
-    // Cached values:
-    private ArrayList<Shot> shots = new ArrayList<Shot>();
     
    GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     
@@ -59,7 +57,7 @@ public class Renderer {
     }
 
     public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
-            ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused) {
+            ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused, HashSet<Shot> allShots) {
 
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
         {
@@ -73,10 +71,8 @@ public class Renderer {
         
         Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics
         //System.out.println(images.get(0).getColorModel().equals(config.getColorModel()));
-        //long start = System.currentTimeMillis();
         
-        shots.clear();
-
+        //long start = System.currentTimeMillis();
         // draw backround rectangle
         g2d.setColor(Color.BLACK);
 
@@ -88,18 +84,19 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // draw stars. Costs 3-5 ms
+        // draw stars. Costs 2-7 ms
         for (StarChunk starChunk : stars) {
             if (camera.insideView(starChunk.getBoundingRect())) {
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
+        
         // draw HUD
         headsUpDisplayPlayer.draw(g2d, camera);
         
+
         for (Ship ship : ships)
         {
-            shots.addAll(ship.getShots());
             
             if (ship.getHullHealth() > 0) {
                 ship.draw(g2d, camera);
@@ -130,7 +127,7 @@ public class Renderer {
             }
         }
         // draw shots TODO: check if on screen.
-        for (Shot shot : shots) {
+        for (Shot shot : allShots) {
             if (shot.imagesLoaded()) {
                 shot.draw(g2d, camera.getLocation());
             }
@@ -147,9 +144,8 @@ public class Renderer {
         //ups
         g2d.drawString("UPS: " + String.valueOf(ups), camera.getSize().x - 130, 30);
         //shots on screen
-        g2d.drawString("Shots: " + shots.size(), camera.getSize().x - 130, 40);
-        //TODO: CHECK FOR INSIDE CAMERA
-        
+        g2d.drawString("Shots: " + allShots.size(), camera.getSize().x - 130, 40);
+       
         
         //draw pause menu
         if (paused)
@@ -157,8 +153,7 @@ public class Renderer {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
             g2d.drawImage(images.get(PAUSETOMENU),null, 20, 110);
         }
-        
-        
+
         // this is the most expensive call
         g.drawImage(drawingImage, 0, 0, null);
         
