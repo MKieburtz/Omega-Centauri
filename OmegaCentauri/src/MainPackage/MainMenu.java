@@ -48,6 +48,8 @@ public class MainMenu {
 
     private Rectangle screenRect;
     
+    private BufferedImage drawingImage;
+    
 
     public MainMenu(OmegaCentauri game) {
         active = true;
@@ -77,17 +79,23 @@ public class MainMenu {
         // load enough stars for the entire screen;
         for (int x = 0; x < screenSize.width; x += 100) {
             for (int y = 0; y < screenSize.height; y += 100) {
-                stars.add(new TwinklingStarChunk(x, y));
+                stars.add(new TwinklingStarChunk(x, y, 100, 3));
             }
         }
 
+        drawingImage = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
+        
         setRects();
     }
 
     public void draw(Graphics g) {
         if (!settings.isActive()) {
-            BufferedImage drawingImage = new BufferedImage(screenSize.width, screenSize.height, BufferedImage.TYPE_INT_ARGB);
 
+            if (drawingImage.getWidth() != size.x || drawingImage.getHeight() != size.y)
+            {
+                drawingImage = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
+            }
+            
             Graphics2D g2d = drawingImage.createGraphics();
 
             g2d.setColor(Color.BLACK);

@@ -18,35 +18,36 @@ public class TwinklingStarChunk extends StarChunk {
     private HashMap<Ellipse2D.Double, Float> starOpacity = new HashMap<Ellipse2D.Double, Float>();
     private HashMap<Ellipse2D.Double, Boolean> fading = new HashMap<Ellipse2D.Double, Boolean>();
     private HashMap<Ellipse2D.Double, Float> rate = new HashMap<Ellipse2D.Double, Float>();
-    
+
     private final int startingTime = random.nextInt(100) + 1;
     private int time = 0;
     private ArrayList<Float> possibleDelays = new ArrayList<Float>();
     protected ArrayList<Integer> possibleSizes = new ArrayList<Integer>();
-    
-    public TwinklingStarChunk(double x, double y) {
-        super(x, y);
+
+    public TwinklingStarChunk(double x, double y, int size, int amount) {
+        super(x, y, size, amount);
+
         possibleSizes.add(1);
         possibleSizes.add(2);
         possibleSizes.add(3);
-        
+
         possibleDelays.add(.5f);
         possibleDelays.add(1f);
         possibleDelays.add(2f);
-        
+
         for (Ellipse2D.Double star : stars) {
-            int size = possibleSizes.get(random.nextInt(possibleSizes.size()));
-            possibleSizes.remove(new Integer(size));
-            star.setFrame(star.getX(), star.getY(), size, size);
-            
+            int starSize = possibleSizes.get(random.nextInt(possibleSizes.size()));
+            possibleSizes.remove(new Integer(starSize));
+            star.setFrame(star.getX(), star.getY(), starSize, starSize);
+
             starOpacity.put(star, opacity);
             fading.put(star, Boolean.TRUE);
-            
+
             Float starRate = possibleDelays.get(random.nextInt(possibleDelays.size()));
             rate.put(star, starRate);
             possibleDelays.remove(starRate);
         }
-        
+
     }
 
     public void draw(Graphics2D g2d) {
@@ -71,11 +72,10 @@ public class TwinklingStarChunk extends StarChunk {
                     drawStar(g2d, star);
                 }
                 drawStar(g2d, star);
-            }else
-            {
+            } else {
                 drawStar(g2d, star);
             }
-            
+
         }
         time++;
     }
@@ -89,11 +89,11 @@ public class TwinklingStarChunk extends StarChunk {
         Composite comp = AlphaComposite.getInstance(rule, (float) starOpacity.get(star) / 100);
         g2d.setComposite(comp);
         g2d.setColor(Color.WHITE);
-        
+
         g2d.fill(star);
-        
+
         g2d.setComposite(originalComposite);
-        
+
         if (fading.get(star)) {
             starOpacity.put(star, starOpacity.get(star) - rate.get(star));
             if (starOpacity.get(star) == 0) {

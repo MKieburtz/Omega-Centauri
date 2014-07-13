@@ -545,10 +545,11 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             startTime = System.nanoTime();
 
                             if (endtime != 0) {
-                                additionalTime = Math.abs(sleeptime - (startTime - endtime));
+                                additionalTime = Math.abs(Math.abs(sleeptime) - (startTime - endtime));
                             }
                             
-                            //System.out.println(additionalTime);
+//                            System.out.println(additionalTime);
+//                            System.out.println(loopTimeUPS);
                             //long startUpdateTime = System.nanoTime();
                             gameUpdate();
                             updates++;
@@ -560,6 +561,7 @@ public class OmegaCentauri extends Game implements GameStartListener {
                             framesDrawn++;
                             //System.out.println("render time: " + (System.nanoTime() - startRenderTime));
                             
+                            // doesn't work
                             if (!OmegaCentauri.this.hasFocus()) {
                                 paused = true;
                             }
@@ -605,13 +607,13 @@ public class OmegaCentauri extends Game implements GameStartListener {
                          */
                         if (yPositions[0] < 0) {
 
-                            for (int x = 1; x < screenSize.x; x = x + 100) {
+                            for (int x = 1; x < screenSize.x; x = x + 400) {
 
-                                stars.add(new StarChunk(x, yPositions[0]));
+                                stars.add(new StarChunk(x, yPositions[0], 400, 20));
                                 starChunksLoaded++;
                             }
 
-                            yPositions[0] += 100;
+                            yPositions[0] += 400;
                         }
 
                         // quadrant 2
@@ -621,14 +623,14 @@ public class OmegaCentauri extends Game implements GameStartListener {
                          * |___|___|
                          */
                         if (yPositions[1] < 0) {
-                            for (int x = -1; x > -screenSize.x; x = x - 100) {
+                            for (int x = -1; x > -screenSize.x; x = x - 400) {
 
-                                stars.add(new StarChunk(x, yPositions[1]));
+                                stars.add(new StarChunk(x, yPositions[1], 400, 20));
                                 starChunksLoaded++;
 
                             }
 
-                            yPositions[1] += 100;
+                            yPositions[1] += 400;
                         }
 
                         // quadrant 3
@@ -638,13 +640,13 @@ public class OmegaCentauri extends Game implements GameStartListener {
                          * |_x_|___|
                          */
                         if (yPositions[2] < 10000) {
-                            for (int x = -1; x > -screenSize.x; x = x - 100) {
+                            for (int x = -1; x > -screenSize.x; x = x - 400) {
 
-                                stars.add(new StarChunk(x, yPositions[2]));
+                                stars.add(new StarChunk(x, yPositions[2], 400, 20));
                                 starChunksLoaded++;
                             }
 
-                            yPositions[2] += 100;
+                            yPositions[2] += 400;
                         }
 
                         // quadrant 4
@@ -654,19 +656,19 @@ public class OmegaCentauri extends Game implements GameStartListener {
                          * |___|_x_|
                          */
                         if (yPositions[3] < 10000) {
-                            for (int x = 1; x < screenSize.x; x = x + 100) {
+                            for (int x = 1; x < screenSize.x; x = x + 400) {
 
-                                stars.add(new StarChunk(x, yPositions[3]));
+                                stars.add(new StarChunk(x, yPositions[3], 400, 20));
                                 starChunksLoaded++;
                             }
 
-                            yPositions[3] += 100;
+                            yPositions[3] += 400;
                         }
 
                         // use active rendering to draw the screen
-                        renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 400, panel.getWidth(), panel.getHeight());
+                        renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 25, panel.getWidth(), panel.getHeight());
 
-                        if (starChunksLoaded == (100 * 100) * 4) {
+                        if (starChunksLoaded == (25 * 25) * 4) {
                             loading = false;
 
                         }

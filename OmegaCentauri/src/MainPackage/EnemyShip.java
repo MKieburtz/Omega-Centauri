@@ -156,9 +156,6 @@ public abstract class EnemyShip extends Ship {
     public void draw(Graphics2D g2d, Camera camera) {
         super.draw(g2d, camera);
 
-        Point2D.Double middleOfPlayer = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), playerLocation, dimensions.x, dimensions.y);
-        Point2D.Double middleOfSelf = Calculator.getScreenLocationMiddleForPlayer(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
-
 //        for (EnemyShip s : others) {
 //            g2d.setColor(Color.BLUE);
 //
@@ -172,20 +169,20 @@ public abstract class EnemyShip extends Ship {
         Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
                 (float) (camera.getSize().y - 85), (float) shield.getEnergy() * 1.5f, 5f);
 
-        GradientPaint paintShield = new GradientPaint(paintRectShield.x, paintRectShield.y, Color.BLUE, paintRectShield.x + paintRectShield.width,
-                paintRectShield.y + paintRectShield.height, Color.CYAN);
+//        GradientPaint paintShield = new GradientPaint(paintRectShield.x, paintRectShield.y, Color.BLUE, paintRectShield.x + paintRectShield.width,
+//                paintRectShield.y + paintRectShield.height, Color.CYAN);
 
         Rectangle2D.Float paintRectHull = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
                 (float) (camera.getSize().y - 55), (float) hullDurability * 1.5f, 5f);
 
-        GradientPaint paintHull = new GradientPaint(paintRectHull.x, paintRectHull.y, new Color(100, 0, 0), paintRectHull.x + paintRectHull.width,
-                paintRectHull.y + paintRectHull.height, new Color(255, 0, 0));
+//        GradientPaint paintHull = new GradientPaint(paintRectHull.x, paintRectHull.y, new Color(100, 0, 0), paintRectHull.x + paintRectHull.width,
+//                paintRectHull.y + paintRectHull.height, new Color(255, 0, 0));
 
-        g2d.setPaint(paintShield);
-        g2d.fill(paintRectShield);
-
-        g2d.setPaint(paintHull);
-        g2d.fill(paintRectHull);
+//        g2d.setPaint(paintShield);
+//        g2d.fill(paintRectShield);
+//
+//        g2d.setPaint(paintHull);
+//        g2d.fill(paintRectHull);
     }
     
     public boolean isMovingAway()

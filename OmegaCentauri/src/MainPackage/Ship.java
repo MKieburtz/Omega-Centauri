@@ -80,8 +80,6 @@ public abstract class Ship implements CollisionListener {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = (AffineTransform) original.clone();
         
-        transform.setToIdentity();
-        
         transform.rotate(Math.toRadians(360 - faceAngle),
                 Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
                 Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
