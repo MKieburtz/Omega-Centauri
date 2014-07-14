@@ -28,7 +28,7 @@ public class Renderer {
 
     GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
-    BufferedImage drawingImage = config.createCompatibleImage(1, 1);
+    VolatileImage drawingImage = config.createCompatibleVolatileImage(1, 1);
     boolean isMac;
 
     public Renderer() {
@@ -57,13 +57,15 @@ public class Renderer {
     public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
             ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused, HashSet<Shot> allShots) {
 
+        //long start = System.currentTimeMillis();
+        
         if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y) {
             if (isMac) {
-                drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y, Transparency.TRANSLUCENT);
+                drawingImage = config.createCompatibleVolatileImage(camera.getSize().x, camera.getSize().y, Transparency.TRANSLUCENT);
             } else {
-                drawingImage = config.createCompatibleImage(camera.getSize().x, camera.getSize().y);
+                drawingImage = config.createCompatibleVolatileImage(camera.getSize().x, camera.getSize().y);
             }
-            System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
+            //System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
         }
 
         Graphics2D g2d = drawingImage.createGraphics(); // turns it into 2d graphics
@@ -142,7 +144,7 @@ public class Renderer {
 
         g2d.dispose();
         g.dispose();
-
+        //System.out.println(System.currentTimeMillis() - start);
     }
 
     public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
