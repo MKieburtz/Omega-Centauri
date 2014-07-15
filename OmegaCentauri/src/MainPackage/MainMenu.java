@@ -11,7 +11,7 @@ import javax.sound.sampled.Clip;
  */
 public class MainMenu {
 
-    private GameStartListener startListener;
+    private GameActionListener startListener;
 
     private MediaLoader loader;
     private ArrayList<String> imagePaths = new ArrayList<String>();
@@ -72,7 +72,7 @@ public class MainMenu {
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         size = new Point(game.getWidth(), game.getHeight());
 
-        settings = new Settings(new Dimension(size.x, size.y));
+        settings = new Settings(new Dimension(size.x, size.y), game);
 
         screenRect = new Rectangle(0, 0, size.x, size.y);
 

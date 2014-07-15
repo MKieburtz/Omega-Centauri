@@ -63,11 +63,13 @@ public class Settings {
     private SettingsData settingsData;
     private boolean saved = false;
     
+    private GameActionListener settingsChangedListener;
+    
     private enum SettingsTypes { graphicsQualityLow, resolutionWindowed };
     
     private final HashMap<SettingsTypes, Boolean> changes = new HashMap<SettingsTypes, Boolean>();
 
-    public Settings(Dimension windowSize) {
+    public Settings(Dimension windowSize, GameActionListener actionListener) {
         this.windowResolution = windowSize;
 
         loader = new MediaLoader();
@@ -110,6 +112,8 @@ public class Settings {
         {
             load();
         }
+        
+        settingsChangedListener = actionListener;
         
         changes.put(SettingsTypes.graphicsQualityLow, settingsData.getGraphicsQualityLow());
         changes.put(SettingsTypes.resolutionWindowed, settingsData.getWindowed());
@@ -327,10 +331,7 @@ public class Settings {
         boolean wasChanged = changed;
         changed = changes.get(SettingsTypes.graphicsQualityLow) != settingsData.getGraphicsQualityLow() ||
                 changes.get(SettingsTypes.resolutionWindowed) != settingsData.getWindowed();
-        if (wasChanged && !changed)
-            saved = true;
-        else
-            saved = false;
+        saved = wasChanged && !changed;
     }
 
     public void checkMouseExited() {
@@ -352,6 +353,22 @@ public class Settings {
             
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+        
+        if (settingsData.getWindowed())
+        {
+            settingsChangedListener.exitedFullScreen();
+        } else
+        {
+            settingsChangedListener.enteredFullScreen();
+        }
+        
+        if (settingsData.getGraphicsQualityLow())
+        {
+            settingsChangedListener.settingsChangedToLow();
+        } else
+        {
+            settingsChangedListener.settingsChangedToHigh();
         }
         
         changes.put(SettingsTypes.graphicsQualityLow, settingsData.getGraphicsQualityLow());
