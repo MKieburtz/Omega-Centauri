@@ -15,7 +15,7 @@ public class EnemyFighter extends EnemyShip {
 
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health, id);
 
-        imagePaths.add("resources/EnemyShip.png");
+        imagePaths.add("resources/EnemyFighterNew.png");
         images = mediaLoader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
         activeImage = images.get(0);

@@ -596,9 +596,6 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             endtime = System.nanoTime();
                             sleeptime = loopTimeUPS - (endtime - startTime) - additionalTime;
                             
-                            if (sleeptime < 0) {
-                                Toolkit.getDefaultToolkit().beep();
-                            }
                             
                             timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
                             if (sleeptime < 0) {
