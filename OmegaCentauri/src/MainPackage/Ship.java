@@ -16,6 +16,14 @@ import java.util.concurrent.*;
  */
 public abstract class Ship implements CollisionListener {
 
+    // make sure image loading order is correct!
+    protected final int IDLE = 0;
+    protected final int THRUSTING = 1;
+    protected final int TURNINGLEFT = 2;
+    protected final int TURNINGRIGHT = 3;
+    protected final int TURNINGLEFTTHRUSTING = 4;
+    protected final int TURNINGRIGHTTHRUSTING = 5;
+    
     protected int hullDurability;
     protected int maxhullDurabilty;
     protected int fuel;
@@ -337,5 +345,35 @@ public abstract class Ship implements CollisionListener {
     public double getFaceAngle()
     {
         return faceAngle;
+    }
+    
+    public void changeImage(ShipState state) {
+        switch (state) {
+            case Idle: {
+                activeImage = images.get(IDLE);
+                break;
+            }
+            case Thrusting: {
+                activeImage = images.get(THRUSTING);
+                break;
+            }
+            case TurningLeft: {
+                activeImage = images.get(TURNINGLEFT);
+                break;
+            }
+            case TurningRight: {
+                activeImage = images.get(TURNINGRIGHT);
+                break;
+            }
+            case TurningLeftThrusting: {
+                activeImage = images.get(TURNINGLEFTTHRUSTING);
+                break;
+            }
+            case TurningRightThrusting: {
+                activeImage = images.get(TURNINGRIGHTTHRUSTING);
+                break;
+            }
+
+        }
     }
 }

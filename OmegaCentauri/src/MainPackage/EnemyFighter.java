@@ -15,7 +15,12 @@ public class EnemyFighter extends EnemyShip {
 
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health, id);
 
-        imagePaths.add("resources/EnemyFighterNew.png");
+        imagePaths.add("resources/EnemyFighterIdle.png");
+        imagePaths.add("resources/EnemyFighterThrusting.png");
+        imagePaths.add("resources/EnemyFighterTurningLeft.png");
+        imagePaths.add("resources/EnemyFighterTurningRight.png");
+        imagePaths.add("resources/EnemyFighterThrustingLeft.png");
+        imagePaths.add("resources/EnemyFighterThrustingRight.png");
         images = mediaLoader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
         activeImage = images.get(0);
