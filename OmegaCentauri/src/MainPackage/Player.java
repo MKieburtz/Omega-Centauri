@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Michael Kieburtz
@@ -19,22 +21,20 @@ public class Player extends Ship {
             int timerDelay, int health) {
 
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, timerDelay, health);
-        
-        
-        
+
         imagePaths.add("resources/FighterIdle.png");
         imagePaths.add("resources/FighterThrust.png");
         imagePaths.add("resources/FighterLeft.png");
         imagePaths.add("resources/FighterRight.png");
         imagePaths.add("resources/FighterThrustLeft.png");
         imagePaths.add("resources/FighterThrustRight.png");
-        
+
         images = mediaLoader.loadImages(imagePaths);
         images = Calculator.toCompatibleImages(images);
-        
+
         activeImage = images.get(0);
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
-        10, 100);
+                10, 100);
         setUpHitbox(cameraLocation);
 
         soundPaths.add("resources/Pulse.wav");
@@ -82,16 +82,14 @@ public class Player extends Ship {
         return movementVelocity.x != 0 || movementVelocity.y != 0;
     }
 
-    public boolean isRotating()
-    {
+    public boolean isRotating() {
         return angularVelocity != 0;
     }
-    
-    public boolean rotatingRight()
-    {
+
+    public boolean rotatingRight() {
         return rotatingRight;
     }
-    
+
     public void speedBoost() {
         if (maxVel == baseMaxVel) {
             maxVel *= 2;
@@ -108,24 +106,42 @@ public class Player extends Ship {
     public String getName() {
         return this.name;
     }
-    
-    
-    
+
     @Override
-    public void draw(Graphics2D g2d, Camera camera)
-    {
+    public void draw(Graphics2D g2d, Camera camera) {
         super.draw(g2d, camera);
         shield.draw(g2d, camera.getLocation(), location);
-        
-        
+
         g2d.setColor(Color.CYAN);
         g2d.drawString("Enemy Shield Integrity:", 10, camera.getSize().y - 97);
         g2d.drawString("Enemy Hull Integrity:", 10, camera.getSize().y - 63);
-        
-        
+
         g2d.setColor(Color.CYAN);
-        
-         g2d.drawString("Shield Integrity: " + shield.getEnergy() + " / " + shield.getMaxEnergy(), 10, 60);
-         g2d.drawString("Hull Integrity: " + hullDurability + " / " + maxhullDurabilty, 10, 75);
+
+        g2d.drawString("Shield Integrity: " + shield.getEnergy() + " / " + shield.getMaxEnergy(), 10, 60);
+        g2d.drawString("Hull Integrity: " + hullDurability + " / " + maxhullDurabilty, 10, 75);
+    }
+
+    @Override
+    public void shoot(Point2D.Double cameraLocation) {
+        //playSound(0);
+        Random rand = new Random();
+
+        double angle = 360 - faceAngle + rand.nextInt(10) - 5;
+
+        Point2D.Double ShotStartingVel
+                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
+                        movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
+
+        Point2D.Double ShotStartingPos = new Point2D.Double(
+                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
+                + Calculator.CalcAngleMoveX(angle) * 20,
+                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle) * 20);
+
+        canshoot = false;
+
+        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, false, cameraLocation)); // enemies ovveride
+
+        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }
 }

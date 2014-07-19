@@ -21,7 +21,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
     private boolean paused = false;
     private boolean loading = false;
     private final Point screenSize = new Point(10000, 10000); // game screensize
-    private final Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
+    private Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
     // TIMING STUFF
     private int FPS = 0;
     private int UPS = 0;
@@ -539,9 +539,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     private void syncGameStateVaribles() {
         camera.move(player.getLocation().x - (getWidth() / 2), player.getLocation().y - (getHeight() / 2));
-        
-        middleOfPlayer.x = player.getLocation().x - camera.getLocation().x + player.getImage().getWidth() / 2;
-        middleOfPlayer.y = player.getLocation().y - camera.getLocation().y + player.getImage().getHeight() / 2;
+
+        middleOfPlayer = Calculator.getScreenLocationMiddle(player.getLocation(), camera.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight());
     }
     
     class RecordingService implements Runnable {

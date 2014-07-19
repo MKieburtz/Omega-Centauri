@@ -142,27 +142,7 @@ public abstract class Ship implements CollisionListener {
         location.y += movementVelocity.y;
     }
 
-    public void shoot(Point2D.Double cameraLocation) {
-        //playSound(0);
-
-        Random rand = new Random();
-        
-        double angle = 360 - faceAngle + rand.nextInt(10) - 5;
-        
-        Point2D.Double ShotStartingVel
-                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
-                        movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
-
-        Point2D.Double ShotStartingPos = new Point2D.Double(
-                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
-                + Calculator.CalcAngleMoveX(angle) * 20,
-                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle) * 20);
-
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, false, cameraLocation)); // enemies ovveride
-        canshoot = false;
-
-        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
-    }
+    public abstract void shoot(Point2D.Double cameraLocation);
 
     public Point2D.Double getLocation() {
         return location;

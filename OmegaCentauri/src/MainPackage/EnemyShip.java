@@ -15,12 +15,13 @@ import java.util.concurrent.*;
 
 public abstract class EnemyShip extends Ship {
 
-    private Point2D.Double playerLocation = new Point2D.Double(0, 0);
     private Point dimensions = new Point(0, 0);
     private ArrayList<EnemyShip> others = new ArrayList<EnemyShip>();
     //private boolean incorrectAngle = false;
     private boolean movingAway;
     private int id; // for use with formations
+    
+    private final boolean startingRight = new Random().nextBoolean();
 
     // protected?
     private boolean rotating = false;
@@ -33,12 +34,12 @@ public abstract class EnemyShip extends Ship {
     {
         super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
         this.id = id;
+        
     }
 
     protected void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) {
         shield.setRegenRate(.05);
         // main AI goes here
-        this.playerLocation = player.getLocation();
         this.dimensions.x = player.getActiveImage().getWidth();
         this.dimensions.y = player.getActiveImage().getHeight();
 
@@ -101,9 +102,9 @@ public abstract class EnemyShip extends Ship {
             move(ShipState.Drifting);
             thrusting = false;
         }
-        
+
         setImage();
-        
+
         // regen shield
         if (shield.getEnergy() <= 100) {
             shield.regen();
@@ -124,46 +125,62 @@ public abstract class EnemyShip extends Ship {
                     rotate(ShipState.TurningRight);
                 }
             }
-        }
-        else
-        {
-        rotating = false;
+        } else {
+            rotating = false;
         }
     }
 
+    private boolean right = startingRight;
+    
     @Override
     public void shoot(Point2D.Double cameraLocation) {
 
         if (canshoot) {
+            //playSound(0);
             Random rand = new Random();
 
             double angle = 360 - faceAngle + rand.nextInt(10) - 5;
 
-            Point2D.Double ShotStartingVel
+            Point2D.Double shotStartingVel
                     = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
                             movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
 
-            Point2D.Double ShotStartingPos = new Point2D.Double(
-                    Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
-                    + Calculator.CalcAngleMoveX(angle) * 20,
-                    Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle) * 20);
-
-            shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, true, cameraLocation));
+            Point2D.Double shotStartingPos = new Point2D.Double();
+            
+            
+            
+            if (right) 
+            {
+                shotStartingPos.x = Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x + Calculator.CalcAngleMoveX(360 - faceAngle + 45) * 25;
+                shotStartingPos.y = Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y + Calculator.CalcAngleMoveY(360 - faceAngle + 45) * 25;
+            }
+            else
+            {
+                shotStartingPos.x = Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x + Calculator.CalcAngleMoveX(360 - faceAngle - 45) * 25;
+                shotStartingPos.y = Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y + Calculator.CalcAngleMoveY(360 - faceAngle - 45) * 25;
+            }
+            right = !right;
+            
             canshoot = false;
+
+            shots.add(new PulseShot(5, 100, false, shotStartingPos, shotStartingVel, angle, true, cameraLocation)); // enemies ovveride
 
             ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         }
     }
-
+    
     @Override
     public void draw(Graphics2D g2d, Camera camera) {
         super.draw(g2d, camera);
 
+//        Point2D.Double middle = Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
+//        
+//        g2d.setColor(Color.BLUE);
+//        g2d.drawLine((int)middle.x, (int)middle.y, (int)(middle.x + Calculator.CalcAngleMoveX(360 - faceAngle - 45) * 25), (int)(middle.y + Calculator.CalcAngleMoveY(360 - faceAngle - 45) * 25));       
         shield.draw(g2d, camera.getLocation(), location);
 
 //        Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
 //                (float) (camera.getSize().y - 85), (float) shield.getEnergy() * 1.5f, 5f);
-
 //        GradientPaint paintShield = new GradientPaint(paintRectShield.x, paintRectShield.y, Color.BLUE, paintRectShield.x + paintRectShield.width,
 //                paintRectShield.y + paintRectShield.height, Color.CYAN);
         Rectangle2D.Float paintRectHull = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
@@ -185,31 +202,19 @@ public abstract class EnemyShip extends Ship {
     public int getID() {
         return id;
     }
-    
-    private void setImage()
-    {
-        if (rotating && thrusting && rotatingRight)
-        {
+
+    private void setImage() {
+        if (rotating && thrusting && rotatingRight) {
             changeImage(ShipState.TurningRightThrusting);
-        }
-        else if (rotating && thrusting && !rotatingRight)
-        {
+        } else if (rotating && thrusting && !rotatingRight) {
             changeImage(ShipState.TurningLeftThrusting);
-        }
-        else if (rotating && !thrusting && rotatingRight)
-        {
+        } else if (rotating && !thrusting && rotatingRight) {
             changeImage(ShipState.TurningRight);
-        }
-        else if (rotating && !thrusting && !rotatingRight)
-        {
+        } else if (rotating && !thrusting && !rotatingRight) {
             changeImage(ShipState.TurningLeft);
-        }
-        else if (!rotating && thrusting)
-        {
+        } else if (!rotating && thrusting) {
             changeImage(ShipState.Thrusting);
-        }
-        else if (!rotating && !thrusting)
-        {
+        } else if (!rotating && !thrusting) {
             changeImage(ShipState.Idle);
         }
     }

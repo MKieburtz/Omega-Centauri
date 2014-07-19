@@ -32,4 +32,6 @@ public class EnemyFighter extends EnemyShip {
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(), activeImage.getHeight()), 0, 0);
     }
+    
+    
 }
