@@ -6,9 +6,10 @@ package MainPackage;
  */
 public enum Type {
 
+    Transport,
     Fighter,
-    Scout,
+    Cruiser,
+    Frigate,
+    BattleShip,
     Flagship,
-    Destroyer,
-    Battleship
 }

@@ -9,9 +9,9 @@ import javax.swing.JFrame;
  */
 abstract class Game extends JFrame {
 
-    protected ArrayList<EnemyShip> enemyShips = new ArrayList<EnemyShip>();
-    protected ArrayList<Ally> allyShips = new ArrayList<Ally>();
-    protected ArrayList<Ship> shipsToDraw = new ArrayList<Ship>();
-    protected HashSet<Shot> allShots = new HashSet<Shot>();
+    protected ArrayList<EnemyShip> enemyShips = new ArrayList<>();
+    protected ArrayList<Ally> allyShips = new ArrayList<>();
+    protected ArrayList<Ship> shipsToDraw = new ArrayList<>();
+    protected HashSet<Shot> allShots = new HashSet<>();
     protected Player player;
 }

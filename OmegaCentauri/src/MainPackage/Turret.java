@@ -31,6 +31,12 @@ public class Turret {
         
         this.maxRotation = maxRotation;
         this.minRotation = minRotation;
+        
+        imagePaths.add("resources/Turret.png");
+        
+        images = loader.loadImages(imagePaths);
+        
+        images = Calculator.toCompatibleImages(images);
     }
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation)

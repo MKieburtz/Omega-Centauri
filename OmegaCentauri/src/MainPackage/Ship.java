@@ -211,7 +211,7 @@ public abstract class Ship implements CollisionListener {
 
         for (Ship s : allShips) {
             if (s.getShots().contains(shot) && !s.equals(ship)) {
-                if (!(ship instanceof EnemyShip && s instanceof EnemyShip))
+                if (!(ship instanceof EnemyFighter && s instanceof EnemyFighter))
                     s.removeShot(shot); // removing because it collided
                 else
                     return false;
