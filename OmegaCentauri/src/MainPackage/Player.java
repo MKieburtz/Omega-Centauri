@@ -16,11 +16,11 @@ import java.util.concurrent.TimeUnit;
 public class Player extends Ship {
 
     // x and y are game positions
-    public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+    public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
             int timerDelay, int health) {
 
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, timerDelay, health);
+        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, timerDelay, health);
 
         imagePaths.add("resources/FighterIdle.png");
         imagePaths.add("resources/FighterThrust.png");

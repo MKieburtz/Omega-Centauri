@@ -8,9 +8,9 @@ import java.awt.geom.Point2D;
  */
 public class Ally extends Ship {
 
-    public Ally(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+    public Ally(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) {
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, 
+        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVel, angleIncrement, acceleration, shootingDelay, 
              health);
     }
 

@@ -23,17 +23,15 @@ public class EnemyFighter extends EnemyShip {
     
     private final boolean startingRight = new Random().nextBoolean();
 
-    // protected?
-    private boolean rotating = false;
     private boolean thrusting = false;
 
     private double targetingAngle = 0;
 
-    public EnemyFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+    public EnemyFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
             int shootingDelay, int health, int id) // add for image repo
     {
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
+        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
         
         imagePaths.add("resources/EnemyFighterIdle.png");
         imagePaths.add("resources/EnemyFighterThrusting.png");
@@ -121,31 +119,12 @@ public class EnemyFighter extends EnemyShip {
             move(ShipState.Drifting);
             thrusting = false;
         }
-
+        
         setImage();
 
         // regen shield
         if (shield.getEnergy() <= 100) {
             shield.regen();
-        }
-    }
-
-    private void rotateToAngle(double angle) {
-        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, angle);
-
-        if (Math.abs(angle - faceAngle) >= 5) {
-            rotating = true;
-            if (distances[0] < distances[1]) {
-                if (distances[0] > angleIcrement) {
-                    rotate(ShipState.TurningLeft);
-                }
-            } else {
-                if (distances[1] > angleIcrement) {
-                    rotate(ShipState.TurningRight);
-                }
-            }
-        } else {
-            rotating = false;
         }
     }
 
@@ -218,11 +197,14 @@ public class EnemyFighter extends EnemyShip {
         return movingAway;
     }
 
+    @Override
     public int getID() {
         return id;
     }
 
+    boolean rotating;
     private void setImage() {
+        rotating = isRotating();
         if (rotating && thrusting && rotatingRight) {
             changeImage(ShipState.TurningRightThrusting);
         } else if (rotating && thrusting && !rotatingRight) {

@@ -14,11 +14,11 @@ public class EnemyMediumFighter  extends EnemyShip {
     private int id;
     
     
-    public EnemyMediumFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+    public EnemyMediumFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
             int shootingDelay, int health, int id)
     {
-        super(x, y, shipType, baseMaxVel, maxVel, angleIncrement, acceleration, shootingDelay, health);
+        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
         
         this.id = id;
         
@@ -46,6 +46,14 @@ public class EnemyMediumFighter  extends EnemyShip {
 
     @Override
     public void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) {
+        
+        double distance = Calculator.getDistance(location, player.getLocation());
+        
+        double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
+        
+        rotateToAngle(angleToPlayer);
+        
+        move(ShipState.Thrusting);
     }
 
     @Override
