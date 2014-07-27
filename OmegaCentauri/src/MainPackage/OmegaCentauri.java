@@ -357,7 +357,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                     //System.out.println(ship.getClass() + " " + collisionShip.getClass());
                     if (!collisionShip.equals(ship)) {
                         if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())
-                                && !(ship instanceof EnemyFighter && collisionShip instanceof EnemyFighter)) {
+                                && !(ship instanceof EnemyShip && collisionShip instanceof EnemyShip)) {
                             collision = true;
                             if (!ship.isColliding() && !collisionShip.isColliding()) {
                                 
