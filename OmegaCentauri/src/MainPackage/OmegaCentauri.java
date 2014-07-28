@@ -424,7 +424,17 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     private void dPressed() {
         if (!paused) {
-            rotateRight = true;
+            if (rotateLeft)
+            {
+                rotateRight = false; 
+                rotateLeft = false;
+                player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
+                return;
+            }
+            else
+            {
+                rotateRight = true;
+            }
             if (!forward) {
                 player.changeImage(ShipState.TurningRight);
             } else if (forward) {
@@ -446,7 +456,19 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     private void aPressed() {
         if (!paused) {
-            rotateLeft = true;
+            
+            if (rotateRight)
+            {
+                rotateRight = false; 
+                rotateLeft = false;
+                player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
+                return;
+            }
+            else
+            {
+                rotateLeft = true;
+            }
+            
             if (!forward) {
                 player.changeImage(ShipState.TurningLeft);
             } else if (forward) {
