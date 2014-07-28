@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
@@ -32,11 +33,10 @@ public abstract class Ship implements CollisionListener {
     protected double moveAngle = 0.0;
     protected final int collisionDamage = 50;
     protected Point2D.Double location;
-    protected Point2D.Double nextLocation;
     protected Point2D.Double movementVelocity = new Point2D.Double(0, 0);
     protected double angularVelocity = 0;
     protected double maxAngularVel;
-    protected Rectangle2D.Double hitbox;
+    protected Path2D.Double hitbox;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;
@@ -62,7 +62,6 @@ public abstract class Ship implements CollisionListener {
             double maxAngularVelocity, double angleIncrement, double acceleration, int shootingDelay, int health) {
 
         location = new Point2D.Double(x, y);
-        nextLocation = new Point2D.Double();
         type = shipType;
 
         this.baseMaxVel = baseMaxVel;
@@ -97,7 +96,7 @@ public abstract class Ship implements CollisionListener {
 
         
         g2d.setColor(Color.red);
-        g2d.draw(updateHitbox(camera.getLocation()));
+        g2d.draw(hitbox);
 
         g2d.drawImage(activeImage, transform, null);
     }
@@ -191,25 +190,27 @@ public abstract class Ship implements CollisionListener {
 
     public void setUpHitbox(Point2D.Double cameraLocation) {
         try {
-            hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x,
+            // sorry for the messy decleration
+            hitbox = new Path2D.Double(new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x, 
                     Calculator.getScreenLocation(cameraLocation, location).y,
-                    activeImage.getWidth(), activeImage.getHeight());
+                    activeImage.getWidth(), activeImage.getHeight()));
         } catch (NullPointerException exception) {
             System.err.println("activeimage not initialized!");
             exception.printStackTrace();
         }
     }
 
-    protected Shape updateHitbox(Point2D.Double cameraLocation) {
-        hitbox.x = Calculator.getScreenLocation(cameraLocation, location).x;
-        hitbox.y = Calculator.getScreenLocation(cameraLocation, location).y;
+    public void updateHitbox(Point2D.Double cameraLocation) {
         
         AffineTransform transform = new AffineTransform();
         
-        transform.rotate(Math.toRadians(360 - faceAngle), hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2);
+        transform.rotate(Math.toRadians(rotatingRight ? angularVelocity : -angularVelocity), hitbox.getBounds2D().getX() + activeImage.getWidth() / 2,
+                hitbox.getBounds2D().getY() + activeImage.getHeight() / 2);
         
-        return transform.createTransformedShape(hitbox);
-    }
+        
+        hitbox = new Path2D.Double(transform.createTransformedShape(hitbox));
+        
+     }
 
     public ArrayList<Shot> getShots() {
         return shots;
@@ -245,7 +246,7 @@ public abstract class Ship implements CollisionListener {
         return setColliding(true);
     }
 
-    public Rectangle2D.Double returnHitbox() {
+    public Path2D returnHitbox() {
         return hitbox;
     }
 
