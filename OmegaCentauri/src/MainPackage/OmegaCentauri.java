@@ -63,10 +63,10 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     private void addShips() {
         player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 155, 100);
-//        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1));
-//        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2));
-//        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3));
-//        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4));
+        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1));
+        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2));
+        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3));
+        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4));
         enemyShips.add(new EnemyMediumFighter(-500, 0, MainPackage.Type.Cruiser, 3, 3, 2, 2, .15, camera.getLocation(), 500, 200, 5));
         syncGameStateVaribles();
         
@@ -345,8 +345,6 @@ public class OmegaCentauri extends Game implements GameActionListener {
             
             for (Ship ship : shipsToDraw) {
                 
-                ship.updateHitbox(camera.getLocation());
-                
                 for (Shot shot : ship.getShots()) {
                     shot.updateLocation();
                 }
@@ -426,17 +424,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     private void dPressed() {
         if (!paused) {
-            if (rotateLeft)
-            {
-                rotateRight = false; 
-                rotateLeft = false;
-                player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
-                return;
-            }
-            else
-            {
-                rotateRight = true;
-            }
+            rotateRight = true;
             if (!forward) {
                 player.changeImage(ShipState.TurningRight);
             } else if (forward) {
@@ -458,19 +446,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     private void aPressed() {
         if (!paused) {
-            
-            if (rotateRight)
-            {
-                rotateRight = false; 
-                rotateLeft = false;
-                player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
-                return;
-            }
-            else
-            {
-                rotateLeft = true;
-            }
-            
+            rotateLeft = true;
             if (!forward) {
                 player.changeImage(ShipState.TurningLeft);
             } else if (forward) {
