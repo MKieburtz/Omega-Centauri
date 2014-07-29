@@ -23,6 +23,9 @@ public class Renderer {
     private final int PAUSETOMENU = 1;
     private final int GAMEOVER = 2;
     private final int RETURNTOBATTLEFIELD = 3;
+    
+    private Hitbox hitbox1;
+    private Hitbox hitbox2;
 
     private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
 
@@ -52,6 +55,27 @@ public class Renderer {
         isMac = System.getProperty("os.name").contains("OS X");
 
         images = Calculator.toCompatibleImages(images);
+        
+        ArrayList<Point> points1 = new ArrayList<>();
+        
+        points1.add(new Point(100, 100));
+        points1.add(new Point(200, 100));
+        points1.add(new Point(200, 200));
+        points1.add(new Point(100, 200));
+        
+        Point center1 = new Point(150, 150);
+        
+        ArrayList<Point> points2 = new ArrayList<>();
+        
+        points2.add(new Point(10, 10));
+        points2.add(new Point(110, 10));
+        points2.add(new Point(110, 110));
+        points2.add(new Point(10, 110));
+        
+        Point center2 = new Point(55, 55);
+        
+        hitbox1 = new Hitbox(points1, center1);
+        hitbox2 = new Hitbox(points2, center2);
     }
 
     public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
@@ -138,7 +162,15 @@ public class Renderer {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
             g2d.drawImage(images.get(PAUSETOMENU), null, 20, 110);
         }
-
+        
+        
+        hitbox1.rotateRelivite(1);
+        
+        hitbox1.draw(g2d);
+        //hitbox2.draw(g2d);
+        
+        System.out.println(hitbox1.collides(hitbox2));
+        
         // this is the most expensive call
         g.drawImage(drawingImage, 0, 0, null);
 

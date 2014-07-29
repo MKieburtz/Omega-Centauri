@@ -1,11 +1,8 @@
 package MainPackage;
 
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.awt.Transparency;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -50,9 +47,11 @@ public class Calculator {
         return angle;
     }
     
-    public static boolean collisionCheck(Rectangle2D.Double hitbox1,Rectangle2D.Double hitbox2)
+    public static boolean collisionCheck(Area hitbox1, Area hitbox2)
     {
-            return hitbox1.intersects(hitbox2);
+        Area testingHitbox = (Area)hitbox1.clone();
+        testingHitbox.intersect(hitbox2);
+        return testingHitbox.isEmpty();
     }
     
     public static double[] getDistancesBetweenAngles(double currentAngle, double targetAngle) // decides whether an angle or coterminal angle is faster

@@ -97,7 +97,7 @@ public abstract class Ship implements CollisionListener {
 
         
         g2d.setColor(Color.red);
-        g2d.draw(updateHitbox(camera.getLocation()));
+        //g2d.draw(updateHitbox(camera.getLocation()));
 
         g2d.drawImage(activeImage, transform, null);
     }
