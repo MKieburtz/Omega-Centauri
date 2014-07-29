@@ -63,11 +63,11 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     private void addShips() {
         player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 155, 100);
-//        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1));
-//        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2));
-//        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3));
-//        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4));
-//        enemyShips.add(new EnemyMediumFighter(-500, 0, MainPackage.Type.Cruiser, 3, 3, 2, 2, .15, camera.getLocation(), 500, 200, 5));
+        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1));
+        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2));
+        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3));
+        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4));
+        enemyShips.add(new EnemyMediumFighter(-500, 0, MainPackage.Type.Cruiser, 3, 3, 2, 2, .15, camera.getLocation(), 500, 200, 5));
         syncGameStateVaribles();
         
         player.setUpHitbox(camera.getLocation());
@@ -355,36 +355,37 @@ public class OmegaCentauri extends Game implements GameActionListener {
                     ship.getShield().decay();
                 }
                 boolean collision = false;
-//                for (Ship collisionShip : shipsToDraw) {
-//                    //System.out.println(ship.getClass() + " " + collisionShip.getClass());
-//                    if (!collisionShip.equals(ship)) {
-//                        if (Calculator.collisionCheck(ship.returnHitbox(), collisionShip.returnHitbox())
-//                                && !(ship instanceof EnemyShip && collisionShip instanceof EnemyShip)) {
-//                            collision = true;
-//                            if (!ship.isColliding() && !collisionShip.isColliding()) {
-//                                
-//                                if (ship.CollisionEventWithShip()) {
-//                                    deadShips.add(ship);
-//                                } else if (collisionShip.CollisionEventWithShip()) {
-//                                    //Toolkit.getDefaultToolkit().beep();
-//                                    deadShips.add(collisionShip);
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
+                for (Ship collisionShip : shipsToDraw) {
+                    //System.out.println(ship.getClass() + " " + collisionShip.getClass());
+                    if (!collisionShip.equals(ship)) {
+                        if (ship.returnHitbox().collides(collisionShip.returnHitbox())
+                                && !(ship instanceof EnemyShip && collisionShip instanceof EnemyShip)) {
+                            collision = true;
+                            if (!ship.isColliding() && !collisionShip.isColliding()) {
+                                
+                                if (ship.CollisionEventWithShip()) {
+                                    deadShips.add(ship);
+                                } else if (collisionShip.CollisionEventWithShip()) {
+                                    //Toolkit.getDefaultToolkit().beep();
+                                    deadShips.add(collisionShip);
+                                }
+                            }
+                        }
+                    }
+                }
                 
                 if (!collision) {
                     ship.setColliding(false);
                 }
                 
-//                for (Shot shot : allShots) {
-//                    if (Calculator.collisionCheck(shot.returnHitbox(), ship.returnHitbox())) {
-//                        if (ship.CollisionEventWithShot(ship, shot, shipsToDraw)) {
-//                            deadShips.add(ship);
-//                        }
-//                    }
-//                }
+                for (Shot shot : allShots) {
+                    shot.updateHitbox(camera.getLocation());
+                    if (shot.returnHitbox().collides(ship.returnHitbox())) {
+                        if (ship.CollisionEventWithShot(ship, shot, shipsToDraw)) {
+                            deadShips.add(ship);
+                        }
+                    }
+                }
                 
                 ship.purgeShots();
             }

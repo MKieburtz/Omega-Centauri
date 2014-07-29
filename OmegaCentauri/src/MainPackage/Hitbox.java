@@ -27,10 +27,14 @@ public class Hitbox extends Area {
     
     public void rotateToAngle(double angle)
     {
+        if (this.angle - angle == 0)
+        {
+            return;
+        }
         for (Point2D.Double point : points)
         {
-            double newX = rotationPoint.x + (point.x - rotationPoint.x) * Math.cos(Math.toRadians(angle - this.angle)) - (point.y - rotationPoint.y) * Math.sin(Math.toRadians(angle - this.angle));
-            double newY = rotationPoint.y + (point.x - rotationPoint.x) * Math.sin(Math.toRadians(angle - this.angle)) + (point.y - rotationPoint.y) * Math.cos(Math.toRadians(angle - this.angle));
+            double newX = rotationPoint.x + (point.x - rotationPoint.x) * Math.cos(Math.toRadians(360 - (angle - this.angle))) - (point.y - rotationPoint.y) * Math.sin(Math.toRadians(360 - (angle - this.angle)));
+            double newY = rotationPoint.y + (point.x - rotationPoint.x) * Math.sin(Math.toRadians(360 - (angle - this.angle))) + (point.y - rotationPoint.y) * Math.cos(Math.toRadians(360 - (angle - this.angle)));
             point.x = newX;
             point.y = newY;
         }
@@ -43,8 +47,8 @@ public class Hitbox extends Area {
     {
         for (Point2D.Double point : points)
         {
-            double newX =rotationPoint.x + (point.x - rotationPoint.x) * Math.cos(Math.toRadians(angle)) - (point.y - rotationPoint.y) * Math.sin(Math.toRadians(angle));
-            double newY =rotationPoint.y + (point.x - rotationPoint.x) * Math.sin(Math.toRadians(angle)) + (point.y - rotationPoint.y) * Math.cos(Math.toRadians(angle)); 
+            double newX =rotationPoint.x + (point.x - rotationPoint.x) * Math.cos(Math.toRadians(360 - angle)) - (point.y - rotationPoint.y) * Math.sin(Math.toRadians(360 - angle));
+            double newY =rotationPoint.y + (point.x - rotationPoint.x) * Math.sin(Math.toRadians(360 - angle)) + (point.y - rotationPoint.y) * Math.cos(Math.toRadians(360 - angle)); 
             point.x = newX;
             point.y = newY;
         }
@@ -101,8 +105,6 @@ public class Hitbox extends Area {
                 g2d.draw(new Line2D.Double(points.get(i).x, points.get(i).y, points.get(0).x, points.get(0).y));
             }
         }
-        
-        g2d.drawOval(100, 100, 100, 100);
         
     }
     

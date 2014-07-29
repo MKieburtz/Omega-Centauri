@@ -47,13 +47,6 @@ public class Calculator {
         return angle;
     }
     
-    public static boolean collisionCheck(Area hitbox1, Area hitbox2)
-    {
-        Area testingHitbox = (Area)hitbox1.clone();
-        testingHitbox.intersect(hitbox2);
-        return testingHitbox.isEmpty();
-    }
-    
     public static double[] getDistancesBetweenAngles(double currentAngle, double targetAngle) // decides whether an angle or coterminal angle is faster
     {
         if (targetAngle > currentAngle)

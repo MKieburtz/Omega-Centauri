@@ -36,7 +36,7 @@ public abstract class Ship implements CollisionListener {
     protected Point2D.Double movementVelocity = new Point2D.Double(0, 0);
     protected double angularVelocity = 0;
     protected double maxAngularVel;
-    protected Rectangle2D.Double hitbox;
+    protected Hitbox hitbox;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;
@@ -57,6 +57,9 @@ public abstract class Ship implements CollisionListener {
     protected boolean rotatingRight = false;
     protected boolean colliding = false;
     protected ScheduledExecutorService ex;
+    
+    protected ArrayList<Point2D.Double> hitboxStartingPoints = new ArrayList<>();
+    protected Point2D.Double hitboxRotationPoint = null;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double maxAngularVelocity, double angleIncrement, double acceleration, int shootingDelay, int health) {
@@ -95,9 +98,7 @@ public abstract class Ship implements CollisionListener {
         transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
                 Calculator.getScreenLocation(camera.getLocation(), location).y);
 
-        
-        g2d.setColor(Color.red);
-        //g2d.draw(updateHitbox(camera.getLocation()));
+        //hitbox.draw(g2d);
 
         g2d.drawImage(activeImage, transform, null);
     }
@@ -190,25 +191,29 @@ public abstract class Ship implements CollisionListener {
     }
 
     public void setUpHitbox(Point2D.Double cameraLocation) {
+        
+        ArrayList<Point2D.Double> hitboxPoints = new ArrayList<>();
+        
         try {
-            hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x,
-                    Calculator.getScreenLocation(cameraLocation, location).y,
-                    activeImage.getWidth(), activeImage.getHeight());
-        } catch (NullPointerException exception) {
-            System.err.println("activeimage not initialized!");
-            exception.printStackTrace();
+        
+        hitboxPoints.add(new Point2D.Double(0, 0));
+        hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), 0));
+        hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), activeImage.getHeight()));
+        hitboxPoints.add(new Point2D.Double(0, activeImage.getHeight()));
+        
+        Point2D.Double centerPoint = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2);
+            hitbox = new Hitbox(hitboxPoints, centerPoint);
+        } catch (NullPointerException ex) {
+            System.err.println("active image not initialized!");
         }
+        
+       
     }
 
-    protected Shape updateHitbox(Point2D.Double cameraLocation) {
-        hitbox.x = Calculator.getScreenLocation(cameraLocation, location).x;
-        hitbox.y = Calculator.getScreenLocation(cameraLocation, location).y;
-        
-        AffineTransform transform = new AffineTransform();
-        
-        transform.rotate(Math.toRadians(360 - faceAngle), hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2);
-        
-        return transform.createTransformedShape(hitbox);
+    protected void updateHitbox(Point2D.Double cameraLocation) {
+
+        hitbox.moveToLocation(Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()));
+        hitbox.rotateToAngle(faceAngle);
     }
 
     public ArrayList<Shot> getShots() {
@@ -245,8 +250,8 @@ public abstract class Ship implements CollisionListener {
         return setColliding(true);
     }
 
-    public Rectangle2D.Double returnHitbox() {
-        return hitbox;
+    public Hitbox returnHitbox() {
+        return hitbox; 
     }
 
     public boolean canShoot() {

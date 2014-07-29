@@ -55,27 +55,6 @@ public class Renderer {
         isMac = System.getProperty("os.name").contains("OS X");
 
         images = Calculator.toCompatibleImages(images);
-        
-        ArrayList<Point2D.Double> points1 = new ArrayList<>();
-        
-        points1.add(new Point2D.Double(100, 100));
-        points1.add(new Point2D.Double(200, 100));
-        points1.add(new Point2D.Double(200, 200));
-        points1.add(new Point2D.Double(100, 200));
-        
-        Point2D.Double center1 = new Point2D.Double(150, 150);
-        
-        ArrayList<Point2D.Double> points2 = new ArrayList<>();
-        
-        points2.add(new Point2D.Double(10, 10));
-        points2.add(new Point2D.Double(110, 10));
-        points2.add(new Point2D.Double(110, 110));
-        points2.add(new Point2D.Double(10, 110));
-        
-        Point2D.Double center2 = new Point2D.Double(55, 55);
-        
-        hitbox1 = new Hitbox(points1, center1);
-        hitbox2 = new Hitbox(points2, center2);
     }
 
     public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
@@ -161,17 +140,6 @@ public class Renderer {
         if (paused) {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
             g2d.drawImage(images.get(PAUSETOMENU), null, 20, 110);
-        }
-        
-        
-        hitbox1.rotateRelivite(1);
-        
-        hitbox1.draw(g2d);
-        //hitbox2.draw(g2d);
-        
-        if(hitbox1.collides(hitbox2))
-        {
-            Toolkit.getDefaultToolkit().beep();
         }
         
         // this is the most expensive call

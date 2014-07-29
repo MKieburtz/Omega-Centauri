@@ -25,7 +25,7 @@ abstract class Shot {
     protected double faceAngle;
     protected Point2D.Double velocity;
     protected int maxVel;
-    protected Rectangle2D.Double hitbox;
+    protected Hitbox hitbox;
 
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
     {
@@ -43,8 +43,7 @@ abstract class Shot {
         g2d.drawImage(activeImage, (int)Calculator.getScreenLocation(cameraLocation, location).x,
                (int)Calculator.getScreenLocation(cameraLocation, location).y, null);
         
-        updateHitbox(cameraLocation);
-        
+        //hitbox.draw(g2d);
         
         g2d.setTransform(original);
 
@@ -64,21 +63,29 @@ abstract class Shot {
     
     
     public void setUpHitbox(Point2D.Double cameraLocation) {
+        ArrayList<Point2D.Double> hitboxPoints = new ArrayList<>();
+        
         try {
-            hitbox = new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, location).x,
-                    Calculator.getScreenLocation(cameraLocation, location).y,
-                    images.get(0).getWidth(), images.get(0).getHeight());
+        
+        hitboxPoints.add(new Point2D.Double(0, 0));
+        hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), 0));
+        hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), activeImage.getHeight()));
+        hitboxPoints.add(new Point2D.Double(0, activeImage.getHeight()));
+        
+        Point2D.Double centerPoint = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2);
+            hitbox = new Hitbox(hitboxPoints, centerPoint);
+            
+            
         } catch (NullPointerException e) {
             System.err.println("activeimage not initialized!");
         }
     }
 
-    protected void updateHitbox(Point2D.Double cameraLocation) {
-        hitbox.x = Calculator.getScreenLocation(cameraLocation, location).x;
-        hitbox.y = Calculator.getScreenLocation(cameraLocation, location).y;
+    public void updateHitbox(Point2D.Double cameraLocation) {
+        hitbox.moveToLocation(Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()));
     }
     
-    public Rectangle2D.Double returnHitbox()
+    public Hitbox returnHitbox()
     {
         return hitbox;
     }
@@ -94,11 +101,6 @@ abstract class Shot {
 
     public BufferedImage getImage() {
         return images.get(0);
-    }
-
-    private Point2D.Double getScreenLocationMiddle(Point2D.Double cameraLocation) {
-        return new Point2D.Double((location.x - cameraLocation.x) + (images.get(0).getWidth() / 2),
-                (location.y - cameraLocation.y) + (images.get(0).getHeight() / 2));
     }
 
     public boolean outsideScreen() // assumes a 20 thousand by 20 thousand screen
