@@ -56,23 +56,23 @@ public class Renderer {
 
         images = Calculator.toCompatibleImages(images);
         
-        ArrayList<Point> points1 = new ArrayList<>();
+        ArrayList<Point2D.Double> points1 = new ArrayList<>();
         
-        points1.add(new Point(100, 100));
-        points1.add(new Point(200, 100));
-        points1.add(new Point(200, 200));
-        points1.add(new Point(100, 200));
+        points1.add(new Point2D.Double(100, 100));
+        points1.add(new Point2D.Double(200, 100));
+        points1.add(new Point2D.Double(200, 200));
+        points1.add(new Point2D.Double(100, 200));
         
-        Point center1 = new Point(150, 150);
+        Point2D.Double center1 = new Point2D.Double(150, 150);
         
-        ArrayList<Point> points2 = new ArrayList<>();
+        ArrayList<Point2D.Double> points2 = new ArrayList<>();
         
-        points2.add(new Point(10, 10));
-        points2.add(new Point(110, 10));
-        points2.add(new Point(110, 110));
-        points2.add(new Point(10, 110));
+        points2.add(new Point2D.Double(10, 10));
+        points2.add(new Point2D.Double(110, 10));
+        points2.add(new Point2D.Double(110, 110));
+        points2.add(new Point2D.Double(10, 110));
         
-        Point center2 = new Point(55, 55);
+        Point2D.Double center2 = new Point2D.Double(55, 55);
         
         hitbox1 = new Hitbox(points1, center1);
         hitbox2 = new Hitbox(points2, center2);
@@ -169,7 +169,10 @@ public class Renderer {
         hitbox1.draw(g2d);
         //hitbox2.draw(g2d);
         
-        System.out.println(hitbox1.collides(hitbox2));
+        if(hitbox1.collides(hitbox2))
+        {
+            Toolkit.getDefaultToolkit().beep();
+        }
         
         // this is the most expensive call
         g.drawImage(drawingImage, 0, 0, null);
