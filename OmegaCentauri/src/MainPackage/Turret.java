@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import javax.xml.crypto.dsig.Transform;
 
 /**
  * @author Kieburtz
@@ -59,38 +60,36 @@ public class Turret {
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double entityLocation)
     {
-        Point2D.Double middle = Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight());
-        AffineTransform transform = g2d.getTransform();
-//        
-//        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x, Calculator.getScreenLocation(cameraLocation, location).y);
+        Point2D.Double middle = new Point2D.Double(location.x + activeImage.getWidth() / 2, location.y + activeImage.getHeight() / 2);
         
-        //transform.rotate(Math.toRadians(360 - angle), middle.x, middle.y);
+        Point2D.Double screenMiddle = Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight());
+        
+        AffineTransform original = g2d.getTransform();
+        
+        AffineTransform transform = (AffineTransform)original.clone();
+        
+      transform.translate(Calculator.getScreenLocation(cameraLocation, location).x,
+              Calculator.getScreenLocation(cameraLocation, location).y);
+        
+        transform.rotate(Math.toRadians(360 - angle), screenMiddle.x, screenMiddle.y);
         
         g2d.drawImage(images.get(TURRETIMAGE), transform, null);
         
         g2d.setColor(Color.RED);
-        
-        g2d.drawRect((int)Calculator.getScreenLocation(cameraLocation, location).x, (int)Calculator.getScreenLocation(cameraLocation, location).y, 10, 10);
-       
-        g2d.drawRect((int)middle.x, (int)middle.y, 20, 20);
+        g2d.drawRect((int)screenMiddle.x, (int)screenMiddle.y, 10, 10);
     }
     
-    public void update(Point2D.Double playerLocation, Point2D.Double shipLocation, double shipAngle)
-    {
-        Point2D.Double middle = new Point2D.Double(shipLocation.x + activeImage.getWidth() / 2, shipLocation.y + activeImage.getHeight() / 2);
+    public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle)
+    {        
+        //double targetAngle = Math.abs(Calculator.getAngleBetweenTwoPoints(shipLocation, playerLocation) - shipAngle) % 360;
         
-        double targetAngle = Math.abs(Calculator.getAngleBetweenTwoPoints(shipLocation, playerLocation) - shipAngle) % 360;
+//        if (targetAngle > minRotation && targetAngle < maxRotation)
+//        {
+//            angle = targetAngle;
+//        }
         
-        if (targetAngle > minRotation && targetAngle < maxRotation)
-        {
-            angle = targetAngle;
-        }
+        location.x = shipLocationMiddle.x + distanceFromCenter.x;
+        location.y = shipLocationMiddle.y + distanceFromCenter.y;
         
-        
-        
-        location.x = middle.x + distanceFromCenter.x;
-        location.y = middle.y + distanceFromCenter.y;
-        
-        System.out.println(middle + " " + distanceFromCenter + " " + location);
     }
 }
