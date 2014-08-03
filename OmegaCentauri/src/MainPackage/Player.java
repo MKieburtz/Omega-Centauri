@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
@@ -109,7 +110,12 @@ public class Player extends Ship {
 
     @Override
     public void draw(Graphics2D g2d, Camera camera) {
+        AffineTransform original = g2d.getTransform();
+        
         super.draw(g2d, camera);
+        
+        g2d.setTransform(original);
+        
         shield.draw(g2d, camera.getLocation(), location);
 
         g2d.setColor(Color.CYAN);
@@ -120,6 +126,7 @@ public class Player extends Ship {
 
         g2d.drawString("Shield Integrity: " + shield.getEnergy() + " / " + shield.getMaxEnergy(), 10, 60);
         g2d.drawString("Hull Integrity: " + hullDurability + " / " + maxhullDurabilty, 10, 75);
+       
     }
 
     @Override

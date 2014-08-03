@@ -88,8 +88,7 @@ public abstract class Ship implements CollisionListener {
     }
 
     public void draw(Graphics2D g2d, Camera camera) {
-        AffineTransform original = g2d.getTransform();
-        AffineTransform transform = (AffineTransform) original.clone();
+        AffineTransform transform = (AffineTransform)g2d.getTransform().clone();
         
         transform.rotate(Math.toRadians(360 - faceAngle),
                 Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
@@ -99,8 +98,11 @@ public abstract class Ship implements CollisionListener {
                 Calculator.getScreenLocation(camera.getLocation(), location).y);
 
         //hitbox.draw(g2d);
+        
+        g2d.transform(transform);
 
-        g2d.drawImage(activeImage, transform, null);
+        g2d.drawImage(activeImage, 0, 0, null);
+        
     }
 
     protected void move(ShipState state) {

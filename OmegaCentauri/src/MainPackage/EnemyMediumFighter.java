@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class EnemyMediumFighter extends EnemyShip {
 
         setUpHitbox(cameraLocation);
 
-        turrets[0] = new Turret(25, 135, 45, new Point2D.Double(-77, -40), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation);
-        turrets[1] = new Turret(25, 135, 45, new Point2D.Double(50, -40), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation);
+        turrets[0] = new Turret(25, 135, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation);
+        turrets[1] = new Turret(25, 135, 45, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation);
     }
 
     @Override
@@ -42,11 +43,15 @@ public class EnemyMediumFighter extends EnemyShip {
 
     @Override
     public void draw(Graphics2D g2d, Camera camera) {
+        AffineTransform original = g2d.getTransform();
+        
         super.draw(g2d, camera);
-
+        
         for (Turret t : turrets) {
             t.draw(g2d, camera.getLocation(), location);
         }
+        
+        g2d.setTransform(original);
     }
 
     @Override
@@ -56,13 +61,13 @@ public class EnemyMediumFighter extends EnemyShip {
 
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
 
-        //rotateToAngle(angleToPlayer);
+        rotateToAngle(angleToPlayer);
         for (Turret t : turrets) {
             t.update(player.getLocation(), new Point2D.Double(location.x + activeImage.getWidth() / 2, location.y + activeImage.getHeight() / 2),
                     faceAngle, cameraLocation);
         }
 
-        //move(ShipState.Thrusting);
+        move(ShipState.Thrusting);
     }
 
     @Override

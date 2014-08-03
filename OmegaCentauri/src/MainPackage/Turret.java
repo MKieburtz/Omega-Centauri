@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -30,7 +31,6 @@ public class Turret {
     
     private final Point2D.Double distanceFromCenter;
     private Dimension imageDimensions;
-    private Point2D.Double rotationPoint;
     
     private Point2D.Double location = new Point2D.Double();
     
@@ -61,37 +61,30 @@ public class Turret {
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double entityLocation)
     {        
+        AffineTransform original = g2d.getTransform();
         AffineTransform transform = new AffineTransform();
         
-        transform.rotate(Math.toRadians(360 - angle), rotationPoint.x, rotationPoint.y);
-        
-        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x, Calculator.getScreenLocation(cameraLocation, location).y);
+        transform.rotate(Math.toRadians(360 - angle), location.x + activeImage.getWidth() / 2 - 2.5, location.y + activeImage.getHeight() / 2);
       
-        g2d.drawImage(images.get(TURRETIMAGE), transform, null);
-                
+        g2d.transform(transform);
         
-        g2d.setColor(Color.RED);
-        g2d.drawRect((int)rotationPoint.x, (int)rotationPoint.y, 10, 10);
+        g2d.drawImage(activeImage, (int)location.x, (int)location.y, null);
+
+        g2d.setTransform(original);
+        
     }
     
     public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation)
     {        
-//        double targetAngle = Math.abs(Calculator.getAngleBetweenTwoPoints(shipLocationMiddle, playerLocation) - shipAngle) % 360;
-//        
-//        if (targetAngle > minRotation && targetAngle < maxRotation)
-//        {
-//            angle = targetAngle;
-//        }
-//        
+        double targetAngle = Math.abs(Calculator.getAngleBetweenTwoPoints(shipLocationMiddle, playerLocation) - shipAngle) % 360;
         
-        location.x = shipLocationMiddle.x + distanceFromCenter.x;
-        location.y = shipLocationMiddle.y + distanceFromCenter.y;
+        if (targetAngle > minRotation && targetAngle < maxRotation)
+        {
+            angle = targetAngle;
+        }
         
         
-        rotationPoint = new Point2D.Double(Calculator.getScreenLocation(cameraLocation, location).x + 13,
-                Calculator.getScreenLocation(cameraLocation, location).y + 12);
-        
-        angle += 1;
+        location = distanceFromCenter;
         
     }
 }

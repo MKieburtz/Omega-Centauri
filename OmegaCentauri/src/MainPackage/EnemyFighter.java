@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
@@ -169,7 +170,12 @@ public class EnemyFighter extends EnemyShip {
     
     @Override
     public void draw(Graphics2D g2d, Camera camera) {
+        
+        AffineTransform original = g2d.getTransform();
+        
         super.draw(g2d, camera);
+        
+        g2d.setTransform(original);
 
 //        Point2D.Double middle = Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
 //        
@@ -191,6 +197,7 @@ public class EnemyFighter extends EnemyShip {
 //
         g2d.setPaint(paintHull);
         g2d.fill(paintRectHull);
+        
     }
 
     public boolean isMovingAway() {
