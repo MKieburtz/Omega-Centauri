@@ -33,6 +33,7 @@ public class Turret {
     private Dimension imageDimensions;
     
     private Point2D.Double location = new Point2D.Double();
+    private Point2D.Double rotationPoint = new Point2D.Double();
     
     private final int TURRETIMAGE = 0;
     
@@ -64,14 +65,16 @@ public class Turret {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = new AffineTransform();
         
-        transform.rotate(Math.toRadians(360 - angle), location.x + activeImage.getWidth() / 2 - 2.5, location.y + activeImage.getHeight() / 2);
+        transform.rotate(Math.toRadians(360 - angle), rotationPoint.x + activeImage.getWidth() / 2 - 2.5, rotationPoint.y + activeImage.getHeight() / 2);
       
         g2d.transform(transform);
         
-        g2d.drawImage(activeImage, (int)location.x, (int)location.y, null);
+        g2d.drawImage(activeImage, (int)distanceFromCenter.x, (int)distanceFromCenter.y, null);
 
         g2d.setTransform(original);
         
+        g2d.setColor(Color.BLUE);
+        g2d.fillRect((int)location.x, (int)location.y, 5, 5);
     }
     
     public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation)
@@ -84,7 +87,11 @@ public class Turret {
         }
         
         
-        location = distanceFromCenter;
+        location.x = shipLocationMiddle.x + distanceFromCenter.x * Math.sin(Math.toRadians(360 - shipAngle));
+        
+        location.y = shipLocationMiddle.y + distanceFromCenter.y * Math.cos(Math.toRadians(360 - shipAngle));
+        
+        rotationPoint = distanceFromCenter;
         
     }
 }
