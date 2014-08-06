@@ -33,8 +33,8 @@ public class EnemyMediumFighter extends EnemyShip {
 
         setUpHitbox(cameraLocation);
 
-        turrets[0] = new Turret(25, 135, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation);
-        turrets[1] = new Turret(25, 135, 45, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation);
+        turrets[0] = new Turret(25, 135, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation, new Point2D.Double(70, 70));
+        turrets[1] = new Turret(25, 135, 45, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation, new Point2D.Double(-70, 70));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class EnemyMediumFighter extends EnemyShip {
         AffineTransform original = g2d.getTransform();
         
         super.draw(g2d, camera);
-        
+                
         for (Turret t : turrets) {
             t.draw(g2d, camera.getLocation(), location);
         }

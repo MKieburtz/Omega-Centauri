@@ -34,11 +34,13 @@ public class Turret {
     
     private Point2D.Double location = new Point2D.Double();
     private Point2D.Double rotationPoint = new Point2D.Double();
+    private Point2D.Double shotSpawnPoint = new Point2D.Double();
+    private Point2D.Double distanceToShotSpawnPoint = new Point2D.Double();
     
     private final int TURRETIMAGE = 0;
     
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
-            Dimension imageDimensions, Point2D.Double cameraLocation)
+            Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint)
     {
         this.maxDurability = maxDurability;
         this.durability = maxDurability;
@@ -50,6 +52,7 @@ public class Turret {
        
         this.distanceFromCenter = distanceFromCenter;
         this.imageDimensions = imageDimensions;
+        this.distanceToShotSpawnPoint = distanceToShotSpawnPoint;
         
         imagePaths.add("resources/Turret.png");
         
@@ -59,7 +62,7 @@ public class Turret {
         
         activeImage = images.get(TURRETIMAGE);
     }
-    
+    ArrayList<Line2D.Double> lines = new ArrayList<>();
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double entityLocation)
     {        
         AffineTransform original = g2d.getTransform();
@@ -73,8 +76,16 @@ public class Turret {
 
         g2d.setTransform(original);
         
-        g2d.setColor(Color.BLUE);
-        g2d.fillRect((int)location.x, (int)location.y, 5, 5);
+//        lines.add(new Line2D.Double(location, rotationPoint));
+//        
+//        g2d.setColor(Color.BLUE);
+//        for (Line2D.Double line : lines)
+//        {
+//            g2d.draw(line);
+//        }
+//        
+//        g2d.draw(new Line2D.Double(location, rotationPoint));
+//        
     }
     
     public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation)
@@ -87,11 +98,10 @@ public class Turret {
         }
         
         
-        location.x = shipLocationMiddle.x + distanceFromCenter.x * Math.sin(Math.toRadians(360 - shipAngle));
+        shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle - 65));
         
-        location.y = shipLocationMiddle.y + distanceFromCenter.y * Math.cos(Math.toRadians(360 - shipAngle));
-        
+        shotSpawnPoint.y = shipLocationMiddle.y + distanceToShotSpawnPoint.y * Math.sin(Math.toRadians(360 - shipAngle - 65));
+                
         rotationPoint = distanceFromCenter;
-        
     }
 }
