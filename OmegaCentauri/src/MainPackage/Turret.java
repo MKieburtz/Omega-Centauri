@@ -1,10 +1,12 @@
 package MainPackage;
 
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -37,6 +39,8 @@ public class Turret {
     private Point2D.Double shotSpawnPoint = new Point2D.Double();
     private Point2D.Double distanceToShotSpawnPoint = new Point2D.Double();
     
+    private final int angularVelocity = 1;
+    
     private final int TURRETIMAGE = 0;
     
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
@@ -48,11 +52,19 @@ public class Turret {
         this.maxRotation = maxRotation;
         this.minRotation = minRotation;
         
-        angle = (maxRotation + minRotation) / 2; // average
+        angle = Math.abs(-minRotation - maxRotation);
+        
+        angle %= 360;
+        
+        if (angle <= 0)
+        {
+            angle = 360 + angle;
+        }
        
         this.distanceFromCenter = distanceFromCenter;
         this.imageDimensions = imageDimensions;
         this.distanceToShotSpawnPoint = distanceToShotSpawnPoint;
+        rotationPoint = distanceFromCenter;
         
         imagePaths.add("resources/Turret.png");
         
@@ -76,32 +88,39 @@ public class Turret {
 
         g2d.setTransform(original);
         
-//        lines.add(new Line2D.Double(location, rotationPoint));
-//        
-//        g2d.setColor(Color.BLUE);
-//        for (Line2D.Double line : lines)
-//        {
-//            g2d.draw(line);
-//        }
-//        
-//        g2d.draw(new Line2D.Double(location, rotationPoint));
-//        
     }
-    
     public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation)
-    {        
-        double targetAngle = Math.abs(Calculator.getAngleBetweenTwoPoints(shipLocationMiddle, playerLocation) - shipAngle) % 360;
-        
-        if (targetAngle > minRotation && targetAngle < maxRotation)
-        {
-            angle = targetAngle;
-        }
-        
-        
+    {                
         shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle - 65));
         
         shotSpawnPoint.y = shipLocationMiddle.y + distanceToShotSpawnPoint.y * Math.sin(Math.toRadians(360 - shipAngle - 65));
                 
-        rotationPoint = distanceFromCenter;
+        
+        double targetAngle = Math.abs(Calculator.getAngleBetweenTwoPoints(shotSpawnPoint, playerLocation) - shipAngle) % 360;
+        
+        rotateToAngle(targetAngle);
+        
+        System.out.println(angle);
+    }
+    
+    private void rotateToAngle(double angleToRotate)
+    {
+        double[] distances = Calculator.getDistancesBetweenAngles(angle, angleToRotate);
+        
+        if (distances[0] < distances[1])
+        {
+            angle -= angularVelocity;
+        }
+        else
+        {
+            angle += angularVelocity;
+        }
+        
+        angle %= 360;
+        
+        if (angle <= 0)
+        {
+            angle = 360 + angle;
+        }
     }
 }
