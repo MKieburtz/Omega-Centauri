@@ -29,17 +29,17 @@ public class Turret {
     private int maxRotation;
     private int minRotation;
     
-    private double angle;
+    private double angle; // angle of rotation
+    private double relitiveAngle; // angle of rotation + the angle of rotation of the ship that the turret is on.
     
     private final Point2D.Double distanceFromCenter;
     private Dimension imageDimensions;
     
-    private Point2D.Double location = new Point2D.Double();
     private Point2D.Double rotationPoint = new Point2D.Double();
     private Point2D.Double shotSpawnPoint = new Point2D.Double();
     private Point2D.Double distanceToShotSpawnPoint = new Point2D.Double();
     
-    private final int angularVelocity = 1;
+    private final int angularVelocity = 3;
     
     private final int TURRETIMAGE = 0;
     
@@ -94,13 +94,19 @@ public class Turret {
         shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle - 65));
         
         shotSpawnPoint.y = shipLocationMiddle.y + distanceToShotSpawnPoint.y * Math.sin(Math.toRadians(360 - shipAngle - 65));
-                
         
-        double targetAngle = Math.abs(Calculator.getAngleBetweenTwoPoints(shotSpawnPoint, playerLocation) - shipAngle) % 360;
+        double targetAngle = 360 - (shipAngle - Calculator.getAngleBetweenTwoPoints(shotSpawnPoint, playerLocation));
+        
+        if (targetAngle < 0)
+        {
+            targetAngle += 360;
+        }
+        targetAngle %= 360;
         
         rotateToAngle(targetAngle);
         
-        System.out.println(angle);
+        System.out.println(targetAngle + " " + angle);
+        
     }
     
     private void rotateToAngle(double angleToRotate)
@@ -109,11 +115,11 @@ public class Turret {
         
         if (distances[0] < distances[1])
         {
-            angle -= angularVelocity;
+            angle += angularVelocity;
         }
         else
         {
-            angle += angularVelocity;
+            angle -= angularVelocity;
         }
         
         angle %= 360;
