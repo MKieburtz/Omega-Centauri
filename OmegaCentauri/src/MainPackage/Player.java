@@ -141,9 +141,9 @@ public class Player extends Ship {
                         movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
 
         Point2D.Double ShotStartingPos = new Point2D.Double(
-                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
+                Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()).x - 2.5
                 + Calculator.CalcAngleMoveX(angle) * 20,
-                Calculator.getScreenLocationMiddleForPlayer(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle) * 20);
+                Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()).y - 8 + Calculator.CalcAngleMoveY(angle) * 20);
 
         canshoot = false;
 

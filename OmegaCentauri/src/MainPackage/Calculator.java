@@ -76,7 +76,7 @@ public class Calculator {
         return new Point2D.Double(x, y);
     }
     
-    public static Point2D.Double getScreenLocationMiddleForPlayer(Point2D.Double cameraLocation, Point2D.Double location,
+    public static Point2D.Double getGameLocationMiddle(Point2D.Double location,
             double imageWidth, double imageHeight) {
         double x = location.x + imageWidth / 2;
         double y = location.y + imageHeight / 2;

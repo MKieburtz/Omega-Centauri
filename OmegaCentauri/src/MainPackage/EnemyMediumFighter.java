@@ -61,13 +61,14 @@ public class EnemyMediumFighter extends EnemyShip {
 
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
 
-        rotateToAngle(faceAngle + 5);
+        rotateToAngle(angleToPlayer);
         for (Turret t : turrets) {
-            t.update(player.getLocation(), new Point2D.Double(location.x + activeImage.getWidth() / 2, location.y + activeImage.getHeight() / 2),
+            t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
+                    Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                     faceAngle, cameraLocation);
         }
 
-        //move(ShipState.Thrusting);
+        move(ShipState.Thrusting);
     }
 
     @Override
