@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Michael Kieburtz
@@ -66,9 +67,19 @@ public class EnemyMediumFighter extends EnemyShip {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                     faceAngle, cameraLocation);
+            
+            if (canshoot)
+            {
+                shots.add(t.shoot(cameraLocation, movementVelocity));
+                canshoot = false;
+                ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
+            }
+            
         }
 
         move(ShipState.Thrusting);
+        
+       
     }
 
     @Override

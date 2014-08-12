@@ -131,4 +131,14 @@ public class Turret {
         
         return newAngle;
     }
+    
+    public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity)
+    {
+        Point2D.Double shotStartingPos = shotSpawnPoint;
+        
+        Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(angle),
+                velocity.y + 20 * Calculator.CalcAngleMoveY(angle));
+        
+        return new PulseShot(10, 25, false, shotStartingPos, shotStartingVel, angle, true, cameraLocation);
+    }
 }
