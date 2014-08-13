@@ -1,15 +1,14 @@
 package MainPackage;
 
-import java.awt.Color;
-import java.awt.Dialog;
+
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Kieburtz
@@ -30,7 +29,8 @@ public class Turret {
     private int minRotation;
 
     private double angle; // angle of rotation
-    private double relitiveAngle; // angle of rotation + the angle of rotation of the ship that the turret is on.
+    private double displayAngle; // angle of rotation + the angle of rotation of the ship that the turret is on.
+    //This is the angle that shots are fired from.
 
     private final Point2D.Double distanceFromCenter;
     private Dimension imageDimensions;
@@ -41,26 +41,32 @@ public class Turret {
     private double angleFromCenter;
 
     private final int angularVelocity = 3;
+    private boolean canShoot = true;
+    private int shootingDelay;
 
     private final int TURRETIMAGE = 0;
+    
+    private ScheduledExecutorService ex = Executors.newSingleThreadScheduledExecutor();
 
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
             Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint,
-            double angleFromCenter) {
+            double angleFromCenter, int shootingDelay, double shipAngle) {
         this.maxDurability = maxDurability;
         this.durability = maxDurability;
 
         this.maxRotation = maxRotation;
         this.minRotation = minRotation;
+        
+        this.shootingDelay = shootingDelay;
 
         angle = Math.abs(-minRotation - maxRotation);
 
-        angle %= 360;
+        angle = confineAngleToRange(angle);
 
-        if (angle <= 0) {
-            angle = 360 + angle;
-        }
-
+        displayAngle = angle + shipAngle;
+        
+        displayAngle = confineAngleToRange(displayAngle);
+        
         this.distanceFromCenter = distanceFromCenter;
         this.imageDimensions = imageDimensions;
         this.distanceToShotSpawnPoint = distanceToShotSpawnPoint;
@@ -92,19 +98,19 @@ public class Turret {
     }
 
     public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation) {
-        shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle - angleFromCenter));
+        shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle + angleFromCenter));
 
-        shotSpawnPoint.y = shipLocationMiddle.y + distanceToShotSpawnPoint.y * Math.sin(Math.toRadians(360 - shipAngle - angleFromCenter));
+        shotSpawnPoint.y = shipLocationMiddle.y + distanceToShotSpawnPoint.y * Math.sin(Math.toRadians(360 - shipAngle + angleFromCenter));
 
         double targetAngle = 360 - (shipAngle - Calculator.getAngleBetweenTwoPoints(shotSpawnPoint, playerLocation));
 
         targetAngle = confineAngleToRange(targetAngle);
 
-        rotateToAngle(targetAngle);
+        rotateToAngle(targetAngle, shipAngle);
 
     }
 
-    private void rotateToAngle(double angleToRotate) {
+    private void rotateToAngle(double angleToRotate, double shipAngle) {
         double[] distances = Calculator.getDistancesBetweenAngles(angle, angleToRotate);
 
         double nextAngle = distances[0] < distances[1] ?
@@ -119,6 +125,10 @@ public class Turret {
             }
             
             angle = confineAngleToRange(angle);
+            
+            displayAngle = angle + shipAngle;
+            
+            displayAngle = confineAngleToRange(displayAngle);
         }
 
     }
@@ -135,13 +145,28 @@ public class Turret {
         return newAngle;
     }
     
-    public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity)
+    public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity) { // ASSUMES THAT CANSHOOT IS TESTED BEFORE THIS IS CALLED!
+        
+        Point2D.Double shotStartingPos = (Point2D.Double) shotSpawnPoint.clone();
+
+        Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(360 - displayAngle),
+                velocity.y + 20 * Calculator.CalcAngleMoveY(360 - displayAngle));
+        canShoot = false;
+        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
+        
+        return new PulseShot(10, 25, false, shotStartingPos, shotStartingVel, 360 -  displayAngle, true, cameraLocation);
+    }
+    
+    public boolean canShoot()
     {
-        Point2D.Double shotStartingPos = (Point2D.Double)shotSpawnPoint.clone();
-        
-        Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(angle),
-                velocity.y + 20 * Calculator.CalcAngleMoveY(angle));
-        
-        return new PulseShot(10, 25, false, shotStartingPos, shotStartingVel, angle, true, cameraLocation);
+        return canShoot;
+    }
+    
+    class ShootingService implements Runnable
+    {
+        @Override
+        public void run() {
+            canShoot = true;
+        }
     }
 }
