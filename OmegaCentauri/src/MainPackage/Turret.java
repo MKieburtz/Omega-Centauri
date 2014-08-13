@@ -38,13 +38,15 @@ public class Turret {
     private Point2D.Double rotationPoint = new Point2D.Double();
     private Point2D.Double shotSpawnPoint = new Point2D.Double();
     private Point2D.Double distanceToShotSpawnPoint = new Point2D.Double();
+    private double angleFromCenter;
 
     private final int angularVelocity = 3;
 
     private final int TURRETIMAGE = 0;
 
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
-            Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint) {
+            Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint,
+            double angleFromCenter) {
         this.maxDurability = maxDurability;
         this.durability = maxDurability;
 
@@ -63,7 +65,8 @@ public class Turret {
         this.imageDimensions = imageDimensions;
         this.distanceToShotSpawnPoint = distanceToShotSpawnPoint;
         rotationPoint = distanceFromCenter;
-
+        this.angleFromCenter = angleFromCenter;
+        
         imagePaths.add("resources/Turret.png");
 
         images = loader.loadImages(imagePaths);
@@ -89,9 +92,9 @@ public class Turret {
     }
 
     public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation) {
-        shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle - 65));
+        shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle - angleFromCenter));
 
-        shotSpawnPoint.y = shipLocationMiddle.y + distanceToShotSpawnPoint.y * Math.sin(Math.toRadians(360 - shipAngle - 65));
+        shotSpawnPoint.y = shipLocationMiddle.y + distanceToShotSpawnPoint.y * Math.sin(Math.toRadians(360 - shipAngle - angleFromCenter));
 
         double targetAngle = 360 - (shipAngle - Calculator.getAngleBetweenTwoPoints(shotSpawnPoint, playerLocation));
 
@@ -134,7 +137,7 @@ public class Turret {
     
     public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity)
     {
-        Point2D.Double shotStartingPos = shotSpawnPoint;
+        Point2D.Double shotStartingPos = (Point2D.Double)shotSpawnPoint.clone();
         
         Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(angle),
                 velocity.y + 20 * Calculator.CalcAngleMoveY(angle));

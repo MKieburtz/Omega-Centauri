@@ -34,8 +34,8 @@ public class EnemyMediumFighter extends EnemyShip {
 
         setUpHitbox(cameraLocation);
 
-        turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation, new Point2D.Double(70, 70));
-        turrets[1] = new Turret(25, 315, 25, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation, new Point2D.Double(-70, 70));
+        turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation, new Point2D.Double(70, 70), 65);
+        turrets[1] = new Turret(25, 315, 25, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()), cameraLocation, new Point2D.Double(-70, 70), -65);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class EnemyMediumFighter extends EnemyShip {
 
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
 
-        rotateToAngle(angleToPlayer);
+        //rotateToAngle(angleToPlayer);
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
@@ -76,8 +76,7 @@ public class EnemyMediumFighter extends EnemyShip {
             }
             
         }
-
-        move(ShipState.Thrusting);
+        //move(ShipState.Thrusting);
         
        
     }
