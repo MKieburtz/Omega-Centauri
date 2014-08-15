@@ -43,6 +43,13 @@ public class EnemyMediumFighter extends EnemyShip {
 
     @Override
     public void shoot(Point2D.Double cameraLocation) {
+        for (Turret t : turrets)
+        {
+            if (t.canShoot())
+            {
+                shots.add(t.shoot(cameraLocation, movementVelocity));
+            }
+        }
     }
 
     @Override
@@ -71,15 +78,13 @@ public class EnemyMediumFighter extends EnemyShip {
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                     faceAngle, cameraLocation);
             
-            if (t.canShoot())
-            {
-                shots.add(t.shoot(cameraLocation, movementVelocity));
-            }
+            shoot(cameraLocation);
             
         }
-        move(ShipState.Thrusting);
-        
-       
+        if (distance > 500)
+            move(ShipState.Thrusting);
+        else
+            move(ShipState.Drifting);
     }
 
     @Override
