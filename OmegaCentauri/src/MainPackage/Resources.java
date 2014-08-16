@@ -192,4 +192,40 @@ public class Resources {
         fonts = loader.loadFonts(fontPaths, fontSizes);
     }
 
+    
+    public ArrayList<BufferedImage> getImages(int[] indexes)
+    {
+        ArrayList<BufferedImage> imagesToReturn = new ArrayList<>();
+        
+        for (Integer i : indexes)
+        {
+            imagesToReturn.add(images.get(i));
+        }
+        
+        return imagesToReturn;
+    }
+    
+    public ArrayList<Clip> getSounds(int[] indexes)
+    {
+        ArrayList<Clip> soundsToReturn = new ArrayList<>();
+        
+        for (Integer i : indexes)
+        {
+            soundsToReturn.add(sounds.get(i));
+        }
+        
+        return soundsToReturn;
+    }
+    
+    public ArrayList<Font> getFonts(int[] indexes)
+    {
+        ArrayList<Font> fontsToReturn = new ArrayList<>();
+        
+        for (Integer i : indexes)
+        {
+            fontsToReturn.add(fonts.get(i));
+        }
+        
+        return fontsToReturn;
+    }
 }
