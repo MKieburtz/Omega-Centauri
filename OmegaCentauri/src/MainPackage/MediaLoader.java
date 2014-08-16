@@ -68,10 +68,10 @@ public class MediaLoader {
         }
 
         try {
-            for (int i = 0; i < streams.size(); i++) // use for loop to access each size 
+            for (int i = 0; i < streams.size(); i++) 
             {
-                fonts.add(Font.createFont(Font.TRUETYPE_FONT, streams.get(i)).deriveFont(sizes.get(i)));
-                streams.get(i).close();
+                    fonts.add(Font.createFont(Font.TRUETYPE_FONT, streams.get(i)).deriveFont(sizes.get(i)));
+                    streams.get(i).close();
             }
 
         } catch (FontFormatException ex) {

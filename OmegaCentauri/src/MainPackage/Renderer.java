@@ -16,7 +16,6 @@ public class Renderer {
     private ArrayList<Font> fonts = new ArrayList<Font>();
     private ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-    private Font mainFont;
     private Font dataFont;
     private MediaLoader loader;
     private final int PAUSEMENU = 0;
@@ -24,9 +23,6 @@ public class Renderer {
     private final int GAMEOVER = 2;
     private final int RETURNTOBATTLEFIELD = 3;
     
-    private Hitbox hitbox1;
-    private Hitbox hitbox2;
-
     private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
 
     GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
@@ -37,9 +33,7 @@ public class Renderer {
     public Renderer() {
 
         loader = new MediaLoader();
-        fontSizes.add(36f);
         fontSizes.add(10f);
-        fontPaths.add("resources/OCR A Std.ttf");
         fontPaths.add("resources/OCR A Std.ttf");
 
         imagePaths.add("resources/PauseMenu.png");
@@ -49,8 +43,7 @@ public class Renderer {
         images = loader.loadImages(imagePaths);
 
         fonts = loader.loadFonts(fontPaths, fontSizes);
-        mainFont = fonts.get(0);
-        dataFont = fonts.get(1);
+        dataFont = fonts.get(0);
 
         isMac = System.getProperty("os.name").contains("OS X");
 
@@ -164,10 +157,8 @@ public class Renderer {
         g2d.setColor(Color.CYAN);
         g2d.fillRect((width / 2) - 200, (height / 2) - 50, percentDone * 4, 10);
 
-        g2d.setFont(mainFont);
-        g2d.setColor(new Color(0x00CECE)); // hex codes rock this is pretty much cyan
-        //g2d.drawString("Loading", width / 2 - 175, height / 2 - 75);
-
+        g2d.setColor(new Color(0x00CECE)); // hex codes rock. This is pretty much cyan
+        
         for (int i = 0; i < percentDone; i += 20) {
             g2d.drawString(".", width / 2 - 180 + i * 4, height / 2 - 50);
         }
