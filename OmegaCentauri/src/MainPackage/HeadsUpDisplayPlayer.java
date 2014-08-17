@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public class HeadsUpDisplayPlayer {
 
-    private MediaLoader loader = new MediaLoader();
-    private ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     
     private final int SCANNERMODULE = 0;
@@ -21,14 +19,7 @@ public class HeadsUpDisplayPlayer {
     
     public HeadsUpDisplayPlayer()
     {
-        imagePaths.add("resources/TempScannerModule.png");
-        imagePaths.add("resources/healthbackground.png");
-        imagePaths.add("resources/HealthyTick.png");
-        imagePaths.add("resources/WarningTick.png");
-        imagePaths.add("resources/DangerTick.png");
-        
-        images = loader.loadImages(imagePaths);
-        images = Calculator.toCompatibleImages(images);
+        images = Resources.getImagesForHUD();
     }
     
     public void draw(Graphics2D g2d, Camera camera)

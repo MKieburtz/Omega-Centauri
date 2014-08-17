@@ -16,10 +16,8 @@ import java.util.*;
  */
 public class Shield {
 
-    private ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private BufferedImage activeImage;
-    private MediaLoader loader = new MediaLoader();
     private double angle;
     private int opacity = 0;
     private double[] scaling = new double[2];
@@ -33,9 +31,11 @@ public class Shield {
         this.energy = energy;
         this.maxEnergy = energy; // start at max power
         this.strengh = strength;
-        imagePaths.add(enemy ? "resources/FILLERshieldEnemy.png" : "resources/FILLERshield.png");
-        images = loader.loadImages(imagePaths);
-        images = Calculator.toCompatibleImages(images);
+        if (enemy) {
+            images = Resources.getImagesForEnemyShield();
+        } else {
+            images = Resources.getImagesForShield();
+        }
         activeImage = images.get(0);
         scaling[0] = (double)size.x / activeImage.getWidth();
         scaling[1] = (double)size.y / activeImage.getHeight();

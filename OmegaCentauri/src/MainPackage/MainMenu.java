@@ -13,7 +13,6 @@ public class MainMenu {
 
     private GameActionListener startListener;
 
-    private MediaLoader loader;
     private ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<String> soundPaths = new ArrayList<String>();
 
@@ -24,7 +23,7 @@ public class MainMenu {
 
     private Settings settings;
 
-    private int STARTNOHOVER = 0;
+    private final int STARTNOHOVER = 0;
     private final int STARTHOVER = 1; 
     private final int CLOSENOHOVER = 2;
     private final int CLOSEHOVER = 3;
@@ -53,38 +52,29 @@ public class MainMenu {
 
     public MainMenu(OmegaCentauri game) {
         active = true;
-        loader = new MediaLoader();
         startListener = game;
 
-        imagePaths.add("resources/StartButtonNoHover.png");
-        imagePaths.add("resources/StartButtonHover.png");
-        imagePaths.add("resources/CloseButtonNoHover.png");
-        imagePaths.add("resources/CloseButtonHover.png");
-        imagePaths.add("resources/SettingsButtonNoHover.png");
-        imagePaths.add("resources/SettingsButtonHover.png");
-
-        images = loader.loadImages(imagePaths);
-        images = Calculator.toCompatibleImages(images);
-
-        soundPaths.add("resources/Mouseclick.wav");
-        sounds = loader.loadSounds(soundPaths);
+        images = Resources.getImagesForMainMenu();
+        
+        sounds = Resources.getSoundsForMainMenu();
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
         size = new Point(game.getWidth(), game.getHeight());
 
         settings = new Settings(new Dimension(size.x, size.y), game);
-
+         System.out.println(images.size());
         screenRect = new Rectangle(0, 0, size.x, size.y);
 
-        // load enough stars for the entire screen;
+        // load enough stars for the entire screen
         for (int x = 0; x < screenSize.width; x += 100) {
             for (int y = 0; y < screenSize.height; y += 100) {
                 stars.add(new TwinklingStarChunk(x, y, 100, 3));
             }
         }
-
+       
         drawingImage = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
-        
+
         setRects();
     }
 
@@ -232,6 +222,7 @@ public class MainMenu {
 
     private void setRects() {
 
+        System.out.println(images.size());
         startRectangle = new Rectangle(
                 size.x / 2  - images.get(STARTNOHOVER).getWidth() / 2,
                 size.y - 75,

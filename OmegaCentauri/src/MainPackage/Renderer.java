@@ -11,13 +11,9 @@ import java.util.*;
  */
 public class Renderer {
 
-    private ArrayList<String> fontPaths = new ArrayList<String>();
-    private ArrayList<Float> fontSizes = new ArrayList<Float>();
     private ArrayList<Font> fonts = new ArrayList<Font>();
-    private ArrayList<String> imagePaths = new ArrayList<String>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private Font dataFont;
-    private MediaLoader loader;
     private final int PAUSEMENU = 0;
     private final int PAUSETOMENU = 1;
     private final int GAMEOVER = 2;
@@ -31,18 +27,10 @@ public class Renderer {
     boolean isMac;
 
     public Renderer() {
+        fonts = Resources.getFontsForRenderer();
 
-        loader = new MediaLoader();
-        fontSizes.add(10f);
-        fontPaths.add("resources/OCR A Std.ttf");
+        images = Resources.getImagesForRenderer();
 
-        imagePaths.add("resources/PauseMenu.png");
-        imagePaths.add("resources/PauseButton_ToMenu.png");
-        imagePaths.add("resources/GameOver.png");
-        imagePaths.add("resources/ReturnToTheBattlefield.png");
-        images = loader.loadImages(imagePaths);
-
-        fonts = loader.loadFonts(fontPaths, fontSizes);
         dataFont = fonts.get(0);
 
         isMac = System.getProperty("os.name").contains("OS X");

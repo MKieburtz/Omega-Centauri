@@ -14,13 +14,7 @@ public class Settings {
 
     private Dimension windowResolution = new Dimension();
 
-    private MediaLoader loader;
     private boolean active = false;
-
-    private ArrayList<String> imagePaths = new ArrayList<String>();
-    private ArrayList<String> soundPaths = new ArrayList<String>();
-    private ArrayList<String> fontPaths = new ArrayList<String>();
-    private ArrayList<Float> fontSizes = new ArrayList<Float>();
 
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
@@ -72,36 +66,9 @@ public class Settings {
     public Settings(Dimension windowSize, GameActionListener actionListener) {
         this.windowResolution = windowSize;
 
-        loader = new MediaLoader();
-
-        imagePaths.add("resources/RadioButtonEnabled.png");
-        imagePaths.add("resources/RadioButtonDisabled.png");
-        imagePaths.add("resources/BackButtonHover.png");
-        imagePaths.add("resources/BackButtonNoHover.png");
-        imagePaths.add("resources/ControlsButtonHover.png");
-        imagePaths.add("resources/ControlsButtonNoHover.png");
-        imagePaths.add("resources/ResetButtonHover.png");
-        imagePaths.add("resources/ResetButtonNoHover.png");
-        imagePaths.add("resources/SaveButtonHover.png");
-        imagePaths.add("resources/SaveButtonNoHover.png");
-
-
-        images = loader.loadImages(imagePaths);
-
-        soundPaths.add("resources/Mouseclick.wav");
-
-        sounds = loader.loadSounds(soundPaths);
-
-        fontSizes.add(50f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(32f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(24f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(16f);
-        fontPaths.add("resources/OCR A Std.ttf");
-
-        fonts = loader.loadFonts(fontPaths, fontSizes);
+        images = Resources.getImagesForSettingsMenu();
+        sounds = Resources.getSoundsForSettingsMenu();
+        fonts = Resources.getFontsForSettingsMenu();
 
         setRects();
       
@@ -117,6 +84,7 @@ public class Settings {
         
         changes.put(SettingsTypes.graphicsQualityLow, settingsData.getGraphicsQualityLow());
         changes.put(SettingsTypes.resolutionWindowed, settingsData.getWindowed());
+        
     }
 
     public void draw(Graphics g) {

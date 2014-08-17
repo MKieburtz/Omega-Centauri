@@ -43,7 +43,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<Clip> getSoundsForPlayer()
@@ -54,7 +54,7 @@ public class Resources {
         
         loadSounds();
         
-        return sounds;
+        return (ArrayList <Clip>)sounds.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForEnemyFighter()
@@ -70,7 +70,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForMediumEnemyFighter()
@@ -81,7 +81,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForTurret()
@@ -92,7 +92,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForHUD()
@@ -107,7 +107,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForMainMenu()
@@ -123,7 +123,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<Clip> getSoundsForMainMenu()
@@ -134,7 +134,7 @@ public class Resources {
 
         loadSounds();
         
-        return sounds;
+        return (ArrayList <Clip>)sounds.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForPulseShot()
@@ -145,7 +145,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForEnemyPulseShot()
@@ -156,7 +156,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<Font> getFontsForRenderer()
@@ -168,7 +168,7 @@ public class Resources {
         
         loadFonts();
         
-        return fonts;
+        return (ArrayList<Font>)fonts.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForRenderer()
@@ -182,7 +182,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForSettingsMenu()
@@ -202,7 +202,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<Clip> getSoundsForSettingsMenu()
@@ -213,7 +213,7 @@ public class Resources {
         
         loadSounds();
         
-        return sounds;
+        return (ArrayList <Clip>)sounds.clone();
     }
     
     public static ArrayList<Font> getFontsForSettingsMenu()
@@ -231,7 +231,7 @@ public class Resources {
         
         loadFonts();
         
-        return fonts;
+        return (ArrayList<Font>)fonts.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForShield()
@@ -242,7 +242,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     public static ArrayList<BufferedImage> getImagesForEnemyShield()
@@ -253,7 +253,7 @@ public class Resources {
         
         loadImages();
         
-        return images;
+        return (ArrayList<BufferedImage>)images.clone();
     }
     
     private static void clearLists(ThingsToClear whatToClear)

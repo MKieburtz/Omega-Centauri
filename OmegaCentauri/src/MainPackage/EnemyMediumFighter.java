@@ -25,9 +25,7 @@ public class EnemyMediumFighter extends EnemyShip {
 
         this.id = id;
 
-        imagePaths.add("resources/MediumEnemyFighter.png");
-
-        images = Calculator.toCompatibleImages(mediaLoader.loadImages(imagePaths));
+        images = Resources.getImagesForMediumEnemyFighter();
         activeImage = images.get(0);
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 50);

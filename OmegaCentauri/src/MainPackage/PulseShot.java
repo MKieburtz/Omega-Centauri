@@ -21,12 +21,11 @@ public class PulseShot extends Shot {
         this.maxVel = 5;
 
         if (enemy) {
-            imagePaths.add("resources/EnemyShot.png");
+            images = Resources.getImagesForEnemyPulseShot();
         } else {
-            imagePaths.add("resources/Pulse.png");
+            images = Resources.getImagesForPulseShot();
         }
         
-        loadImages(imagePaths);
         activeImage = images.get(0);
         
         setUpHitbox(cameraLocation);

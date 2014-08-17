@@ -15,12 +15,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class Turret {
 
-    private ArrayList<String> imagePaths = new ArrayList<String>();
-
     private BufferedImage activeImage;
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-
-    private MediaLoader loader = new MediaLoader();
 
     private int maxDurability;
     private int durability;
@@ -73,11 +69,7 @@ public class Turret {
         rotationPoint = distanceFromCenter;
         this.angleFromCenter = angleFromCenter;
         
-        imagePaths.add("resources/Turret.png");
-
-        images = loader.loadImages(imagePaths);
-
-        images = Calculator.toCompatibleImages(images);
+        images = Resources.getImagesForTurret();
 
         activeImage = images.get(TURRETIMAGE);
     }

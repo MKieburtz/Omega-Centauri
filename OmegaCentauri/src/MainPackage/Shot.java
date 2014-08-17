@@ -16,7 +16,6 @@ abstract class Shot {
     protected int range;
     protected int life;
     protected int damage;
-    protected MediaLoader imageLoader = new MediaLoader();
     protected boolean animated;
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<String> imagePaths = new ArrayList<String>();
@@ -48,17 +47,10 @@ abstract class Shot {
         g2d.setTransform(original);
 
     }
-
-    protected void loadImages(ArrayList<String> imagePaths) {
-        images = imageLoader.loadImages(imagePaths);
-        images = Calculator.toCompatibleImages(images);
-    }
-
+    
     protected void updateLocation() {
         location.x += velocity.x;
         location.y += velocity.y;
-
-
     }
     
     

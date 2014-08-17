@@ -46,9 +46,6 @@ public abstract class Ship implements CollisionListener {
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<Clip> sounds = new ArrayList<Clip>();
     protected BufferedImage activeImage;
-    protected ArrayList<String> imagePaths = new ArrayList<String>();
-    protected ArrayList<String> soundPaths = new ArrayList<String>();
-    protected MediaLoader mediaLoader = new MediaLoader();
     protected ArrayList<Shot> shots = new ArrayList<Shot>();
     
     protected boolean canshoot = true;

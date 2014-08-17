@@ -23,24 +23,14 @@ public class Player extends Ship {
 
         super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, timerDelay, health);
 
-        imagePaths.add("resources/FighterIdle.png");
-        imagePaths.add("resources/FighterThrust.png");
-        imagePaths.add("resources/FighterLeft.png");
-        imagePaths.add("resources/FighterRight.png");
-        imagePaths.add("resources/FighterThrustLeft.png");
-        imagePaths.add("resources/FighterThrustRight.png");
-
-        images = mediaLoader.loadImages(imagePaths);
-        images = Calculator.toCompatibleImages(images);
+        images = Resources.getImagesForPlayer();
 
         activeImage = images.get(0);
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
                 10, 100);
         setUpHitbox(cameraLocation);
 
-        soundPaths.add("resources/Pulse.wav");
-
-        sounds = mediaLoader.loadSounds(soundPaths);
+        sounds = Resources.getSoundsForPlayer();
     }
 
     public void moveTo(double x, double y) {

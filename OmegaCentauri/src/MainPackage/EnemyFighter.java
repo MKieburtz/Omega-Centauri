@@ -34,20 +34,10 @@ public class EnemyFighter extends EnemyShip {
     {
         super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
         
-        imagePaths.add("resources/EnemyFighterIdle.png");
-        imagePaths.add("resources/EnemyFighterThrusting.png");
-        imagePaths.add("resources/EnemyFighterTurningLeft.png");
-        imagePaths.add("resources/EnemyFighterTurningRight.png");
-        imagePaths.add("resources/EnemyFighterThrustingLeft.png");
-        imagePaths.add("resources/EnemyFighterThrustingRight.png");
-        images = mediaLoader.loadImages(imagePaths);
-        images = Calculator.toCompatibleImages(images);
+        images = Resources.getImagesForEnemyFighter();
         activeImage = images.get(0);
         
         setUpHitbox(cameraLocation);
-
-        soundPaths.add("resources/Pulse.wav");
-        sounds = mediaLoader.loadSounds(soundPaths);
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(), activeImage.getHeight()), 0, 0);
         
@@ -135,7 +125,6 @@ public class EnemyFighter extends EnemyShip {
     public void shoot(Point2D.Double cameraLocation) {
 
         if (canshoot) {
-            //playSound(0);
             Random rand = new Random();
 
             double angle = 360 - faceAngle + rand.nextInt(10) - 5;
