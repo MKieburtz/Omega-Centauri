@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.sound.sampled.Clip;
 
 /**
- * @author Kieburtz
+ * @author Michael Kieburtz
  */
 public class Resources {
     
@@ -251,6 +251,15 @@ public class Resources {
         
         imagePaths.add("resources/FILLERshieldEnemy.png");
         
+        loadImages();
+        
+        return (ArrayList<BufferedImage>)images.clone();
+    }
+    
+    public static ArrayList<BufferedImage> getImagesForTurretShot()
+    {
+        clearLists(ThingsToClear.images);
+        imagePaths.add("resources/Level2Shot.png");
         loadImages();
         
         return (ArrayList<BufferedImage>)images.clone();

@@ -26,6 +26,20 @@ abstract class Shot {
     protected int maxVel;
     protected Hitbox hitbox;
 
+    public Shot(int damage, int range, boolean animated, Point2D.Double location,
+            Point2D.Double velocity, double angle, Point2D.Double cameraLocation)
+    {
+        life = 0;
+        this.damage = damage;
+        this.range = range;
+        this.animated = animated;
+        this.location = location;
+        this.velocity = velocity;
+
+        this.faceAngle = angle;
+        this.maxVel = 5;
+    }
+    
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
     {
         AffineTransform original = g2d.getTransform();

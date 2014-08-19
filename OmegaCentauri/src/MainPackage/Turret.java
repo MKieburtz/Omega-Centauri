@@ -146,7 +146,7 @@ public class Turret {
         canShoot = false;
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
-        return new PulseShot(10, 25, false, shotStartingPos, shotStartingVel, 360 -  displayAngle, true, cameraLocation);
+        return new TurretShot(10, 100, false, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation);
     }
     
     public boolean canShoot()

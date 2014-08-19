@@ -63,7 +63,7 @@ public class MainMenu {
         size = new Point(game.getWidth(), game.getHeight());
 
         settings = new Settings(new Dimension(size.x, size.y), game);
-         System.out.println(images.size());
+        
         screenRect = new Rectangle(0, 0, size.x, size.y);
 
         // load enough stars for the entire screen
@@ -222,7 +222,6 @@ public class MainMenu {
 
     private void setRects() {
 
-        System.out.println(images.size());
         startRectangle = new Rectangle(
                 size.x / 2  - images.get(STARTNOHOVER).getWidth() / 2,
                 size.y - 75,
