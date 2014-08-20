@@ -33,10 +33,10 @@ public class EnemyMediumFighter extends EnemyShip {
         setUpHitbox(cameraLocation);
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(70, 70), 65, shootingDelay, faceAngle);
+                cameraLocation, new Point2D.Double(52, 70), 65, shootingDelay, faceAngle);
         
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(70, 70), -65, shootingDelay, faceAngle);
+                cameraLocation, new Point2D.Double(88, 70), -65, shootingDelay, faceAngle);
     }
 
     @Override
@@ -79,10 +79,10 @@ public class EnemyMediumFighter extends EnemyShip {
             shoot(cameraLocation);
             
         }
-        if (distance > 500)
-            move(ShipState.Thrusting);
-        else
-            move(ShipState.Drifting);
+//        if (distance > 500)
+//            move(ShipState.Thrusting);
+//        else
+//            move(ShipState.Drifting);
     }
 
     @Override

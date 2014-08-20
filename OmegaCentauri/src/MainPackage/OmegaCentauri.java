@@ -341,11 +341,15 @@ public class OmegaCentauri extends Game implements GameActionListener {
             
             for (Ship ship : shipsToDraw) {
                 allShots.addAll(ship.getShots());
+                ship.updateHitbox(camera.getLocation());
+            }
+            
+            for (Shot shot : allShots)
+            {
+                shot.updateHitbox(camera.getLocation());
             }
             
             for (Ship ship : shipsToDraw) {
-                
-                ship.updateHitbox(camera.getLocation());
                 
                 for (Shot shot : ship.getShots()) {
                     shot.updateLocation();
@@ -363,9 +367,14 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             collision = true;
                             if (!ship.isColliding() && !collisionShip.isColliding()) {
                                 
-                                if (ship.CollisionEventWithShip()) {
+                                System.out.println(ship.getClass().toString() + " " + collisionShip.getClass().toString());
+                                
+                                boolean shipDied = ship.CollisionEventWithShip();
+                                boolean collisionShipDied = collisionShip.CollisionEventWithShip();
+                                
+                                if (shipDied) {
                                     deadShips.add(ship);
-                                } else if (collisionShip.CollisionEventWithShip()) {
+                                }  if (collisionShipDied) {
                                     //Toolkit.getDefaultToolkit().beep();
                                     deadShips.add(collisionShip);
                                 }
@@ -379,7 +388,6 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 }
                 
                 for (Shot shot : allShots) {
-                    shot.updateHitbox(camera.getLocation());
                     if (shot.returnHitbox().collides(ship.returnHitbox())) {
                         if (ship.CollisionEventWithShot(ship, shot, shipsToDraw)) {
                             deadShips.add(ship);
