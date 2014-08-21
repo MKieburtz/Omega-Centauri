@@ -70,7 +70,8 @@ public class EnemyMediumFighter extends EnemyShip {
 
         double distance = Calculator.getDistance(location, player.getLocation());
 
-        double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
+        double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
+                player.getLocation());
 
         rotateToAngle(angleToPlayer);
         for (Turret t : turrets) {
@@ -80,12 +81,14 @@ public class EnemyMediumFighter extends EnemyShip {
             
         }
         
-        shoot(cameraLocation);
         
-//        if (distance > 500)
-//            move(ShipState.Thrusting);
-//        else
-//            move(ShipState.Drifting);
+        if (Math.abs(angleToPlayer - faceAngle) <= 45)
+            shoot(cameraLocation);
+        
+        if (distance > 500)
+            move(ShipState.Thrusting);
+        else
+            move(ShipState.Drifting);
     }
 
     @Override
