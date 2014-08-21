@@ -106,6 +106,8 @@ public class Player extends Ship {
         
         g2d.setTransform(original);
         
+        //g2d.draw(hitbox);
+        
         shield.draw(g2d, camera.getLocation(), location);
 
         g2d.setColor(Color.CYAN);

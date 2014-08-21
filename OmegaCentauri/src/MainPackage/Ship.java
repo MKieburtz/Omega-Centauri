@@ -94,7 +94,7 @@ public abstract class Ship implements CollisionListener {
         transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
                 Calculator.getScreenLocation(camera.getLocation(), location).y);
 
-        hitbox.draw(g2d);
+        //hitbox.draw(g2d);
         
         g2d.transform(transform);
 

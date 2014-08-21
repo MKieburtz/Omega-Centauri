@@ -61,6 +61,8 @@ public class EnemyMediumFighter extends EnemyShip {
         }
         
         g2d.setTransform(original);
+        
+        //g2d.draw(hitbox);
     }
 
     @Override
@@ -76,9 +78,10 @@ public class EnemyMediumFighter extends EnemyShip {
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                     faceAngle, cameraLocation);
             
-            shoot(cameraLocation);
-            
         }
+        
+        shoot(cameraLocation);
+        
 //        if (distance > 500)
 //            move(ShipState.Thrusting);
 //        else

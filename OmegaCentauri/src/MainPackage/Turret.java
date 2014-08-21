@@ -37,7 +37,7 @@ public class Turret {
     private double angleFromCenter;
 
     private final int angularVelocity = 3;
-    private boolean canShoot = true;
+    private boolean canShoot = false;
     private int shootingDelay;
 
     private final int TURRETIMAGE = 0;
@@ -72,9 +72,10 @@ public class Turret {
         images = Resources.getImagesForTurret();
 
         activeImage = images.get(TURRETIMAGE);
+        
+        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }
-    ArrayList<Line2D.Double> lines = new ArrayList<>();
-
+    
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double entityLocation) {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = new AffineTransform();
