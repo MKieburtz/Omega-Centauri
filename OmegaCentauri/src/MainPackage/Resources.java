@@ -265,6 +265,15 @@ public class Resources {
         return (ArrayList<BufferedImage>)images.clone();
     }
     
+    public static ArrayList<BufferedImage> getImagesForMissle()
+    {
+        clearLists(ThingsToClear.images);
+        imagePaths.add("resources/Missile.png");
+        loadImages();
+        
+        return (ArrayList<BufferedImage>)images.clone();
+    }
+    
     private static void clearLists(ThingsToClear whatToClear)
     {
         switch(whatToClear)
