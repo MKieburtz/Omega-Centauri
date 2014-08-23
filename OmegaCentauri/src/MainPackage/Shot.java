@@ -51,7 +51,7 @@ abstract class Shot {
                 Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
                 Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y);
         
-        g2d.setTransform(transform);
+        g2d.transform(transform);
         
         g2d.drawImage(activeImage, (int)Calculator.getScreenLocation(cameraLocation, location).x,
                (int)Calculator.getScreenLocation(cameraLocation, location).y, null);
