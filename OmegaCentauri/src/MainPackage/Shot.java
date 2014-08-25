@@ -51,10 +51,11 @@ abstract class Shot {
                 Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
                 Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y);
         
+        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x, Calculator.getScreenLocation(cameraLocation, location).y);
+        
         g2d.transform(transform);
         
-        g2d.drawImage(activeImage, (int)Calculator.getScreenLocation(cameraLocation, location).x,
-               (int)Calculator.getScreenLocation(cameraLocation, location).y, null);
+        g2d.drawImage(activeImage, 0, 0,  null);
         
         g2d.setTransform(original);
 
@@ -62,7 +63,7 @@ abstract class Shot {
         //g2d.draw(hitbox);
     }
     
-    protected void updateLocation() {
+    public void move() {
         location.x += velocity.x;
         location.y += velocity.y;
     }

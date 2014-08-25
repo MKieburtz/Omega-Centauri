@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * @author Kieburtz
  */
-public class Missile {
+public class Missile extends Shot{
 
     private ArrayList<BufferedImage> images = new ArrayList<>();
     private BufferedImage activeImage;
@@ -17,23 +17,28 @@ public class Missile {
     private Point2D.Double location;
     
     private double faceAngle;
+    private Ship targetShip;
     
     private final double angleIncrement = 1;
     
     private Hitbox hitbox;
     
-    public Missile(Point2D.Double location, double angle)
+    public Missile(int damage, int range, Point2D.Double location,
+            Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip)
     {
+        super(damage, range, false, location, startingVel, angle, cameraLocation);
+        
         images = Resources.getImagesForMissle();
         activeImage = images.get(0);
         
         this.location = location;
         faceAngle = angle;
+        this.targetShip = targetShip;
     }
     
-    public void update(Point2D.Double targetLocation)
+    public void updateTarget()
     {
-        double targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetLocation);
+        double targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
         
         rotateToAngle(targetAngle);
         
@@ -57,29 +62,17 @@ public class Missile {
         }
     }
     
-    private void move()
+    @Override
+    public void move()
     {
         location.x += Calculator.CalcAngleMoveX(360 - faceAngle);
         location.y += Calculator.CalcAngleMoveY(360 - faceAngle);
     }
     
+    @Override
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
     {
-        AffineTransform original = g2d.getTransform();
-        AffineTransform transform = (AffineTransform)original.clone();
-        
-        transform.translate(Calculator.getScreenLocation(cameraLocation,
-                location).x, Calculator.getScreenLocation(cameraLocation,location).y);
-        
-        transform.rotate(360 - faceAngle,
-                Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
-                Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y);
-        
-        g2d.transform(transform);
-        
-        g2d.drawImage(activeImage, 0, 0, null);
-        
-        g2d.setTransform(original);
+        super.draw(g2d, cameraLocation);
     }
     
     public Hitbox getHitbox()
