@@ -57,11 +57,11 @@ public class Turret {
 
         angle = Math.abs(-minRotation - maxRotation);
 
-        angle = confineAngleToRange(angle);
+        angle = Calculator.confineAngleToRange(angle);
 
         displayAngle = angle + shipAngle;
         
-        displayAngle = confineAngleToRange(displayAngle);
+        displayAngle = Calculator.confineAngleToRange(displayAngle);
         
         this.distanceFromCenter = distanceFromCenter;
         this.imageDimensions = imageDimensions;
@@ -97,7 +97,7 @@ public class Turret {
 
         double targetAngle = 360 - (shipAngle - Calculator.getAngleBetweenTwoPoints(shotSpawnPoint, playerLocation));
 
-        targetAngle = confineAngleToRange(targetAngle);
+        targetAngle = Calculator.confineAngleToRange(targetAngle);
 
         rotateToAngle(targetAngle, shipAngle);
 
@@ -117,25 +117,13 @@ public class Turret {
                 angle -= angularVelocity;
             }
             
-            angle = confineAngleToRange(angle);
+            angle = Calculator.confineAngleToRange(angle);
             
             displayAngle = angle + shipAngle;
             
-            displayAngle = confineAngleToRange(displayAngle);
+            displayAngle = Calculator.confineAngleToRange(displayAngle);
         }
 
-    }
-    
-    private double confineAngleToRange(double angle) // makes the angle into the range (0 - 360]
-    {
-        double newAngle = angle;
-        if (newAngle <= 0)
-        {
-            newAngle += 360;
-        }
-        newAngle %= 360;
-        
-        return newAngle;
     }
     
     public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity) { // ASSUMES THAT CANSHOOT IS TESTED BEFORE THIS IS CALLED!

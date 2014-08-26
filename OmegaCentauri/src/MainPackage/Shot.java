@@ -58,7 +58,6 @@ abstract class Shot {
         g2d.drawImage(activeImage, 0, 0,  null);
         
         g2d.setTransform(original);
-
         
         //g2d.draw(hitbox);
     }
@@ -73,7 +72,6 @@ abstract class Shot {
         ArrayList<Point2D.Double> hitboxPoints = new ArrayList<>();
         
         try {
-            
         hitboxPoints.add(new Point2D.Double(0, 0));
         hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), 0));
         hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), activeImage.getHeight()));

@@ -101,4 +101,16 @@ public class Calculator {
         
         return images;
     }
+    
+    public static double confineAngleToRange(double angle) // makes the angle into the range (0 - 360]
+    {
+        double newAngle = angle;
+        if (newAngle <= 0)
+        {
+            newAngle += 360;
+        }
+        newAngle %= 360;
+        
+        return newAngle;
+    }
 }

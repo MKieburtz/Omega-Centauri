@@ -57,6 +57,8 @@ public abstract class Ship implements CollisionListener {
     
     protected ArrayList<Point2D.Double> hitboxStartingPoints = new ArrayList<>();
     protected Point2D.Double hitboxRotationPoint = null;
+    
+    protected Ship targetShip;
 
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double maxAngularVelocity, double angleIncrement, double acceleration, int shootingDelay, int health) {

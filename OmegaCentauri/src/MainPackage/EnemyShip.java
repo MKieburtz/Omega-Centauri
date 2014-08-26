@@ -18,6 +18,7 @@ public abstract class EnemyShip extends Ship{
     
     public abstract int getID();
     
+    @Override
     public abstract Point2D.Double getLocation();
     
     
