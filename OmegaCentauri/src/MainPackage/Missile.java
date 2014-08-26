@@ -43,7 +43,7 @@ public class Missile extends Shot{
     private void rotateToAngle(double angle)
     {
         double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, angle);
-        System.out.println(faceAngle);
+        
         if (Math.abs(angle - faceAngle) > angleIncrement)
         {
             if (distances[0] < distances[1])
@@ -63,8 +63,8 @@ public class Missile extends Shot{
     @Override
     public void move()
     {
-        location.x += Calculator.CalcAngleMoveX(faceAngle) * 5;
-        location.y += Calculator.CalcAngleMoveY(faceAngle) * 5;
+        location.x += Calculator.CalcAngleMoveX(faceAngle) * 4;
+        location.y += Calculator.CalcAngleMoveY(faceAngle) * 4;
     }
     
     @Override
