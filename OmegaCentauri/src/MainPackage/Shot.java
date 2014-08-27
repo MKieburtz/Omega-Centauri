@@ -26,9 +26,10 @@ abstract class Shot {
     protected int maxVel;
     protected Hitbox hitbox;
 
+    private Ship owner; // the ship that fired the shot
+
     public Shot(int damage, int range, boolean animated, Point2D.Double location,
-            Point2D.Double velocity, double angle, Point2D.Double cameraLocation)
-    {
+            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) {
         life = 0;
         this.damage = damage;
         this.range = range;
@@ -38,8 +39,10 @@ abstract class Shot {
 
         this.faceAngle = angle;
         this.maxVel = 5;
+
+        this.owner = owner;
     }
-    
+
     protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
     {
         AffineTransform original = g2d.getTransform();
@@ -50,50 +53,65 @@ abstract class Shot {
         transform.rotate(Math.toRadians(faceAngle),
                 Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
                 Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y);
-        
+
         transform.translate(Calculator.getScreenLocation(cameraLocation, location).x, Calculator.getScreenLocation(cameraLocation, location).y);
-        
+
         g2d.transform(transform);
-        
-        g2d.drawImage(activeImage, 0, 0,  null);
-        
+
+        g2d.drawImage(activeImage, 0, 0, null);
+
         g2d.setTransform(original);
-        
+
         //g2d.draw(hitbox);
     }
-    
+
     public void move() {
         location.x += velocity.x;
         location.y += velocity.y;
     }
-    
-    
+
     public void setUpHitbox(Point2D.Double cameraLocation) {
         ArrayList<Point2D.Double> hitboxPoints = new ArrayList<>();
-        
+
         try {
-        hitboxPoints.add(new Point2D.Double(0, 0));
-        hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), 0));
-        hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), activeImage.getHeight()));
-        hitboxPoints.add(new Point2D.Double(0, activeImage.getHeight()));
-        
-        Point2D.Double centerPoint = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2);
+            hitboxPoints.add(new Point2D.Double(0, 0));
+            hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), 0));
+            hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), activeImage.getHeight()));
+            hitboxPoints.add(new Point2D.Double(0, activeImage.getHeight()));
+
+            Point2D.Double centerPoint = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2);
             hitbox = new Hitbox(hitboxPoints, centerPoint);
-                    
-            
+
             hitbox.rotateToAngle(360 - faceAngle);
-            
+
         } catch (NullPointerException e) {
             System.err.println("activeimage not initialized!");
+        }
+    }
+
+    public void collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) {
+        if (shot instanceof Missile ^ otherShot instanceof Missile) { // ^ means one or the other but not both
+            // enemy ship's shots shouldn't destroy eachother
+            if (!(shot.getOwner() instanceof EnemyShip && otherShot.getOwner() instanceof EnemyShip)) {
+                for (Ship ship : allShips) {
+                    if (shot.getOwner().equals(ship)) {
+                        ship.removeShot(shot);
+                    }
+                    else if (otherShot.getOwner().equals(ship))
+                    {
+                        ship.removeShot(otherShot);
+                    }
+                }
+            }
+
         }
     }
 
     public void updateHitbox(Point2D.Double cameraLocation) {
         hitbox.moveToLocation(Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()));
     }
-    
-    public Hitbox returnHitbox()
-    {
+
+    public Hitbox returnHitbox() {
         return hitbox;
     }
 
@@ -123,9 +141,12 @@ abstract class Shot {
     public boolean imagesLoaded() {
         return !images.isEmpty();
     }
-    
-    public int getDamage()
-    {
+
+    public int getDamage() {
         return damage;
+    }
+
+    public Ship getOwner() {
+        return owner;
     }
 }

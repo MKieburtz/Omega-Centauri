@@ -13,7 +13,7 @@ import java.util.concurrent.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public abstract class Ship implements CollisionListener {
+public abstract class Ship{
 
     // make sure image loading order is correct!
     protected final int IDLE = 0;
@@ -219,12 +219,11 @@ public abstract class Ship implements CollisionListener {
         return shots;
     }
     
-    @Override
     public boolean CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips) {
         
         for (Ship s : allShips) {
-            if (s.getShots().contains(shot) && !s.equals(ship)) {
-                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) {
+            if (shot.getOwner().equals(s) && !s.equals(ship)) {  // if s fired the shot and s isn't the ship that collided with the shot...
+                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) { // enemies can't shoot eachother
                     s.removeShot(shot); // removing because it collided
                 } else {
                     return false;

@@ -42,11 +42,13 @@ public class Turret {
 
     private final int TURRETIMAGE = 0;
     
+    private Ship owner;
+    
     private ScheduledExecutorService ex = Executors.newSingleThreadScheduledExecutor();
 
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
             Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint,
-            double angleFromCenter, int shootingDelay, double shipAngle) {
+            double angleFromCenter, int shootingDelay, double shipAngle, Ship owner) {
         this.maxDurability = maxDurability;
         this.durability = maxDurability;
 
@@ -74,6 +76,8 @@ public class Turret {
         activeImage = images.get(TURRETIMAGE);
         
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
+        
+        this.owner = owner;
     }
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double entityLocation) {
@@ -135,7 +139,7 @@ public class Turret {
         canShoot = false;
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
-        return new TurretShot(10, 100, false, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation);
+        return new TurretShot(10, 100, false, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation, owner);
     }
     
     public boolean canShoot()

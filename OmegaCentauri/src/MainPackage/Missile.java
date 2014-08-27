@@ -17,9 +17,9 @@ public class Missile extends Shot{
     private final double angleIncrement = 1;
     
     public Missile(int damage, int range, Point2D.Double location,
-            Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip)
+            Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner)
     {
-        super(damage, range, false, location, startingVel, angle, cameraLocation);
+        super(damage, range, false, location, startingVel, angle, cameraLocation, owner);
 
         images = Resources.getImagesForMissle();
         activeImage = images.get(0);

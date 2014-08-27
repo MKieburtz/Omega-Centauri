@@ -139,7 +139,7 @@ public class Player extends Ship {
 
         canshoot = false;
 
-        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, false, cameraLocation)); // enemies ovveride
+        shots.add(new PulseShot(5, 100, false, ShotStartingPos, ShotStartingVel, angle, false, cameraLocation, this)); // enemies ovveride
 
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }

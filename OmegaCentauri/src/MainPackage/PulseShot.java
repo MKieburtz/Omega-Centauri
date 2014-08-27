@@ -9,9 +9,9 @@ import java.awt.geom.Point2D;
 public class PulseShot extends Shot {
 
     public PulseShot(int damage, int range, boolean animated, Point2D.Double location,
-            Point2D.Double velocity, double angle, boolean enemy, Point2D.Double cameraLocation) {
+            Point2D.Double velocity, double angle, boolean enemy, Point2D.Double cameraLocation, Ship owner) {
 
-        super(damage, range, animated, location, velocity, angle, cameraLocation);
+        super(damage, range, animated, location, velocity, angle, cameraLocation, owner);
         
         if (enemy) {
             images = Resources.getImagesForEnemyPulseShot();

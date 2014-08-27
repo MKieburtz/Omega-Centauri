@@ -396,6 +396,21 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             deadShips.add(ship);
                         }
                     }
+                    
+                    if (shot instanceof Missile)
+                    {
+                        for (Shot collisionShot : allShots)
+                        {
+                            if (!shot.equals(collisionShot))
+                            {
+                                if (shot.returnHitbox().collides(collisionShot.returnHitbox()))
+                                {
+                                    shot.collisionEventWithShot(shot, collisionShot, shipsToDraw);
+                                    collisionShot.collisionEventWithShot(collisionShot, shot, shipsToDraw);
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 ship.purgeShots();
