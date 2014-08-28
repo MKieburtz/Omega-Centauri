@@ -50,7 +50,7 @@ public class EnemyMediumFighter extends EnemyShip {
     public void shoot(Point2D.Double cameraLocation) {
         for (Turret t : turrets) {
             if (t.canShoot()) {
-                //shots.add(t.shoot(cameraLocation, movementVelocity));
+                shots.add(t.shoot(cameraLocation, movementVelocity));
             }
         }
 
@@ -60,7 +60,7 @@ public class EnemyMediumFighter extends EnemyShip {
 
             Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
             
-            shots.add(new Missile(30, 100, startingLocation, null, 360 - angle, cameraLocation, targetShip, this));
+            shots.add(new Missile(60, 100, startingLocation, null, 360 - angle, cameraLocation, targetShip, this));
 
             canshoot = false;
 

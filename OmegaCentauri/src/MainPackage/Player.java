@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
@@ -32,7 +33,7 @@ public class Player extends Ship {
 
         sounds = Resources.getSoundsForPlayer();
         
-        explosion = new Explosion(Explosion.Type.fighter);
+        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
     }
 
     public void moveTo(double x, double y) {

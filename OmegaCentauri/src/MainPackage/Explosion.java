@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -13,6 +14,8 @@ public class Explosion {
 
     private final Dimension fighterExplosionSize = new Dimension(1000, 1200);
     private final Dimension fighterExplosionImageSize = new Dimension(200, 200);
+    
+    private final Dimension shipSize;
 
     private int frame = 0;
     private boolean done = false;
@@ -26,7 +29,7 @@ public class Explosion {
 
     BufferedImage[] images = null;
 
-    public Explosion(Type type) {
+    public Explosion(Type type, Dimension imageSize) {
         switch (type) {
             case fighter:
                 spriteSheet = Resources.getImageForFighterExplosion().get(0);
@@ -43,20 +46,21 @@ public class Explosion {
                 }
                 break;
         }
-
+        
+        this.shipSize = imageSize;
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double location)
+    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation)
     {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = (AffineTransform)original.clone();
         
-        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x,
-                Calculator.getScreenLocation(cameraLocation, location).y);
+        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x + shipSize.width / 2,
+                Calculator.getScreenLocation(cameraLocation, location).y + shipSize.height / 2);
         
         g2d.transform(transform);
         
-        g2d.drawImage(images[frame], 0, 0, null);
+        g2d.drawImage(images[frame], -100, -100, null);
         
         g2d.setTransform(original);
         
