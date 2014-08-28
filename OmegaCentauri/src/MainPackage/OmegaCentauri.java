@@ -330,14 +330,16 @@ public class OmegaCentauri extends Game implements GameActionListener {
             }
             allShots.clear();
             
-            for (Ship s : deadShips) {
-                if (enemyShips.contains(s)) {
-                    enemyShips.remove(s);
+            for (int i = deadShips.size() - 1; i > -1; i--) {
+                if (!deadShips.get(i).isExploding())
+                {
+                    if (enemyShips.contains(deadShips.get(i))) {
+                        enemyShips.remove(deadShips.get(i));
+                    }
+                    shipsToDraw.remove(deadShips.get(i));
+                    deadShips.remove(deadShips.get(i));
                 }
-                shipsToDraw.remove(s);
             }
-            
-            deadShips.clear();
             
             for (Ship ship : shipsToDraw) {
                 allShots.addAll(ship.getShots());

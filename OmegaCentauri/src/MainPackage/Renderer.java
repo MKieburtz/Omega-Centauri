@@ -82,7 +82,7 @@ public class Renderer {
                 g2d.setColor(Color.CYAN);
 
                 if (ship.getHullHealth() <= 0) {
-                    g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
+                    //g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
                 } else if ((ship.getLocation().x > 10000 || ship.getLocation().x < -10000) || (ship.getLocation().y > 10000 || ship.getLocation().y < -10000)) {
                     g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
                 }

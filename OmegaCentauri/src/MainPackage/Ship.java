@@ -60,6 +60,10 @@ public abstract class Ship{
     
     protected Ship targetShip;
     
+    protected Explosion explosion;
+    
+    protected boolean exploding;
+    
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double maxAngularVelocity, double angleIncrement, double acceleration, int shootingDelay, int health) {
         
@@ -87,19 +91,30 @@ public abstract class Ship{
     }
     
     public void draw(Graphics2D g2d, Camera camera) {
-        AffineTransform transform = (AffineTransform) g2d.getTransform().clone();
-        
-        transform.rotate(Math.toRadians(360 - faceAngle),
-                Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
-                Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
-        
-        transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
-                Calculator.getScreenLocation(camera.getLocation(), location).y);
+        if (!exploding)
+        {
+            AffineTransform transform = (AffineTransform) g2d.getTransform().clone();
 
-        //hitbox.draw(g2d);
-        g2d.transform(transform);
-        
-        g2d.drawImage(activeImage, 0, 0, null);
+            transform.rotate(Math.toRadians(360 - faceAngle),
+                    Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
+                    Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
+
+            transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
+                    Calculator.getScreenLocation(camera.getLocation(), location).y);
+
+            //hitbox.draw(g2d);
+            g2d.transform(transform);
+
+            g2d.drawImage(activeImage, 0, 0, null);
+        }
+        else
+        {
+            explosion.draw(g2d, location, camera.getLocation());
+            if (explosion.isDone())
+            {
+                exploding = false;
+            }
+        }
         
     }
     
@@ -307,6 +322,11 @@ public abstract class Ship{
             reduceHull(healthToLoseHull);
             
         }
+        
+        if (hullDurability <= 0)
+        {
+            exploding = true;
+        }
     }
     
     public boolean setColliding(boolean colliding) {
@@ -336,6 +356,11 @@ public abstract class Ship{
     
     public double getFaceAngle() {
         return faceAngle;
+    }
+    
+    public boolean isExploding()
+    {
+        return exploding;
     }
     
     public void changeImage(ShipState state) {

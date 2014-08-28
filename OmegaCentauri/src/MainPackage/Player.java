@@ -31,6 +31,8 @@ public class Player extends Ship {
         setUpHitbox(cameraLocation);
 
         sounds = Resources.getSoundsForPlayer();
+        
+        explosion = new Explosion(Explosion.Type.fighter);
     }
 
     public void moveTo(double x, double y) {
