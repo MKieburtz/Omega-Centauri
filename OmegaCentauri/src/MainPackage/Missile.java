@@ -1,10 +1,9 @@
 package MainPackage;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +14,9 @@ public class Missile extends Shot{
     private Ship targetShip;
     
     private final double angleIncrement = 1;
+    
+    private Explosion explosion;
+    private boolean exploding;
     
     public Missile(int damage, int range, Point2D.Double location,
             Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner)
@@ -29,6 +31,8 @@ public class Missile extends Shot{
         this.targetShip = targetShip;
         
         setUpHitbox(cameraLocation);
+        
+        explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
     }
     
     public void updateTarget()
@@ -70,11 +74,40 @@ public class Missile extends Shot{
     @Override
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
     {
-        super.draw(g2d, cameraLocation);
+        if (!exploding)
+        {
+            super.draw(g2d, cameraLocation);
+        }
+        else
+        {
+            explosion.draw(g2d, location, cameraLocation);
+            if (explosion.isDone())
+            {
+                exploding = false;
+            }
+        }
+    }
+    
+    @Override
+    public boolean collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) // this will just make the missile explode
+    {
+        if (!exploding)
+        {
+            if (super.collisionEventWithShot(shot, otherShot, allShips)) 
+            {
+                exploding = true;
+            }
+        }
+        return false;
     }
     
     public Hitbox getHitbox()
     {
         return hitbox;
+    }
+    
+    public boolean isExploding()
+    {
+        return exploding;
     }
 }

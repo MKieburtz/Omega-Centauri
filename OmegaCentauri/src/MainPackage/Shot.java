@@ -89,22 +89,22 @@ abstract class Shot {
         }
     }
 
-    public void collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) {
+    public boolean collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) { // the return value is only useful to subclasses
+        boolean removed = false;
         if (shot instanceof Missile ^ otherShot instanceof Missile) { // ^ means one or the other but not both
             // enemy ship's shots shouldn't destroy eachother
             if (!(shot.getOwner() instanceof EnemyShip && otherShot.getOwner() instanceof EnemyShip)) {
                 for (Ship ship : allShips) {
                     if (shot.getOwner().equals(ship)) {
                         ship.removeShot(shot);
-                    }
-                    else if (otherShot.getOwner().equals(ship))
-                    {
-                        ship.removeShot(otherShot);
+                        removed = true;
                     }
                 }
             }
 
         }
+        
+        return removed;
     }
 
     public void updateHitbox(Point2D.Double cameraLocation) {

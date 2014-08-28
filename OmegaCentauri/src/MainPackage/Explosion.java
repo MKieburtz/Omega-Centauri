@@ -14,12 +14,17 @@ public class Explosion {
 
     private final Dimension fighterExplosionSize = new Dimension(1000, 1200);
     private final Dimension fighterExplosionImageSize = new Dimension(200, 200);
+
+    private final Dimension missileExplosionSize = new Dimension(400, 400);
+    private final Dimension missileExplosionImageSize = new Dimension(100, 100);
+
+    private final Dimension entityImageSize;
     
-    private final Dimension shipSize;
+    private Dimension explosionImageSize;
 
     private int frame = 0;
     private boolean done = false;
-    
+
     public static enum Type {
 
         fighter, missile
@@ -35,45 +40,57 @@ public class Explosion {
                 spriteSheet = Resources.getImageForFighterExplosion().get(0);
                 images = new BufferedImage[30];
 
-                int index = 0;
-                for (int y = 0; y < fighterExplosionSize.height; y += fighterExplosionImageSize.height) 
-                {
-                    for (int x = 0; x < fighterExplosionSize.width; x += fighterExplosionImageSize.width) 
-                    {
-                        images[index] = spriteSheet.getSubimage(x, y, fighterExplosionImageSize.width, fighterExplosionImageSize.height);
-                        index++;
-                    }
-                }
+                loadImages(fighterExplosionSize, spriteSheet, fighterExplosionImageSize);
+                explosionImageSize = fighterExplosionImageSize;
+                break;
+
+            case missile:
+                spriteSheet = Resources.getImageForMissileExplosion().get(0);
+                images = new BufferedImage[16];
+                
+                loadImages(missileExplosionSize, spriteSheet, missileExplosionImageSize);
+                
+                explosionImageSize = missileExplosionImageSize;
                 break;
         }
-        
-        this.shipSize = imageSize;
+
+        this.entityImageSize = imageSize;
     }
-    
-    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation)
-    {
-        AffineTransform original = g2d.getTransform();
-        AffineTransform transform = (AffineTransform)original.clone();
-        
-        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x + shipSize.width / 2,
-                Calculator.getScreenLocation(cameraLocation, location).y + shipSize.height / 2);
-        
-        g2d.transform(transform);
-        
-        g2d.drawImage(images[frame], -100, -100, null);
-        
-        g2d.setTransform(original);
-        
-        frame++;
-        
-        if (frame == images.length)
+
+    private void loadImages(Dimension spriteSheetSize, BufferedImage spriteSheet, Dimension imageSize) {
+        int index = 0;
+        for (int y = 0; y < spriteSheetSize.height; y += imageSize.height) 
         {
-            done = true;
+            for (int x = 0; x < spriteSheetSize.width; x += imageSize.width) 
+            {
+                images[index] = spriteSheet.getSubimage(x, y, imageSize.width, imageSize.height);
+                index++;
+            }
         }
     }
-   
-    public boolean isDone()
-    {
+
+    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) {
+        AffineTransform original = g2d.getTransform();
+        AffineTransform transform = (AffineTransform) original.clone();
+
+        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x - ((explosionImageSize.width - entityImageSize.width) / 2),
+                Calculator.getScreenLocation(cameraLocation, location).y - ((explosionImageSize.height - entityImageSize.height) / 2));
+
+        g2d.transform(transform);
+
+        g2d.drawImage(images[frame], 0, 0, null);
+
+        g2d.setTransform(original);
+
+        frame++;
+
+        if (frame == images.length) {
+            done = true;
+        }
+        
+    }
+
+    public boolean isDone() {
         return done;
     }
 }
