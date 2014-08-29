@@ -91,14 +91,16 @@ public class Missile extends Shot{
     @Override
     public boolean collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) // this will just make the missile explode
     {
+        boolean removed = super.collisionEventWithShot(shot, otherShot, allShips);
+        
         if (!exploding)
         {
-            if (super.collisionEventWithShot(shot, otherShot, allShips)) 
+            if (removed) 
             {
                 exploding = true;
             }
         }
-        return false;
+        return removed;
     }
     
     public Hitbox getHitbox()

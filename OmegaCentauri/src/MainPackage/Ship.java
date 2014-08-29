@@ -234,26 +234,27 @@ public abstract class Ship{
         return shots;
     }
     
-    public boolean CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips) {
+    public boolean[] CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips) {
+        
+        boolean[] removed = {false, false}; // first is ship, second is shot.
         
         for (Ship s : allShips) {
             if (shot.getOwner().equals(s) && !s.equals(ship)) {  // if s fired the shot and s isn't the ship that collided with the shot...
                 if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) { // enemies can't shoot eachother
                     s.removeShot(shot); // removing because it collided
-                } else {
-                    return false;
-                }
+                    removed[1] = true;
+                } 
             }
         }
         
         if (!ship.getShots().contains(shot)) {
             takeDamage(shot.getDamage());
             if (hullDurability <= 0) {
-                return true;
+                removed[0] = true;
             }
         }
         
-        return false;
+        return removed;
     }
     
     public boolean CollisionEventWithShip() {

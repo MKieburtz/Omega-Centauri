@@ -87,7 +87,6 @@ public class Explosion {
         if (frame == images.length) {
             done = true;
         }
-        
     }
 
     public boolean isDone() {
