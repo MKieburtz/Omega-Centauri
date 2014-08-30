@@ -347,7 +347,6 @@ public class OmegaCentauri extends Game implements GameActionListener {
             {
                 if (!(deadShots.get(i) instanceof Missile))
                 {
-                    Toolkit.getDefaultToolkit().beep();
                     allShots.remove(deadShots.get(i));
                     deadShots.remove(deadShots.get(i));
                 }
@@ -438,7 +437,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                     {
                         for (Shot collisionShot : allShots)
                         {
-                            if (!shot.equals(collisionShot))
+                            if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner())))
                             {
                                 if (shot.returnHitbox().collides(collisionShot.returnHitbox()))
                                 {
