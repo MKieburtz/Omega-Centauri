@@ -63,7 +63,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
     }
     
     private void addShips() {
-        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 155, 100);
+        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 100);
 //        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1));
 //        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2));
 //        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3));
@@ -414,6 +414,14 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 }
                 
                 for (Shot shot : allShots) {
+                    if (shot instanceof Missile)
+                    {
+                        Missile m = (Missile)shot;
+                        if (m.isExploding())
+                        {
+                            continue;
+                        }
+                    }
                     if (shot.returnHitbox().collides(ship.returnHitbox())) {
                         boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw);
                         if (removals[0]) // ship 
@@ -422,19 +430,30 @@ public class OmegaCentauri extends Game implements GameActionListener {
                         }
                         if (removals[1]) // shot
                         {
+                            if (shot instanceof Missile)
+                            {
+                                Missile m = (Missile)shot;
+                                m.explode();
+                            }
                             deadShots.add(shot); 
                         }
                     }
 
                 }
                 
-                ship.purgeShots();
+                deadShots.addAll(ship.purgeShots());
             }
             
             for (Shot shot : allShots)
             {
                 if (shot instanceof Missile)
                     {
+                        Missile m = (Missile)shot;
+                        if (m.isExploding())
+                        {
+                            continue;
+                        }
+                        
                         for (Shot collisionShot : allShots)
                         {
                             if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner())))

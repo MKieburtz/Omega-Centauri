@@ -112,4 +112,9 @@ public class Missile extends Shot{
     {
         return exploding;
     }
+    
+    public void explode()
+    {
+        exploding = true;
+    }
 }

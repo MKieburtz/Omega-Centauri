@@ -301,12 +301,17 @@ public abstract class Ship{
         hullDurability -= damage;
     }
     
-    public void purgeShots() {
+    ArrayList<Shot> shotsToRemove = new ArrayList<>();
+    public ArrayList<Shot> purgeShots() {
+        shotsToRemove.clear();
         for (int i = shots.size() - 1; i > -1; i--) {
             if (shots.get(i).outsideScreen()) {
+                shotsToRemove.add(shots.get(i));
                 shots.remove(i);
             }
         }
+        
+        return shotsToRemove;
     }
     
     public void takeDamage(int damage) {
