@@ -14,6 +14,7 @@ import java.util.ArrayList;
 abstract class Shot {
 
     protected int range;
+    protected double distanceTraveled = 0;
     protected int life;
     protected int damage;
     protected boolean animated;
@@ -66,8 +67,11 @@ abstract class Shot {
     }
 
     public void move() {
+        Point2D.Double lastLocation = new Point2D.Double(location.x, location.y);
         location.x += velocity.x;
         location.y += velocity.y;
+        
+        distanceTraveled += Calculator.getDistance(location, lastLocation);
     }
 
     public void setUpHitbox(Point2D.Double cameraLocation) {
@@ -148,5 +152,10 @@ abstract class Shot {
 
     public Ship getOwner() {
         return owner;
+    }
+    
+    public boolean exceededRange()
+    {
+        return distanceTraveled > range;
     }
 }

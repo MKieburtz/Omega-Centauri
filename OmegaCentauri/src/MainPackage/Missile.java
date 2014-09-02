@@ -67,8 +67,10 @@ public class Missile extends Shot{
     @Override
     public void move()
     {
+        Point2D.Double lastLocation = new Point2D.Double(location.x, location.y);
         location.x += Calculator.CalcAngleMoveX(faceAngle) * 4;
         location.y += Calculator.CalcAngleMoveY(faceAngle) * 4;
+        distanceTraveled += Calculator.getDistance(location, lastLocation);
     }
     
     @Override

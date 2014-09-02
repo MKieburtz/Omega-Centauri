@@ -137,7 +137,7 @@ public class Turret {
         Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(360 - displayAngle),
                 velocity.y + 20 * Calculator.CalcAngleMoveY(360 - displayAngle));
         canShoot = false;
-        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
+        ex.schedule(new ShootingService(), shootingDelay / 4, TimeUnit.MILLISECONDS);
         
         return new TurretShot(10, 100, false, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation, owner);
     }

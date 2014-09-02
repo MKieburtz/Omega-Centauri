@@ -68,7 +68,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
 //        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2));
 //        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3));
 //        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4));
-        enemyShips.add(new EnemyMediumFighter(-500, 0, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 1000, 200, 5, player));
+        enemyShips.add(new EnemyMediumFighter(-500, 0, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 4000, 200, 5, player));
         syncGameStateVaribles();
         
         player.setUpHitbox(camera.getLocation());
@@ -345,6 +345,11 @@ public class OmegaCentauri extends Game implements GameActionListener {
             
             for (int i = deadShots.size() - 1; i > -1; i--)
             {
+                if (deadShots.get(i).getOwner().getShots().contains(deadShots.get(i)))
+                {
+                    deadShots.get(i).getOwner().removeShot(deadShots.get(i));
+                }
+                
                 if (!(deadShots.get(i) instanceof Missile))
                 {
                     allShots.remove(deadShots.get(i));
@@ -382,6 +387,15 @@ public class OmegaCentauri extends Game implements GameActionListener {
                         missile.updateTarget();
                     }
                     shot.move();
+                    if (shot.exceededRange())
+                    {
+                        if (shot instanceof Missile)
+                        {
+                            Missile m = (Missile)shot;
+                            m.explode();
+                        }
+                        deadShots.add(shot);
+                    }
                 }
                 
                 if (ship.getShield().isActive()) {
