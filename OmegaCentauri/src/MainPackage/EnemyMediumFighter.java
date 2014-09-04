@@ -18,13 +18,14 @@ public class EnemyMediumFighter extends EnemyShip {
     private int id;
 
     private Turret[] turrets = new Turret[2];
+    private int shootingDelayMissile;
 
     private ScheduledExecutorService ex = Executors.newSingleThreadScheduledExecutor();
 
     public EnemyMediumFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
-            int shootingDelay, int health, int id, Player player) {
-        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
+            int shootingDelayTurret, int shootingDelayMissile, int health, int id, Player player) {
+        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
 
         this.id = id;
 
@@ -36,36 +37,38 @@ public class EnemyMediumFighter extends EnemyShip {
         setUpHitbox(cameraLocation);
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(52, 70), 65, shootingDelay, faceAngle, this);
+                cameraLocation, new Point2D.Double(52, 70), 65, shootingDelayTurret, faceAngle, this);
 
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(88, 70), -65, shootingDelay, faceAngle, this);
+                cameraLocation, new Point2D.Double(88, 70), -65, shootingDelayTurret, faceAngle, this);
 
         this.targetShip = player;
+        
+        this.shootingDelayMissile = shootingDelayMissile;
 
-        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
+        ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public void shoot(Point2D.Double cameraLocation) {
-        for (Turret t : turrets) {
-            if (t.canShoot()) {
-                //shots.add(t.shoot(cameraLocation, movementVelocity));
-            }
-        }
-
-        if (canshoot) {
-
-            double angle = faceAngle;
-
-            Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
-            
-            shots.add(new Missile(60, 600, startingLocation, null, 360 - angle, cameraLocation, targetShip, this));
-
-            canshoot = false;
-
-            ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
-        }
+//        for (Turret t : turrets) {
+//            if (t.canShoot()) {
+//                //shots.add(t.shoot(cameraLocation, movementVelocity));
+//            }
+//        }
+//
+//        if (canshoot) {
+//
+//            double angle = faceAngle;
+//
+//            Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
+//            
+//            shots.add(new Missile(60, 600, startingLocation, null, 360 - angle, cameraLocation, targetShip, this));
+//
+//            canshoot = false;
+//
+//            ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
+//        }
     }
 
     @Override
@@ -91,7 +94,7 @@ public class EnemyMediumFighter extends EnemyShip {
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                 player.getLocation());
 
-        rotateToAngle(angleToPlayer);
+        rotateToAngle(90);
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
@@ -103,11 +106,11 @@ public class EnemyMediumFighter extends EnemyShip {
             shoot(cameraLocation);
         }
 
-        if (distance > 500) {
-            move(ShipState.Thrusting);
-        } else {
-            move(ShipState.Drifting);
-        }
+//        if (distance > 500) {
+//            move(ShipState.Thrusting);
+//        } else {
+//            move(ShipState.Drifting);
+//        }
     }
 
     @Override

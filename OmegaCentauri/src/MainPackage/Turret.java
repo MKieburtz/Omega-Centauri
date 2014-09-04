@@ -3,6 +3,7 @@ package MainPackage;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -91,6 +92,8 @@ public class Turret {
         g2d.drawImage(activeImage, (int) distanceFromCenter.x, (int) distanceFromCenter.y, null);
 
         g2d.setTransform(original);
+        
+        g2d.fillRect((int)shotSpawnPoint.x, (int)shotSpawnPoint.y, 10, 10);
 
     }
 
@@ -137,7 +140,7 @@ public class Turret {
         Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(360 - displayAngle),
                 velocity.y + 20 * Calculator.CalcAngleMoveY(360 - displayAngle));
         canShoot = false;
-        ex.schedule(new ShootingService(), shootingDelay / 4, TimeUnit.MILLISECONDS);
+        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
         return new TurretShot(10, 100, false, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation, owner);
     }
