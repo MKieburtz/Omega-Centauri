@@ -37,10 +37,10 @@ public class EnemyMediumFighter extends EnemyShip {
         setUpHitbox(cameraLocation);
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(52, 70), 65, shootingDelayTurret, faceAngle, this);
+                cameraLocation, new Point2D.Double(65, 70), 65, shootingDelayTurret, faceAngle, this);
 
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(88, 70), -65, shootingDelayTurret, faceAngle, this);
+                cameraLocation, new Point2D.Double(95, 75), -65, shootingDelayTurret, faceAngle, this);
 
         this.targetShip = player;
         
@@ -51,24 +51,24 @@ public class EnemyMediumFighter extends EnemyShip {
 
     @Override
     public void shoot(Point2D.Double cameraLocation) {
-//        for (Turret t : turrets) {
-//            if (t.canShoot()) {
-//                //shots.add(t.shoot(cameraLocation, movementVelocity));
-//            }
-//        }
-//
-//        if (canshoot) {
-//
-//            double angle = faceAngle;
-//
-//            Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
-//            
-//            shots.add(new Missile(60, 600, startingLocation, null, 360 - angle, cameraLocation, targetShip, this));
-//
-//            canshoot = false;
-//
-//            ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
-//        }
+        for (Turret t : turrets) {
+            if (t.canShoot()) {
+                shots.add(t.shoot(cameraLocation, movementVelocity));
+            }
+        }
+
+        if (canshoot) {
+
+            double angle = faceAngle;
+
+            Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
+            
+            shots.add(new Missile(60, startingLocation, null, 360 - angle, cameraLocation, targetShip, this));
+
+            canshoot = false;
+
+            ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
+        }
     }
 
     @Override
@@ -94,7 +94,7 @@ public class EnemyMediumFighter extends EnemyShip {
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                 player.getLocation());
 
-        rotateToAngle(90);
+        rotateToAngle(angleToPlayer);
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
@@ -106,11 +106,11 @@ public class EnemyMediumFighter extends EnemyShip {
             shoot(cameraLocation);
         }
 
-//        if (distance > 500) {
-//            move(ShipState.Thrusting);
-//        } else {
-//            move(ShipState.Drifting);
-//        }
+        if (distance > 500) {
+            move(ShipState.Thrusting);
+        } else {
+            move(ShipState.Drifting);
+        }
     }
 
     @Override

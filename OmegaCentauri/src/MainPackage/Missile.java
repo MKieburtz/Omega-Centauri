@@ -18,10 +18,10 @@ public class Missile extends Shot{
     private Explosion explosion;
     private boolean exploding;
     
-    public Missile(int damage, int range, Point2D.Double location,
+    public Missile(int damage, Point2D.Double location,
             Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner)
     {
-        super(damage, range, false, location, startingVel, angle, cameraLocation, owner);
+        super(damage, 600, false, location, startingVel, angle, cameraLocation, owner);
 
         images = Resources.getImagesForMissle();
         activeImage = images.get(0);

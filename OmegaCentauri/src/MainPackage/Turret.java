@@ -92,9 +92,6 @@ public class Turret {
         g2d.drawImage(activeImage, (int) distanceFromCenter.x, (int) distanceFromCenter.y, null);
 
         g2d.setTransform(original);
-        
-        g2d.fillRect((int)shotSpawnPoint.x, (int)shotSpawnPoint.y, 10, 10);
-
     }
 
     public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation) {
@@ -142,7 +139,7 @@ public class Turret {
         canShoot = false;
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
-        return new TurretShot(10, 100, false, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation, owner);
+        return new TurretShot(10, false, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation, owner);
     }
     
     public boolean canShoot()

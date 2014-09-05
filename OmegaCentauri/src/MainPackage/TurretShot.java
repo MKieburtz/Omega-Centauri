@@ -7,10 +7,10 @@ import java.awt.geom.Point2D;
  */
 public class TurretShot extends Shot {
 
-    public TurretShot(int damage, int range, boolean animated, Point2D.Double location,
+    public TurretShot(int damage, boolean animated, Point2D.Double location,
             Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner)
     {
-        super(damage, range, animated, location, velocity, angle, cameraLocation, owner);
+        super(damage, 500, animated, location, velocity, angle, cameraLocation, owner);
         
         images = Resources.getImagesForTurretShot();
         
