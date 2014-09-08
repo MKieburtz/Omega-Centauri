@@ -224,21 +224,21 @@ public class MainMenu {
 
         startRectangle = new Rectangle(
                 size.x / 2  - images.get(STARTNOHOVER).getWidth() / 2,
-                size.y - 75,
+                size.y - 90,
                 images.get(STARTNOHOVER).getWidth(),
                 images.get(STARTNOHOVER).getHeight()
         );
 
         closeRectangle = new Rectangle(
                 size.x - 100 - images.get(CLOSENOHOVER).getWidth(),
-                size.y - 75,
+                size.y - 90,
                 images.get(CLOSENOHOVER).getWidth(),
                 images.get(CLOSENOHOVER).getHeight()
         );
 
         settingsRectangle = new Rectangle(
                 100,
-                size.y - 75,
+                size.y - 90,
                 images.get(SETTINGSNOHOVER).getWidth(),
                 images.get(SETTINGSNOHOVER).getHeight()
         );

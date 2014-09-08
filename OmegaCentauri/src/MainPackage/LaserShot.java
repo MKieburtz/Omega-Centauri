@@ -1,8 +1,6 @@
 package MainPackage;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 /**
@@ -18,7 +16,7 @@ public abstract class LaserShot extends Shot {
     @Override
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
     {
-        super.draw(g2d, cameraLocation);
+        super.draw(g2d, cameraLocation); // super.draw is just a general image drawing method in this case
     }
     
     @Override

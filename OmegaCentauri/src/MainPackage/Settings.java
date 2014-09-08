@@ -8,6 +8,7 @@ import java.io.*;
 
 /**
  *
+ * @author Michael Kieburtz
  * @author Davis Freeman
  */
 public class Settings {
@@ -233,21 +234,21 @@ public class Settings {
         
         backRectangle = new Rectangle(
                 100,
-                windowResolution.height - 75,
+                windowResolution.height - 90,
                 images.get(BACKBUTTONNOHOVER).getWidth(),
                 images.get(BACKBUTTONNOHOVER).getHeight()
         );
 
         saveRectangle = new Rectangle(
                 windowResolution.width / 2 - images.get(SAVEBUTTONNOHOVER).getWidth() / 2,
-                windowResolution.height - 75,
+                windowResolution.height - 90,
                 images.get(SAVEBUTTONNOHOVER).getWidth(),
                 images.get(SAVEBUTTONNOHOVER).getHeight()
         );
 
         resetRectangle = new Rectangle(
                 windowResolution.width - 100 - images.get(RESETBUTTONNOHOVER).getWidth(),
-                windowResolution.height - 75,
+                windowResolution.height - 90,
                 images.get(RESETBUTTONNOHOVER).getWidth(),
                 images.get(RESETBUTTONNOHOVER).getHeight()
         );
