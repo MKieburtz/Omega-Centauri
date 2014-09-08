@@ -381,12 +381,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
             for (Ship ship : shipsToDraw) {
                 
                 for (Shot shot : ship.getShots()) {
-                    if (shot instanceof Missile)
-                    {
-                        Missile missile = (Missile)shot;
-                        missile.updateTarget();
-                    }
-                    shot.move();
+                    shot.update();
                     if (shot.exceededRange())
                     {
                         if (shot instanceof Missile)

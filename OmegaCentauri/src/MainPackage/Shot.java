@@ -11,13 +11,12 @@ import java.util.ArrayList;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-abstract class Shot {
+public abstract class Shot {
 
     protected int range;
     protected double distanceTraveled = 0;
     protected int life;
     protected int damage;
-    protected boolean animated;
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<String> imagePaths = new ArrayList<String>();
     protected BufferedImage activeImage;
@@ -29,12 +28,11 @@ abstract class Shot {
 
     private Ship owner; // the ship that fired the shot
 
-    public Shot(int damage, int range, boolean animated, Point2D.Double location,
+    public Shot(int damage, int range, Point2D.Double location,
             Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) {
         life = 0;
         this.damage = damage;
         this.range = range;
-        this.animated = animated;
         this.location = location;
         this.velocity = velocity;
 
@@ -44,7 +42,7 @@ abstract class Shot {
         this.owner = owner;
     }
 
-    protected void draw(Graphics2D g2d, Point2D.Double cameraLocation) // ovveride method if needed
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation) 
     {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = (AffineTransform) original.clone();
@@ -63,18 +61,13 @@ abstract class Shot {
 
         g2d.setTransform(original);
 
+        //g2d.setColor(Color.red);
         //g2d.draw(hitbox);
     }
 
-    public void move() {
-        Point2D.Double lastLocation = new Point2D.Double(location.x, location.y);
-        location.x += velocity.x;
-        location.y += velocity.y;
-        
-        distanceTraveled += Calculator.getDistance(location, lastLocation);
-    }
+    public void update() {}
 
-    public void setUpHitbox(Point2D.Double cameraLocation) {
+    protected void setUpHitbox(Point2D.Double cameraLocation) {
         ArrayList<Point2D.Double> hitboxPoints = new ArrayList<>();
 
         try {
@@ -96,7 +89,7 @@ abstract class Shot {
     public boolean collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) { // the return value is only useful to subclasses
         boolean removed = false;
         //TODO: missiles can collide with eachother if they're different (Enemy, Ally).
-        if (shot instanceof Missile ^ otherShot instanceof Missile) { // ^ means one or the other but not both
+        if (shot instanceof PhysicalShot ^ otherShot instanceof PhysicalShot) { // ^ means one or the other but not both
             // enemy ship's shots shouldn't destroy eachother
             if (!(shot.getOwner() instanceof EnemyShip && otherShot.getOwner() instanceof EnemyShip)) {
                 for (Ship ship : allShips) {
@@ -111,7 +104,7 @@ abstract class Shot {
         return removed;
     }
 
-    public void updateHitbox(Point2D.Double cameraLocation) {
+    protected void updateHitbox(Point2D.Double cameraLocation) {
         hitbox.moveToLocation(Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()));
     }
 

@@ -150,7 +150,7 @@ public class EnemyFighter extends EnemyShip {
             
             canshoot = false;
 
-            shots.add(new PulseShot(5, false, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this)); // enemies ovveride
+            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this)); // enemies override
 
             ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         }

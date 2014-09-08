@@ -9,19 +9,12 @@ import java.util.ArrayList;
 /**
  * @author Kieburtz
  */
-public class Missile extends Shot{
-
-    private Ship targetShip;
-    
-    private final double angleIncrement = 1;
-    
-    private Explosion explosion;
-    private boolean exploding;
+public class Missile extends PhysicalShot {
     
     public Missile(int damage, Point2D.Double location,
             Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner)
     {
-        super(damage, 600, false, location, startingVel, angle, cameraLocation, owner);
+        super(damage, 600, location, startingVel, angle, cameraLocation, owner);
 
         images = Resources.getImagesForMissle();
         activeImage = images.get(0);
@@ -29,65 +22,9 @@ public class Missile extends Shot{
         this.location = location;
         faceAngle = angle;
         this.targetShip = targetShip;
-        
         setUpHitbox(cameraLocation);
         
         explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
-    }
-    
-    public void updateTarget()
-    {
-        double targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
-        
-        rotateToAngle(360 - targetAngle);
-        
-        move();
-    }
-    
-    private void rotateToAngle(double angle)
-    {
-        double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, angle);
-        
-        if (Math.abs(angle - faceAngle) > angleIncrement)
-        {
-            if (distances[0] < distances[1])
-            {
-                faceAngle += angleIncrement;
-            }
-            else
-            {
-                faceAngle -= angleIncrement;
-            }
-            
-        }
-        
-        faceAngle = Calculator.confineAngleToRange(faceAngle);
-    }
-    
-    @Override
-    public void move()
-    {
-        Point2D.Double lastLocation = new Point2D.Double(location.x, location.y);
-        location.x += Calculator.CalcAngleMoveX(faceAngle) * 4;
-        location.y += Calculator.CalcAngleMoveY(faceAngle) * 4;
-        distanceTraveled += Calculator.getDistance(location, lastLocation);
-    }
-    
-    @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
-    {
-        if (!exploding)
-        {
-            super.draw(g2d, cameraLocation);
-        }
-        else
-        {
-            explosion.draw(g2d, location, cameraLocation);
-            if (explosion.isDone())
-            {
-                exploding = false;
-            }
-        }
     }
     
     @Override
