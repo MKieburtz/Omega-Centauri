@@ -3,7 +3,6 @@ package MainPackage;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -15,7 +14,6 @@ public abstract class Shot {
 
     protected int range;
     protected double distanceTraveled = 0;
-    protected int life;
     protected int damage;
     protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     protected ArrayList<String> imagePaths = new ArrayList<String>();
@@ -26,11 +24,10 @@ public abstract class Shot {
     protected int maxVel;
     protected Hitbox hitbox;
 
-    private Ship owner; // the ship that fired the shot
+    protected Ship owner; // the ship that fired the shot
 
     public Shot(int damage, int range, Point2D.Double location,
             Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) {
-        life = 0;
         this.damage = damage;
         this.range = range;
         this.location = location;
@@ -46,8 +43,6 @@ public abstract class Shot {
     {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = (AffineTransform) original.clone();
-
-        transform.setToIdentity();
 
         transform.rotate(Math.toRadians(faceAngle),
                 Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
