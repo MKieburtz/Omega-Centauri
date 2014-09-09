@@ -357,9 +357,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 }
                 else
                 {
-                    Missile m = (Missile)deadShots.get(i);
-                    
-                    if (!m.isExploding())
+                    if (!deadShots.get(i).isDying())
                     {
                         allShots.remove(deadShots.get(i));
                         deadShots.remove(deadShots.get(i));

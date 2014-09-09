@@ -77,4 +77,10 @@ public abstract class PhysicalShot extends Shot {
         location.y += Calculator.CalcAngleMoveY(faceAngle) * 6;
         distanceTraveled += Calculator.getDistance(location, lastLocation);
     }
+    
+    @Override
+    public boolean isDying()
+    {
+        return exploding;
+    }
 }

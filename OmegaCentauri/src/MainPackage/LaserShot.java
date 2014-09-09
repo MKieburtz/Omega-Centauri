@@ -78,4 +78,10 @@ public abstract class LaserShot extends Shot {
             fading = true;
         }
     }
+    
+    @Override
+    public boolean isDying()
+    {
+        return fading;
+    }
 }

@@ -146,4 +146,6 @@ public abstract class Shot {
     {
         return distanceTraveled > range;
     }
+    
+    public boolean isDying(){return false;}
 }
