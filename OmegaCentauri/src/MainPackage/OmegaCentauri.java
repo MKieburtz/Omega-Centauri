@@ -345,23 +345,12 @@ public class OmegaCentauri extends Game implements GameActionListener {
             
             for (int i = deadShots.size() - 1; i > -1; i--)
             {
-                if (deadShots.get(i).getOwner().getShots().contains(deadShots.get(i)))
-                {
-                    deadShots.get(i).getOwner().removeShot(deadShots.get(i));
-                }
+                deadShots.get(i).getOwner().removeShot(deadShots.get(i));
                 
-                if (!(deadShots.get(i) instanceof Missile))
+                if (!deadShots.get(i).isDying())
                 {
                     allShots.remove(deadShots.get(i));
                     deadShots.remove(deadShots.get(i));
-                }
-                else
-                {
-                    if (!deadShots.get(i).isDying())
-                    {
-                        allShots.remove(deadShots.get(i));
-                        deadShots.remove(deadShots.get(i));
-                    }
                 }
             }
             
@@ -380,13 +369,9 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 
                 for (Shot shot : ship.getShots()) {
                     shot.update();
-                    if (shot.exceededRange())
+                    
+                    if (shot.isDying())
                     {
-                        if (shot instanceof Missile)
-                        {
-                            Missile m = (Missile)shot;
-                            m.explode();
-                        }
                         deadShots.add(shot);
                     }
                 }

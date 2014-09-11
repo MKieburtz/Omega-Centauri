@@ -142,10 +142,5 @@ public abstract class Shot {
         return owner;
     }
     
-    public boolean exceededRange()
-    {
-        return distanceTraveled > range;
-    }
-    
     public boolean isDying(){return false;}
 }

@@ -12,7 +12,7 @@ import java.awt.geom.Point2D;
 public abstract class LaserShot extends Shot {
     
     private boolean fading = false;
-    private int opacity = 0;
+    private int opacity = 100;
 
     public LaserShot(int damage, int range, Point2D.Double location,
             Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) {
@@ -68,6 +68,11 @@ public abstract class LaserShot extends Shot {
         else
         {
             opacity -= 1;
+            
+            if (opacity == 0)
+            {
+                fading = false;
+            }
         }
     }
     

@@ -47,6 +47,8 @@ public abstract class PhysicalShot extends Shot {
         rotateToAngle(360 - targetAngle);
         
         move();
+        
+        checkForExceededRange();
     }
     
     private void rotateToAngle(double angle)
@@ -76,6 +78,14 @@ public abstract class PhysicalShot extends Shot {
         location.x += Calculator.CalcAngleMoveX(faceAngle) * 6;
         location.y += Calculator.CalcAngleMoveY(faceAngle) * 6;
         distanceTraveled += Calculator.getDistance(location, lastLocation);
+    }
+    
+    private void checkForExceededRange()
+    {
+        if (distanceTraveled > range)
+        {
+            exploding = true;
+        }
     }
     
     @Override
