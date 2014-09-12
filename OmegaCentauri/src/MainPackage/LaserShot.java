@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
@@ -22,11 +23,11 @@ public abstract class LaserShot extends Shot {
     @Override
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
     {
-        if (!fading)
+        if (!fading && opacity >= 0)
         {
             super.draw(g2d, cameraLocation); // super.draw is just a general image drawing method in this case
         }
-        else
+        else if (fading)
         {
             AffineTransform original = g2d.getTransform();
             AffineTransform transform = (AffineTransform) original.clone();
@@ -67,9 +68,9 @@ public abstract class LaserShot extends Shot {
         }
         else
         {
-            opacity -= 1;
+            opacity -= 5;
             
-            if (opacity == 0)
+            if (opacity < 0)
             {
                 fading = false;
             }

@@ -15,8 +15,8 @@ public abstract class Shot {
     protected int range;
     protected double distanceTraveled = 0;
     protected int damage;
-    protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-    protected ArrayList<String> imagePaths = new ArrayList<String>();
+    protected ArrayList<BufferedImage> images = new ArrayList<>();
+    protected ArrayList<String> imagePaths = new ArrayList<>();
     protected BufferedImage activeImage;
     protected Point2D.Double location;
     protected double faceAngle;

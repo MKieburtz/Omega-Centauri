@@ -51,12 +51,15 @@ public class EnemyMediumFighter extends EnemyShip {
 
     @Override
     public void shoot(Point2D.Double cameraLocation) {
-        for (Turret t : turrets) {
-            if (t.canShoot()) {
-                shots.add(t.shoot(cameraLocation, movementVelocity));
-            }
-        }
+//        for (Turret t : turrets) {
+//            if (t.canShoot()) {
+//                shots.add(t.shoot(cameraLocation, movementVelocity));
+//            }
+//        }
 
+        if (turrets[0].canShoot())
+            shots.add(turrets[0].shoot(cameraLocation, movementVelocity));
+        
         if (canshoot) {
 
             double angle = faceAngle;
@@ -95,6 +98,7 @@ public class EnemyMediumFighter extends EnemyShip {
                 player.getLocation());
 
         rotateToAngle(angleToPlayer);
+        
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),

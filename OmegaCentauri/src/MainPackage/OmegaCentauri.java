@@ -363,18 +363,15 @@ public class OmegaCentauri extends Game implements GameActionListener {
             for (Shot shot : allShots)
             {
                 shot.updateHitbox(camera.getLocation());
+                
+                shot.update();
+                if (shot.isDying() && !deadShots.contains(shot))
+                {
+                    deadShots.add(shot);
+                }
             }
             
             for (Ship ship : shipsToDraw) {
-                
-                for (Shot shot : ship.getShots()) {
-                    shot.update();
-                    
-                    if (shot.isDying())
-                    {
-                        deadShots.add(shot);
-                    }
-                }
                 
                 if (ship.getShield().isActive()) {
                     ship.getShield().decay();
@@ -440,8 +437,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
             {
                 if (shot instanceof Missile)
                     {
-                        Missile m = (Missile)shot;
-                        if (m.isExploding())
+                        if (shot.isDying())
                         {
                             continue;
                         }
