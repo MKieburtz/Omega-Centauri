@@ -51,14 +51,11 @@ public class EnemyMediumFighter extends EnemyShip {
 
     @Override
     public void shoot(Point2D.Double cameraLocation) {
-//        for (Turret t : turrets) {
-//            if (t.canShoot()) {
-//                shots.add(t.shoot(cameraLocation, movementVelocity));
-//            }
-//        }
-
-        if (turrets[0].canShoot())
-            shots.add(turrets[0].shoot(cameraLocation, movementVelocity));
+        for (Turret t : turrets) {
+            if (t.canShoot()) {
+                shots.add(t.shoot(cameraLocation, movementVelocity));
+            }
+        }
         
         if (canshoot) {
 

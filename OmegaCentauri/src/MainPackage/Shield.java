@@ -59,9 +59,13 @@ public class Shield {
             
             transform.scale(scaling[0], scaling[1]);
             
-            g2d.drawImage(activeImage, transform, null);
+            g2d.transform(transform);
+            
+            g2d.drawImage(activeImage, 0, 0, null);
             
             g2d.setComposite(originalComposite);
+            
+            g2d.setTransform(originalAffineTransform);
         }
     }
 

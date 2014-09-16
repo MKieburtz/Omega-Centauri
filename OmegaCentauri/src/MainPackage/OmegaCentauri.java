@@ -403,13 +403,9 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 }
                 
                 for (Shot shot : allShots) {
-                    if (shot instanceof Missile)
+                    if (shot.isDying())
                     {
-                        Missile m = (Missile)shot;
-                        if (m.isExploding())
-                        {
-                            continue;
-                        }
+                        continue;
                     }
                     if (shot.returnHitbox().collides(ship.returnHitbox())) {
                         boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw);
@@ -435,30 +431,27 @@ public class OmegaCentauri extends Game implements GameActionListener {
             
             for (Shot shot : allShots)
             {
-                if (shot instanceof Missile)
+                    if (shot.isDying())
                     {
-                        if (shot.isDying())
+                        continue;
+                    }
+
+                    for (Shot collisionShot : allShots)
+                    {
+                        if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner())))
                         {
-                            continue;
-                        }
-                        
-                        for (Shot collisionShot : allShots)
-                        {
-                            if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner())))
+                            if (shot.returnHitbox().collides(collisionShot.returnHitbox()))
                             {
-                                if (shot.returnHitbox().collides(collisionShot.returnHitbox()))
+                                boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, shipsToDraw);
+                                boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, shipsToDraw);
+
+                                if (shotGotRemoved)
                                 {
-                                    boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, shipsToDraw);
-                                    boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, shipsToDraw);
-                                    
-                                    if (shotGotRemoved)
-                                    {
-                                        deadShots.add(shot);
-                                    }
-                                    if (collisionShotGotRemoved)
-                                    {
-                                        deadShots.add(collisionShot);
-                                    }
+                                    deadShots.add(shot);
+                                }
+                                if (collisionShotGotRemoved)
+                                {
+                                    deadShots.add(collisionShot);
                                 }
                             }
                         }
@@ -690,13 +683,12 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
                             // doesn't work
                             if (!OmegaCentauri.this.hasFocus()) {
-                                paused = true;
+                                //paused = true;
                             }
                             
                             endtime = System.nanoTime();
                             sleeptime = loopTimeUPS - (endtime - startTime) - additionalTime;
-                            
-                            
+                            //System.out.println(sleeptime);
                             timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
                             if (sleeptime < 0) {
                                 sleeptime = 0;

@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Toolkit;
 import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
