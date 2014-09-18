@@ -7,6 +7,8 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 
@@ -32,6 +34,21 @@ public class MediaLoader {
             }
         }
         return images;
+    }
+    
+    public BufferedImage loadImage(String path)
+    {
+        BufferedImage image = null;
+        InputStream stream = getClass().getResourceAsStream(path);
+        
+        try {
+            image = ImageIO.read(stream);
+            stream.close();
+        } catch (IOException ex) {
+            System.err.println("image loading problem");
+        }
+        
+        return image;
     }
 
     public ArrayList<Clip> loadSounds(ArrayList<String> paths) {
