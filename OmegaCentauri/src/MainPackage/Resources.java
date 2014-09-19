@@ -26,9 +26,9 @@ public class Resources {
     private static ArrayList<String> soundPaths = new ArrayList<>();
     private static HashMap<String, Clip> sounds = new HashMap<>();
     
-    private static ArrayList<Float> fontSizes = new ArrayList<>();
+    private static HashMap<String, Float> fontSizes = new HashMap<>();
     private static ArrayList<String> fontPaths = new ArrayList<>();
-    private static HashMap<String, Font> fonts = new HashMap<>();
+    private static HashMap<HashMap<String, Float>, Font> fonts = new HashMap<>();
     
     
        
@@ -85,7 +85,7 @@ public class Resources {
         soundPaths.add("resources/Pulse.wav");
         soundPaths.add("resources/Mouseclick.wav");
         
-        fontSizes.add(10f);
+        fontSizes.put("resources/OCR A Std.ttf", 10f);
         fontPaths.add("resources/OCR A Std.ttf");
         
         fontSizes.add(50f);
@@ -354,7 +354,7 @@ public class Resources {
     }
     
     
-    private static void loadAllImagesImages()
+    private static void loadAllImages()
     {
         for (String s : imagePaths)
         {
@@ -364,11 +364,17 @@ public class Resources {
     
     private static void loadSounds()
     {
-        
+        for (String s : soundPaths)
+        {
+            sounds.put(s, loader.loadSound(s));
+        }
     }
     
     private static void loadFonts()
     {
-        
+        for (String s : fontPaths)
+        {
+            fonts.put(s, loader.loadFont(s, Float.NaN))
+        }
     }
 }
