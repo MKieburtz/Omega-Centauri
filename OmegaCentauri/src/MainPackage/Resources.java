@@ -4,36 +4,37 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import javax.sound.sampled.Clip;
 
 /**
  * @author Michael Kieburtz
  */
 public class Resources {
-    
-    private static enum ThingsToClear
-    {
+
+    private enum ThingsToClear {
+
         images,
         sounds,
         fonts
     }
-    
-    private static MediaLoader loader = new MediaLoader();
-    
-    private static ArrayList<String> imagePaths = new ArrayList<>();
-    private static HashMap<String, BufferedImage> images = new HashMap<>();
-    
-    private static ArrayList<String> soundPaths = new ArrayList<>();
-    private static HashMap<String, Clip> sounds = new HashMap<>();
-    
-    private static HashMap<String, Float> fontSizes = new HashMap<>();
-    private static ArrayList<String> fontPaths = new ArrayList<>();
-    private static HashMap<HashMap<String, Float>, Font> fonts = new HashMap<>();
-    
-    
-       
-    public Resources()
-    {
+
+    private MediaLoader loader = new MediaLoader();
+
+    private ArrayList<String> imagePaths = new ArrayList<>();
+    private HashMap<String, BufferedImage> images = new HashMap<>();
+
+    private ArrayList<String> soundPaths = new ArrayList<>();
+    private HashMap<String, Clip> sounds = new HashMap<>();
+
+    private ArrayList<FontInfo> fontData = new ArrayList<>();
+    private HashMap<FontInfo, Font> fonts = new HashMap<>();
+
+    private ArrayList<BufferedImage> imagesToReturn = new ArrayList<>();
+    private ArrayList<Clip> soundsToReturn = new ArrayList<>();
+    private ArrayList<Font> fontsToReturn = new ArrayList<>();
+
+    public Resources() {
         imagePaths.add("resources/FighterIdle.png");
         imagePaths.add("resources/FighterThrust.png");
         imagePaths.add("resources/FighterLeft.png");
@@ -81,300 +82,238 @@ public class Resources {
         imagePaths.add("resources/Missile.png");
         imagePaths.add("resources/FighterExplosionSpritesheet.png");
         imagePaths.add("resources/MissileExplosionSpritesheet.png");
-        
+
         soundPaths.add("resources/Pulse.wav");
         soundPaths.add("resources/Mouseclick.wav");
-        
-        fontSizes.put("resources/OCR A Std.ttf", 10f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        
-        fontSizes.add(50f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(32f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(24f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(16f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        
+
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 10f));
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 50f));
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 32f));
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 24f));
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 16f));
+
     }
 
-    public static ArrayList<BufferedImage> getImagesForPlayer()
-    {
-        imagePaths.add("resources/FighterIdle.png");
-        imagePaths.add("resources/FighterThrust.png");
-        imagePaths.add("resources/FighterLeft.png");
-        imagePaths.add("resources/FighterRight.png");
-        imagePaths.add("resources/FighterThrustLeft.png");
-        imagePaths.add("resources/FighterThrustRight.png");
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<Clip> getSoundsForPlayer()
-    {
-        
-        
-        soundPaths.add("resources/Pulse.wav");
-        
-        loadSounds();
-        
-        return (ArrayList <Clip>)sounds.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForEnemyFighter()
-    {
-        
-        
-        imagePaths.add("resources/EnemyFighterIdle.png");
-        imagePaths.add("resources/EnemyFighterThrusting.png");
-        imagePaths.add("resources/EnemyFighterTurningLeft.png");
-        imagePaths.add("resources/EnemyFighterTurningRight.png");
-        imagePaths.add("resources/EnemyFighterThrustingLeft.png");
-        imagePaths.add("resources/EnemyFighterThrustingRight.png");
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForMediumEnemyFighter()
-    {
-        
-        
-        imagePaths.add("resources/MediumEnemyFighter.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForTurret()
-    {
-        
-        
-        imagePaths.add("resources/Turret.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForHUD()
-    {
-        
-        
-        imagePaths.add("resources/TempScannerModule.png");
-        imagePaths.add("resources/healthbackground.png");
-        imagePaths.add("resources/HealthyTick.png");
-        imagePaths.add("resources/WarningTick.png");
-        imagePaths.add("resources/DangerTick.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForMainMenu()
-    {
-        
-        
-        imagePaths.add("resources/StartButtonNoHover.png");
-        imagePaths.add("resources/StartButtonHover.png");
-        imagePaths.add("resources/CloseButtonNoHover.png");
-        imagePaths.add("resources/CloseButtonHover.png");
-        imagePaths.add("resources/SettingsButtonNoHover.png");
-        imagePaths.add("resources/SettingsButtonHover.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<Clip> getSoundsForMainMenu()
-    {
-        
-        soundPaths.add("resources/Mouseclick.wav");
-        
-        loadSounds();
-        
-        return (ArrayList <Clip>)sounds.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForPulseShot()
-    {
-        
-        
-        imagePaths.add("resources/Pulse.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForEnemyPulseShot()
-    {
-        
-        
-        imagePaths.add("resources/EnemyShot.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<Font> getFontsForRenderer()
-    {
-        
-        
-        fontSizes.add(10f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        
-        loadFonts();
-        
-        return (ArrayList<Font>)fonts.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForRenderer()
-    {
-        
-        
-        imagePaths.add("resources/PauseMenu.png");
-        imagePaths.add("resources/PauseButton_ToMenu.png");
-        imagePaths.add("resources/GameOver.png");
-        imagePaths.add("resources/ReturnToTheBattlefield.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForSettingsMenu()
-    {
-        
-        
-        imagePaths.add("resources/RadioButtonEnabled.png");
-        imagePaths.add("resources/RadioButtonDisabled.png");
-        imagePaths.add("resources/BackButtonHover.png");
-        imagePaths.add("resources/BackButtonNoHover.png");
-        imagePaths.add("resources/ControlsButtonHover.png");
-        imagePaths.add("resources/ControlsButtonNoHover.png");
-        imagePaths.add("resources/ResetButtonHover.png");
-        imagePaths.add("resources/ResetButtonNoHover.png");
-        imagePaths.add("resources/SaveButtonHover.png");
-        imagePaths.add("resources/SaveButtonNoHover.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<Clip> getSoundsForSettingsMenu()
-    {
-        
-        
-        soundPaths.add("resources/Mouseclick.wav");
-        
-        loadSounds();
-        
-        return (ArrayList <Clip>)sounds.clone();
-    }
-    
-    public static ArrayList<Font> getFontsForSettingsMenu()
-    {
-        
-        
-        fontSizes.add(50f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(32f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(24f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        fontSizes.add(16f);
-        fontPaths.add("resources/OCR A Std.ttf");
-        
-        loadFonts();
-        
-        return (ArrayList<Font>)fonts.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForShield()
-    {
-        
-        
-        imagePaths.add("resources/FILLERshield.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForEnemyShield()
-    {
-        
-        
-        imagePaths.add("resources/FILLERshieldEnemy.png");
-        
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForTurretShot()
-    {
-        
-        imagePaths.add("resources/Level2Shot.png");
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImagesForMissle()
-    {
-        
-        imagePaths.add("resources/Missile.png");
-        
-        
-        return (ArrayList<BufferedImage>)images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImageForFighterExplosion()
-    {
-        
-        imagePaths.add("resources/FighterExplosionSpritesheet.png");
-        
-        
-        return (ArrayList<BufferedImage>) images.clone();
-    }
-    
-    public static ArrayList<BufferedImage> getImageForMissileExplosion()
-    {
-        
-        imagePaths.add("resources/MissileExplosionSpritesheet.png");
-        
-        
-        return (ArrayList<BufferedImage>) images.clone();
-    }
-    
-    
-    private static void loadAllImages()
-    {
-        for (String s : imagePaths)
+    class FontInfo {
+
+        public String path;
+        public Float size;
+
+        public FontInfo(String path, Float size) {
+            this.path = path;
+            this.size = size;
+        }
+        
+        @Override
+        public boolean equals(Object other)
         {
+            if (!(other instanceof FontInfo))
+            {
+                return false;
+            }
+            else
+            {
+                FontInfo info = (FontInfo)other;
+                if (info.path.equals(this.path) && info.size == size)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public ArrayList<BufferedImage> getImagesForPlayer() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/FighterIdle.png"));
+        imagesToReturn.add(images.get("resources/FighterThrust.png"));
+        imagesToReturn.add(images.get("resources/FighterLeft.png"));
+        imagesToReturn.add(images.get("resources/FighterRight.png"));
+        imagesToReturn.add(images.get("resources/FighterThrustLeft.png"));
+        imagesToReturn.add(images.get("resources/FighterThrustRight.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<Clip> getSoundsForPlayer() {
+        clearList(ThingsToClear.sounds);
+        soundsToReturn.add(sounds.get("resources/Pulse.wav"));
+        return (ArrayList<Clip>) soundsToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForEnemyFighter() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/EnemyFighterIdle.png"));
+        imagesToReturn.add(images.get("resources/EnemyFighterThrusting.png"));
+        imagesToReturn.add(images.get("resources/EnemyFighterTurningLeft.png"));
+        imagesToReturn.add(images.get("resources/EnemyFighterTurningRight.png"));
+        imagesToReturn.add(images.get("resources/EnemyFighterThrustingLeft.png"));
+        imagesToReturn.add(images.get("resources/EnemyFighterThrustingRight.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForMediumEnemyFighter() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/MediumEnemyFighter.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForTurret() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/Turret.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForHUD() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/TempScannerModule.png"));
+        imagesToReturn.add(images.get("resources/healthbackground.png"));
+        imagesToReturn.add(images.get("resources/HealthyTick.png"));
+        imagesToReturn.add(images.get("resources/WarningTick.png"));
+        imagesToReturn.add(images.get("resources/DangerTick.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForMainMenu() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/StartButtonNoHover.png"));
+        imagesToReturn.add(images.get("resources/StartButtonHover.png"));
+        imagesToReturn.add(images.get("resources/CloseButtonNoHover.png"));
+        imagesToReturn.add(images.get("resources/CloseButtonHover.png"));
+        imagesToReturn.add(images.get("resources/SettingsButtonNoHover.png"));
+        imagesToReturn.add(images.get("resources/SettingsButtonHover.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<Clip> getSoundsForMainMenu() {
+        clearList(ThingsToClear.sounds);
+        soundsToReturn.add(sounds.get("resources/Mouseclick.wav"));
+        return (ArrayList<Clip>) soundsToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForPulseShot() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/Pulse.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForEnemyPulseShot() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/EnemyShot.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<Font> getFontsForRenderer() {
+        clearList(ThingsToClear.fonts);
+        fontsToReturn.add(fonts.get(new FontInfo("resources/OCR A Std.ttf", 10f)));
+        return (ArrayList<Font>) fontsToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForRenderer() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/PauseMenu.png"));
+        imagesToReturn.add(images.get("resources/PauseButton_ToMenu.png"));
+        imagesToReturn.add(images.get("resources/GameOver.png"));
+        imagesToReturn.add(images.get("resources/ReturnToTheBattlefield.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForSettingsMenu() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/RadioButtonEnabled.png"));
+        imagesToReturn.add(images.get("resources/RadioButtonDisabled.png"));
+        imagesToReturn.add(images.get("resources/BackButtonHover.png"));
+        imagesToReturn.add(images.get("resources/BackButtonNoHover.png"));
+        imagesToReturn.add(images.get("resources/ControlsButtonHover.png"));
+        imagesToReturn.add(images.get("resources/ControlsButtonNoHover.png"));
+        imagesToReturn.add(images.get("resources/ResetButtonHover.png"));
+        imagesToReturn.add(images.get("resources/ResetButtonNoHover.png"));
+        imagesToReturn.add(images.get("resources/SaveButtonHover.png"));
+        imagesToReturn.add(images.get("resources/SaveButtonNoHover.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<Clip> getSoundsForSettingsMenu() {
+        clearList(ThingsToClear.sounds);
+        soundsToReturn.add(sounds.get("resources/Mouseclick.wav"));
+        return (ArrayList<Clip>) soundsToReturn.clone();
+    }
+
+    public ArrayList<Font> getFontsForSettingsMenu() {
+        clearList(ThingsToClear.fonts);
+        fontsToReturn.add(fonts.get(new FontInfo("resources/OCR A Std.ttf", 50f)));
+        fontsToReturn.add(fonts.get(new FontInfo("resources/OCR A Std.ttf", 32f)));
+        fontsToReturn.add(fonts.get(new FontInfo("resources/OCR A Std.ttf", 24f)));
+        fontsToReturn.add(fonts.get(new FontInfo("resources/OCR A Std.ttf", 16f)));
+        return (ArrayList<Font>) fontsToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForShield() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/FILLERshield.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForEnemyShield() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/FILLERshieldEnemy.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForTurretShot() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/Level2Shot.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImagesForMissle() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/Missile.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImageForFighterExplosion() {
+        clearList(ThingsToClear.images);
+        imagesToReturn.add(images.get("resources/FighterExplosionSpritesheet.png"));
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    public ArrayList<BufferedImage> getImageForMissileExplosion() {
+        clearList(ThingsToClear.images);
+        imagePaths.add("resources/MissileExplosionSpritesheet.png");
+        return (ArrayList<BufferedImage>) imagesToReturn.clone();
+    }
+
+    private void loadAllImages() {
+        for (String s : imagePaths) {
             images.put(s, loader.loadImage(s));
         }
     }
-    
-    private static void loadSounds()
-    {
-        for (String s : soundPaths)
-        {
+
+    private void loadAllSounds() {
+        for (String s : soundPaths) {
             sounds.put(s, loader.loadSound(s));
         }
     }
-    
-    private static void loadFonts()
-    {
-        for (String s : fontPaths)
-        {
-            fonts.put(s, loader.loadFont(s, Float.NaN))
+
+    private void loadAllFonts() {
+        for (FontInfo info : fontData) {
+            fonts.put(info, loader.loadFont(info.path, info.size));
         }
     }
+
+    private void clearList(ThingsToClear whatToClear) {
+        switch (whatToClear) {
+            case images:
+                imagesToReturn.clear();
+                break;
+            case sounds:
+                soundsToReturn.clear();
+                break;
+            case fonts:
+                fontsToReturn.clear();
+                fonts.clear();
+                break;
+        }
+    }
+
 }
