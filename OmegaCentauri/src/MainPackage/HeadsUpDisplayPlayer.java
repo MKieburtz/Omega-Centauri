@@ -12,14 +12,20 @@ import java.util.ArrayList;
 
 public class HeadsUpDisplayPlayer {
 
-    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private ArrayList<String> imagePaths = new ArrayList<>();
+    private ArrayList<BufferedImage> images = new ArrayList<>();
     
     private final int SCANNERMODULE = 0;
     private final int HEALTHBACKGROUND = 1;
     
-    public HeadsUpDisplayPlayer()
+    public HeadsUpDisplayPlayer(Resources resources)
     {
-        images = Resources.getImagesForHUD();
+        imagePaths.add("resources/TempScannerModule.png");
+        imagePaths.add("resources/healthbackground.png");
+        imagePaths.add("resources/HealthyTick.png");
+        imagePaths.add("resources/WarningTick.png");
+        imagePaths.add("resources/DangerTick.png");
+        images = resources.getImagesForObject(imagePaths);
     }
     
     public void draw(Graphics2D g2d, Camera camera)

@@ -33,11 +33,14 @@ public class Explosion {
     BufferedImage spriteSheet;
 
     BufferedImage[] images = null;
+    
+    private final String fighterExplosionPath = "resources/FighterExplosionSpritesheet.png";
+    private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
 
-    public Explosion(Type type, Dimension imageSize) {
+    public Explosion(Type type, Dimension imageSize, Resources resources) {
         switch (type) {
             case fighter:
-                spriteSheet = Resources.getImageForFighterExplosion().get(0);
+                spriteSheet = resources.getImageForObject(fighterExplosionPath);
                 images = new BufferedImage[30];
 
                 loadImages(fighterExplosionSize, spriteSheet, fighterExplosionImageSize);
@@ -45,7 +48,7 @@ public class Explosion {
                 break;
 
             case missile:
-                spriteSheet = Resources.getImageForMissileExplosion().get(0);
+                spriteSheet = resources.getImageForObject(missileExplosionPath);
                 images = new BufferedImage[16];
                 
                 loadImages(missileExplosionSize, spriteSheet, missileExplosionImageSize);

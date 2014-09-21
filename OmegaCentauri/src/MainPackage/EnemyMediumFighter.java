@@ -22,25 +22,30 @@ public class EnemyMediumFighter extends EnemyShip {
 
     private ScheduledExecutorService ex = Executors.newSingleThreadScheduledExecutor();
 
+    private Resources resources;
+    
     public EnemyMediumFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
-            int shootingDelayTurret, int shootingDelayMissile, int health, int id, Player player) {
+            int shootingDelayTurret, int shootingDelayMissile, int health, int id, Player player, Resources resources) {
         super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
 
         this.id = id;
-
-        images = Resources.getImagesForMediumEnemyFighter();
+        this.resources = resources;
+        imagePaths.add("resources/MediumEnemyFighter.png");
+        
+        images = resources.getImagesForObject(imagePaths);
         activeImage = images.get(0);
 
-        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 50);
+        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true,
+                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 50, resources);
 
         setUpHitbox(cameraLocation);
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(65, 70), 65, shootingDelayTurret, faceAngle, this);
+                cameraLocation, new Point2D.Double(65, 70), 65, shootingDelayTurret, faceAngle, this, resources);
 
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(95, 75), -65, shootingDelayTurret, faceAngle, this);
+                cameraLocation, new Point2D.Double(95, 75), -65, shootingDelayTurret, faceAngle, this, resources);
 
         this.targetShip = player;
         
@@ -63,7 +68,7 @@ public class EnemyMediumFighter extends EnemyShip {
 
             Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
             
-            shots.add(new Missile(60, startingLocation, null, 360 - angle, cameraLocation, targetShip, this));
+            shots.add(new Missile(60, startingLocation, null, 360 - angle, cameraLocation, targetShip, this, resources));
 
             canshoot = false;
 

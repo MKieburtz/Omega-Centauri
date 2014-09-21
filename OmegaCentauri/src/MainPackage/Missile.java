@@ -1,7 +1,6 @@
 package MainPackage;
 
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -11,12 +10,14 @@ import java.util.ArrayList;
  */
 public class Missile extends PhysicalShot {
     
+    
     public Missile(int damage, Point2D.Double location,
-            Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner)
+            Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner, Resources resources)
     {
         super(damage, 600, location, startingVel, angle, cameraLocation, owner);
-
-        images = Resources.getImagesForMissle();
+        imagePaths.add("resources/Missile.png");
+        
+        images = resources.getImagesForObject(imagePaths);
         activeImage = images.get(0);
 
         this.location = location;
@@ -24,7 +25,7 @@ public class Missile extends PhysicalShot {
         this.targetShip = targetShip;
         setUpHitbox(cameraLocation);
         
-        explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
+        explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
     }
     
     @Override

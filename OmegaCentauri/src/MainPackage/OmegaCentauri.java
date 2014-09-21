@@ -37,6 +37,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
     private Camera camera;
     private GraphicsDevice gd;
     private MainMenu mainMenu;
+    private Resources resources;
     // TIMERS
     private ScheduledExecutorService timingEx;
     private ScheduledExecutorService recordingEx;
@@ -50,9 +51,10 @@ public class OmegaCentauri extends Game implements GameActionListener {
     private ArrayList<Shot> deadShots = new ArrayList<>();
     
     public OmegaCentauri() {
-        
+       
+        resources = new Resources();
         gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        renderer = new Renderer();
+        renderer = new Renderer(resources);
         
         camera = new Camera(1000, 600);
         loading = true;
@@ -63,12 +65,12 @@ public class OmegaCentauri extends Game implements GameActionListener {
     }
     
     private void addShips() {
-        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 100);
+        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 100, resources);
 //        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1));
 //        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2));
 //        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3));
 //        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4));
-        enemyShips.add(new EnemyMediumFighter(-500, 0, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 300, 4000, 200, 5, player));
+        enemyShips.add(new EnemyMediumFighter(-500, 0, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 300, 4000, 200, 5, player, resources));
         syncGameStateVaribles();
         
         player.setUpHitbox(camera.getLocation());
@@ -80,7 +82,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
         setTitle("Omega Centauri");
         setMinimumSize(new Dimension(600, 600));
         
-        mainMenu = new MainMenu(this);
+        mainMenu = new MainMenu(this, resources);
         
         if (!mainMenu.getSettings().getData().getWindowed()) // if fullscreen
         {

@@ -16,24 +16,36 @@ import java.util.concurrent.TimeUnit;
  */
 // might refractor to playerShip
 public class Player extends Ship {
-
-    // x and y are game positions
+    
+    private Resources resources;
+    
     public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
-            int timerDelay, int health) {
+            int timerDelay, int health, Resources resources) {
 
         super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, timerDelay, health);
 
-        images = Resources.getImagesForPlayer();
+        this.resources = resources;
+        
+        imagePaths.add("resources/FighterIdle.png");
+        imagePaths.add("resources/FighterThrust.png");
+        imagePaths.add("resources/FighterLeft.png");
+        imagePaths.add("resources/FighterRight.png");
+        imagePaths.add("resources/FighterThrustLeft.png");
+        imagePaths.add("resources/FighterThrustRight.png");
+        
+        images = resources.getImagesForObject(imagePaths);
 
         activeImage = images.get(0);
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 100);
+                10, 100, resources);
         setUpHitbox(cameraLocation);
 
-        sounds = Resources.getSoundsForPlayer();
+        soundPaths.add("resources/Pulse.wav");
         
-        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
+        sounds = resources.getSoundsForObject(soundPaths);
+        
+        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
     }
 
     public void moveTo(double x, double y) {
@@ -142,7 +154,7 @@ public class Player extends Ship {
 
         canshoot = false;
 
-        shots.add(new PulseShot(5, ShotStartingPos, ShotStartingVel, angle, false, cameraLocation, this)); // enemies ovveride
+        shots.add(new PulseShot(5, ShotStartingPos, ShotStartingVel, angle, false, cameraLocation, this, resources));
 
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }

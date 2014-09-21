@@ -50,19 +50,28 @@ public class MainMenu {
     private BufferedImage drawingImage;
     
 
-    public MainMenu(OmegaCentauri game) {
+    public MainMenu(OmegaCentauri game, Resources resources) {
         active = true;
         startListener = game;
 
-        images = Resources.getImagesForMainMenu();
+        imagePaths.add("resources/StartButtonNoHover.png");
+        imagePaths.add("resources/StartButtonHover.png");
+        imagePaths.add("resources/CloseButtonNoHover.png");
+        imagePaths.add("resources/CloseButtonHover.png");
+        imagePaths.add("resources/SettingsButtonNoHover.png");
+        imagePaths.add("resources/SettingsButtonHover.png");
         
-        sounds = Resources.getSoundsForMainMenu();
+        images = resources.getImagesForObject(imagePaths);
+        
+        soundPaths.add("resources/Mouseclick.wav");
+        
+        sounds = resources.getSoundsForObject(soundPaths);
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         size = new Point(game.getWidth(), game.getHeight());
 
-        settings = new Settings(new Dimension(size.x, size.y), game);
+        settings = new Settings(new Dimension(size.x, size.y), game, resources);
         
         screenRect = new Rectangle(0, 0, size.x, size.y);
 

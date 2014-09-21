@@ -27,19 +27,31 @@ public class EnemyFighter extends EnemyShip {
     private boolean thrusting = false;
 
     private double targetingAngle = 0;
+    
+    private Resources resources;
 
     public EnemyFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
-            int shootingDelay, int health, int id) // add for image repo
+            int shootingDelay, int health, int id, Resources resources)
     {
         super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
         
-        images = Resources.getImagesForEnemyFighter();
+        this.resources = resources;
+        
+        imagePaths.add("resources/EnemyFighterIdle.png");
+        imagePaths.add("resources/EnemyFighterThrusting.png");
+        imagePaths.add("resources/EnemyFighterTurningLeft.png");
+        imagePaths.add("resources/EnemyFighterTurningRight.png");
+        imagePaths.add("resources/EnemyFighterThrustingLeft.png");
+        imagePaths.add("resources/EnemyFighterThrustingRight.png");
+        
+        images = resources.getImagesForObject(imagePaths);
         activeImage = images.get(0);
         
         setUpHitbox(cameraLocation);
 
-        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(), activeImage.getHeight()), 0, 0);
+        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(),
+                activeImage.getHeight()), 0, 0, resources);
         
         this.id = id;
         
@@ -150,7 +162,7 @@ public class EnemyFighter extends EnemyShip {
             
             canshoot = false;
 
-            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this)); // enemies override
+            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this, resources)); // enemies override
 
             ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         }

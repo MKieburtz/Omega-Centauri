@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class Turret {
 
     private BufferedImage activeImage;
-    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 
     private int maxDurability;
     private int durability;
@@ -41,15 +40,21 @@ public class Turret {
     private boolean canShoot = false;
     private int shootingDelay;
 
+    private final String imagePath = "resources/Turret.png";
     private final int TURRETIMAGE = 0;
     
     private Ship owner;
     
     private ScheduledExecutorService ex = Executors.newSingleThreadScheduledExecutor();
+    
+    private Resources resources;
 
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
             Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint,
-            double angleFromCenter, int shootingDelay, double shipAngle, Ship owner) {
+            double angleFromCenter, int shootingDelay, double shipAngle, Ship owner, Resources resources) {
+        
+        this.resources = resources;
+        
         this.maxDurability = maxDurability;
         this.durability = maxDurability;
 
@@ -72,9 +77,7 @@ public class Turret {
         rotationPoint = distanceFromCenter;
         this.angleFromCenter = angleFromCenter;
         
-        images = Resources.getImagesForTurret();
-
-        activeImage = images.get(TURRETIMAGE);
+        activeImage = resources.getImageForObject(imagePath);
         
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
@@ -139,7 +142,7 @@ public class Turret {
         canShoot = false;
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
-        return new TurretShot(10, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation, owner);
+        return new TurretShot(10, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation, owner, resources);
     }
     
     public boolean canShoot()

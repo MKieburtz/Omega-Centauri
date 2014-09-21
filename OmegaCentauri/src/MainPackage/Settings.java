@@ -17,6 +17,10 @@ public class Settings {
 
     private boolean active = false;
 
+    private ArrayList<String> imagePaths = new ArrayList<>();
+    private ArrayList<String> soundPaths = new ArrayList<>();
+    private ArrayList<FontInfo> fontData = new ArrayList<>();
+    
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private ArrayList<Clip> sounds = new ArrayList<Clip>();
     private ArrayList<Font> fonts = new ArrayList<Font>();
@@ -64,12 +68,32 @@ public class Settings {
     
     private final HashMap<SettingsTypes, Boolean> changes = new HashMap<SettingsTypes, Boolean>();
 
-    public Settings(Dimension windowSize, GameActionListener actionListener) {
+    public Settings(Dimension windowSize, GameActionListener actionListener, Resources resources) {
         this.windowResolution = windowSize;
 
-        images = Resources.getImagesForSettingsMenu();
-        sounds = Resources.getSoundsForSettingsMenu();
-        fonts = Resources.getFontsForSettingsMenu();
+        imagePaths.add("resources/RadioButtonEnabled.png");
+        imagePaths.add("resources/RadioButtonDisabled.png");
+        imagePaths.add("resources/BackButtonHover.png");
+        imagePaths.add("resources/BackButtonNoHover.png");
+        imagePaths.add("resources/ControlsButtonHover.png");
+        imagePaths.add("resources/ControlsButtonNoHover.png");
+        imagePaths.add("resources/ResetButtonHover.png");
+        imagePaths.add("resources/ResetButtonNoHover.png");
+        imagePaths.add("resources/SaveButtonHover.png");
+        imagePaths.add("resources/SaveButtonNoHover.png");
+        
+        images = resources.getImagesForObject(imagePaths);
+        
+        soundPaths.add("resources/Mouseclick.wav");
+        
+        sounds = resources.getSoundsForObject(soundPaths);
+        
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 50f));
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 32f));
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 24f));
+        fontData.add(new FontInfo("resources/OCR A Std.ttf", 16f));
+        
+        fonts = resources.getFontForObject(fontData);
 
         setRects();
       

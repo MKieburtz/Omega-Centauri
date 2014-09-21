@@ -16,6 +16,7 @@ import java.util.*;
  */
 public class Shield {
 
+    private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private BufferedImage activeImage;
     private double angle;
@@ -26,15 +27,19 @@ public class Shield {
     private int energy;
     private int maxEnergy;
 
-    public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation, boolean enemy, Point size, int strength, int energy) {
+    public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation,
+            boolean enemy, Point size, int strength, int energy, Resources resources) {
         this.angle = angle;
         this.energy = energy;
         this.maxEnergy = energy; // start at max power
         this.strengh = strength;
+        
         if (enemy) {
-            images = Resources.getImagesForEnemyShield();
+            imagePaths.add("resources/FILLERshield.png");
+            images = resources.getImagesForObject(imagePaths);
         } else {
-            images = Resources.getImagesForShield();
+            imagePaths.add("resources/FILLERshieldEnemy.png");
+            images = resources.getImagesForObject(imagePaths);
         }
         activeImage = images.get(0);
         scaling[0] = (double)size.x / activeImage.getWidth();

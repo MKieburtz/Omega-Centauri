@@ -11,31 +11,41 @@ import java.util.*;
  */
 public class Renderer {
 
-    private ArrayList<Font> fonts = new ArrayList<Font>();
-    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private ArrayList<String> imagePaths = new ArrayList<>();
+    
+    private ArrayList<Font> fonts = new ArrayList<>();
+    private ArrayList<BufferedImage> images = new ArrayList<>();
     private Font dataFont;
     private final int PAUSEMENU = 0;
     private final int PAUSETOMENU = 1;
     private final int GAMEOVER = 2;
     private final int RETURNTOBATTLEFIELD = 3;
     
-    private HeadsUpDisplayPlayer headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
+    private HeadsUpDisplayPlayer headsUpDisplayPlayer;
 
     GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     VolatileImage drawingImage = config.createCompatibleVolatileImage(1, 1);
     boolean isMac;
 
-    public Renderer() {
-        fonts = Resources.getFontsForRenderer();
+    public Renderer(Resources resources) {
+        
+        fonts.add(resources.getFontForObject(new FontInfo("resources/OCR A Std.ttf", 10f)));
 
-        images = Resources.getImagesForRenderer();
+        imagePaths.add("resources/PauseMenu.png");
+        imagePaths.add("resources/PauseButton_ToMenu.png");
+        imagePaths.add("resources/GameOver.png");
+        imagePaths.add("resources/ReturnToTheBattlefield.png");
+        
+        images = resources.getImagesForObject(imagePaths);
 
         dataFont = fonts.get(0);
 
         isMac = System.getProperty("os.name").contains("OS X");
 
         images = Calculator.toCompatibleImages(images);
+        
+        headsUpDisplayPlayer = new HeadsUpDisplayPlayer(resources);
     }
 
     public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,

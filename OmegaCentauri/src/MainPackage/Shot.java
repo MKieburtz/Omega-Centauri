@@ -84,7 +84,7 @@ public abstract class Shot {
     public boolean collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) { // the return value is only useful to subclasses
         boolean removed = false;
         //TODO: missiles can collide with eachother if they're different (Enemy, Ally).
-        if (shot instanceof PhysicalShot ^ otherShot instanceof PhysicalShot) { // ^ means one or the other but not both
+        if (shot instanceof PhysicalShot ^ otherShot instanceof PhysicalShot) { // ^ means one or the other but not both (exclusive OR) (XOR)
             // enemy ship's shots shouldn't destroy eachother
             if (!(shot.getOwner() instanceof EnemyShip && otherShot.getOwner() instanceof EnemyShip)) {
                 for (Ship ship : allShips) {

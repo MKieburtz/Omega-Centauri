@@ -43,10 +43,12 @@ public abstract class Ship{
     protected double angleIcrement;
     protected double acceleration = .15;
     
-    protected ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-    protected ArrayList<Clip> sounds = new ArrayList<Clip>();
+    protected ArrayList<String> imagePaths = new ArrayList<>();
+    protected ArrayList<String> soundPaths = new ArrayList<>();
+    protected ArrayList<BufferedImage> images = new ArrayList<>();
+    protected ArrayList<Clip> sounds = new ArrayList<>();
     protected BufferedImage activeImage;
-    protected ArrayList<Shot> shots = new ArrayList<Shot>();
+    protected ArrayList<Shot> shots = new ArrayList<>();
     
     protected boolean canshoot = true;
     protected int shootingDelay;
