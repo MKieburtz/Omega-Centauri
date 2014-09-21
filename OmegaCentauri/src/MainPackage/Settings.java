@@ -93,7 +93,7 @@ public class Settings {
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 24f));
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 16f));
         
-        fonts = resources.getFontForObject(fontData);
+        fonts = resources.getFontsForObject(fontData);
 
         setRects();
       

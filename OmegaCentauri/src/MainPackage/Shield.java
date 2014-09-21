@@ -35,10 +35,10 @@ public class Shield {
         this.strengh = strength;
         
         if (enemy) {
-            imagePaths.add("resources/FILLERshield.png");
+            imagePaths.add("resources/FILLERshieldEnemy.png");
             images = resources.getImagesForObject(imagePaths);
         } else {
-            imagePaths.add("resources/FILLERshieldEnemy.png");
+            imagePaths.add("resources/FILLERshield.png");
             images = resources.getImagesForObject(imagePaths);
         }
         activeImage = images.get(0);

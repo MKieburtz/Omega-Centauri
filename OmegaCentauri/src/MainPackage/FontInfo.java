@@ -1,5 +1,7 @@
 package MainPackage;
 
+import java.util.Objects;
+
 /**
  * @author Michael Kieburtz
  */
@@ -24,5 +26,13 @@ class FontInfo {
             }
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.path);
+        hash = 23 * hash + Objects.hashCode(this.size);
+        return hash;
     }
 }

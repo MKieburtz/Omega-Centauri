@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,7 +128,7 @@ public class Resources {
         return sounds.get(path);
     }
     
-    public ArrayList<Font> getFontForObject(ArrayList<FontInfo> fontInfos)
+    public ArrayList<Font> getFontsForObject(ArrayList<FontInfo> fontInfos)
     {
         ArrayList<Font> fontsToReturn = new ArrayList<>();
         
