@@ -15,10 +15,8 @@ public class Missile extends PhysicalShot {
             Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner, Resources resources)
     {
         super(damage, 600, location, startingVel, angle, cameraLocation, owner);
-        imagePaths.add("resources/Missile.png");
-        
-        images = resources.getImagesForObject(imagePaths);
-        activeImage = images.get(0);
+
+        activeImage = resources.getImageForObject("resources/Missile.png");
 
         this.location = location;
         faceAngle = angle;

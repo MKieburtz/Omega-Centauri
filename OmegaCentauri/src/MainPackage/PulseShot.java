@@ -14,14 +14,10 @@ public class PulseShot extends LaserShot {
         super(damage, 1200, location, velocity, angle, cameraLocation, owner);
         
         if (enemy) {
-            imagePaths.add("resources/EnemyShot.png");
-            images = resources.getImagesForObject(imagePaths);
+            activeImage = resources.getImageForObject("resources/EnemyShot.png");
         } else {
-            imagePaths.add("resources/Pulse.png");
-            images = resources.getImagesForObject(imagePaths);
+            activeImage = resources.getImageForObject("resources/Pulse.png");
         }
-        
-        activeImage = images.get(0);
         
         setUpHitbox(cameraLocation);
     }

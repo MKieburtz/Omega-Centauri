@@ -12,11 +12,7 @@ public class TurretShot extends LaserShot {
     {
         super(damage, 500, location, velocity, angle, cameraLocation, owner);
         
-        imagePaths.add("resources/Level2Shot.png");
-        
-        images = resources.getImagesForObject(imagePaths);
-        
-        activeImage = images.get(0);
+        activeImage = resources.getImageForObject("resources/Level2Shot.png");
         
         setUpHitbox(cameraLocation);
     }

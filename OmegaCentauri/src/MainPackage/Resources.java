@@ -122,12 +122,7 @@ public class Resources {
         
         return soundsToReturn;
     }
-    
-    public Clip getSoundForObject(String path)
-    {
-        return sounds.get(path);
-    }
-    
+
     public ArrayList<Font> getFontsForObject(ArrayList<FontInfo> fontInfos)
     {
         ArrayList<Font> fontsToReturn = new ArrayList<>();
@@ -138,11 +133,6 @@ public class Resources {
         }
         
         return fontsToReturn;
-    }
-    
-    public Font getFontForObject(FontInfo info)
-    {
-        return fonts.get(info);
     }
 
     private void loadAllImages() {

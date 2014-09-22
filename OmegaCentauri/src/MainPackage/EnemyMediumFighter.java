@@ -31,10 +31,8 @@ public class EnemyMediumFighter extends EnemyShip {
 
         this.id = id;
         this.resources = resources;
-        imagePaths.add("resources/MediumEnemyFighter.png");
-        
-        images = resources.getImagesForObject(imagePaths);
-        activeImage = images.get(0);
+       
+        activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true,
                 new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 50, resources);
