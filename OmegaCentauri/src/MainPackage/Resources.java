@@ -134,6 +134,11 @@ public class Resources {
         
         return fontsToReturn;
     }
+    
+    public Font getFontForObject(FontInfo info)
+    {
+        return fonts.get(info);
+    }
 
     private void loadAllImages() {
         for (String s : imagePaths) {

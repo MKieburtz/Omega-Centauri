@@ -855,15 +855,17 @@ public class OmegaCentauri extends Game implements GameActionListener {
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
         
         Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
         System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
-//        System.setProperty("sun.java2d.opengl", "true");
-//        System.setProperty("sun.java2d.ddscale", "true");
-//        System.setProperty("sun.java2d.translaccel", "true");
+        System.setProperty("sun.java2d.opengl", "true");
+        System.setProperty("sun.java2d.ddscale", "true");
+        System.setProperty("sun.java2d.translaccel", "true");
+        System.setProperty("sun.java2d.d3d", "false");
+        System.setProperty("sun.java2d.translaccel","true");
         
         new OmegaCentauri();
     }
