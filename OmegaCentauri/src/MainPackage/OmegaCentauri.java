@@ -87,7 +87,14 @@ public class OmegaCentauri extends Game implements GameActionListener {
         if (!mainMenu.getSettings().getData().getWindowed()) // if fullscreen
         {
             setUndecorated(true);
-            gd.setFullScreenWindow(this);
+            if (!System.getProperty("os.name").contains("Mac"))
+            {
+                setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }
+            else
+            {
+                gd.setFullScreenWindow(this);
+            }
             this.setVisible(false);
             panel = new Panel(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
         } else {
