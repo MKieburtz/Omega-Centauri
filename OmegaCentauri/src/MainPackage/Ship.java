@@ -242,7 +242,7 @@ public abstract class Ship{
         
         for (Ship s : allShips) {
             if (shot.getOwner().equals(s) && !s.equals(ship)) {  // if s fired the shot and s isn't the ship that collided with the shot...
-                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) { // enemies can't shoot eachother
+                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) { 
                     s.removeShot(shot); // removing because it collided
                     removed[1] = true;
                 } 
@@ -250,17 +250,24 @@ public abstract class Ship{
         }
         
         if (!ship.getShots().contains(shot)) {
-            takeDamage(shot.getDamage());
-            if (hullDurability <= 0) {
-                removed[0] = true;
+            if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
+            {
+                takeDamage(shot.getDamage());
+                if (hullDurability <= 0) {
+                    removed[0] = true;
+                }
             }
         }
         
         return removed;
     }
     
-    public boolean CollisionEventWithShip() {
+    public boolean CollisionEventWithShip(Ship ship, Ship collisionShip) {
+        if (!(ship instanceof EnemyShip && collisionShip instanceof EnemyShip))
+        {
         return setColliding(true);
+        }
+        return false;
     }
     
     public Hitbox returnHitbox() {
