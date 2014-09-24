@@ -111,7 +111,7 @@ public abstract class Ship{
         }
         else
         {
-            explosion.draw(g2d, location, camera.getLocation());
+            //explosion.draw(g2d, location, camera.getLocation());
             if (explosion.isDone())
             {
                 exploding = false;

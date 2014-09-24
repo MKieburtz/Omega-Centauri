@@ -5,6 +5,7 @@ package MainPackage;
  * @author Davis Freeman
  */
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -54,6 +55,8 @@ public class EnemyFighter extends EnemyShip {
                 activeImage.getHeight()), 0, 0, resources);
         
         this.id = id;
+        
+        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
         
     }
     @Override
