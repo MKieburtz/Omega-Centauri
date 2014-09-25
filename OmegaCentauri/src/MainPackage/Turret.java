@@ -135,14 +135,18 @@ public class Turret {
     
     public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity) { // ASSUMES THAT CANSHOOT IS TESTED BEFORE THIS IS CALLED!
         
+        Random rand = new Random();
+        
+        double shootingAngle = 360 - displayAngle + rand.nextInt(10) - 5;
+ 
         Point2D.Double shotStartingPos = (Point2D.Double) shotSpawnPoint.clone();
 
-        Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(360 - displayAngle),
-                velocity.y + 20 * Calculator.CalcAngleMoveY(360 - displayAngle));
+        Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(shootingAngle),
+                velocity.y + 20 * Calculator.CalcAngleMoveY(shootingAngle));
         canShoot = false;
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
-        return new TurretShot(10, shotStartingPos, shotStartingVel, 360 - displayAngle, cameraLocation, owner, resources);
+        return new TurretShot(10, shotStartingPos, shotStartingVel, shootingAngle, cameraLocation, owner, resources);
     }
     
     public boolean canShoot()

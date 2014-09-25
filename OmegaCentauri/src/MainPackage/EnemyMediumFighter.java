@@ -20,9 +20,9 @@ public class EnemyMediumFighter extends EnemyShip {
     private Turret[] turrets = new Turret[2];
     private int shootingDelayMissile;
 
-    private ScheduledExecutorService ex = Executors.newSingleThreadScheduledExecutor();
-
     private Resources resources;
+    
+    private boolean right = true;
     
     public EnemyMediumFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
@@ -54,10 +54,15 @@ public class EnemyMediumFighter extends EnemyShip {
 
     @Override
     public void shoot(Point2D.Double cameraLocation) {
-        for (Turret t : turrets) {
-            if (t.canShoot()) {
-                shots.add(t.shoot(cameraLocation, movementVelocity));
-            }
+        if (turrets[0].canShoot() && right)
+        {
+            shots.add(turrets[0].shoot(cameraLocation, movementVelocity));
+            right = !right;
+        }
+        else if (turrets[1].canShoot() && !right)
+        {
+            shots.add(turrets[1].shoot(cameraLocation, movementVelocity));
+            right = !right;
         }
         
         if (canshoot) {
