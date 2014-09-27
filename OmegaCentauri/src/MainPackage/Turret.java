@@ -37,11 +37,8 @@ public class Turret {
     private double angleFromCenter;
 
     private final int angularVelocity = 3;
-    private boolean canShoot = false;
-    private int shootingDelay;
 
     private final String imagePath = "resources/Turret.png";
-    private final int TURRETIMAGE = 0;
     
     private Ship owner;
     
@@ -51,7 +48,7 @@ public class Turret {
 
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
             Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint,
-            double angleFromCenter, int shootingDelay, double shipAngle, Ship owner, Resources resources) {
+            double angleFromCenter, double shipAngle, Ship owner, Resources resources) {
         
         this.resources = resources;
         
@@ -60,8 +57,6 @@ public class Turret {
 
         this.maxRotation = maxRotation;
         this.minRotation = minRotation;
-        
-        this.shootingDelay = shootingDelay;
 
         angle = Math.abs(-minRotation - maxRotation);
 
@@ -78,8 +73,6 @@ public class Turret {
         this.angleFromCenter = angleFromCenter;
         
         activeImage = resources.getImageForObject(imagePath);
-        
-        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
         this.owner = owner;
     }
@@ -143,22 +136,8 @@ public class Turret {
 
         Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(shootingAngle),
                 velocity.y + 20 * Calculator.CalcAngleMoveY(shootingAngle));
-        canShoot = false;
-        ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         
         return new TurretShot(10, shotStartingPos, shotStartingVel, shootingAngle, cameraLocation, owner, resources);
     }
     
-    public boolean canShoot()
-    {
-        return canShoot;
-    }
-    
-    class ShootingService implements Runnable
-    {
-        @Override
-        public void run() {
-            canShoot = true;
-        }
-    }
 }

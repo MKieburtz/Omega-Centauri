@@ -3,11 +3,10 @@ package MainPackage;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,10 +18,14 @@ public class EnemyMediumFighter extends EnemyShip {
 
     private Turret[] turrets = new Turret[2];
     private int shootingDelayMissile;
+    private int shootingDelayTurret;
 
     private Resources resources;
     
     private boolean right = true;
+    
+    private boolean canShootMissile = true;
+    private boolean canShootTurret = true;
     
     public EnemyMediumFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
@@ -40,32 +43,38 @@ public class EnemyMediumFighter extends EnemyShip {
         setUpHitbox(cameraLocation);
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(65, 70), 65, shootingDelayTurret, faceAngle, this, resources);
+                cameraLocation, new Point2D.Double(65, 70), 65,faceAngle, this, resources);
 
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(95, 75), -65, shootingDelayTurret, faceAngle, this, resources);
+                cameraLocation, new Point2D.Double(95, 75), -65, faceAngle, this, resources);
 
         this.targetShip = player;
         
         this.shootingDelayMissile = shootingDelayMissile;
+        this.shootingDelayTurret = shootingDelayTurret;
 
         ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public void shoot(Point2D.Double cameraLocation) {
-        if (turrets[0].canShoot() && right)
+        if (canShootTurret)
         {
-            shots.add(turrets[0].shoot(cameraLocation, movementVelocity));
-            right = !right;
-        }
-        else if (turrets[1].canShoot() && !right)
-        {
-            shots.add(turrets[1].shoot(cameraLocation, movementVelocity));
-            right = !right;
+            if (right)
+            {
+                shots.add(turrets[0].shoot(cameraLocation, movementVelocity));
+                right = !right;
+            }
+            else
+            {
+                shots.add(turrets[1].shoot(cameraLocation, movementVelocity));
+                right = !right;
+            }
+            canShootTurret = false;
+            ex.schedule(new ShootingServiceTurrets(), shootingDelayTurret, TimeUnit.MILLISECONDS);
         }
         
-        if (canshoot) {
+        if (canShootMissile) {
 
             double angle = faceAngle;
 
@@ -73,9 +82,9 @@ public class EnemyMediumFighter extends EnemyShip {
             
             shots.add(new Missile(60, startingLocation, null, 360 - angle, cameraLocation, targetShip, this, resources));
 
-            canshoot = false;
+            canShootMissile = false;
 
-            ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
+            ex.schedule(new ShootingServiceMisisle(), shootingDelayMissile, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -132,12 +141,19 @@ public class EnemyMediumFighter extends EnemyShip {
         return location;
     }
 
-    class ShootingService implements Runnable {
+    class ShootingServiceMisisle implements Runnable {
 
         @Override
         public void run() {
-            canshoot = true;
+            canShootMissile = true;
         }
     }
 
+    class ShootingServiceTurrets implements Runnable {
+
+        @Override
+        public void run() {
+            canShootTurret = true;
+        }
+    }
 }

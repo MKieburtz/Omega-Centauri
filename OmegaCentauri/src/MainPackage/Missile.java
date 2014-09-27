@@ -14,7 +14,7 @@ public class Missile extends PhysicalShot {
     public Missile(int damage, Point2D.Double location,
             Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner, Resources resources)
     {
-        super(damage, 600, location, startingVel, angle, cameraLocation, owner);
+        super(damage, 2000, location, startingVel, angle, cameraLocation, owner);
 
         activeImage = resources.getImageForObject("resources/Missile.png");
 
