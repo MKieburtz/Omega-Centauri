@@ -73,18 +73,9 @@ public class Explosion {
     }
 
     public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) {
-        AffineTransform original = g2d.getTransform();
-        AffineTransform transform = (AffineTransform) original.clone();
-
-        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x - ((explosionImageSize.width - entityImageSize.width) / 2),
-                Calculator.getScreenLocation(cameraLocation, location).y - ((explosionImageSize.height - entityImageSize.height) / 2));
-
-        g2d.transform(transform);
-
-        g2d.drawImage(images[frame], 0, 0, null);
-
-        g2d.setTransform(original);
-
+        g2d.drawImage(images[frame],
+                (int)Calculator.getScreenLocation(cameraLocation, location).x - ((explosionImageSize.width - entityImageSize.width) / 2),
+                (int)Calculator.getScreenLocation(cameraLocation, location).y - ((explosionImageSize.height - entityImageSize.height) / 2), null);
         frame++;
 
         if (frame == images.length) {
