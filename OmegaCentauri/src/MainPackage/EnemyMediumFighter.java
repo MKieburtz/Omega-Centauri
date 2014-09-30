@@ -100,6 +100,8 @@ public class EnemyMediumFighter extends EnemyShip {
 
         g2d.setTransform(original);
 
+        //shield.draw(g2d, camera.getLocation(), location, faceAngle);
+        
         //g2d.draw(hitbox);
     }
 

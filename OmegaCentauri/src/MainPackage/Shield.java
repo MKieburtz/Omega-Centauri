@@ -120,7 +120,7 @@ public class Shield {
     
     public void decay()
     {
-        opacity -= 1;
+        opacity -= 3;
     }
     
     public double getRegenRate()

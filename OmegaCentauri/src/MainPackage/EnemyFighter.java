@@ -52,7 +52,7 @@ public class EnemyFighter extends EnemyShip {
         setUpHitbox(cameraLocation);
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 10, 30, resources);
+                activeImage.getHeight()), 10, 20, resources);
         
         this.id = id;
         
