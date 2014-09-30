@@ -52,7 +52,7 @@ public class EnemyFighter extends EnemyShip {
         setUpHitbox(cameraLocation);
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 0, 0, resources);
+                activeImage.getHeight()), 10, 30, resources);
         
         this.id = id;
         
@@ -184,7 +184,7 @@ public class EnemyFighter extends EnemyShip {
 //        
 //        g2d.setColor(Color.BLUE);
 //        g2d.drawLine((int)middle.x, (int)middle.y, (int)(middle.x + Calculator.CalcAngleMoveX(360 - faceAngle - 45) * 25), (int)(middle.y + Calculator.CalcAngleMoveY(360 - faceAngle - 45) * 25));       
-        shield.draw(g2d, camera.getLocation(), location);
+        shield.draw(g2d, camera.getLocation(), location, faceAngle);
 
 //        Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
 //                (float) (camera.getSize().y - 85), (float) shield.getEnergy() * 1.5f, 5f);

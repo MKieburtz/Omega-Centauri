@@ -26,6 +26,8 @@ public class Shield {
     private int strengh;
     private int energy;
     private int maxEnergy;
+    
+    Point size;
 
     public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation,
             boolean enemy, Point size, int strength, int energy, Resources resources) {
@@ -33,7 +35,7 @@ public class Shield {
         this.energy = energy;
         this.maxEnergy = energy; // start at max power
         this.strengh = strength;
-        
+        this.size = size;
         if (enemy) {
             activeImage = resources.getImageForObject("resources/FILLERshieldEnemy.png");
         } else {
@@ -43,7 +45,7 @@ public class Shield {
         scaling[1] = (double)size.y / activeImage.getHeight();
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation) {
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation, double angle) {
         if (opacity > 0) {
             
             int rule = AlphaComposite.SRC_OVER;
@@ -57,7 +59,14 @@ public class Shield {
             
             g2d.setComposite(comp);
 
-            transform.translate(instanceLocation.x + 1 - cameraLocation.x, instanceLocation.y - cameraLocation.y);
+             transform.rotate(Math.toRadians(360 - angle),
+                    Calculator.getScreenLocation(cameraLocation, instanceLocation).x + size.x / 2,
+                    Calculator.getScreenLocation(cameraLocation, instanceLocation).y + size.y / 2 );
+            
+            
+            transform.translate(
+                    Calculator.getScreenLocation(cameraLocation, instanceLocation).x,
+                    Calculator.getScreenLocation(cameraLocation, instanceLocation).y);
             
             transform.scale(scaling[0], scaling[1]);
             

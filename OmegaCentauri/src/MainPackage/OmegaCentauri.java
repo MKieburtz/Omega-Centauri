@@ -65,7 +65,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
     }
     
     private void addShips() {
-        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 100, resources);
+        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 1, 1000, resources);
         enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
         enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
         enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
@@ -428,7 +428,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 }
                 
                 for (Shot shot : allShots) {
-                    if (shot.isDying())
+                    if (shot.isDying() || ship.isExploding())
                     {
                         continue;
                     }
@@ -495,6 +495,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
      * 2 = turning right
      * 3 = turning left
      */
+    //<editor-fold defaultstate="collapsed" desc="Key bindings">
+    
     private void wPressed() {
         if (!paused) {
             forward = true;
@@ -522,7 +524,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
         if (!paused) {
             if (rotateLeft)
             {
-                rotateRight = false; 
+                rotateRight = false;
                 rotateLeft = false;
                 player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
                 return;
@@ -555,7 +557,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
             
             if (rotateRight)
             {
-                rotateRight = false; 
+                rotateRight = false;
                 rotateLeft = false;
                 player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
                 return;
@@ -655,6 +657,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
             setVisible(true);
         }
     }
+//</editor-fold>
     
     private void syncGameStateVaribles() {
         camera.move(player.getLocation().x - (getWidth() / 2), player.getLocation().y - (getHeight() / 2));
