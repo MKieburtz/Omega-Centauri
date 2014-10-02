@@ -102,6 +102,20 @@ public class Calculator {
         return images;
     }
     
+    public static BufferedImage toCompatibleImage(BufferedImage image)
+    {
+            GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+             
+            BufferedImage tempImage = config.createCompatibleImage(image.getWidth(), image.getHeight(), System.getProperty("os.name").contains("OS X") ? Transparency.TRANSLUCENT : image.getTransparency());
+            Graphics2D g2d = tempImage.createGraphics();
+            
+            g2d.drawImage(image, 0, 0, null);
+
+            g2d.dispose();
+            
+            return image;
+    }
+    
     public static double confineAngleToRange(double angle) // makes the angle into the range (0 - 360]
     {
         double newAngle = angle;

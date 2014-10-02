@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -40,7 +41,7 @@ public class Explosion {
     public Explosion(Type type, Dimension imageSize, Resources resources) {
         switch (type) {
             case fighter:
-                spriteSheet = resources.getImageForObject(fighterExplosionPath);
+                spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(fighterExplosionPath));
                 images = new BufferedImage[30];
 
                 loadImages(fighterExplosionSize, spriteSheet, fighterExplosionImageSize);
@@ -48,7 +49,7 @@ public class Explosion {
                 break;
 
             case missile:
-                spriteSheet = resources.getImageForObject(missileExplosionPath);
+                spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(missileExplosionPath));
                 images = new BufferedImage[16];
                 
                 loadImages(missileExplosionSize, spriteSheet, missileExplosionImageSize);

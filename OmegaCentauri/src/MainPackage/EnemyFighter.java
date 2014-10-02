@@ -179,27 +179,6 @@ public class EnemyFighter extends EnemyShip {
         super.draw(g2d, camera);
         
         g2d.setTransform(original);
-
-//        Point2D.Double middle = Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight());
-//        
-//        g2d.setColor(Color.BLUE);
-//        g2d.drawLine((int)middle.x, (int)middle.y, (int)(middle.x + Calculator.CalcAngleMoveX(360 - faceAngle - 45) * 25), (int)(middle.y + Calculator.CalcAngleMoveY(360 - faceAngle - 45) * 25));       
-        shield.draw(g2d, camera.getLocation(), location, faceAngle);
-
-//        Rectangle2D.Float paintRectShield = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
-//                (float) (camera.getSize().y - 85), (float) shield.getEnergy() * 1.5f, 5f);
-//        GradientPaint paintShield = new GradientPaint(paintRectShield.x, paintRectShield.y, Color.BLUE, paintRectShield.x + paintRectShield.width,
-//                paintRectShield.y + paintRectShield.height, Color.CYAN);
-        Rectangle2D.Float paintRectHull = new Rectangle2D.Float((float) (camera.getSize().x - (camera.getSize().x - 10)),
-                (float) (camera.getSize().y - 55), (float) hullDurability * 1.5f, 5f);
-
-        GradientPaint paintHull = new GradientPaint(paintRectHull.x, paintRectHull.y, new Color(100, 0, 0), paintRectHull.x + paintRectHull.width,
-                paintRectHull.y + paintRectHull.height, new Color(255, 0, 0));
-//        g2d.setPaint(paintShield);
-//        g2d.fill(paintRectShield);
-//
-        g2d.setPaint(paintHull);
-        g2d.fill(paintRectHull);
         
     }
 

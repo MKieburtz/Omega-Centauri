@@ -65,28 +65,28 @@ public class OmegaCentauri extends Game implements GameActionListener {
     }
     
     private void addShips() {
-        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 1, 1000, resources);
+        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 1000, resources);
         enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
         enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
         enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
         enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
-        enemyShips.add(new EnemyFighter(-300, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(200, -500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(-300, 400, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(-400, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
-        enemyShips.add(new EnemyFighter(200, 900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(-200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(-250, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(-500, 290, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
-        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(-200, 980, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(-200, -230, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(-530, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
-        enemyShips.add(new EnemyFighter(210, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(200, 6500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(-20, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(-700, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
-        enemyShips.add(new EnemyMediumFighter(-560, 80, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 150, 4000, 200, 5, player, resources));
+        enemyShips.add(new EnemyFighter(-300, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
+        enemyShips.add(new EnemyFighter(200, -500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 6, resources));
+        enemyShips.add(new EnemyFighter(-300, 400, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 7, resources));
+        enemyShips.add(new EnemyFighter(-400, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 8, resources));
+        enemyShips.add(new EnemyFighter(200, 900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 9, resources));
+        enemyShips.add(new EnemyFighter(-200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 10, resources));
+        enemyShips.add(new EnemyFighter(-250, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 11, resources));
+        enemyShips.add(new EnemyFighter(-500, 290, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 12, resources));
+        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 13, resources));
+        enemyShips.add(new EnemyFighter(-200, 980, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 14, resources));
+        enemyShips.add(new EnemyFighter(-200, -230, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 15, resources));
+        enemyShips.add(new EnemyFighter(-530, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 16, resources));
+        enemyShips.add(new EnemyFighter(210, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
+        enemyShips.add(new EnemyFighter(200, 6500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 18, resources));
+        enemyShips.add(new EnemyFighter(-20, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
+        enemyShips.add(new EnemyFighter(-700, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
+        //enemyShips.add(new EnemyMediumFighter(-560, 80, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 150, 4000, 200, 5, player, resources));
         syncGameStateVaribles();
         
         player.setUpHitbox(camera.getLocation());
@@ -306,6 +306,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
         dispose();
         gd.setFullScreenWindow(null);
         setUndecorated(false);
+        setSize(1000, 600);
         panel.setBounds(0, 0, 1000, 600);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -404,7 +405,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 boolean collision = false;
                 for (Ship collisionShip : shipsToDraw) {
                     //System.out.println(ship.getClass() + " " + collisionShip.getClass());
-                    if (!collisionShip.equals(ship)) {
+                    if (!collisionShip.equals(ship) && !(collisionShip instanceof EnemyShip && ship instanceof EnemyShip)) {
                         if (ship.returnHitbox().collides(collisionShip.returnHitbox())
                                 && !(ship instanceof EnemyShip && collisionShip instanceof EnemyShip)) {
                             collision = true;
@@ -428,27 +429,28 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 }
                 
                 for (Shot shot : allShots) {
-                    if (shot.isDying() || ship.isExploding())
+                    if (!shot.isDying() && !ship.isExploding())
                     {
-                        continue;
-                    }
-                    if (shot.returnHitbox().collides(ship.returnHitbox())) {
-                        boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw);
-                        if (removals[0]) // ship 
-                        { 
-                            deadShips.add(ship);
-                        }
-                        if (removals[1]) // shot
+                        if (!shot.getOwner().equals(ship) || !(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip))
                         {
-                            if (shot instanceof Missile)
-                            {
-                                Missile m = (Missile)shot;
-                                m.explode();
+                            if (shot.returnHitbox().collides(ship.returnHitbox())) {
+                                boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw);
+                                if (removals[0]) // ship 
+                                { 
+                                    deadShips.add(ship);
+                                }
+                                if (removals[1]) // shot
+                                {
+                                    if (shot instanceof Missile)
+                                    {
+                                        Missile m = (Missile)shot;
+                                        m.explode();
+                                    }
+                                    deadShots.add(shot); 
+                                }
                             }
-                            deadShots.add(shot); 
                         }
                     }
-
                 }
                 
                 deadShots.addAll(ship.purgeShots());
@@ -456,14 +458,12 @@ public class OmegaCentauri extends Game implements GameActionListener {
             
             for (Shot shot : allShots)
             {
-                    if (shot.isDying())
-                    {
-                        continue;
-                    }
-
+                if (!shot.isDying())
+                {
                     for (Shot collisionShot : allShots)
                     {
-                        if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner())))
+                        if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner())) &&
+                                !(shot.getOwner() instanceof EnemyShip && collisionShot.getOwner() instanceof EnemyShip))
                         {
                             if (shot.returnHitbox().collides(collisionShot.returnHitbox()))
                             {
@@ -481,6 +481,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             }
                         }
                     }
+                }
             }
             syncGameStateVaribles();
         }
