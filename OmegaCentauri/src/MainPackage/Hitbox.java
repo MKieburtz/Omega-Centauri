@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
@@ -83,11 +84,12 @@ public class Hitbox extends Area {
         setShape();
     }
     
+    Area intersection;
     public boolean collides(Hitbox other)
     {
-        Area intersection = (Area)other.clone();
+        intersection = (Area)other.clone();
         intersection.intersect(this);
-        
+        //Toolkit.getDefaultToolkit().beep();
         return !intersection.isEmpty();
     }
     

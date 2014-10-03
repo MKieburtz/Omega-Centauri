@@ -405,12 +405,15 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 boolean collision = false;
                 for (Ship collisionShip : shipsToDraw) {
                     //System.out.println(ship.getClass() + " " + collisionShip.getClass());
-                    if (!collisionShip.equals(ship) && !(collisionShip instanceof EnemyShip && ship instanceof EnemyShip)) {
-                        if (ship.returnHitbox().collides(collisionShip.returnHitbox())
-                                && !(ship instanceof EnemyShip && collisionShip instanceof EnemyShip)) {
+                    if (!collisionShip.equals(ship) && !(collisionShip instanceof EnemyShip && ship instanceof EnemyShip)
+                            && !(
+                            (collisionShip.isColliding() || collisionShip.isExploding())
+                                || (ship.isColliding() || ship.isExploding())
+                            )
+                        )
+                    {                        
+                        if (ship.returnHitbox().collides(collisionShip.returnHitbox())) {
                             collision = true;
-                            if (!ship.isColliding() && !collisionShip.isColliding()) {
-                                                                
                                 boolean shipDied = ship.CollisionEventWithShip(ship, collisionShip);
                                 boolean collisionShipDied = collisionShip.CollisionEventWithShip(ship, collisionShip);
                                 
@@ -419,7 +422,6 @@ public class OmegaCentauri extends Game implements GameActionListener {
                                 }  if (collisionShipDied) {
                                     deadShips.add(collisionShip);
                                 }
-                            }
                         }
                     }
                 }

@@ -3,3 +3,5 @@
 /OmegaCentauri/dist/
 /nbproject/private/
 /build
+
+*.ser
