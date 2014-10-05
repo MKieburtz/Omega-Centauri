@@ -52,7 +52,7 @@ public class EnemyFighter extends EnemyShip {
         setUpHitbox(cameraLocation);
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 10, 20, resources);
+                activeImage.getHeight()), 0, 0, resources);
         
         this.id = id;
         
@@ -165,7 +165,7 @@ public class EnemyFighter extends EnemyShip {
             
             canshoot = false;
 
-            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this, resources)); // enemies override
+            //shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this, resources));
 
             ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         }

@@ -20,7 +20,6 @@ public class OmegaCentauri extends Game implements GameActionListener {
     private boolean forward, rotateRight, rotateLeft, shooting = false; // movement booleans
     private boolean paused = false;
     private boolean loading = false;
-    private final Point screenSize = new Point(10000, 10000); // game screensize
     private Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
     // TIMING STUFF
     private int FPS = 0;
@@ -38,13 +37,14 @@ public class OmegaCentauri extends Game implements GameActionListener {
     private GraphicsDevice gd;
     private MainMenu mainMenu;
     private Resources resources;
+    private Dimension mapSize;
     // TIMERS
     private ScheduledExecutorService timingEx;
     private ScheduledExecutorService recordingEx;
     /*
      * LOADING VARIBLES:
      */
-    private int[] yPositions = {-10000, -10000, 0, 0}; // starting y positions
+    private int[] yPositions;
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<>();
     private ArrayList<Ship> deadShips = new ArrayList<>();
@@ -52,6 +52,10 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     public OmegaCentauri() {
        
+        /* change this one, Michael */ mapSize = new Dimension(5000, 5000); 
+
+        yPositions = new int[]{ -mapSize.width, -mapSize.height, 0, 0 };
+        
         resources = new Resources();
         gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         renderer = new Renderer(resources);
@@ -65,27 +69,26 @@ public class OmegaCentauri extends Game implements GameActionListener {
     }
     
     private void addShips() {
-        player = new Player(0, 0, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 1000, resources);
-        enemyShips.add(new EnemyFighter(200, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(-500, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
-        enemyShips.add(new EnemyFighter(-300, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
-        enemyShips.add(new EnemyFighter(200, -500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 6, resources));
-        enemyShips.add(new EnemyFighter(-300, 400, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 7, resources));
-        enemyShips.add(new EnemyFighter(-400, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 8, resources));
-        enemyShips.add(new EnemyFighter(200, 900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 9, resources));
-        enemyShips.add(new EnemyFighter(-200, 500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 10, resources));
-        enemyShips.add(new EnemyFighter(-250, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 11, resources));
-        enemyShips.add(new EnemyFighter(-500, 290, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 12, resources));
-        enemyShips.add(new EnemyFighter(-200, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 13, resources));
-        enemyShips.add(new EnemyFighter(-200, 980, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 14, resources));
-        enemyShips.add(new EnemyFighter(-200, -230, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 15, resources));
-        enemyShips.add(new EnemyFighter(-530, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 16, resources));
-        enemyShips.add(new EnemyFighter(210, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
-        enemyShips.add(new EnemyFighter(200, 6500, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 18, resources));
-        enemyShips.add(new EnemyFighter(-20, -200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
-        enemyShips.add(new EnemyFighter(-700, 200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
+        player = new Player(2500, 2500, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 1000, resources);
+        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 1, resources));
+        enemyShips.add(new EnemyFighter(2000, 4900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
+        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
+        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 4, resources));
+        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
+        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 6, resources));
+        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 7, resources));
+        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 8, resources));
+        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 9, resources));
+        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 10, resources));
+        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 11, resources));
+        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 12, resources));
+        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 13, resources));
+        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 14, resources));
+        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 15, resources));
+        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 16, resources));
+        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
+        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
+        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
         //enemyShips.add(new EnemyMediumFighter(-560, 80, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 150, 4000, 200, 5, player, resources));
         syncGameStateVaribles();
         
@@ -454,8 +457,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                         }
                     }
                 }
-                
-                deadShots.addAll(ship.purgeShots());
+                deadShots.addAll(ship.purgeShots(mapSize));
             }
             
             for (Shot shot : allShots)
@@ -708,7 +710,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
                             //long startRenderTime = System.nanoTime();
                             renderer.drawGameScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
-                                    FPS, stars, camera, Version, UPS, paused, allShots);
+                                    FPS, stars, camera, Version, UPS, paused, allShots, mapSize);
                             framesDrawn++;
                             //System.out.println("render time: " + (System.nanoTime() - startRenderTime));
 
@@ -736,6 +738,10 @@ public class OmegaCentauri extends Game implements GameActionListener {
     
     class LoadingService implements Runnable {
         
+        int numStarsPerQuadH = (int)Math.ceil(mapSize.width / 400D);
+        int numStarsPerQuadV = (int)Math.ceil(mapSize.height / 400D);
+        int max = (numStarsPerQuadH * numStarsPerQuadV) * 4;
+        
         @Override
         public void run() {
             SwingUtilities.invokeLater(new Runnable() {
@@ -743,80 +749,19 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 @Override
                 public void run() {
                     try {
-            // load 100 starChunks from each quadrant
-                        // load all the horizontal star chunks from each quadrant
-                        // then move down 100 to the next chunk down
-
-                        // quadrant 1
-
-                        /*  _______
-                         * |___|_x_|
-                         * |___|___|
-                         */
-                        if (yPositions[0] < 0) {
-                            
-                            for (int x = 1; x < screenSize.x; x = x + 400) {
-                                
-                                stars.add(new StarChunk(x, yPositions[0], 400, 20));
-                                starChunksLoaded++;
-                            }
-                            
-                            yPositions[0] += 400;
-                        }
-
-                        // quadrant 2
-
-                        /*  _______
-                         * |_x_|___|
-                         * |___|___|
-                         */
-                        if (yPositions[1] < 0) {
-                            for (int x = -1; x > -screenSize.x; x = x - 400) {
-                                
-                                stars.add(new StarChunk(x, yPositions[1], 400, 20));
-                                starChunksLoaded++;
-                                
-                            }
-                            
-                            yPositions[1] += 400;
-                        }
-
-                        // quadrant 3
-
-                        /*  _______
-                         * |___|___|
-                         * |_x_|___|
-                         */
-                        if (yPositions[2] < 10000) {
-                            for (int x = -1; x > -screenSize.x; x = x - 400) {
-                                
-                                stars.add(new StarChunk(x, yPositions[2], 400, 20));
-                                starChunksLoaded++;
-                            }
-                            
-                            yPositions[2] += 400;
-                        }
-
-                        // quadrant 4
-
-                        /*  _______
-                         * |___|___|
-                         * |___|_x_|
-                         */
-                        if (yPositions[3] < 10000) {
-                            for (int x = 1; x < screenSize.x; x = x + 400) {
-                                
-                                stars.add(new StarChunk(x, yPositions[3], 400, 20));
-                                starChunksLoaded++;
-                            }
-                            
-                            yPositions[3] += 400;
-                        }
-
-                        // use active rendering to draw the screen
-                        renderer.drawLoadingScreen(panel.getGraphics(), starChunksLoaded / 25, panel.getWidth(), panel.getHeight());
                         
-                        if (starChunksLoaded == (25 * 25) * 4) {
+                        for (int x = 1; x < mapSize.width; x += 400)
+                        {
+                            for (int y = 1; y < mapSize.height; y += 400)
+                            {
+                                stars.add(new StarChunk(x, y, 400, 8));
+                                starChunksLoaded++;
+                            }
+                        }
+                        // use active rendering to draw the screen
+                        renderer.drawLoadingScreen(panel.getGraphics(), (starChunksLoaded / max) * 100, panel.getWidth(), panel.getHeight());
+                        
+                        if (starChunksLoaded == max) {
                             loading = false;
                             
                         }

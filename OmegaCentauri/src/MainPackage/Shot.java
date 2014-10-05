@@ -120,10 +120,10 @@ public abstract class Shot {
         return images.get(0);
     }
 
-    public boolean outsideScreen() // assumes a 20 thousand by 20 thousand screen
+    public boolean outsideScreen(Dimension screensize) 
     {
-        if (location.x < 10000 && location.x > -10000) {
-            if (location.y < 10000 && location.y > -10000) {
+        if (location.x < screensize.width && location.x > 0) {
+            if (location.y < screensize.height && location.y > 0) {
                 return false;
             }
         }

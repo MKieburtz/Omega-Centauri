@@ -311,10 +311,10 @@ public abstract class Ship{
     }
     
     ArrayList<Shot> shotsToRemove = new ArrayList<>();
-    public ArrayList<Shot> purgeShots() {
+    public ArrayList<Shot> purgeShots(Dimension screensize) {
         shotsToRemove.clear();
         for (int i = shots.size() - 1; i > -1; i--) {
-            if (shots.get(i).outsideScreen()) {
+            if (shots.get(i).outsideScreen(screensize)) {
                 shotsToRemove.add(shots.get(i));
                 shots.remove(i);
             }

@@ -32,9 +32,9 @@ public class StarChunk {
     }
 
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation) {
-        for (int i = 0; i < stars.length; i++) {
+        for (Ellipse2D.Double star : stars) {
             g2d.setColor(Color.WHITE);
-            g2d.fillOval((int) (stars[i].x - cameraLocation.x), (int) (stars[i].y - cameraLocation.y), 1, 1);
+            g2d.fillOval((int) (star.x - cameraLocation.x), (int) (star.y - cameraLocation.y), 1, 1);
         }
     }
 

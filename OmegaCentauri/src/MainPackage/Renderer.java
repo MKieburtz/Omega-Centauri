@@ -49,7 +49,7 @@ public class Renderer {
     }
 
     public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
-            ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused, HashSet<Shot> allShots) {
+            ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused, HashSet<Shot> allShots, Dimension mapSize) {
 
         //long start = System.currentTimeMillis();
         
@@ -93,7 +93,8 @@ public class Renderer {
 
                 if (ship.getHullHealth() <= 0) {
                     //g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
-                } else if ((ship.getLocation().x > 10000 || ship.getLocation().x < -10000) || (ship.getLocation().y > 10000 || ship.getLocation().y < -10000)) {
+                } else if ((ship.getLocation().x > mapSize.width || ship.getLocation().x < 0) ||
+                        (ship.getLocation().y > mapSize.height || ship.getLocation().y < 0)) {
                     g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
                 }
 
@@ -103,8 +104,8 @@ public class Renderer {
                 g2d.setColor(Color.YELLOW);
             }
 
-            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + 100 + ship.getLocation().x / 100,
-                        camera.getSize().y - 225 + 100 + ship.getLocation().y / 100, 1, 1);
+            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
+                        camera.getSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
                 g2d.draw(minimapShip);
             
         }
@@ -157,9 +158,9 @@ public class Renderer {
 
         g2d.setColor(new Color(0x00CECE)); // hex codes rock. This is pretty much cyan
         
-        for (int i = 0; i < percentDone; i += 20) {
-            g2d.drawString(".", width / 2 - 180 + i * 4, height / 2 - 50);
-        }
+//        for (int i = 0; i < percentDone; i += 20) {
+//            g2d.drawString(".", width / 2 - 180 + i * 4, height / 2 - 50);
+//        }
 
         g.drawImage(bufferedImage, 0, 0, null);
 
