@@ -414,17 +414,20 @@ public class OmegaCentauri extends Game implements GameActionListener {
                                 || (ship.isColliding() || ship.isExploding())
                             )
                         )
-                    {                        
-                        if (ship.returnHitbox().collides(collisionShip.returnHitbox())) {
-                            collision = true;
-                                boolean shipDied = ship.CollisionEventWithShip(ship, collisionShip);
-                                boolean collisionShipDied = collisionShip.CollisionEventWithShip(ship, collisionShip);
-                                
-                                if (shipDied) {
-                                    deadShips.add(ship);
-                                }  if (collisionShipDied) {
-                                    deadShips.add(collisionShip);
-                                }
+                    {    
+                        if (Calculator.getDistance(ship.getLocation(), collisionShip.getLocation()) < 500)
+                        {
+                            if (ship.returnHitbox().collides(collisionShip.returnHitbox())) {
+                                collision = true;
+                                    boolean shipDied = ship.CollisionEventWithShip(ship, collisionShip);
+                                    boolean collisionShipDied = collisionShip.CollisionEventWithShip(ship, collisionShip);
+
+                                    if (shipDied) {
+                                        deadShips.add(ship);
+                                    }  if (collisionShipDied) {
+                                        deadShips.add(collisionShip);
+                                    }
+                            }
                         }
                     }
                 }
@@ -438,20 +441,23 @@ public class OmegaCentauri extends Game implements GameActionListener {
                     {
                         if (!shot.getOwner().equals(ship) || !(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip))
                         {
-                            if (shot.returnHitbox().collides(ship.returnHitbox())) {
-                                boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw);
-                                if (removals[0]) // ship 
-                                { 
-                                    deadShips.add(ship);
-                                }
-                                if (removals[1]) // shot
-                                {
-                                    if (shot instanceof Missile)
-                                    {
-                                        Missile m = (Missile)shot;
-                                        m.explode();
+                            if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500)
+                            {
+                                if (shot.returnHitbox().collides(ship.returnHitbox())) {
+                                    boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw);
+                                    if (removals[0]) // ship 
+                                    { 
+                                        deadShips.add(ship);
                                     }
-                                    deadShots.add(shot); 
+                                    if (removals[1]) // shot
+                                    {
+                                        if (shot instanceof Missile)
+                                        {
+                                            Missile m = (Missile)shot;
+                                            m.explode();
+                                        }
+                                        deadShots.add(shot); 
+                                    }
                                 }
                             }
                         }
@@ -469,18 +475,21 @@ public class OmegaCentauri extends Game implements GameActionListener {
                         if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner())) &&
                                 !(shot.getOwner() instanceof EnemyShip && collisionShot.getOwner() instanceof EnemyShip))
                         {
-                            if (shot.returnHitbox().collides(collisionShot.returnHitbox()))
+                            if (Calculator.getDistance(shot.getLocation(), collisionShot.getLocation()) < 500);
                             {
-                                boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, shipsToDraw);
-                                boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, shipsToDraw);
+                                if (shot.returnHitbox().collides(collisionShot.returnHitbox()))
+                                {
+                                    boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, shipsToDraw);
+                                    boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, shipsToDraw);
 
-                                if (shotGotRemoved)
-                                {
-                                    deadShots.add(shot);
-                                }
-                                if (collisionShotGotRemoved)
-                                {
-                                    deadShots.add(collisionShot);
+                                    if (shotGotRemoved)
+                                    {
+                                        deadShots.add(shot);
+                                    }
+                                    if (collisionShotGotRemoved)
+                                    {
+                                        deadShots.add(collisionShot);
+                                    }
                                 }
                             }
                         }
