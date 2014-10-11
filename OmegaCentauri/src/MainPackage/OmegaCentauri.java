@@ -143,11 +143,6 @@ public class OmegaCentauri extends Game implements GameActionListener {
         addWindowFocusListener(new WindowAdapter() {
 
             @Override
-            public void windowGainedFocus(WindowEvent e) {
-                Toolkit.getDefaultToolkit().beep();
-            }
-
-            @Override
             public void windowLostFocus(WindowEvent e) {
 //                shooting = false;
 //                rotateLeft = false;
