@@ -180,14 +180,6 @@ public class MainMenu {
         else if (settings.isActive())
         {
             settings.checkMouseExited();
-        }if (!settings.isActive() && active) {
-            startHover = false;
-            closeHover = false;
-            settingsHover = false;
-        } 
-        else if (settings.isActive())
-        {
-            settings.checkMouseExited();
         }
     }
     

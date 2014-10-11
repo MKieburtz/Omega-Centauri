@@ -52,7 +52,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
     public OmegaCentauri() {
 
-        /* change this one, Michael */ mapSize = new Dimension(5000, 5000);
+        /* change this one, Michael */ mapSize = new Dimension(10000, 10000);
 
         yPositions = new int[]{-mapSize.width, -mapSize.height, 0, 0};
 
@@ -69,26 +69,29 @@ public class OmegaCentauri extends Game implements GameActionListener {
     }
 
     private void addShips() {
-        player = new Player(2500, 2500, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 1000, resources);
-        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(2000, 4900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 4, resources));
-        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
-        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 6, resources));
-        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 7, resources));
-        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 8, resources));
-        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 9, resources));
-        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 10, resources));
-        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 11, resources));
-        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 12, resources));
-        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 13, resources));
-        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 14, resources));
-        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 15, resources));
-        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 16, resources));
-        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
-        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
-        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
+        player = new Player(5000, 5000, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 1000, resources);
+        enemyShips.add(new EnemyFighter(5000, 1000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
+        enemyShips.add(new EnemyFighter(9000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
+        enemyShips.add(new EnemyFighter(5000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
+        enemyShips.add(new EnemyFighter(1000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
+//        enemyShips.add(new EnemyFighter(2000, 4900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
+//        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 4, resources));
+//        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 6, resources));
+//        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 7, resources));
+//        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 8, resources));
+//        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 9, resources));
+//        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 10, resources));
+//        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 11, resources));
+//        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 12, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 13, resources));
+//        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 14, resources));
+//        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 15, resources));
+//        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 16, resources));
+//        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
+//        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
+//        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
         //enemyShips.add(new EnemyMediumFighter(-560, 80, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 150, 4000, 200, 5, player, resources));
         syncGameStateVaribles();
 
@@ -100,6 +103,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
         setMinimumSize(new Dimension(600, 600));
+        this.setFocusable(true);
 
         mainMenu = new MainMenu(this, resources);
 
@@ -117,6 +121,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
             setSize(1000, 600);
             panel = new Panel(1000, 600);
         }
+        panel.setFocusable(true);
 
         setBackground(Color.BLACK);
         setInputMaps();
@@ -135,10 +140,11 @@ public class OmegaCentauri extends Game implements GameActionListener {
             }
         });
 
-        addWindowFocusListener(new WindowFocusListener() {
+        addWindowFocusListener(new WindowAdapter() {
 
             @Override
             public void windowGainedFocus(WindowEvent e) {
+                Toolkit.getDefaultToolkit().beep();
             }
 
             @Override
@@ -148,7 +154,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
 //                rotateRight = false;
 //                forward = false;
 
-                requestFocus();
+                requestFocusInWindow();
             }
         });
 
@@ -287,7 +293,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
     @Override
     public void gameStart() {
-        System.gc();
+        //System.gc();
         startGame();
     }
 
@@ -397,33 +403,33 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 if (ship.getShield().isActive()) {
                     ship.getShield().decay();
                 }
-                boolean collision = false;
-                for (Ship collisionShip : shipsToDraw) {
-                    //System.out.println(ship.getClass() + " " + collisionShip.getClass());
-                    if (Calculator.getDistance(ship.getLocation(), collisionShip.getLocation()) < 500) {
-
-                        if (!collisionShip.equals(ship) && !(collisionShip instanceof EnemyShip && ship instanceof EnemyShip)
-                                && !((collisionShip.isColliding() || collisionShip.isExploding())
-                                || (ship.isColliding() || ship.isExploding()))) {
-                            if (ship.returnHitbox().collides(collisionShip.returnHitbox())) {
-                                collision = true;
-                                boolean shipDied = ship.CollisionEventWithShip(ship, collisionShip);
-                                boolean collisionShipDied = collisionShip.CollisionEventWithShip(ship, collisionShip);
-
-                                if (shipDied) {
-                                    deadShips.add(ship);
-                                }
-                                if (collisionShipDied) {
-                                    deadShips.add(collisionShip);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (!collision) {
-                    ship.setColliding(false);
-                }
+//                boolean collision = false;
+//                for (Ship collisionShip : shipsToDraw) {
+//                    //System.out.println(ship.getClass() + " " + collisionShip.getClass());
+//                    if (Calculator.getDistance(ship.getLocation(), collisionShip.getLocation()) < 500) {
+//
+//                        if (!collisionShip.equals(ship) && !(collisionShip instanceof EnemyShip && ship instanceof EnemyShip)
+//                                && !((collisionShip.isColliding() || collisionShip.isExploding())
+//                                || (ship.isColliding() || ship.isExploding()))) {
+//                            if (ship.returnHitbox().collides(collisionShip.returnHitbox())) {
+//                                collision = true;
+//                                boolean shipDied = ship.CollisionEventWithShip(ship, collisionShip);
+//                                boolean collisionShipDied = collisionShip.CollisionEventWithShip(ship, collisionShip);
+//
+//                                if (shipDied) {
+//                                    deadShips.add(ship);
+//                                }
+//                                if (collisionShipDied) {
+//                                    deadShips.add(collisionShip);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                if (!collision) {
+//                    ship.setColliding(false);
+//                }
 
                 for (Shot shot : allShots) {
                     if (!shot.isDying() && !ship.isExploding()) {
@@ -600,20 +606,19 @@ public class OmegaCentauri extends Game implements GameActionListener {
     private void escapePressed() {
         paused = !paused;
     }
-
+//</editor-fold>
     public class Panel extends JPanel {
 
         public Panel(int width, int height) {
             setSize(width, height);
             setBackground(Color.BLACK);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+            
             addMouseMotionListener(new MouseAdapter() {
                 @Override
                 public void mouseMoved(MouseEvent e) {
                     if (mainMenu.isActive()) {
                         mainMenu.checkMouseMoved(e.getPoint());
-
                     }
                 }
             });
@@ -644,7 +649,6 @@ public class OmegaCentauri extends Game implements GameActionListener {
             setVisible(true);
         }
     }
-//</editor-fold>
 
     private void syncGameStateVaribles() {
         camera.move(player.getLocation().x - (getWidth() / 2), player.getLocation().y - (getHeight() / 2));
@@ -775,6 +779,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 public void run() {
                     try {
                         if (mainMenu.isActive()) {
+                            long start = System.currentTimeMillis();
 
                             if (mainMenu.getSize().x != OmegaCentauri.this.getWidth()
                                     || mainMenu.getSize().y != OmegaCentauri.this.getHeight()) {
@@ -782,7 +787,9 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             }
 
                             mainMenu.draw(panel.getGraphics());
-                            timingEx.schedule(new MainMenuService(), 15, TimeUnit.MILLISECONDS);
+                            long elapsed = System.currentTimeMillis() - start;
+                            System.out.println(OmegaCentauri.this.panel.hasFocus());
+                            timingEx.schedule(new MainMenuService(), 15 - elapsed, TimeUnit.MILLISECONDS);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();

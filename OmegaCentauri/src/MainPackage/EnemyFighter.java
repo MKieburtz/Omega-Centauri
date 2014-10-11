@@ -149,9 +149,7 @@ public class EnemyFighter extends EnemyShip {
                             movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
 
             Point2D.Double shotStartingPos = new Point2D.Double();
-            
-            
-            
+
             if (right) 
             {
                 shotStartingPos.x = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()).x + Calculator.CalcAngleMoveX(360 - faceAngle + 45) * 25;
@@ -165,7 +163,7 @@ public class EnemyFighter extends EnemyShip {
             
             canshoot = false;
 
-            //shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this, resources));
+            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this, resources));
 
             ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         }
