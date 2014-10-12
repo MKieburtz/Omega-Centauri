@@ -38,9 +38,12 @@ public class OmegaCentauri extends Game implements GameActionListener {
     private MainMenu mainMenu;
     private Resources resources;
     private Dimension mapSize;
+    private Point mouseLocation = new Point();
+    private Dimension borderSize;
     // TIMERS
     private ScheduledExecutorService timingEx;
     private ScheduledExecutorService recordingEx;
+    private ScheduledExecutorService mouseRecordingEx;
     /*
      * LOADING VARIBLES:
      */
@@ -116,18 +119,20 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 gd.setFullScreenWindow(this);
             }
             this.setVisible(false);
-            panel = new Panel(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+            panel = new Panel(true);
         } else {
-            setSize(1000, 600);
-            panel = new Panel(1000, 600);
-        }
-        panel.setFocusable(true);
+            setPreferredSize(new Dimension(1000, 600));
+            panel = new Panel(false);
+        }        
 
         setBackground(Color.BLACK);
         setInputMaps();
 
         getContentPane().add(panel);
 
+        borderSize = new Dimension(getSize().width - getContentPane().getSize().width,
+                getSize().height - getContentPane().getSize().height);
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
@@ -154,13 +159,15 @@ public class OmegaCentauri extends Game implements GameActionListener {
         });
 
         timingEx = Executors.newScheduledThreadPool(4);
-
         recordingEx = Executors.newSingleThreadScheduledExecutor();
+        mouseRecordingEx = Executors.newSingleThreadScheduledExecutor();
+        
         setLocationRelativeTo(null);
 
         setVisible(true);
 
         timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
+        mouseRecordingEx.schedule(new MouseChecker(), 1, TimeUnit.MILLISECONDS);
     }
 
     private void setInputMaps() {
@@ -604,19 +611,16 @@ public class OmegaCentauri extends Game implements GameActionListener {
 //</editor-fold>
     public class Panel extends JPanel {
 
-        public Panel(int width, int height) {
-            setSize(width, height);
+        public Panel(boolean fullScreen) {
+            if (fullScreen)
+            {
+                setSize(Toolkit.getDefaultToolkit().getScreenSize());
+            }
+            pack();
+            
             setBackground(Color.BLACK);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
-            addMouseMotionListener(new MouseAdapter() {
-                @Override
-                public void mouseMoved(MouseEvent e) {
-                    if (mainMenu.isActive()) {
-                        mainMenu.checkMouseMoved(e.getPoint());
-                    }
-                }
-            });
 
             addMouseListener(new MouseAdapter() {
                 @Override
@@ -780,15 +784,38 @@ public class OmegaCentauri extends Game implements GameActionListener {
                                     || mainMenu.getSize().y != OmegaCentauri.this.getHeight()) {
                                 mainMenu.setSize(OmegaCentauri.this.getWidth(), OmegaCentauri.this.getHeight());
                             }
+                            mainMenu.checkMouseMoved(mouseLocation);
 
                             mainMenu.draw(panel.getGraphics());
                             long elapsed = System.currentTimeMillis() - start;
-                            System.out.println(OmegaCentauri.this.panel.hasFocus());
                             timingEx.schedule(new MainMenuService(), 15 - elapsed, TimeUnit.MILLISECONDS);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
+                }
+            });
+        }
+    }
+    
+    class MouseChecker implements Runnable 
+    {
+        @Override
+        public void run()
+        {
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    mouseLocation.x = MouseInfo.getPointerInfo().getLocation().x
+                            - OmegaCentauri.this.getLocationOnScreen().x
+                            - borderSize.width;
+                    
+                    mouseLocation.y = MouseInfo.getPointerInfo().getLocation().y
+                            - OmegaCentauri.this.getLocationOnScreen().y
+                            -borderSize.height;
+
+                    mouseRecordingEx.schedule(new MouseChecker(), 10, TimeUnit.MILLISECONDS);
                 }
             });
         }
