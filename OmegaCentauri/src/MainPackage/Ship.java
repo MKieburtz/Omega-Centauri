@@ -95,27 +95,36 @@ public abstract class Ship{
     public void draw(Graphics2D g2d, Camera camera) {
         if (!exploding)
         {
-            AffineTransform transform = (AffineTransform) g2d.getTransform().clone();
-
-            transform.rotate(Math.toRadians(360 - faceAngle),
-                    Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
-                    Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
-
-            transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
-                    Calculator.getScreenLocation(camera.getLocation(), location).y);
+//            AffineTransform transform = (AffineTransform) g2d.getTransform().clone();
+//
+//            transform.rotate(Math.toRadians(360 - faceAngle),
+//                    Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
+//                    Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
+//
+//            transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
+//                    Calculator.getScreenLocation(camera.getLocation(), location).y);
 
             //hitbox.draw(g2d);
-            g2d.transform(transform);
+            //g2d.transform(transform);
 
+            g2d.rotate(Math.toRadians(360 - faceAngle),
+                    Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
+                    Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
+            
+            g2d.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
+                    Calculator.getScreenLocation(camera.getLocation(), location).y);
+            
             g2d.drawImage(activeImage, 0, 0, null);
         }
         else
         {
+            long start = System.currentTimeMillis();
             explosion.draw(g2d, location, camera.getLocation());
             if (explosion.isDone())
             {
                 exploding = false;
             }
+           System.out.println(System.currentTimeMillis() - start);
         }
         
     }

@@ -77,6 +77,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
         enemyShips.add(new EnemyFighter(9000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
         enemyShips.add(new EnemyFighter(5000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
         enemyShips.add(new EnemyFighter(1000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
+        enemyShips.add(new EnemyFighter(5000, 4800, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
 //        enemyShips.add(new EnemyFighter(2000, 4900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
 //        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
 //        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 4, resources));

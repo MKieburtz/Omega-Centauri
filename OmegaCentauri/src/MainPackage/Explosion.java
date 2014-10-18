@@ -22,9 +22,10 @@ public class Explosion {
     private final Dimension entityImageSize;
     
     private Dimension explosionImageSize;
+    
+    private Point2D.Double drawingManipulation = new Point2D.Double();
 
     private int frame = 0;
-    private boolean done = false;
 
     public static enum Type {
 
@@ -59,6 +60,10 @@ public class Explosion {
         }
 
         this.entityImageSize = imageSize;
+        
+        drawingManipulation = new Point2D.Double(
+                (explosionImageSize.width - entityImageSize.width) / 2,
+                (explosionImageSize.height - entityImageSize.height) / 2);
     }
 
     private void loadImages(Dimension spriteSheetSize, BufferedImage spriteSheet, Dimension imageSize) {
@@ -74,17 +79,14 @@ public class Explosion {
     }
 
     public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) {
-        g2d.drawImage(images[frame],
-                (int)Calculator.getScreenLocation(cameraLocation, location).x - ((explosionImageSize.width - entityImageSize.width) / 2),
-                (int)Calculator.getScreenLocation(cameraLocation, location).y - ((explosionImageSize.height - entityImageSize.height) / 2), null);
-        frame++;
 
-        if (frame == images.length) {
-            done = true;
-        }
+        g2d.drawImage(images[frame],
+                (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
+                (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
+        frame++;
     }
 
     public boolean isDone() {
-        return done;
+        return frame == images.length;
     }
 }
