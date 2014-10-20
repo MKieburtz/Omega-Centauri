@@ -38,7 +38,7 @@ public class Shield {
         if (enemy) {
             activeImage = resources.getImageForObject("resources/FILLERshieldEnemy.png");
         } else {
-            activeImage = resources.getImageForObject("resources/FILLERshield.png");
+            activeImage = resources.getImageForObject("resources/shield.png");
         }
         scaling[0] = (double)size.x / activeImage.getWidth();
         scaling[1] = (double)size.y / activeImage.getHeight();
@@ -59,15 +59,15 @@ public class Shield {
             g2d.setComposite(comp);
 
              transform.rotate(Math.toRadians(360 - angle),
-                    Calculator.getScreenLocation(cameraLocation, instanceLocation).x + size.x / 2,
-                    Calculator.getScreenLocation(cameraLocation, instanceLocation).y + size.y / 2 );
+                    Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).x,
+                    Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).y);
             
             
             transform.translate(
                     Calculator.getScreenLocation(cameraLocation, instanceLocation).x,
                     Calculator.getScreenLocation(cameraLocation, instanceLocation).y);
             
-            transform.scale(scaling[0], scaling[1]);
+            //transform.scale(scaling[0], scaling[1]);
             
             g2d.transform(transform);
             
