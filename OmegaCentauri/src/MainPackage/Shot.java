@@ -22,7 +22,7 @@ public abstract class Shot {
     protected double faceAngle;
     protected Point2D.Double velocity;
     protected int maxVel;
-    protected Hitbox hitbox;
+    protected RectangularHitbox hitbox;
 
     protected Ship owner; // the ship that fired the shot
 
@@ -57,22 +57,22 @@ public abstract class Shot {
         g2d.setTransform(original);
 
         //g2d.setColor(Color.red);
-        //g2d.draw(hitbox);
+        //g2d.draw(RectangularHitbox);
     }
 
     public void update() {}
 
     protected void setUpHitbox(Point2D.Double cameraLocation) {
-        ArrayList<Point2D.Double> hitboxPoints = new ArrayList<>();
+        Point2D.Double[] hitboxPoints = new Point2D.Double[4]; 
 
         try {
-            hitboxPoints.add(new Point2D.Double(0, 0));
-            hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), 0));
-            hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), activeImage.getHeight()));
-            hitboxPoints.add(new Point2D.Double(0, activeImage.getHeight()));
+            hitboxPoints[0] = new Point2D.Double(0, 0);
+            hitboxPoints[1] = new Point2D.Double(activeImage.getWidth(), 0);
+            hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
+            hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
 
             Point2D.Double centerPoint = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2);
-            hitbox = new Hitbox(hitboxPoints, centerPoint);
+            hitbox = new RectangularHitbox(hitboxPoints);
 
             hitbox.rotateToAngle(360 - faceAngle);
 
@@ -103,8 +103,8 @@ public abstract class Shot {
         hitbox.moveToLocation(Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()));
     }
 
-    public Hitbox returnHitbox() {
-        return hitbox;
+    public RectangularHitbox returnHitbox() {
+        return hitbox;  
     }
 
     public Point2D.Double getLocation() {

@@ -2,27 +2,25 @@ package MainPackage;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 /**
  * @author Michael Kieburtz
  */
-public class Hitbox extends Area {
-    // in order of addition
-    private ArrayList<Point2D.Double> points = new ArrayList<>();
-    private Point2D.Double rotationPoint;
+public class RectangularHitbox extends Area {
+    // in order of addition counter clockwise from top left!!
+    private Point2D.Double[] points = new Point2D.Double[4];
+    private Point2D.Double centerPoint = new Point2D.Double();
     private double angle = 0;
     
-    public Hitbox(ArrayList<Point2D.Double> points, Point2D.Double rotationPoint)
+    public RectangularHitbox(Point2D.Double[] points)
     {
         this.points = points;
-        this.rotationPoint = rotationPoint;
+        centerPoint = new Point2D.Double((points[0].x - points[1].x) / 2, (points[3].y - points[0].y) / 2);
         setShape();
     }
     
@@ -34,8 +32,8 @@ public class Hitbox extends Area {
         }
         for (Point2D.Double point : points)
         {
-            double newX = rotationPoint.x + (point.x - rotationPoint.x) * Math.cos(Math.toRadians(360 - (angle - this.angle))) - (point.y - rotationPoint.y) * Math.sin(Math.toRadians(360 - (angle - this.angle)));
-            double newY = rotationPoint.y + (point.x - rotationPoint.x) * Math.sin(Math.toRadians(360 - (angle - this.angle))) + (point.y - rotationPoint.y) * Math.cos(Math.toRadians(360 - (angle - this.angle)));
+            double newX = centerPoint.x + (point.x - centerPoint.x) * Math.cos(Math.toRadians(360 - (angle - this.angle))) - (point.y - centerPoint.y) * Math.sin(Math.toRadians(360 - (angle - this.angle)));
+            double newY = centerPoint.y + (point.x - centerPoint.x) * Math.sin(Math.toRadians(360 - (angle - this.angle))) + (point.y - centerPoint.y) * Math.cos(Math.toRadians(360 - (angle - this.angle)));
             point.x = newX;
             point.y = newY;
         }
@@ -48,8 +46,8 @@ public class Hitbox extends Area {
     {
         for (Point2D.Double point : points)
         {
-            double newX =rotationPoint.x + (point.x - rotationPoint.x) * Math.cos(Math.toRadians(360 - angle)) - (point.y - rotationPoint.y) * Math.sin(Math.toRadians(360 - angle));
-            double newY =rotationPoint.y + (point.x - rotationPoint.x) * Math.sin(Math.toRadians(360 - angle)) + (point.y - rotationPoint.y) * Math.cos(Math.toRadians(360 - angle)); 
+            double newX =centerPoint.x + (point.x - centerPoint.x) * Math.cos(Math.toRadians(360 - angle)) - (point.y - centerPoint.y) * Math.sin(Math.toRadians(360 - angle));
+            double newY =centerPoint.y + (point.x - centerPoint.x) * Math.sin(Math.toRadians(360 - angle)) + (point.y - centerPoint.y) * Math.cos(Math.toRadians(360 - angle)); 
             point.x = newX;
             point.y = newY;
         }
@@ -60,10 +58,10 @@ public class Hitbox extends Area {
     
     public void moveToLocation(Point2D.Double location)
     {
-        double distanceX = location.x - rotationPoint.x;
-        double distanceY = location.y - rotationPoint.y;
-        rotationPoint.x += distanceX;
-        rotationPoint.y += distanceY;
+        double distanceX = location.x - centerPoint.x;
+        double distanceY = location.y - centerPoint.y;
+        centerPoint.x += distanceX;
+        centerPoint.y += distanceY;
         for (Point2D.Double point : points)
         {
             point.x += distanceX;
@@ -74,8 +72,8 @@ public class Hitbox extends Area {
     
     public void moveRelitive(Point2D.Double distance)
     {
-        rotationPoint.x += distance.x;
-        rotationPoint.y += distance.y;
+        centerPoint.x += distance.x;
+        centerPoint.y += distance.y;
         for (Point2D.Double point : points)
         {
             point.x += distance.x;
@@ -85,7 +83,7 @@ public class Hitbox extends Area {
     }
     
     Area intersection;
-    public boolean collides(Hitbox other)
+    public boolean collides(RectangularHitbox other)
     {
         intersection = (Area)other.clone();
         intersection.intersect(this);
@@ -96,15 +94,15 @@ public class Hitbox extends Area {
     public void draw(Graphics2D g2d)
     {
         g2d.setColor(Color.RED);
-        for (int i = 0; i < points.size(); i++)
+        for (int i = 0; i < points.length; i++)
         {
-            if (i != points.size() - 1)
+            if (i != points.length - 1)
             {
-                g2d.draw(new Line2D.Double(points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y));
+                g2d.draw(new Line2D.Double(points[i].x, points[i].y, points[i + 1].x, points[i].y));
             }
             else
             {
-                g2d.draw(new Line2D.Double(points.get(i).x, points.get(i).y, points.get(0).x, points.get(0).y));
+                g2d.draw(new Line2D.Double(points[i].x, points[i].y, points[i].x, points[i].y));
             }
         }
         
@@ -116,11 +114,11 @@ public class Hitbox extends Area {
         
         Path2D.Double pathToAdd = new Path2D.Double();
         
-        pathToAdd.moveTo(points.get(0).x, points.get(0).y);
+        pathToAdd.moveTo(points[0].x, points[0].y);
         
-        for (int i = 1; i < points.size(); i++)
+        for (int i = 1; i < points.length; i++)
         {
-            pathToAdd.lineTo(points.get(i).x, points.get(i).y);
+            pathToAdd.lineTo(points[i].x, points[i].y);
         }
         
         pathToAdd.closePath(); // just in case

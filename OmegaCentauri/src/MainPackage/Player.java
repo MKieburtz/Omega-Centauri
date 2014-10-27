@@ -121,7 +121,7 @@ public class Player extends Ship {
         
         g2d.setTransform(original);
         
-        //g2d.draw(hitbox);
+        //g2d.draw(RectangularHitbox);
         
         shield.draw(g2d, camera.getLocation(), location, faceAngle);
 

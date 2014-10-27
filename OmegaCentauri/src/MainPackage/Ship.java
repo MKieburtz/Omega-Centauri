@@ -36,7 +36,7 @@ public abstract class Ship{
     protected Point2D.Double movementVelocity = new Point2D.Double(0, 0);
     protected double angularVelocity = 0;
     protected double maxAngularVel;
-    protected Hitbox hitbox;
+    protected RectangularHitbox hitbox;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;
@@ -57,8 +57,7 @@ public abstract class Ship{
     protected boolean colliding = false;
     protected ScheduledExecutorService ex;
     
-    protected ArrayList<Point2D.Double> hitboxStartingPoints = new ArrayList<>();
-    protected Point2D.Double hitboxRotationPoint = null;
+    protected Point2D.Double[] hitboxPoints = new Point2D.Double[4];
     
     protected Ship targetShip;
     
@@ -104,7 +103,7 @@ public abstract class Ship{
 //            transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
 //                    Calculator.getScreenLocation(camera.getLocation(), location).y);
 
-            //hitbox.draw(g2d);
+            //RectangularHitbox.draw(g2d);
             //g2d.transform(transform);
 
             g2d.rotate(Math.toRadians(360 - faceAngle),
@@ -216,19 +215,15 @@ public abstract class Ship{
         updateAngle(state);
     }
     
-    public void setUpHitbox(Point2D.Double cameraLocation) {
-        
-        ArrayList<Point2D.Double> hitboxPoints = new ArrayList<>();
-        
+    public void setUpHitbox(Point2D.Double cameraLocation) {        
         try {
             
-            hitboxPoints.add(new Point2D.Double(0, 0));
-            hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), 0));
-            hitboxPoints.add(new Point2D.Double(activeImage.getWidth(), activeImage.getHeight()));
-            hitboxPoints.add(new Point2D.Double(0, activeImage.getHeight()));
+           hitboxPoints[0] = new Point2D.Double(0, 0);
+           hitboxPoints[1] = new Point2D.Double(activeImage.getWidth(), 0);
+           hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
+           hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
             
-            Point2D.Double centerPoint = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2);
-            hitbox = new Hitbox(hitboxPoints, centerPoint);
+           hitbox = new RectangularHitbox(hitboxPoints);
         } catch (NullPointerException ex) {
             System.err.println("active image not initialized!");
         }
@@ -279,7 +274,7 @@ public abstract class Ship{
         return false;
     }
     
-    public Hitbox returnHitbox() {
+    public RectangularHitbox returnHitbox() {
         return hitbox;
     }
     

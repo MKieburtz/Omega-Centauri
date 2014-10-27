@@ -41,7 +41,7 @@ public class Missile extends PhysicalShot {
         return removed;
     }
     
-    public Hitbox getHitbox()
+    public RectangularHitbox getHitbox()
     {
         return hitbox;
     }
