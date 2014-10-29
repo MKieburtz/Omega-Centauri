@@ -1,6 +1,7 @@
 package MainPackage;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.geom.Area;
@@ -15,11 +16,13 @@ public class RectangularHitbox extends Area {
     // in order of addition counter clockwise from top left!!
     private Point2D.Double[] points = new Point2D.Double[4];
     private Point2D.Double centerPoint = new Point2D.Double();
+    private Dimension dimensions;
     private double angle = 0;
     
     public RectangularHitbox(Point2D.Double[] points)
     {
         this.points = points;
+        dimensions = new Dimension((int)(points[1].x - points[0].x), (int)(points[3].y - points[0].y));
         centerPoint = new Point2D.Double((points[0].x - points[1].x) / 2, (points[3].y - points[0].y) / 2);
         setShape();
     }
@@ -124,5 +127,20 @@ public class RectangularHitbox extends Area {
         pathToAdd.closePath(); // just in case
         
         this.add(new Area(pathToAdd));
+    }
+    
+    public Point2D.Double getCenterPoint()
+    {
+        return centerPoint;
+    }
+    
+    public double getAngle()
+    {
+        return angle;
+    }
+    
+    public Dimension getDimensions()
+    {
+        return dimensions;
     }
 }
