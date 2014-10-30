@@ -127,4 +127,27 @@ public class Calculator {
         
         return newAngle;
     }
+    
+    public static double clamp(double value, double max, double min)
+    {
+        return Math.max(min, Math.min(max, value));
+    }
+    
+    public static double min(double... values) // must have parameter
+    {
+        if (values.length == 0)
+        {
+            throw new IllegalArgumentException();
+        }
+        double lowest = values[0];
+        for (int i = 0; i < values.length; i++)
+        {
+            if (values[i] < lowest)
+            {
+                lowest = i;
+            }
+        }
+        
+        return lowest;
+    }
 }
