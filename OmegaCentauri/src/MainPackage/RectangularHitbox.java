@@ -13,15 +13,17 @@ import java.awt.geom.Point2D;
  * @author Michael Kieburtz
  */
 public class RectangularHitbox extends Area {
-    // in order of addition counter clockwise from top left!!
+    // in order of addition counter clockwise from top left!!!!!
     private Point2D.Double[] points = new Point2D.Double[4];
     private Point2D.Double centerPoint = new Point2D.Double();
+    private Point2D.Double topRightPoint = new Point2D.Double();
     private Dimension dimensions;
     private double angle = 0;
     
     public RectangularHitbox(Point2D.Double[] points)
     {
         this.points = points;
+        topRightPoint = new Point2D.Double(points[0].x, points[0].y);
         dimensions = new Dimension((int)(points[1].x - points[0].x), (int)(points[3].y - points[0].y));
         centerPoint = new Point2D.Double((points[0].x - points[1].x) / 2, (points[3].y - points[0].y) / 2);
         setShape();
@@ -35,10 +37,7 @@ public class RectangularHitbox extends Area {
         }
         for (Point2D.Double point : points)
         {
-            double newX = centerPoint.x + (point.x - centerPoint.x) * Math.cos(Math.toRadians(360 - (angle - this.angle))) - (point.y - centerPoint.y) * Math.sin(Math.toRadians(360 - (angle - this.angle)));
-            double newY = centerPoint.y + (point.x - centerPoint.x) * Math.sin(Math.toRadians(360 - (angle - this.angle))) + (point.y - centerPoint.y) * Math.cos(Math.toRadians(360 - (angle - this.angle)));
-            point.x = newX;
-            point.y = newY;
+            point = Calculator.rotatePointAroundPoint(point, centerPoint, angle - this.angle);
         }
         this.angle = angle;
         //System.out.println(points);
@@ -49,10 +48,7 @@ public class RectangularHitbox extends Area {
     {
         for (Point2D.Double point : points)
         {
-            double newX =centerPoint.x + (point.x - centerPoint.x) * Math.cos(Math.toRadians(360 - angle)) - (point.y - centerPoint.y) * Math.sin(Math.toRadians(360 - angle));
-            double newY =centerPoint.y + (point.x - centerPoint.x) * Math.sin(Math.toRadians(360 - angle)) + (point.y - centerPoint.y) * Math.cos(Math.toRadians(360 - angle)); 
-            point.x = newX;
-            point.y = newY;
+           point = Calculator.rotatePointAroundPoint(point, centerPoint, angle);
         }
         this.angle += angle;
         //System.out.println(points);
@@ -142,5 +138,10 @@ public class RectangularHitbox extends Area {
     public Dimension getDimensions()
     {
         return dimensions;
+    }
+    
+    public Point2D.Double getTopLeftPoint()
+    {
+        return topRightPoint;
     }
 }

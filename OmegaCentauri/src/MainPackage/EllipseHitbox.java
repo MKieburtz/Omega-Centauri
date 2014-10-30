@@ -29,8 +29,8 @@ public class EllipseHitbox {
         this.horizontalRadiusLength = horizontalLength;
         this.verticalRadiusLength = verticalLength;
         
-        this.semiMajorAxisLength = horizontalLength >= verticalLength ? horizontalLength : verticalLength;
-        this.semiMinorAxisLength = semiMajorAxisLength == verticalLength ? horizontalLength : verticalLength;
+        this.semiMajorAxisLength = horizontalLength >= verticalLength ? horizontalLength / 2 : verticalLength / 2;
+        this.semiMinorAxisLength = semiMajorAxisLength == verticalLength ? horizontalLength / 2 : verticalLength / 2;
         
         circle = semiMajorAxisLength == semiMinorAxisLength;
     }
@@ -72,6 +72,8 @@ public class EllipseHitbox {
     
     public boolean collides(RectangularHitbox other)
     {
+        Point2D.Double rotatedCenter = Calculator.rotatePointAroundPoint(centerPoint, other.getCenterPoint(), -other.getAngle());
+       
         return true;
     }
     
@@ -95,5 +97,13 @@ public class EllipseHitbox {
         if (min == distanceLeft) return new Point2D.Double(rectX, y);
         
         return new Point2D.Double(right, y); // else...
+    }
+    
+    private boolean pointInsideEllipse(Point2D.Double ellipseCenter, double semiMajorLength, double semiMinorLength, Point2D.Double point)
+    {
+        double xPart = Math.pow(point.x - ellipseCenter.x, 2) / Math.pow(semiMajorLength, 2);
+        double yPart = Math.pow(point.y - ellipseCenter.y, 2) / Math.pow(semiMinorLength, 2);
+        
+        return (xPart + yPart) <= 1;
     }
 }

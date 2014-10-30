@@ -27,6 +27,8 @@ public class Calculator {
         return Math.sin(Math.toRadians(angle));
     }
     /**
+     * @param pt1 First point   
+     * @param pt2 Second point
      * @return distance between two points
      */
     public static double getDistance(Point2D.Double pt1, Point2D.Double pt2) {
@@ -149,5 +151,13 @@ public class Calculator {
         }
         
         return lowest;
+    }
+    
+    public static Point2D.Double rotatePointAroundPoint(Point2D.Double point, Point2D.Double rotationPoint, double angle)
+    {
+        double newX = rotationPoint.x + (point.x - rotationPoint.x) * Math.cos(Math.toRadians(360 - angle)) - (point.y - rotationPoint.y) * Math.sin(Math.toRadians(360 - angle));
+        double newY = rotationPoint.y + (point.x - rotationPoint.x) * Math.sin(Math.toRadians(360 - angle)) + (point.y - rotationPoint.y) * Math.cos(Math.toRadians(360 - angle));
+        
+        return new Point2D.Double(newX, newY);
     }
 }
