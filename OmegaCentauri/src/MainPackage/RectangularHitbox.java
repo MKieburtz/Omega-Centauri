@@ -37,7 +37,10 @@ public class RectangularHitbox extends Area {
         }
         for (Point2D.Double point : points)
         {
-            point = Calculator.rotatePointAroundPoint(point, centerPoint, angle - this.angle);
+            Point2D.Double newPoint = Calculator.rotatePointAroundPoint(point, centerPoint, angle - this.angle);
+            
+            point.x = newPoint.x;
+            point.y = newPoint.y;
         }
         this.angle = angle;
         //System.out.println(points);
@@ -48,7 +51,9 @@ public class RectangularHitbox extends Area {
     {
         for (Point2D.Double point : points)
         {
-           point = Calculator.rotatePointAroundPoint(point, centerPoint, angle);
+            Point2D.Double newPoint = Calculator.rotatePointAroundPoint(point, centerPoint, angle);
+            point.x = newPoint.x;
+            point.y = newPoint.y;
         }
         this.angle += angle;
         //System.out.println(points);
@@ -66,6 +71,9 @@ public class RectangularHitbox extends Area {
             point.x += distanceX;
             point.y += distanceY;
         }
+        
+        topRightPoint.x = points[0].x;
+        topRightPoint.y = points[1].y;
         setShape();
     }
     
@@ -78,6 +86,8 @@ public class RectangularHitbox extends Area {
             point.x += distance.x;
             point.y += distance.y;
         }
+        topRightPoint.x = points[0].x;
+        topRightPoint.y = points[1].y;
         setShape();
     }
     

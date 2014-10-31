@@ -178,6 +178,8 @@ public class EnemyFighter extends EnemyShip {
         
         g2d.setTransform(original);
         
+//        g2d.setColor(Color.red);
+//        hitbox.draw(g2d, camera.getLocation());
     }
 
     public boolean isMovingAway() {

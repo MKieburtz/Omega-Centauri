@@ -36,7 +36,7 @@ public abstract class Ship{
     protected Point2D.Double movementVelocity = new Point2D.Double(0, 0);
     protected double angularVelocity = 0;
     protected double maxAngularVel;
-    protected RectangularHitbox hitbox;
+    protected EllipseHitbox hitbox;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;
@@ -56,9 +56,7 @@ public abstract class Ship{
     protected boolean rotatingRight = false;
     protected boolean colliding = false;
     protected ScheduledExecutorService ex;
-    
-    protected Point2D.Double[] hitboxPoints = new Point2D.Double[4];
-    
+        
     protected Ship targetShip;
     
     protected Explosion explosion;
@@ -103,12 +101,11 @@ public abstract class Ship{
 //            transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
 //                    Calculator.getScreenLocation(camera.getLocation(), location).y);
 
-            //RectangularHitbox.draw(g2d);
             //g2d.transform(transform);
 
             g2d.rotate(Math.toRadians(360 - faceAngle),
-                    Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
-                    Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
             
             g2d.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
                     Calculator.getScreenLocation(camera.getLocation(), location).y);
@@ -117,13 +114,11 @@ public abstract class Ship{
         }
         else
         {
-            long start = System.currentTimeMillis();
             explosion.draw(g2d, location, camera.getLocation());
             if (explosion.isDone())
             {
                 exploding = false;
             }
-           System.out.println(System.currentTimeMillis() - start);
         }
         
     }
@@ -217,13 +212,7 @@ public abstract class Ship{
     
     public void setUpHitbox(Point2D.Double cameraLocation) {        
         try {
-            
-           hitboxPoints[0] = new Point2D.Double(0, 0);
-           hitboxPoints[1] = new Point2D.Double(activeImage.getWidth(), 0);
-           hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
-           hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
-            
-           hitbox = new RectangularHitbox(hitboxPoints);
+            hitbox = new EllipseHitbox(activeImage.getWidth(), activeImage.getHeight());
         } catch (NullPointerException ex) {
             System.err.println("active image not initialized!");
         }
@@ -232,7 +221,7 @@ public abstract class Ship{
     
     protected void updateHitbox(Point2D.Double cameraLocation) {
         
-        hitbox.moveToLocation(Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()));
+        hitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
         hitbox.rotateToAngle(faceAngle);
     }
     
@@ -274,7 +263,7 @@ public abstract class Ship{
         return false;
     }
     
-    public RectangularHitbox returnHitbox() {
+    public EllipseHitbox returnHitbox() {
         return hitbox;
     }
     

@@ -1,8 +1,12 @@
 package MainPackage;
 
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -24,14 +28,15 @@ public class EllipseHitbox {
 
     private boolean circle;
 
-    public EllipseHitbox(double horizontalLength, double verticalLength) {
+    public EllipseHitbox(double horizontalLength, double verticalLength) { // the !entire! horizontal length
         this.horizontalRadiusLength = horizontalLength;
         this.verticalRadiusLength = verticalLength;
 
         this.semiMajorAxisLength = horizontalLength >= verticalLength ? horizontalLength / 2 : verticalLength / 2;
-        this.semiMinorAxisLength = semiMajorAxisLength == verticalLength ? horizontalLength / 2 : verticalLength / 2;
+        this.semiMinorAxisLength = horizontalLength < verticalLength ? horizontalLength / 2 : verticalLength / 2;
 
         circle = semiMajorAxisLength == semiMinorAxisLength;
+        
     }
 
     public void rotateToAngle(double angle) {
@@ -53,15 +58,15 @@ public class EllipseHitbox {
         centerPoint.y += distance.y;
     }
 
-    public void draw(Graphics2D g2d) {
-        Line2D.Double line1 = new Line2D.Double(centerPoint.x - horizontalRadiusLength, centerPoint.y, centerPoint.x, centerPoint.y - verticalRadiusLength);
-        Line2D.Double line2 = new Line2D.Double(centerPoint.x, centerPoint.y - verticalRadiusLength, centerPoint.x + horizontalRadiusLength, centerPoint.y);
-        Line2D.Double line3 = new Line2D.Double(centerPoint.x + horizontalRadiusLength, centerPoint.y, centerPoint.x, centerPoint.y + verticalRadiusLength);
-        Line2D.Double line4 = new Line2D.Double(centerPoint.x, centerPoint.y + verticalRadiusLength, centerPoint.x + horizontalRadiusLength, centerPoint.y);
-        g2d.draw(line1);
-        g2d.draw(line2);
-        g2d.draw(line3);
-        g2d.draw(line4);
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation) {
+        AffineTransform original = g2d.getTransform();
+        g2d.rotate(Math.toRadians(360 - angle),
+                Calculator.getScreenLocation(cameraLocation, centerPoint).x,
+                Calculator.getScreenLocation(cameraLocation, centerPoint).y);
+        Point2D.Double locationOnScreen = Calculator.getScreenLocation(cameraLocation, centerPoint);
+        Ellipse2D.Double ellipse = new Ellipse2D.Double(locationOnScreen.x - horizontalRadiusLength / 2, locationOnScreen.y - verticalRadiusLength / 2, horizontalRadiusLength, verticalRadiusLength);
+        g2d.draw(ellipse);
+        g2d.setTransform(original);
     }
 
     public boolean collides(RectangularHitbox other) {
@@ -72,7 +77,6 @@ public class EllipseHitbox {
 
         if (!circle) {
             closestRectPoint = Calculator.rotatePointAroundPoint(closestRectPoint, centerPoint, -angle);
-
             return pointInsideEllipse(centerPoint, semiMajorAxisLength, semiMinorAxisLength, closestRectPoint);
         } else {
             return Calculator.getDistance(closestRectPoint, centerPoint) < semiMajorAxisLength; // semiMajor == semiMinor so we could use either
@@ -85,7 +89,6 @@ public class EllipseHitbox {
 
         double x = Calculator.clamp(location.x, rectX, right);
         double y = Calculator.clamp(location.y, rectY, bottom);
-
         double distanceLeft = Math.abs(x - rectX);
         double distanceRight = Math.abs(x - right);
         double distanceTop = Math.abs(y - rectY);
@@ -107,8 +110,8 @@ public class EllipseHitbox {
     }
 
     private boolean pointInsideEllipse(Point2D.Double ellipseCenter, double semiMajorLength, double semiMinorLength, Point2D.Double point) {
-        double xPart = Math.pow(point.x - ellipseCenter.x, 2) / Math.pow(semiMajorLength, 2);
-        double yPart = Math.pow(point.y - ellipseCenter.y, 2) / Math.pow(semiMinorLength, 2);
+        double xPart = Math.pow(point.x - ellipseCenter.x, 2) / Math.pow(horizontalRadiusLength / 2, 2);
+        double yPart = Math.pow(point.y - ellipseCenter.y, 2) / Math.pow(verticalRadiusLength / 2, 2);
 
         return (xPart + yPart) <= 1;
     }

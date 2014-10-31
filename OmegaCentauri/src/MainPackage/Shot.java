@@ -55,9 +55,7 @@ public abstract class Shot {
         g2d.drawImage(activeImage, 0, 0, null);
 
         g2d.setTransform(original);
-
-        //g2d.setColor(Color.red);
-        //g2d.draw(RectangularHitbox);
+        
     }
 
     public void update() {}
@@ -71,7 +69,6 @@ public abstract class Shot {
             hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
             hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
 
-            Point2D.Double centerPoint = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2);
             hitbox = new RectangularHitbox(hitboxPoints);
 
             hitbox.rotateToAngle(360 - faceAngle);
@@ -100,7 +97,7 @@ public abstract class Shot {
     }
 
     protected void updateHitbox(Point2D.Double cameraLocation) {
-        hitbox.moveToLocation(Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()));
+        hitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
     }
 
     public RectangularHitbox returnHitbox() {
