@@ -255,14 +255,6 @@ public abstract class Ship{
         return removed;
     }
     
-    public boolean CollisionEventWithShip(Ship ship, Ship collisionShip) {
-        if (!(ship instanceof EnemyShip && collisionShip instanceof EnemyShip))
-        {
-        return setColliding(true);
-        }
-        return false;
-    }
-    
     public EllipseHitbox returnHitbox() {
         return hitbox;
     }
@@ -281,10 +273,6 @@ public abstract class Ship{
     
     public Shield getShield() {
         return shield;
-    }
-    
-    public void activateShield(int damage) {
-        shield.activate(damage);
     }
     
     public void removeShot(Shot shotToRemove) {
@@ -335,23 +323,6 @@ public abstract class Ship{
         {
             exploding = true;
         }
-    }
-    
-    public boolean setColliding(boolean colliding) {
-        if (!this.colliding && colliding) {
-            this.colliding = true;
-            
-            takeDamage(collisionDamage);
-            
-            if (hullDurability <= 0) {
-                return true;
-            }
-            
-        } else if (this.colliding && !colliding) {
-            this.colliding = colliding;
-        }
-        
-        return false;
     }
     
     public boolean isColliding() {
