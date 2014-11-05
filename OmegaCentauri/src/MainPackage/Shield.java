@@ -25,6 +25,7 @@ public class Shield {
     private int strengh;
     private int energy;
     private int maxEnergy;
+    private HashMap<Double, Integer> anglesToDraw = new HashMap<>();
     
     Point size;
 
@@ -79,12 +80,14 @@ public class Shield {
         }
     }
 
-    public void activate(double damage) {
+    public void activate(double damage, double angle) {
         opacity = 100;
         
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         
         energy -= damageToLose;
+        
+        anglesToDraw.put(angle, 100);
     }
     
     public double getEnergy()

@@ -115,4 +115,14 @@ public class EllipseHitbox {
 
         return (xPart + yPart) <= 1;
     }
+    
+    public double getAngleToHitbox(RectangularHitbox other)
+    {
+        Point2D.Double rotatedCenter = Calculator.rotatePointAroundPoint(centerPoint, other.getCenterPoint(), -other.getAngle());
+
+        Point2D.Double closestRectPoint = getClosestPointOnEdgeOfRectangle(other.getTopLeftPoint().x,
+                other.getTopLeftPoint().y, other.getDimensions().width, other.getDimensions().height, rotatedCenter);
+        
+        return Calculator.getAngleBetweenTwoPoints(centerPoint, closestRectPoint);
+    }
 }
