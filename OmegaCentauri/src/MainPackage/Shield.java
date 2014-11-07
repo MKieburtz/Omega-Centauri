@@ -19,13 +19,12 @@ public class Shield {
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private BufferedImage activeImage;
     private double angle;
-    private int opacity = 0;
     private double[] scaling = new double[2];
     private double regenRate;
     private int strengh;
     private int energy;
     private int maxEnergy;
-    private HashMap<Double, Integer> anglesToDraw = new HashMap<>();
+    private ArrayList<ShieldSegment> shieldSegments = new ArrayList<ShieldSegment>();
     
     Point size;
 
@@ -45,49 +44,71 @@ public class Shield {
         scaling[1] = (double)size.y / activeImage.getHeight();
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation, double angle) {
-        if (opacity > 0) {
-            
+    class ShieldSegment
+    {
+        private double angle;
+        private int opacity = 100;
+        
+        public ShieldSegment(double angle)
+        {
+            this.angle = angle;
+        }
+        
+        public double getAngle()
+        {
+            return angle;
+        }
+        
+        public int getOpacity()
+        {
+            return opacity;
+        }
+    }
+    
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation, double angle) {      
             int rule = AlphaComposite.SRC_OVER;
             
             Composite originalComposite = g2d.getComposite();
-            Composite comp = AlphaComposite.getInstance(rule, (float)opacity/100);
-            
+            Composite comp;
             AffineTransform originalAffineTransform = g2d.getTransform();
-            AffineTransform transform = (AffineTransform) originalAffineTransform.clone();
+            AffineTransform transform;
             
-            
-            g2d.setComposite(comp);
+            for (ShieldSegment segment : shieldSegments)
+            {
+                comp = AlphaComposite.getInstance(rule, (float)segment.getOpacity()/100);
 
-             transform.rotate(Math.toRadians(-(360 - angle)),
-                    Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).x,
-                    Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).y);
-            
-            
-            transform.translate(
-                    Calculator.getScreenLocation(cameraLocation, instanceLocation).x,
-                    Calculator.getScreenLocation(cameraLocation, instanceLocation).y);
-            
-            //transform.scale(scaling[0], scaling[1]);
-            
-            g2d.transform(transform);
-            
-            g2d.drawImage(activeImage, 0, 0, null);
-            
-            g2d.setComposite(originalComposite);
-            
-            g2d.setTransform(originalAffineTransform);
-        }
+                transform = (AffineTransform) originalAffineTransform.clone();
+
+
+                g2d.setComposite(comp);
+                // angleOfCollision - faceangle
+                 transform.rotate(Math.toRadians(360 - (segment.getAngle() - angle)),
+                        Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).x,
+                        Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).y);
+
+
+                transform.translate(
+                        Calculator.getScreenLocation(cameraLocation, instanceLocation).x,
+                        Calculator.getScreenLocation(cameraLocation, instanceLocation).y);
+
+                //transform.scale(scaling[0], scaling[1]);
+
+                g2d.transform(transform);
+
+                g2d.drawImage(activeImage, 0, 0, null);
+
+                g2d.setComposite(originalComposite);
+
+                g2d.setTransform(originalAffineTransform);
+            }
     }
 
-    public void activate(double damage, double angle) {
-        opacity = 100;
-        
+    public void activate(double damage, double angle) {        
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         
         energy -= damageToLose;
         
-        anglesToDraw.put(angle, 100);
+        shieldSegments.add(new ShieldSegment(angle));
     }
     
     public double getEnergy()
