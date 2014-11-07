@@ -70,7 +70,6 @@ public abstract class Shot {
             hitboxPoints[1] = new Point2D.Double(activeImage.getWidth() / 2, 0);
             hitboxPoints[2] = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight());
             hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
-            System.out.println(hitboxPoints[1] + " " +hitboxPoints[2]);
             hitbox = new RectangularHitbox(hitboxPoints);
 
         } catch (NullPointerException e) {

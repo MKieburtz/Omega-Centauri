@@ -44,7 +44,7 @@ public abstract class PhysicalShot extends Shot {
     {
         double targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
         
-        //rotateToAngle(360 - targetAngle);
+        rotateToAngle(360 - targetAngle);
         
         move();
         
