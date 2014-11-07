@@ -54,6 +54,13 @@ public abstract class LaserShot extends Shot {
     }
     
     @Override
+    protected void setUpHitbox(Point2D.Double cameraLocation)
+    {
+        super.setUpHitbox(cameraLocation);
+        hitbox.rotateToAngle(360 - faceAngle);
+    }
+    
+    @Override
     public void update()
     {
         Point2D.Double lastLocation = new Point2D.Double(location.x, location.y);

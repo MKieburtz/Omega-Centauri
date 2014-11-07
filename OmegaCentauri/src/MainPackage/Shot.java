@@ -56,6 +56,8 @@ public abstract class Shot {
 
         g2d.setTransform(original);
         
+        
+        hitbox.draw(g2d, cameraLocation);
     }
 
     public void update() {}
@@ -65,13 +67,11 @@ public abstract class Shot {
 
         try {
             hitboxPoints[0] = new Point2D.Double(0, 0);
-            hitboxPoints[1] = new Point2D.Double(activeImage.getWidth(), 0);
-            hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
+            hitboxPoints[1] = new Point2D.Double(activeImage.getWidth() / 2, 0);
+            hitboxPoints[2] = new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight());
             hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
-
+            System.out.println(hitboxPoints[1] + " " +hitboxPoints[2]);
             hitbox = new RectangularHitbox(hitboxPoints);
-
-            hitbox.rotateToAngle(360 - faceAngle);
 
         } catch (NullPointerException e) {
             System.err.println("activeimage not initialized!");

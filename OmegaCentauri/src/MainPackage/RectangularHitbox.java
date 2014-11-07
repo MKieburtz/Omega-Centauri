@@ -4,16 +4,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Michael Kieburtz
  */
 public class RectangularHitbox extends Area {
-    // in order of addition counter clockwise from top left!!!!!
+    // in order of addition clockwise from top left!!!!!
     private Point2D.Double[] points = new Point2D.Double[4];
     private Point2D.Double centerPoint = new Point2D.Double();
     private Point2D.Double topRightPoint = new Point2D.Double();
@@ -56,7 +58,6 @@ public class RectangularHitbox extends Area {
             point.y = newPoint.y;
         }
         this.angle += angle;
-        //System.out.println(points);
         setShape();
     }
     
@@ -72,8 +73,7 @@ public class RectangularHitbox extends Area {
             point.y += distanceY;
         }
         
-        topRightPoint.x = points[0].x;
-        topRightPoint.y = points[1].y;
+        topRightPoint = points[0];
         setShape();
     }
     
@@ -86,8 +86,7 @@ public class RectangularHitbox extends Area {
             point.x += distance.x;
             point.y += distance.y;
         }
-        topRightPoint.x = points[0].x;
-        topRightPoint.y = points[1].y;
+        topRightPoint = points[0];
         setShape();
     }
     
@@ -100,21 +99,20 @@ public class RectangularHitbox extends Area {
         return !intersection.isEmpty();
     }
     
-    public void draw(Graphics2D g2d)
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
     {
         g2d.setColor(Color.RED);
-        for (int i = 0; i < points.length; i++)
-        {
-            if (i != points.length - 1)
-            {
-                g2d.draw(new Line2D.Double(points[i].x, points[i].y, points[i + 1].x, points[i].y));
-            }
-            else
-            {
-                g2d.draw(new Line2D.Double(points[i].x, points[i].y, points[i].x, points[i].y));
-            }
-        }
         
+        Line2D.Double line1 = new Line2D.Double(Calculator.getScreenLocation(cameraLocation, points[0]), Calculator.getScreenLocation(cameraLocation, points[1]));
+        Line2D.Double line2 = new Line2D.Double(Calculator.getScreenLocation(cameraLocation, points[1]), Calculator.getScreenLocation(cameraLocation, points[2]));
+        Line2D.Double line3 = new Line2D.Double(Calculator.getScreenLocation(cameraLocation, points[2]), Calculator.getScreenLocation(cameraLocation, points[3]));
+        Line2D.Double line4 = new Line2D.Double(Calculator.getScreenLocation(cameraLocation, points[3]), Calculator.getScreenLocation(cameraLocation, points[0]));
+        
+        g2d.draw(line1);
+        g2d.draw(line2);
+        g2d.draw(line3);
+        g2d.draw(line4);
+
     }
     
     private void setShape()

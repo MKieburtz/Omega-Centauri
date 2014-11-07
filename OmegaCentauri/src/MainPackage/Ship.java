@@ -92,17 +92,6 @@ public abstract class Ship{
     public void draw(Graphics2D g2d, Camera camera) {
         if (!exploding)
         {
-//            AffineTransform transform = (AffineTransform) g2d.getTransform().clone();
-//
-//            transform.rotate(Math.toRadians(360 - faceAngle),
-//                    Calculator.getScreenLocation(camera.getLocation(), location).x + activeImage.getWidth() / 2,
-//                    Calculator.getScreenLocation(camera.getLocation(), location).y + activeImage.getHeight() / 2);
-//
-//            transform.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
-//                    Calculator.getScreenLocation(camera.getLocation(), location).y);
-
-            //g2d.transform(transform);
-
             g2d.rotate(Math.toRadians(360 - faceAngle),
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
@@ -230,7 +219,6 @@ public abstract class Ship{
     }
     
     public boolean[] CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips, double collisionAngle) {
-        
         boolean[] removed = {false, false}; // first is ship, second is shot.
         
         for (Ship s : allShips) {

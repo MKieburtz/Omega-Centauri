@@ -44,7 +44,7 @@ public abstract class PhysicalShot extends Shot {
     {
         double targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
         
-        rotateToAngle(360 - targetAngle);
+        //rotateToAngle(360 - targetAngle);
         
         move();
         
@@ -92,5 +92,12 @@ public abstract class PhysicalShot extends Shot {
     public boolean isDying()
     {
         return exploding;
+    }
+    
+    @Override
+    protected void updateHitbox(Point2D.Double cameraLocation)
+    {
+        super.updateHitbox(cameraLocation);
+        hitbox.rotateToAngle(360 - faceAngle);
     }
 }

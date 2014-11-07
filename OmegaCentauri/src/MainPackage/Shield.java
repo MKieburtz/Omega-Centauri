@@ -59,7 +59,7 @@ public class Shield {
             
             g2d.setComposite(comp);
 
-             transform.rotate(Math.toRadians(360 - angle),
+             transform.rotate(Math.toRadians(-(360 - angle)),
                     Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).x,
                     Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).y);
             
