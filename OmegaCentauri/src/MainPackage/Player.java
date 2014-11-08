@@ -38,7 +38,7 @@ public class Player extends Ship {
 
         activeImage = images.get(0);
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 100, resources);
+                10, 1000, resources);
         setUpHitbox(cameraLocation);
 
         soundPaths.add("resources/Pulse.wav");
@@ -118,19 +118,25 @@ public class Player extends Ship {
         AffineTransform original = g2d.getTransform();
         
         super.draw(g2d, camera);
-        
-        shield.draw(g2d, camera.getLocation(), location, faceAngle);
 
         g2d.setTransform(original);
         
-        g2d.setColor(Color.CYAN);
-        hitbox.draw(g2d, camera.getLocation());
+        
+        if (shield.isActive())
+        {
+            shield.draw(g2d, camera.getLocation(), location, faceAngle,
+                    new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
+                    new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y));
+        }
+        
+        //g2d.setColor(Color.CYAN);
+        //hitbox.draw(g2d, camera.getLocation());
         
         g2d.setColor(Color.CYAN);
         g2d.drawString("Enemy Shield Integrity:", 10, camera.getSize().y - 97);
         g2d.drawString("Enemy Hull Integrity:", 10, camera.getSize().y - 63);
-
-        g2d.setColor(Color.CYAN);
 
         g2d.drawString("Shield Integrity: " + shield.getEnergy() + " / " + shield.getMaxEnergy(), 10, 60);
         g2d.drawString("Hull Integrity: " + hullDurability + " / " + maxhullDurabilty, 10, 75);

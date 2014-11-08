@@ -26,6 +26,7 @@ public abstract class LaserShot extends Shot {
         if (!fading && opacity >= 0)
         {
             super.draw(g2d, cameraLocation); // super.draw is just a general image drawing method in this case
+            //hitbox.draw(g2d, cameraLocation);
         }
         else if (fading)
         {
@@ -50,6 +51,8 @@ public abstract class LaserShot extends Shot {
             g2d.setComposite(originalComp);
             
             g2d.setTransform(original);
+            
+            //hitbox.draw(g2d, cameraLocation);
         }
     }
     

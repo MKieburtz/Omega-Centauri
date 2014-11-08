@@ -63,33 +63,44 @@ public class Shield {
         {
             return opacity;
         }
+        
+        public void decay()
+        {
+            opacity -= 3;
+        }
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation, double angle) {      
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation, double angle,
+            Point2D.Double rotationPoint, Point2D.Double translationPoint) {      
             int rule = AlphaComposite.SRC_OVER;
             
             Composite originalComposite = g2d.getComposite();
             Composite comp;
             AffineTransform originalAffineTransform = g2d.getTransform();
-            AffineTransform transform;
-            
+            AffineTransform transform = (AffineTransform)originalAffineTransform.clone();
+
             for (ShieldSegment segment : shieldSegments)
             {
                 comp = AlphaComposite.getInstance(rule, (float)segment.getOpacity()/100);
 
-                transform = (AffineTransform) originalAffineTransform.clone();
-
-
                 g2d.setComposite(comp);
                 // angleOfCollision - faceangle
-                 transform.rotate(Math.toRadians(360 - (segment.getAngle() - angle)),
-                        Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).x,
-                        Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).y);
+                
+                
+//                g2d.rotate(Math.toRadians(360 - (segment.getAngle() - angle)),
+//                        Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).x,
+//                        Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).y);
+                
+                
+                transform.translate(translationPoint.x, translationPoint.y - size.y / 2);
+                transform.rotate(Math.toRadians(segment.getAngle()));
+                
+                //g2d.translate(100D, 100D);
 
-
-                transform.translate(
-                        Calculator.getScreenLocation(cameraLocation, instanceLocation).x,
-                        Calculator.getScreenLocation(cameraLocation, instanceLocation).y);
+                
+//                transform.translate(
+//                        Calculator.getScreenLocation(cameraLocation, instanceLocation).x,
+//                        Calculator.getScreenLocation(cameraLocation, instanceLocation).y);
 
                 //transform.scale(scaling[0], scaling[1]);
 
@@ -138,12 +149,22 @@ public class Shield {
     
     public boolean isActive()
     {
-        return opacity > 0;
+        return !shieldSegments.isEmpty();
     }
     
     public void decay()
     {
-        opacity -= 3;
+       ArrayList<ShieldSegment> decayedSegments = new ArrayList<>();
+       for (ShieldSegment segment : shieldSegments)
+       {
+           segment.decay();
+           if (segment.getOpacity() <= 0)
+           {
+               decayedSegments.add(segment);
+           }
+       }
+       
+       shieldSegments.removeAll(decayedSegments);
     }
     
     public double getRegenRate()

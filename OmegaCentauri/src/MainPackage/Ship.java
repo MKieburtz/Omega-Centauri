@@ -201,7 +201,7 @@ public abstract class Ship{
     
     public void setUpHitbox(Point2D.Double cameraLocation) {        
         try {
-            hitbox = new EllipseHitbox(activeImage.getWidth(), activeImage.getHeight());
+            hitbox = new EllipseHitbox(activeImage.getWidth() + 20, activeImage.getHeight() + 20);
         } catch (NullPointerException ex) {
             System.err.println("active image not initialized!");
         }

@@ -74,18 +74,18 @@ public class EnemyMediumFighter extends EnemyShip {
             ex.schedule(new ShootingServiceTurrets(), shootingDelayTurret, TimeUnit.MILLISECONDS);
         }
         
-        if (canShootMissile) {
-
-            double angle = faceAngle;
-
-            Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
-            
-            shots.add(new Missile(60, startingLocation, null, 360 - angle, cameraLocation, targetShip, this, resources));
-
-            canShootMissile = false;
-
-            ex.schedule(new ShootingServiceMisisle(), shootingDelayMissile, TimeUnit.MILLISECONDS);
-        }
+//        if (canShootMissile) {
+//
+//            double angle = faceAngle;
+//
+//            Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
+//            
+//            shots.add(new Missile(60, startingLocation, null, 360 - angle, cameraLocation, targetShip, this, resources));
+//
+//            canShootMissile = false;
+//
+//            ex.schedule(new ShootingServiceMisisle(), shootingDelayMissile, TimeUnit.MILLISECONDS);
+//        }
     }
 
     @Override
@@ -102,7 +102,7 @@ public class EnemyMediumFighter extends EnemyShip {
 
         //shield.draw(g2d, camera.getLocation(), location, faceAngle);
         
-        hitbox.draw(g2d, camera.getLocation());
+        //hitbox.draw(g2d, camera.getLocation());
     }
 
     @Override
