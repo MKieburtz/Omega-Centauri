@@ -1,7 +1,9 @@
 package MainPackage;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Dialog;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
@@ -47,7 +49,7 @@ public class Shield {
     class ShieldSegment
     {
         private double angle;
-        private int opacity = 100;
+        private int opacity = 100;        
         
         public ShieldSegment(double angle)
         {
@@ -66,50 +68,36 @@ public class Shield {
         
         public void decay()
         {
-            opacity -= 3;
+            opacity -= 1;
         }
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation, double angle,
-            Point2D.Double rotationPoint, Point2D.Double translationPoint) {      
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation,
+            Point2D.Double rotationPoint, Point2D.Double translationPoint, AffineTransform original) {      
             int rule = AlphaComposite.SRC_OVER;
             
             Composite originalComposite = g2d.getComposite();
             Composite comp;
-            AffineTransform originalAffineTransform = g2d.getTransform();
-            AffineTransform transform = (AffineTransform)originalAffineTransform.clone();
+            AffineTransform originalAffineTransform = original;
+            AffineTransform transform = new AffineTransform();
 
             for (ShieldSegment segment : shieldSegments)
             {
+                transform.setToIdentity();
                 comp = AlphaComposite.getInstance(rule, (float)segment.getOpacity()/100);
 
                 g2d.setComposite(comp);
-                // angleOfCollision - faceangle
                 
-                
-//                g2d.rotate(Math.toRadians(360 - (segment.getAngle() - angle)),
-//                        Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).x,
-//                        Calculator.getScreenLocationMiddle(cameraLocation, instanceLocation, size.x, size.y).y);
-                
-                
-                transform.translate(translationPoint.x, translationPoint.y - size.y / 2);
-                transform.rotate(Math.toRadians(segment.getAngle()));
-                
-                //g2d.translate(100D, 100D);
-
-                
-//                transform.translate(
-//                        Calculator.getScreenLocation(cameraLocation, instanceLocation).x,
-//                        Calculator.getScreenLocation(cameraLocation, instanceLocation).y);
-
-                //transform.scale(scaling[0], scaling[1]);
-
+                transform.rotate(Math.toRadians(360 - segment.getAngle()), rotationPoint.x, rotationPoint.y);
+                transform.translate(translationPoint.x + size.x / 2, translationPoint.y - activeImage.getHeight() / 2);
                 g2d.transform(transform);
 
                 g2d.drawImage(activeImage, 0, 0, null);
+                
+//                g2d.setColor(Color.red);
+//                g2d.fillRect(0, 0, 2, 2);
 
                 g2d.setComposite(originalComposite);
-
                 g2d.setTransform(originalAffineTransform);
             }
     }
