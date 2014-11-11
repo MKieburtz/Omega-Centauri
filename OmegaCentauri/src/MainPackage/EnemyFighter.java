@@ -50,9 +50,8 @@ public class EnemyFighter extends EnemyShip {
         activeImage = images.get(0);
         
         setUpHitbox(cameraLocation);
-
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 0, 0, resources);
+                activeImage.getHeight()), 10, 50, resources, activeImage.getWidth() == activeImage.getHeight());
         
         this.id = id;
         
@@ -177,6 +176,13 @@ public class EnemyFighter extends EnemyShip {
         super.draw(g2d, camera);
         
         g2d.setTransform(original);
+        
+        shield.draw(g2d, camera.getLocation(), location,
+                new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
+                new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
+                original, faceAngle);
         
 //        g2d.setColor(Color.red);
 //        hitbox.draw(g2d, camera.getLocation());

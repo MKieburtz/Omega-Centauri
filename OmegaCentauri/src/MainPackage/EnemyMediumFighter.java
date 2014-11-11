@@ -38,7 +38,7 @@ public class EnemyMediumFighter extends EnemyShip {
         activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true,
-                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 50, resources);
+                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 500, resources, false);
 
         setUpHitbox(cameraLocation);
 
@@ -100,8 +100,12 @@ public class EnemyMediumFighter extends EnemyShip {
 
         g2d.setTransform(original);
 
-        //shield.draw(g2d, camera.getLocation(), location, faceAngle);
-        
+        shield.draw(g2d, camera.getLocation(), location, 
+                new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
+                new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y), original,
+                    faceAngle);
         //hitbox.draw(g2d, camera.getLocation());
     }
 
@@ -113,7 +117,7 @@ public class EnemyMediumFighter extends EnemyShip {
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                 player.getLocation());
 
-        rotateToAngle(angleToPlayer);
+        //rotateToAngle(angleToPlayer);
         
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
@@ -126,11 +130,11 @@ public class EnemyMediumFighter extends EnemyShip {
             shoot(cameraLocation);
         }
 
-        if (distance > 500) {
-            move(ShipState.Thrusting);
-        } else {
-            move(ShipState.Drifting);
-        }
+//        if (distance > 500) {
+//            move(ShipState.Thrusting);
+//        } else {
+//            move(ShipState.Drifting);
+//        }
     }
 
     @Override

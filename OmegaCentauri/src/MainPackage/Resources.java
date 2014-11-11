@@ -74,7 +74,7 @@ public class Resources {
         imagePaths.add("resources/SaveButtonHover.png");
         imagePaths.add("resources/SaveButtonNoHover.png");
         imagePaths.add("resources/shield.png");
-        imagePaths.add("resources/FILLERshieldEnemy.png");
+        imagePaths.add("resources/EnemyShield.png");
         imagePaths.add("resources/Level2Shot.png");
         imagePaths.add("resources/Missile.png");
         imagePaths.add("resources/FighterExplosionSpritesheet.png");

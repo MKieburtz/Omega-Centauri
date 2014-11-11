@@ -38,7 +38,7 @@ public class Player extends Ship {
 
         activeImage = images.get(0);
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 1000, resources);
+                10, 1000, resources, true);
         setUpHitbox(cameraLocation);
 
         soundPaths.add("resources/Pulse.wav");
@@ -129,7 +129,7 @@ public class Player extends Ship {
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
                     new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
-                    original);
+                    original, faceAngle);
         }
         
         //g2d.setColor(Color.CYAN);

@@ -21,29 +21,28 @@ public class Shield {
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private BufferedImage activeImage;
     private double angle;
-    private double[] scaling = new double[2];
     private double regenRate;
     private int strengh;
     private int energy;
     private int maxEnergy;
     private ArrayList<ShieldSegment> shieldSegments = new ArrayList<ShieldSegment>();
     
-    Point size;
+    private Point size;
+    private boolean circle;
 
     public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation,
-            boolean enemy, Point size, int strength, int energy, Resources resources) {
+            boolean enemy, Point size, int strength, int energy, Resources resources, boolean circle) {
         this.angle = angle;
         this.energy = energy;
         this.maxEnergy = energy; // start at max power
         this.strengh = strength;
         this.size = size;
         if (enemy) {
-            activeImage = resources.getImageForObject("resources/FILLERshieldEnemy.png");
+            activeImage = resources.getImageForObject("resources/EnemyShield.png");
         } else {
             activeImage = resources.getImageForObject("resources/shield.png");
         }
-        scaling[0] = (double)size.x / activeImage.getWidth();
-        scaling[1] = (double)size.y / activeImage.getHeight();
+        this.circle = circle;
     }
 
     class ShieldSegment
@@ -73,7 +72,7 @@ public class Shield {
     }
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation,
-            Point2D.Double rotationPoint, Point2D.Double translationPoint, AffineTransform original) {      
+            Point2D.Double rotationPoint, Point2D.Double translationPoint, AffineTransform original, double faceAngle) {      
             int rule = AlphaComposite.SRC_OVER;
             
             Composite originalComposite = g2d.getComposite();
@@ -89,7 +88,15 @@ public class Shield {
                 g2d.setComposite(comp);
                 
                 transform.rotate(Math.toRadians(360 - segment.getAngle()), rotationPoint.x, rotationPoint.y);
-                transform.translate(translationPoint.x + size.x / 2, translationPoint.y - activeImage.getHeight() / 2);
+                if (circle)
+                {
+                    transform.translate(translationPoint.x + size.x / 2, translationPoint.y - activeImage.getHeight() / 2);
+                }
+                else
+                {
+                    transform.translate(translationPoint.x + Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, segment.getAngle() - faceAngle),
+                            translationPoint.y - activeImage.getHeight() / 2);
+                }
                 g2d.transform(transform);
 
                 g2d.drawImage(activeImage, 0, 0, null);
