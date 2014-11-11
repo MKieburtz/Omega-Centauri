@@ -160,4 +160,13 @@ public class Calculator {
         
         return new Point2D.Double(newX, newY);
     }
+    
+    public static double getDistanceToEdgeOfEllipseAtAngle(double horizontalLength, double verticalLength, double angle)
+    {
+        double top = horizontalLength * verticalLength;
+        double bottomX = Math.pow(horizontalLength, 2) * Math.pow(Math.sin(Math.toRadians(angle)), 2);
+        double bottomY = Math.pow(verticalLength, 2) * Math.pow(Math.cos(Math.toRadians(angle)), 2);
+        
+        return (top)/(Math.sqrt(bottomX + bottomY));
+    }
 }
