@@ -94,7 +94,7 @@ public class Shield {
                 }
                 else
                 {
-                    transform.translate(translationPoint.x + Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, segment.getAngle() - faceAngle),
+                    transform.translate(translationPoint.x + Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, segment.getAngle() - faceAngle) + 15,
                             translationPoint.y - activeImage.getHeight() / 2);
                 }
                 g2d.transform(transform);
