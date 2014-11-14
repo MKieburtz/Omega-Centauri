@@ -2,7 +2,6 @@ package MainPackage;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.font.GraphicAttribute;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -15,32 +14,22 @@ public class HeadsUpDisplayPlayer {
     private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<BufferedImage> images = new ArrayList<>();
     
-    private final int SCANNERMODULE = 0;
-    private final int HEALTHBACKGROUND = 1;
+    private int TOPLEFTHUD = 2;
     
     public HeadsUpDisplayPlayer(Resources resources)
     {
-        imagePaths.add("resources/TempScannerModule.png");
-        imagePaths.add("resources/healthbackground.png");
-        imagePaths.add("resources/HealthyTick.png");
-        imagePaths.add("resources/WarningTick.png");
-        imagePaths.add("resources/DangerTick.png");
+        imagePaths.add("resources/DangerBar.png");
+        imagePaths.add("resources/HealthyBar.png");
+        imagePaths.add("resources/HUDTopLeft.png");
+        imagePaths.add("resources/ShieldStatusBad.png");
+        imagePaths.add("resources/ShieldStatusGood.png");
+        imagePaths.add("resources/ShieldStatusWarning.png");
+        imagePaths.add("resources/WarningBar.png");
         images = resources.getImagesForObject(imagePaths);
     }
     
     public void draw(Graphics2D g2d, Camera camera)
     {
-        g2d.drawImage(images.get(HEALTHBACKGROUND), null, 0, 0);
-        
-        g2d.drawImage(images.get(SCANNERMODULE), null, 0, camera.getSize().y - 113);
-        
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
-
-        g2d.setColor(new Color(0, 255, 0, 50));
-        g2d.fillRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
-
-        g2d.setColor(Color.GREEN);
-        g2d.drawRect(camera.getSize().x - 201, camera.getSize().y - 225, 200, 200);
+        g2d.drawImage(images.get(TOPLEFTHUD), -10, -10, null);
     }
 }

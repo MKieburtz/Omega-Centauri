@@ -131,17 +131,6 @@ public class Player extends Ship {
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
                     original, faceAngle);
         }
-        
-        //g2d.setColor(Color.CYAN);
-        //hitbox.draw(g2d, camera.getLocation());
-        
-        g2d.setColor(Color.CYAN);
-        g2d.drawString("Enemy Shield Integrity:", 10, camera.getSize().y - 97);
-        g2d.drawString("Enemy Hull Integrity:", 10, camera.getSize().y - 63);
-
-        g2d.drawString("Shield Integrity: " + shield.getEnergy() + " / " + shield.getMaxEnergy(), 10, 60);
-        g2d.drawString("Hull Integrity: " + hullDurability + " / " + maxhullDurabilty, 10, 75);
-       
     }
 
     @Override

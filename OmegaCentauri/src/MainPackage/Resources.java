@@ -79,7 +79,14 @@ public class Resources {
         imagePaths.add("resources/Missile.png");
         imagePaths.add("resources/FighterExplosionSpritesheet.png");
         imagePaths.add("resources/MissileExplosionSpritesheet.png");
-
+        imagePaths.add("resources/DangerBar.png");
+        imagePaths.add("resources/HealthyBar.png");
+        imagePaths.add("resources/HUDTopLeft.png");
+        imagePaths.add("resources/ShieldStatusBad.png");
+        imagePaths.add("resources/ShieldStatusGood.png");
+        imagePaths.add("resources/ShieldStatusWarning.png");
+        imagePaths.add("resources/WarningBar.png");
+        
         soundPaths.add("resources/Pulse.wav");
         soundPaths.add("resources/Mouseclick.wav");
 
