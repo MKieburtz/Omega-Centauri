@@ -66,14 +66,17 @@ public class EllipseHitbox {
         Point2D.Double locationOnScreen = Calculator.getScreenLocation(cameraLocation, centerPoint);
         Ellipse2D.Double ellipse = new Ellipse2D.Double(locationOnScreen.x - horizontalRadiusLength / 2, locationOnScreen.y - verticalRadiusLength / 2, horizontalRadiusLength, verticalRadiusLength);
         g2d.draw(ellipse);
+        g2d.fillRect((int)Calculator.getScreenLocation(cameraLocation, centerPoint).x, (int)Calculator.getScreenLocation(cameraLocation, centerPoint).y, 2, 2);
+        g2d.drawLine((int)Calculator.getScreenLocation(cameraLocation, centerPoint).x, (int)Calculator.getScreenLocation(cameraLocation, centerPoint).y, (int)Calculator.getScreenLocation(cameraLocation, centerPoint).x + (int)horizontalRadiusLength / 2, (int)Calculator.getScreenLocation(cameraLocation, centerPoint).y);
         g2d.setTransform(original);
     }
 
     public boolean collides(RectangularHitbox other) {
         Point2D.Double rotatedCenter = Calculator.rotatePointAroundPoint(centerPoint, other.getCenterPoint(), -other.getAngle());
-
-        Point2D.Double closestRectPoint = getClosestPointOnEdgeOfRectangle(other.getTopLeftPoint().x,
-                other.getTopLeftPoint().y, other.getDimensions().width, other.getDimensions().height, rotatedCenter);
+        Point2D.Double rotatedPoint =  Calculator.rotatePointAroundPoint(other.getTopLeftPoint(), other.getCenterPoint(), -other.getAngle());
+        
+        Point2D.Double closestRectPoint = getClosestPointOnEdgeOfRectangle(rotatedPoint.x,
+                rotatedPoint.y, other.getDimensions().width, other.getDimensions().height, rotatedCenter);
         if (!circle) {
             closestRectPoint = Calculator.rotatePointAroundPoint(closestRectPoint, centerPoint, -angle);
             return pointInsideEllipse(centerPoint, closestRectPoint);

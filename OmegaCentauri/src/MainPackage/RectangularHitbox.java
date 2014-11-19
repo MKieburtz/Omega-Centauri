@@ -117,32 +117,12 @@ public class RectangularHitbox extends Area {
         g2d.setColor(Color.blue);
         g2d.fillRect((int)Calculator.getScreenLocation(cameraLocation, points[0]).x, (int)Calculator.getScreenLocation(cameraLocation, points[0]).y, 2, 2);
 
-    }
-    
-    private Point2D.Double getClosestPointOnEdgeOfRectangle(double rectX, double rectY, double rectwidth, double rectHeight, Point2D.Double location) {
-        double right = rectX + rectwidth;
-        double bottom = rectY + rectHeight;
-
-        double x = Calculator.clamp(location.x, rectX, right);
-        double y = Calculator.clamp(location.y, rectY, bottom);
-        double distanceLeft = Math.abs(x - rectX);
-        double distanceRight = Math.abs(x - right);
-        double distanceTop = Math.abs(y - rectY);
-        double distanceBottom = Math.abs(y - bottom);
-
-        double min = Calculator.min(distanceLeft, distanceRight, distanceTop, distanceBottom);
-
-        if (min == distanceTop) {
-            return new Point2D.Double(x, rectY);
-        }
-        if (min == distanceBottom) {
-            return new Point2D.Double(x, bottom);
-        }
-        if (min == distanceLeft) {
-            return new Point2D.Double(rectX, y);
-        }
-
-        return new Point2D.Double(right, y); // else...
+        g2d.setColor(Color.YELLOW);
+        g2d.draw(new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, points[0]).x, Calculator.getScreenLocation(cameraLocation, points[0]).y, dimensions.width, dimensions.height));
+        
+        Point2D.Double rotatedPoint = Calculator.rotatePointAroundPoint(points[0], centerPoint, -angle);
+        
+        g2d.draw(new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, rotatedPoint).x, Calculator.getScreenLocation(cameraLocation, rotatedPoint).y, dimensions.width, dimensions.height));
     }
     
     private void setShape()
