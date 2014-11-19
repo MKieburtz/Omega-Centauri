@@ -120,7 +120,8 @@ public class Player extends Ship {
         super.draw(g2d, camera);
 
         g2d.setTransform(original);
-        
+        g2d.setColor(Color.red);
+        hitbox.draw(g2d, camera.getLocation());
         
         if (shield.isActive())
         {
@@ -141,8 +142,8 @@ public class Player extends Ship {
         double angle = 360 - faceAngle + rand.nextInt(10) - 5;
 
         Point2D.Double ShotStartingVel
-                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
-                        movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
+                = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 2,
+                        movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 2);
 
         Point2D.Double ShotStartingPos = new Point2D.Double(
                 Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()).x - 6

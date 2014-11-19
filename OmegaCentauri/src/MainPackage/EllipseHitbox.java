@@ -74,11 +74,11 @@ public class EllipseHitbox {
 
         Point2D.Double closestRectPoint = getClosestPointOnEdgeOfRectangle(other.getTopLeftPoint().x,
                 other.getTopLeftPoint().y, other.getDimensions().width, other.getDimensions().height, rotatedCenter);
-
         if (!circle) {
             closestRectPoint = Calculator.rotatePointAroundPoint(closestRectPoint, centerPoint, -angle);
-            return pointInsideEllipse(centerPoint, semiMajorAxisLength, semiMinorAxisLength, closestRectPoint);
+            return pointInsideEllipse(centerPoint, closestRectPoint);
         } else {
+            System.out.println(closestRectPoint + " " + Calculator.getDistance(closestRectPoint, centerPoint) + " " +  semiMajorAxisLength);
             return Calculator.getDistance(closestRectPoint, centerPoint) < semiMajorAxisLength; // semiMajor == semiMinor so we could use either
         }
     }
@@ -109,7 +109,7 @@ public class EllipseHitbox {
         return new Point2D.Double(right, y); // else...
     }
 
-    private boolean pointInsideEllipse(Point2D.Double ellipseCenter, double semiMajorLength, double semiMinorLength, Point2D.Double point) {
+    private boolean pointInsideEllipse(Point2D.Double ellipseCenter, Point2D.Double point) {
         double xPart = Math.pow(point.x - ellipseCenter.x, 2) / Math.pow(horizontalRadiusLength / 2, 2);
         double yPart = Math.pow(point.y - ellipseCenter.y, 2) / Math.pow(verticalRadiusLength / 2, 2);
 

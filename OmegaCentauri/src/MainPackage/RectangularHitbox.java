@@ -27,7 +27,7 @@ public class RectangularHitbox extends Area {
         this.points = points;
         topRightPoint = new Point2D.Double(points[0].x, points[0].y);
         dimensions = new Dimension((int)(points[1].x - points[0].x), (int)(points[3].y - points[0].y));
-        centerPoint = new Point2D.Double((points[0].x - points[1].x) / 2, (points[3].y - points[0].y) / 2);
+        centerPoint = new Point2D.Double((points[0].x + points[1].x) / 2, (points[3].y + points[0].y) / 2);
         setShape();
     }
     
@@ -107,12 +107,42 @@ public class RectangularHitbox extends Area {
         Line2D.Double line2 = new Line2D.Double(Calculator.getScreenLocation(cameraLocation, points[1]), Calculator.getScreenLocation(cameraLocation, points[2]));
         Line2D.Double line3 = new Line2D.Double(Calculator.getScreenLocation(cameraLocation, points[2]), Calculator.getScreenLocation(cameraLocation, points[3]));
         Line2D.Double line4 = new Line2D.Double(Calculator.getScreenLocation(cameraLocation, points[3]), Calculator.getScreenLocation(cameraLocation, points[0]));
-        
+                g2d.setColor(Color.green);
         g2d.draw(line1);
+        g2d.setColor(Color.RED);
         g2d.draw(line2);
         g2d.draw(line3);
+        g2d.setColor(Color.green);
         g2d.draw(line4);
+        g2d.setColor(Color.blue);
+        g2d.fillRect((int)Calculator.getScreenLocation(cameraLocation, points[0]).x, (int)Calculator.getScreenLocation(cameraLocation, points[0]).y, 2, 2);
 
+    }
+    
+    private Point2D.Double getClosestPointOnEdgeOfRectangle(double rectX, double rectY, double rectwidth, double rectHeight, Point2D.Double location) {
+        double right = rectX + rectwidth;
+        double bottom = rectY + rectHeight;
+
+        double x = Calculator.clamp(location.x, rectX, right);
+        double y = Calculator.clamp(location.y, rectY, bottom);
+        double distanceLeft = Math.abs(x - rectX);
+        double distanceRight = Math.abs(x - right);
+        double distanceTop = Math.abs(y - rectY);
+        double distanceBottom = Math.abs(y - bottom);
+
+        double min = Calculator.min(distanceLeft, distanceRight, distanceTop, distanceBottom);
+
+        if (min == distanceTop) {
+            return new Point2D.Double(x, rectY);
+        }
+        if (min == distanceBottom) {
+            return new Point2D.Double(x, bottom);
+        }
+        if (min == distanceLeft) {
+            return new Point2D.Double(rectX, y);
+        }
+
+        return new Point2D.Double(right, y); // else...
     }
     
     private void setShape()

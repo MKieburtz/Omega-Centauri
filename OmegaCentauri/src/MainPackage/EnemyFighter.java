@@ -144,8 +144,8 @@ public class EnemyFighter extends EnemyShip {
             double angle = 360 - faceAngle + rand.nextInt(10) - 5;
 
             Point2D.Double shotStartingVel
-                    = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
-                            movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
+                    = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 2,
+                            movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 2);
 
             Point2D.Double shotStartingPos = new Point2D.Double();
 
@@ -164,7 +164,7 @@ public class EnemyFighter extends EnemyShip {
 
             shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this, resources));
 
-            ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
+            ex.schedule(new ShootingService(), 1000, TimeUnit.MILLISECONDS);
         }
     }
     
@@ -184,8 +184,8 @@ public class EnemyFighter extends EnemyShip {
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
                 original, faceAngle);
         
-//        g2d.setColor(Color.red);
-//        hitbox.draw(g2d, camera.getLocation());
+        g2d.setColor(Color.red);
+        hitbox.draw(g2d, camera.getLocation());
     }
 
     public boolean isMovingAway() {

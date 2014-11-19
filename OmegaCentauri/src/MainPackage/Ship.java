@@ -109,7 +109,6 @@ public abstract class Ship{
                 exploding = false;
             }
         }
-        
     }
     
     protected void move(ShipState state) {

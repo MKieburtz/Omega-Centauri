@@ -73,10 +73,10 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
     private void addShips() {
         player = new Player(5000, 5000, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 1000, resources);
-        enemyShips.add(new EnemyFighter(5000, 1000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(9000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(5000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(1000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
+//        enemyShips.add(new EnemyFighter(5000, 1000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
+//        enemyShips.add(new EnemyFighter(9000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
+//        enemyShips.add(new EnemyFighter(5000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
+//        enemyShips.add(new EnemyFighter(1000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
         enemyShips.add(new EnemyFighter(5000, 4800, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
 //        enemyShips.add(new EnemyFighter(2000, 4900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
 //        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
@@ -434,7 +434,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
                 for (Shot shot : allShots) {
                     if (!shot.isDying() && !ship.isExploding()) {
-                        if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500) {
+                        //if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500) {
                             if (!shot.getOwner().equals(ship) || !(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip)) {
                                 if (ship.returnHitbox().collides(shot.returnHitbox())) {
                                     boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw,
@@ -453,7 +453,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                                     }
                                 }
                             }
-                        }
+                        //}
                     }
                 }
                 deadShots.addAll(ship.purgeShots(mapSize));

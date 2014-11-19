@@ -60,7 +60,7 @@ public abstract class LaserShot extends Shot {
     protected void setUpHitbox(Point2D.Double cameraLocation)
     {
         super.setUpHitbox(cameraLocation);
-        hitbox.rotateToAngle(360 - faceAngle);
+        hitbox.rotateRelivite(360 - faceAngle);
     }
     
     @Override
