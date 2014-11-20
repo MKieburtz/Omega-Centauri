@@ -434,7 +434,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
                 for (Shot shot : allShots) {
                     if (!shot.isDying() && !ship.isExploding()) {
-                        if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 50) {
+                        if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500) {
                             if (!shot.getOwner().equals(ship) || !(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip)) {
                                 if (ship.returnHitbox().collides(shot.returnHitbox())) {
                                     boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw,
