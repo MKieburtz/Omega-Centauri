@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -120,9 +121,8 @@ public class RectangularHitbox extends Area {
         g2d.setColor(Color.YELLOW);
         g2d.draw(new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, points[0]).x, Calculator.getScreenLocation(cameraLocation, points[0]).y, dimensions.width, dimensions.height));
         
-        Point2D.Double rotatedPoint = Calculator.rotatePointAroundPoint(points[0], centerPoint, -angle);
-        
-        g2d.draw(new Rectangle2D.Double(Calculator.getScreenLocation(cameraLocation, rotatedPoint).x, Calculator.getScreenLocation(cameraLocation, rotatedPoint).y, dimensions.width, dimensions.height));
+        Point2D.Double rotatedPoint = Calculator.getScreenLocation(cameraLocation, Calculator.rotatePointAroundPoint(points[0], centerPoint, -angle));
+        g2d.fillRect((int)rotatedPoint.x, (int)rotatedPoint.y, 2, 2);
     }
     
     private void setShape()

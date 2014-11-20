@@ -67,7 +67,7 @@ public class Shield {
         
         public void decay()
         {
-            opacity -= 1;
+            opacity -= 5;
         }
     }
     

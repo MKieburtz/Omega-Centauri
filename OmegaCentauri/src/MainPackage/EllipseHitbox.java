@@ -67,50 +67,39 @@ public class EllipseHitbox {
         Ellipse2D.Double ellipse = new Ellipse2D.Double(locationOnScreen.x - horizontalRadiusLength / 2, locationOnScreen.y - verticalRadiusLength / 2, horizontalRadiusLength, verticalRadiusLength);
         g2d.draw(ellipse);
         g2d.fillRect((int)Calculator.getScreenLocation(cameraLocation, centerPoint).x, (int)Calculator.getScreenLocation(cameraLocation, centerPoint).y, 2, 2);
-        g2d.drawLine((int)Calculator.getScreenLocation(cameraLocation, centerPoint).x, (int)Calculator.getScreenLocation(cameraLocation, centerPoint).y, (int)Calculator.getScreenLocation(cameraLocation, centerPoint).x + (int)horizontalRadiusLength / 2, (int)Calculator.getScreenLocation(cameraLocation, centerPoint).y);
         g2d.setTransform(original);
     }
 
     public boolean collides(RectangularHitbox other) {
-        Point2D.Double rotatedCenter = Calculator.rotatePointAroundPoint(centerPoint, other.getCenterPoint(), -other.getAngle());
-        Point2D.Double rotatedPoint =  Calculator.rotatePointAroundPoint(other.getTopLeftPoint(), other.getCenterPoint(), -other.getAngle());
-        
-        Point2D.Double closestRectPoint = getClosestPointOnEdgeOfRectangle(rotatedPoint.x,
-                rotatedPoint.y, other.getDimensions().width, other.getDimensions().height, rotatedCenter);
-        if (!circle) {
-            closestRectPoint = Calculator.rotatePointAroundPoint(closestRectPoint, centerPoint, -angle);
-            return pointInsideEllipse(centerPoint, closestRectPoint);
-        } else {
-            System.out.println(closestRectPoint + " " + Calculator.getDistance(closestRectPoint, centerPoint) + " " +  semiMajorAxisLength);
-            return Calculator.getDistance(closestRectPoint, centerPoint) < semiMajorAxisLength; // semiMajor == semiMinor so we could use either
-        }
+        Point2D.Double rotatedPoint = Calculator.rotatePointAroundPoint(other.getTopLeftPoint(), other.getCenterPoint(), -other.getAngle());
+        return pointInsideEllipse(centerPoint, rotatedPoint);
     }
 
-    private Point2D.Double getClosestPointOnEdgeOfRectangle(double rectX, double rectY, double rectwidth, double rectHeight, Point2D.Double location) {
-        double right = rectX + rectwidth;
-        double bottom = rectY + rectHeight;
-
-        double x = Calculator.clamp(location.x, rectX, right);
-        double y = Calculator.clamp(location.y, rectY, bottom);
-        double distanceLeft = Math.abs(x - rectX);
-        double distanceRight = Math.abs(x - right);
-        double distanceTop = Math.abs(y - rectY);
-        double distanceBottom = Math.abs(y - bottom);
-
-        double min = Calculator.min(distanceLeft, distanceRight, distanceTop, distanceBottom);
-
-        if (min == distanceTop) {
-            return new Point2D.Double(x, rectY);
-        }
-        if (min == distanceBottom) {
-            return new Point2D.Double(x, bottom);
-        }
-        if (min == distanceLeft) {
-            return new Point2D.Double(rectX, y);
-        }
-
-        return new Point2D.Double(right, y); // else...
-    }
+//    private Point2D.Double getClosestPointOnEdgeOfRectangle(double rectX, double rectY, double rectwidth, double rectHeight, Point2D.Double location) {
+//        double right = rectX + rectwidth;
+//        double bottom = rectY + rectHeight;
+//
+//        double x = Calculator.clamp(location.x, rectX, right);
+//        double y = Calculator.clamp(location.y, rectY, bottom);
+//        double distanceLeft = Math.abs(x - rectX);
+//        double distanceRight = Math.abs(x - right);
+//        double distanceTop = Math.abs(y - rectY);
+//        double distanceBottom = Math.abs(y - bottom);
+//
+//        double min = Calculator.min(distanceLeft, distanceRight, distanceTop, distanceBottom);
+//
+//        if (min == distanceTop) {
+//            return new Point2D.Double(x, rectY);
+//        }
+//        if (min == distanceBottom) {
+//            return new Point2D.Double(x, bottom);
+//        }
+//        if (min == distanceLeft) {
+//            return new Point2D.Double(rectX, y);
+//        }
+//
+//        return new Point2D.Double(right, y); // else...
+//    }
 
     private boolean pointInsideEllipse(Point2D.Double ellipseCenter, Point2D.Double point) {
         double xPart = Math.pow(point.x - ellipseCenter.x, 2) / Math.pow(horizontalRadiusLength / 2, 2);
@@ -121,11 +110,19 @@ public class EllipseHitbox {
     
     public double getAngleToHitbox(RectangularHitbox other)
     {
-        Point2D.Double rotatedCenter = Calculator.rotatePointAroundPoint(centerPoint, other.getCenterPoint(), -other.getAngle());
+        Point2D.Double rotatedPoint =  Calculator.rotatePointAroundPoint(other.getTopLeftPoint(), other.getCenterPoint(), -other.getAngle());
 
-        Point2D.Double closestRectPoint = getClosestPointOnEdgeOfRectangle(other.getTopLeftPoint().x,
-                other.getTopLeftPoint().y, other.getDimensions().width, other.getDimensions().height, rotatedCenter);
         
-        return Calculator.getAngleBetweenTwoPoints(centerPoint, closestRectPoint);
+        return Calculator.getAngleBetweenTwoPoints(centerPoint, rotatedPoint);
+    }
+    
+    public Point2D.Double getCenterPoint()
+    {
+        return centerPoint;
+    }
+    
+    public Dimension getDimensions()
+    {
+        return new Dimension((int)horizontalRadiusLength / 2, (int)verticalRadiusLength / 2);
     }
 }
