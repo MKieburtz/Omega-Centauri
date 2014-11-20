@@ -71,35 +71,9 @@ public class EllipseHitbox {
     }
 
     public boolean collides(RectangularHitbox other) {
-        Point2D.Double rotatedPoint = Calculator.rotatePointAroundPoint(other.getTopLeftPoint(), other.getCenterPoint(), -other.getAngle());
+        Point2D.Double rotatedPoint = Calculator.rotatePointAroundPoint(other.getCollisionPoint(), centerPoint, -angle);
         return pointInsideEllipse(centerPoint, rotatedPoint);
     }
-
-//    private Point2D.Double getClosestPointOnEdgeOfRectangle(double rectX, double rectY, double rectwidth, double rectHeight, Point2D.Double location) {
-//        double right = rectX + rectwidth;
-//        double bottom = rectY + rectHeight;
-//
-//        double x = Calculator.clamp(location.x, rectX, right);
-//        double y = Calculator.clamp(location.y, rectY, bottom);
-//        double distanceLeft = Math.abs(x - rectX);
-//        double distanceRight = Math.abs(x - right);
-//        double distanceTop = Math.abs(y - rectY);
-//        double distanceBottom = Math.abs(y - bottom);
-//
-//        double min = Calculator.min(distanceLeft, distanceRight, distanceTop, distanceBottom);
-//
-//        if (min == distanceTop) {
-//            return new Point2D.Double(x, rectY);
-//        }
-//        if (min == distanceBottom) {
-//            return new Point2D.Double(x, bottom);
-//        }
-//        if (min == distanceLeft) {
-//            return new Point2D.Double(rectX, y);
-//        }
-//
-//        return new Point2D.Double(right, y); // else...
-//    }
 
     private boolean pointInsideEllipse(Point2D.Double ellipseCenter, Point2D.Double point) {
         double xPart = Math.pow(point.x - ellipseCenter.x, 2) / Math.pow(horizontalRadiusLength / 2, 2);
