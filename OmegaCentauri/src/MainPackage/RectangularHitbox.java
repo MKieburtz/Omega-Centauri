@@ -28,7 +28,7 @@ public class RectangularHitbox extends Area {
         topRightPoint = new Point2D.Double(points[0].x, points[0].y);
         dimensions = new Dimension((int)(points[1].x - points[0].x), (int)(points[3].y - points[0].y));
         centerPoint = new Point2D.Double((points[0].x + points[1].x) / 2, (points[3].y + points[0].y) / 2);
-        collisionPoint = new Point2D.Double(points[1].x, (points[1].y + points[2].y) / 2);
+        collisionPoint = new Point2D.Double(points[1].x * 3, (points[1].y + points[2].y) / 2);
         setShape();
     }
     
