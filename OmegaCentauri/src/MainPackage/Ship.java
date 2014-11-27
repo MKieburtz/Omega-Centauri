@@ -26,7 +26,7 @@ public abstract class Ship{
     protected int fuel;
     protected int power;
     protected Type type;
-    protected double faceAngle = 90;
+    protected double faceAngle = 0;
     protected double moveAngle = 0.0;
     protected final int collisionDamage = 50;
     protected Point2D.Double location;

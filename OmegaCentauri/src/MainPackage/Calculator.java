@@ -171,9 +171,16 @@ public class Calculator {
     
     public static double getAngleOfEllipseAtAngle(double angleFromCenter, double horizontalAxis, double verticalAxis)
     {
+        if (horizontalAxis == verticalAxis)
+        {
+            return angleFromCenter;
+        }
+        //System.out.println(angleFromCenter);
         double axisLengths = Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2);
+        System.err.println(angleFromCenter + " " + axisLengths);
         if (angleFromCenter <= 90 && angleFromCenter >= 0)
         {
+            System.out.println(Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter)))));
             return Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter))));
         }
         else if (angleFromCenter <= 180 && angleFromCenter > 90)
@@ -186,7 +193,7 @@ public class Calculator {
         }
         else if (angleFromCenter <= 360 && angleFromCenter > 270)
         {
-            return 360 - Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter))));
+            return 360 + Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter))));
         }
         System.err.println("ERROR");
         return Double.NaN;
