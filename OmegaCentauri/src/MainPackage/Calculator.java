@@ -38,9 +38,8 @@ public class Calculator {
     /**
      * @return angle between two points IN DEGREES
      */ 
-    static double angle;
     public static double getAngleBetweenTwoPoints(Point2D.Double pt1, Point2D.Double pt2) {
-        angle = (double) Math.toDegrees(Math.atan2(pt2.x - pt1.x, pt2.y - pt1.y)) - 90;
+        double angle = (double) Math.toDegrees(Math.atan2(pt2.x - pt1.x, pt2.y - pt1.y)) - 90;
 
         if (angle < 0) {
             angle += 360;
@@ -168,5 +167,26 @@ public class Calculator {
         double bottomY = Math.pow(verticalLength, 2) * Math.pow(Math.cos(Math.toRadians(angle)), 2);
         
         return (top)/(Math.sqrt(bottomX + bottomY));
+    }
+    
+    public static double getAngleOfEllipseAtAngle(double angleFromCenter, double horizontalAxis, double verticalAxis)
+    {
+        if (angleFromCenter <= 90 && angleFromCenter >= 0)
+        {
+            return Math.atan((Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2)) * Math.tan(Math.toRadians(angleFromCenter)));
+        }
+        else if (angleFromCenter <= 180 && angleFromCenter > 90)
+        {
+            return 180 + Math.atan((Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2)) * Math.tan(Math.toRadians(angleFromCenter)));
+        }
+        else if (angleFromCenter <= 270 && angleFromCenter > 180)
+        {
+            return 270 - (90 - Math.atan((Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2)) * Math.tan(Math.toRadians(angleFromCenter))));
+        }
+        else if (angleFromCenter <= 360 && angleFromCenter > 270)
+        {
+            return 360 - Math.atan((Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2)) * Math.tan(Math.toRadians(angleFromCenter)));
+        }
+        return Double.NaN;
     }
 }
