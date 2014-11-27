@@ -106,7 +106,7 @@ public class EnemyMediumFighter extends EnemyShip {
                 new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y), original,
                     faceAngle);
-        hitbox.draw(g2d, camera.getLocation());
+        //hitbox.draw(g2d, camera.getLocation());
     }
 
     @Override

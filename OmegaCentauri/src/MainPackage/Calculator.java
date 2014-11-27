@@ -171,22 +171,24 @@ public class Calculator {
     
     public static double getAngleOfEllipseAtAngle(double angleFromCenter, double horizontalAxis, double verticalAxis)
     {
+        double axisLengths = Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2);
         if (angleFromCenter <= 90 && angleFromCenter >= 0)
         {
-            return Math.atan((Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2)) * Math.tan(Math.toRadians(angleFromCenter)));
+            return Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter))));
         }
         else if (angleFromCenter <= 180 && angleFromCenter > 90)
         {
-            return 180 + Math.atan((Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2)) * Math.tan(Math.toRadians(angleFromCenter)));
+            return 180 + Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter))));
         }
         else if (angleFromCenter <= 270 && angleFromCenter > 180)
         {
-            return 270 - (90 - Math.atan((Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2)) * Math.tan(Math.toRadians(angleFromCenter))));
+            return 270 - (90 - Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter)))));
         }
         else if (angleFromCenter <= 360 && angleFromCenter > 270)
         {
-            return 360 - Math.atan((Math.pow(horizontalAxis, 2) / Math.pow(verticalAxis, 2)) * Math.tan(Math.toRadians(angleFromCenter)));
+            return 360 - Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter))));
         }
+        System.err.println("ERROR");
         return Double.NaN;
     }
 }
