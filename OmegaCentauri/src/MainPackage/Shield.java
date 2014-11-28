@@ -6,6 +6,7 @@ import java.awt.Composite;
 import java.awt.Dialog;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -47,19 +48,19 @@ public class Shield {
 
     class ShieldSegment
     {
-        private double drawingAngle;
-        private double translationAngle;
+        private double angleToDraw;
+        private double angleToTranslate;
         private int opacity = 100;        
         
         public ShieldSegment(double drawingAngle, double translationAngle)
         {
-            this.drawingAngle = drawingAngle;
-            this.translationAngle = translationAngle;
+            this.angleToDraw = drawingAngle;
+            this.angleToTranslate = translationAngle;
         }
 
         public double getTranslationAngle()
         {
-            return translationAngle;
+            return angleToTranslate;
         }
         
         public int getOpacity()
@@ -74,7 +75,7 @@ public class Shield {
 
         public double getDrawingAngle() 
         {
-            return drawingAngle;
+            return angleToDraw;
         }
     }
     
@@ -86,14 +87,15 @@ public class Shield {
             Composite comp;
             AffineTransform originalAffineTransform = original;
             AffineTransform transform = new AffineTransform();
-
+            
             for (ShieldSegment segment : shieldSegments)
             {
+                double x = 0;
+                double y = 0;
                 transform.setToIdentity();
                 comp = AlphaComposite.getInstance(rule, (float)segment.getOpacity()/100);
 
                 g2d.setComposite(comp);
-                
                 transform.rotate(Math.toRadians(360 - segment.getDrawingAngle()), rotationPoint.x, rotationPoint.y);
                 if (circle)
                 {
@@ -101,11 +103,56 @@ public class Shield {
                 }
                 else
                 {
-                    transform.translate(translationPoint.x + Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, segment.getTranslationAngle() - faceAngle),
-                            translationPoint.y - activeImage.getHeight() / 2);
+                    double translationAngle = segment.getTranslationAngle() - faceAngle;
+                    double distance = Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, translationAngle);
+                    
+                    if (translationAngle == 0 || translationAngle == 360)
+                    {
+                        x = size.x / 2;
+                    }
+                    else if (translationAngle == 90)
+                    {
+                        y = size.y / 2;
+                    }
+                    else if (translationAngle == 180)
+                    {
+                        x = -size.x / 2;
+                    }
+                    else if (translationAngle == 270)
+                    {
+                        y = -size.y / 2;
+                    }
+                    else if (translationAngle > 0 && translationAngle < 90)
+                    {
+                        x = distance * Math.cos(Math.toRadians(translationAngle));
+                        y = distance * Math.sin(Math.toRadians(translationAngle));
+                        Toolkit.getDefaultToolkit().beep();
+                        System.out.println(x + " " + y);
+                    }
+                    else if (translationAngle > 90 && translationAngle < 180)
+                    {
+                        x = -(distance * Math.cos(Math.toRadians(90 - (translationAngle - 90))));
+                        y = distance * Math.sin(Math.toRadians(90 - (translationAngle - 90)));
+                        System.out.println(x + " " + y);
+                    }
+                    else if (translationAngle > 180 && translationAngle < 270)
+                    {
+                        x = -(distance * Math.cos(Math.toRadians(translationAngle - 180)));
+                        y = -(distance * Math.sin(Math.toRadians(translationAngle - 180)));
+                        System.out.println(x + " " + y);
+                    }
+                    else if (translationAngle > 270 && translationAngle < 360)
+                    {
+                        x = distance * Math.cos(Math.toRadians(90 - (translationAngle - 270)));
+                        y = -(distance * Math.sin(Math.toRadians(translationAngle - 270)));
+                        System.out.println(x + " " + y);
+                    }
+                    
+                    transform.translate(translationPoint.x + x, translationPoint.y - y);
                 }
-                g2d.transform(transform);
 
+                g2d.transform(transform);
+                
                 g2d.drawImage(activeImage, 0, 0, null);
                 
 //                g2d.setColor(Color.red);
@@ -120,8 +167,10 @@ public class Shield {
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         
         energy -= damageToLose;
-        
-        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle));
+       // for (int i = 0; i < 360; i+=5)
+       // {
+            shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle));
+        //}
     }
     
     public double getEnergy()

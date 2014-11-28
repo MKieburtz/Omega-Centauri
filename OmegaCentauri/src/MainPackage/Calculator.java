@@ -180,7 +180,7 @@ public class Calculator {
         System.err.println(angleFromCenter + " " + axisLengths);
         if (angleFromCenter <= 90 && angleFromCenter >= 0)
         {
-            System.out.println(Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter)))));
+            //System.out.println(Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter)))));
             return Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter))));
         }
         else if (angleFromCenter <= 180 && angleFromCenter > 90)

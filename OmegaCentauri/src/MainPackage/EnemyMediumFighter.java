@@ -1,5 +1,6 @@
 package MainPackage;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -106,7 +107,8 @@ public class EnemyMediumFighter extends EnemyShip {
                 new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y), original,
                     faceAngle);
-        //hitbox.draw(g2d, camera.getLocation());
+//        g2d.setColor(Color.red);
+//        hitbox.draw(g2d, camera.getLocation());
     }
 
     @Override
