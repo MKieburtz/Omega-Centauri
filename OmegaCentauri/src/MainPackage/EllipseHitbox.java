@@ -82,11 +82,16 @@ public class EllipseHitbox {
         return (xPart + yPart) <= 1;
     }
     
+    public double getAngleOnEllipse(RectangularHitbox other)
+    {
+        return Calculator.confineAngleToRange(Calculator.getAngleOfEllipseAtAngle(getAngleToHitbox(other), horizontalRadiusLength, verticalRadiusLength));
+    }
+    
     public double getAngleToHitbox(RectangularHitbox other)
     {
         Point2D.Double rotatedPoint =  Calculator.rotatePointAroundPoint(other.getTopLeftPoint(), other.getCenterPoint(), -other.getAngle());
         double angleToHitbox = Calculator.getAngleBetweenTwoPoints(centerPoint, rotatedPoint);
-        return Calculator.confineAngleToRange(Calculator.getAngleOfEllipseAtAngle(angleToHitbox, horizontalRadiusLength, verticalRadiusLength));
+        return angleToHitbox;
     }
     
     public Point2D.Double getCenterPoint()

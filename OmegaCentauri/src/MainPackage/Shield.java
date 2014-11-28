@@ -47,17 +47,19 @@ public class Shield {
 
     class ShieldSegment
     {
-        private double angle;
+        private double drawingAngle;
+        private double translationAngle;
         private int opacity = 100;        
         
-        public ShieldSegment(double angle)
+        public ShieldSegment(double drawingAngle, double translationAngle)
         {
-            this.angle = angle;
+            this.drawingAngle = drawingAngle;
+            this.translationAngle = translationAngle;
         }
-        
-        public double getAngle()
+
+        public double getTranslationAngle()
         {
-            return angle;
+            return translationAngle;
         }
         
         public int getOpacity()
@@ -68,6 +70,11 @@ public class Shield {
         public void decay()
         {
             opacity -= 5;
+        }
+
+        public double getDrawingAngle() 
+        {
+            return drawingAngle;
         }
     }
     
@@ -87,14 +94,14 @@ public class Shield {
 
                 g2d.setComposite(comp);
                 
-                transform.rotate(Math.toRadians(360 - segment.getAngle()), rotationPoint.x, rotationPoint.y);
+                transform.rotate(Math.toRadians(360 - segment.getDrawingAngle()), rotationPoint.x, rotationPoint.y);
                 if (circle)
                 {
                     transform.translate(translationPoint.x + size.x / 2, translationPoint.y - activeImage.getHeight() / 2);
                 }
                 else
                 {
-                    transform.translate(translationPoint.x + Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, segment.getAngle() - faceAngle) + 15,
+                    transform.translate(translationPoint.x + Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, segment.getTranslationAngle() - faceAngle),
                             translationPoint.y - activeImage.getHeight() / 2);
                 }
                 g2d.transform(transform);
@@ -108,13 +115,13 @@ public class Shield {
                 g2d.setTransform(originalAffineTransform);
             }
     }
-
-    public void activate(double damage, double angle) {        
+    // shield angle is the angle on the shield, collision angle is the angle to the collision point on the shot
+    public void activate(double damage, double shieldAngle, double collisionAngle) {        
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         
         energy -= damageToLose;
         
-        shieldSegments.add(new ShieldSegment(angle));
+        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle));
     }
     
     public double getEnergy()

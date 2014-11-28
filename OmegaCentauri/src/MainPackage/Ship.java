@@ -215,7 +215,7 @@ public abstract class Ship{
         return shots;
     }
     
-    public boolean[] CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips, double collisionAngle) {
+    public boolean[] CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips, double collisionAngleShield, double collisionAngle) {
         boolean[] removed = {false, false}; // first is ship, second is shot.
         
         for (Ship s : allShips) {
@@ -230,7 +230,7 @@ public abstract class Ship{
         if (!ship.getShots().contains(shot)) {
             if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
             {
-                takeDamage(shot.getDamage(), collisionAngle);
+                takeDamage(shot.getDamage(), collisionAngleShield, collisionAngle);
                 if (hullDurability <= 0) {
                     removed[0] = true;
                 }
@@ -289,15 +289,15 @@ public abstract class Ship{
         return shotsToRemove;
     }
     
-    public void takeDamage(int damage, double collisionAngle) {
+    public void takeDamage(int damage, double collisionAngleShield, double collisionAngle) {
         if (shield.getEnergy() - damage >= 0) {
-            shield.activate(damage, collisionAngle);
+            shield.activate(damage, collisionAngleShield, collisionAngle);
         } else {
             double healthToLoseShield = damage - Math.abs(shield.getEnergy() - damage);
             double healthToLoseHull = Math.abs(shield.getEnergy() - damage);
             
             if (healthToLoseShield > 0) {
-                shield.activate(healthToLoseShield, collisionAngle);
+                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle);
             }
             
             reduceHull(healthToLoseHull);

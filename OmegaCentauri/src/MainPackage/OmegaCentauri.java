@@ -439,7 +439,7 @@ public class OmegaCentauri extends Game implements GameActionListener {
                                 if (ship.returnHitbox().collides(shot.returnHitbox())) {
                                     
                                     boolean[] removals = ship.CollisionEventWithShot(ship, shot, shipsToDraw,
-                                            ship.returnHitbox().getAngleToHitbox(shot.returnHitbox()));
+                                            ship.returnHitbox().getAngleOnEllipse(shot.returnHitbox()), ship.returnHitbox().getAngleToHitbox(shot.returnHitbox()));
                                     if (removals[0]) // ship 
                                     {
                                         deadShips.add(ship);
