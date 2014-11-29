@@ -4,16 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.awt.geom.Area;
-import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.*;
 
 /**
  * @author Michael Kieburtz
  */
-public class RectangularHitbox extends Area {
+public class RectangularHitbox extends Area implements Hitbox{
     // in order of addition clockwise from top left!!!!!
     private Point2D.Double[] points = new Point2D.Double[4];
     private Point2D.Double centerPoint = new Point2D.Double();
@@ -39,6 +35,7 @@ public class RectangularHitbox extends Area {
         setShape();
     }
     
+    @Override
     public void rotateToAngle(double angle)
     {
         if (this.angle - angle == 0)
@@ -60,7 +57,8 @@ public class RectangularHitbox extends Area {
         setShape();
     }
     
-    public void rotateRelivite(double angle)
+    @Override
+    public void rotateRelitive(double angle)
     {
         for (Point2D.Double point : points)
         {
@@ -75,6 +73,7 @@ public class RectangularHitbox extends Area {
         setShape();
     }
     
+    @Override
     public void moveToLocation(Point2D.Double location)
     {
         double distanceX = location.x - centerPoint.x;
@@ -92,7 +91,8 @@ public class RectangularHitbox extends Area {
         collisionPoint.y += distanceY;
         setShape();
     }
-    
+
+    @Override
     public void moveRelitive(Point2D.Double distance)
     {
         centerPoint.x += distance.x;
@@ -109,7 +109,17 @@ public class RectangularHitbox extends Area {
     }
     
     Area intersection;
+    @Override
     public boolean collides(RectangularHitbox other)
+    {
+        intersection = (Area)other.clone();
+        intersection.intersect(this);
+        //Toolkit.getDefaultToolkit().beep();
+        return !intersection.isEmpty();
+    }
+    
+    @Override
+    public boolean collides(ShapeHitbox other)
     {
         intersection = (Area)other.clone();
         intersection.intersect(this);

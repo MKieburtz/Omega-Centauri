@@ -1,19 +1,15 @@
 package MainPackage;
 
-import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 /**
  * @author Michael Kieburtz
  */
-public class EllipseHitbox {
+public class EllipseHitbox implements Hitbox{
 
     private Point2D.Double centerPoint = new Point2D.Double();
     // this is the longer "radius" length
@@ -39,21 +35,25 @@ public class EllipseHitbox {
         
     }
 
+    @Override
     public void rotateToAngle(double angle) {
         this.angle = angle;
         this.angle = Calculator.confineAngleToRange(this.angle);
     }
 
-    public void rotateRelative(double amount) {
+    @Override
+    public void rotateRelitive(double amount) {
         angle += amount;
         angle = Calculator.confineAngleToRange(angle);
     }
 
+    @Override
     public void moveToLocation(Point2D.Double location) {
         this.centerPoint = location;
     }
 
-    public void moveRelative(Point2D.Double distance) {
+    @Override
+    public void moveRelitive(Point2D.Double distance) {
         centerPoint.x += distance.x;
         centerPoint.y += distance.y;
     }
@@ -70,9 +70,16 @@ public class EllipseHitbox {
         g2d.setTransform(original);
     }
 
+    @Override
     public boolean collides(RectangularHitbox other) {
         Point2D.Double rotatedPoint = Calculator.rotatePointAroundPoint(other.getCollisionPoint(), centerPoint, -angle);
         return pointInsideEllipse(centerPoint, rotatedPoint);
+    }
+    
+    @Override
+    public boolean collides(ShapeHitbox other)
+    {
+        throw new UnsupportedOperationException();
     }
 
     private boolean pointInsideEllipse(Point2D.Double ellipseCenter, Point2D.Double point) {

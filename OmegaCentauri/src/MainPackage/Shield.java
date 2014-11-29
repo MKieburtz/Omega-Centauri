@@ -126,10 +126,7 @@ public class Shield {
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         
         energy -= damageToLose;
-       // for (int i = 0; i < 360; i+=5)
-       // {
-            shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle));
-        //}
+        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle));
     }
     
     public double getEnergy()
