@@ -177,7 +177,7 @@ public class Calculator {
         }
         //System.out.println(angleFromCenter);
         double axisLengths = Math.pow(horizontalAxis / 2, 2) / Math.pow(verticalAxis / 2, 2);
-        System.err.println(angleFromCenter + " " + axisLengths);
+        //System.err.println(angleFromCenter + " " + axisLengths);
         if (angleFromCenter <= 90 && angleFromCenter >= 0)
         {
             //System.out.println(Math.toDegrees(Math.atan(axisLengths * Math.tan(Math.toRadians(angleFromCenter)))));

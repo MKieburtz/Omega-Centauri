@@ -56,6 +56,16 @@ public class EnemyMediumFighter extends EnemyShip {
 
         ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
     }
+    
+    @Override
+    public void setUpHitbox(Point2D.Double cameraLocation)
+    {
+        try {
+            hitbox = new EllipseHitbox(activeImage.getWidth() + 50, activeImage.getHeight() + 50); // constants added to the end compensate for the wings
+        } catch (NullPointerException ex) {
+            System.err.println("active image not initialized!");
+        }
+    }
 
     @Override
     public void shoot(Point2D.Double cameraLocation) {
@@ -119,7 +129,7 @@ public class EnemyMediumFighter extends EnemyShip {
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                 player.getLocation());
 
-        //rotateToAngle(angleToPlayer);
+        rotateToAngle(angleToPlayer);
         
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
@@ -128,15 +138,15 @@ public class EnemyMediumFighter extends EnemyShip {
 
         }
 
-//        if (Math.abs(angleToPlayer - faceAngle) <= 45) {
-//            shoot(cameraLocation);
-//        }
+        if (Math.abs(angleToPlayer - faceAngle) <= 45) {
+            shoot(cameraLocation);
+        }
 
-//        if (distance > 500) {
-//            move(ShipState.Thrusting);
-//        } else {
-//            move(ShipState.Drifting);
-//        }
+        if (distance > 500) {
+            move(ShipState.Thrusting);
+        } else {
+            move(ShipState.Drifting);
+        }
     }
 
     @Override
