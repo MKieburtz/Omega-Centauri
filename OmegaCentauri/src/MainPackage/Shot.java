@@ -70,7 +70,7 @@ public abstract class Shot {
             hitboxPoints[1] = new Point2D.Double(activeImage.getWidth(), 0);
             hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
             hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
-            hitbox = new RectangularHitbox(hitboxPoints);
+            hitbox = new RectangularHitbox(hitboxPoints, true);
 
         } catch (NullPointerException e) {
             System.err.println("activeimage not initialized!");

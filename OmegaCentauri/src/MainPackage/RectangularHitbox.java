@@ -22,13 +22,20 @@ public class RectangularHitbox extends Area {
     private Point2D.Double collisionPoint = new Point2D.Double();
     private double angle = 0;
     
-    public RectangularHitbox(Point2D.Double[] points)
+    public RectangularHitbox(Point2D.Double[] points, boolean leadingPoint)
     {
         this.points = points;
         topRightPoint = new Point2D.Double(points[0].x, points[0].y);
         dimensions = new Dimension((int)(points[1].x - points[0].x), (int)(points[3].y - points[0].y));
         centerPoint = new Point2D.Double((points[0].x + points[1].x) / 2, (points[3].y + points[0].y) / 2);
-        collisionPoint = new Point2D.Double(points[1].x * 3, (points[1].y + points[2].y) / 2);
+        if (leadingPoint)
+        {
+            collisionPoint = new Point2D.Double(points[1].x * 3, (points[1].y + points[2].y) / 2);
+        }
+        else
+        {
+            collisionPoint = new Point2D.Double(points[1].x, (points[1].y + points[2].y) / 2);
+        }
         setShape();
     }
     
