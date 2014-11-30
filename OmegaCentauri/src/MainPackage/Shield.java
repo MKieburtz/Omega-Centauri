@@ -50,12 +50,14 @@ public class Shield {
     {
         private double angleToDraw;
         private double angleToTranslate;
+        private double faceAngle;
         private int opacity = 100;        
         
-        public ShieldSegment(double drawingAngle, double translationAngle)
+        public ShieldSegment(double drawingAngle, double translationAngle, double faceAngle)
         {
             this.angleToDraw = drawingAngle;
             this.angleToTranslate = translationAngle;
+            this.faceAngle = faceAngle;
         }
 
         public double getTranslationAngle()
@@ -76,6 +78,11 @@ public class Shield {
         public double getDrawingAngle() 
         {
             return angleToDraw;
+        }
+        
+        public double getFaceAngle()
+        {
+            return faceAngle;
         }
     }
     
@@ -122,11 +129,11 @@ public class Shield {
             }
     }
     // shield angle is the angle on the shield, collision angle is the angle to the collision point on the shot
-    public void activate(double damage, double shieldAngle, double collisionAngle) {        
+    public void activate(double damage, double shieldAngle, double collisionAngle, double faceAngle) {        
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         
         energy -= damageToLose;
-        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle));
+        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle, faceAngle));
     }
     
     public double getEnergy()

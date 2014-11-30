@@ -34,7 +34,7 @@ public abstract class Ship{
     protected Point2D.Double movementVelocity = new Point2D.Double(0, 0);
     protected double angularVelocity = 0;
     protected double maxAngularVel;
-    protected EllipseHitbox hitbox;
+    protected EllipseHitbox shieldHitbox;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;
@@ -198,7 +198,7 @@ public abstract class Ship{
     
     public void setUpHitbox(Point2D.Double cameraLocation) {        
         try {
-            hitbox = new EllipseHitbox(activeImage.getWidth(), activeImage.getHeight());
+            shieldHitbox = new EllipseHitbox(activeImage.getWidth(), activeImage.getHeight());
         } catch (NullPointerException ex) {
             System.err.println("active image not initialized!");
         }
@@ -207,8 +207,8 @@ public abstract class Ship{
     
     protected void updateHitbox(Point2D.Double cameraLocation) {
         
-        hitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
-        hitbox.rotateToAngle(faceAngle);
+        shieldHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
+        shieldHitbox.rotateToAngle(faceAngle);
     }
     
     public ArrayList<Shot> getShots() {
@@ -241,7 +241,7 @@ public abstract class Ship{
     }
     
     public EllipseHitbox returnHitbox() {
-        return hitbox;
+        return shieldHitbox;
     }
     
     public boolean canShoot() {
@@ -291,13 +291,13 @@ public abstract class Ship{
     
     public void takeDamage(int damage, double collisionAngleShield, double collisionAngle) {
         if (shield.getEnergy() - damage >= 0) {
-            shield.activate(damage, collisionAngleShield, collisionAngle);
+            shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle);
         } else {
             double healthToLoseShield = damage - Math.abs(shield.getEnergy() - damage);
             double healthToLoseHull = Math.abs(shield.getEnergy() - damage);
             
             if (healthToLoseShield > 0) {
-                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle);
+                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle);
             }
             
             reduceHull(healthToLoseHull);
