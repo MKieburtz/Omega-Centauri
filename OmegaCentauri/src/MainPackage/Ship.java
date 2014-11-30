@@ -35,6 +35,7 @@ public abstract class Ship{
     protected double angularVelocity = 0;
     protected double maxAngularVel;
     protected EllipseHitbox shieldHitbox;
+    protected ShapeHitbox hullHitbox = null;
     protected String name;
     protected double baseMaxVel;
     protected double maxVel;

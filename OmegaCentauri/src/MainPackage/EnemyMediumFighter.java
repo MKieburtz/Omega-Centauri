@@ -62,9 +62,18 @@ public class EnemyMediumFighter extends EnemyShip {
     {
         try {
             shieldHitbox = new EllipseHitbox(activeImage.getWidth() + 50, activeImage.getHeight() + 50); // constants added to the end compensate for the wings
+            //hullHitbox = new ShapeHitbox(points, location);
         } catch (NullPointerException ex) {
             System.err.println("active image not initialized!");
         }
+    }
+    
+    @Override
+    protected void updateHitbox(Point2D.Double cameraLocation)
+    {
+        super.updateHitbox(cameraLocation);
+        hullHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
+        hullHitbox.rotateToAngle(faceAngle);
     }
 
     @Override
