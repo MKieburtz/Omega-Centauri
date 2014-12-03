@@ -69,6 +69,8 @@ public class EnemyMediumFighter extends EnemyShip {
             points[3] = new Point2D.Double(27, activeImage.getHeight());
             points[4] = new Point2D.Double(27, activeImage.getHeight() - 100);
             points[5] = new Point2D.Double(0, activeImage.getHeight() - 100);
+            points[6] = new Point2D.Double(0, activeImage.getHeight() - 130);
+            points[7] = new Point2D.Double(27, activeImage.getHeight() - 130);
             hullHitbox = new ShapeHitbox(points, new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2));
         } catch (NullPointerException ex) {
             System.err.println("active image not initialized!");
