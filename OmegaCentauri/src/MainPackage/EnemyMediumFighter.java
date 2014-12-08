@@ -135,8 +135,8 @@ public class EnemyMediumFighter extends EnemyShip {
                 new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y), original,
                     faceAngle);
-//        g2d.setColor(Color.red);
-//        hitbox.draw(g2d, camera.getLocation());
+        g2d.setColor(Color.red);
+        hullHitbox.draw(g2d, camera.getLocation());
     }
 
     @Override

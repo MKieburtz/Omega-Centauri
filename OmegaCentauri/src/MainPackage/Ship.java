@@ -216,7 +216,7 @@ public abstract class Ship{
         return shots;
     }
     
-    public boolean[] CollisionEventWithShot(Ship ship, Shot shot, ArrayList<Ship> allShips, double collisionAngleShield, double collisionAngle) {
+    public boolean[] CollisionEventWithShotWithShield(Ship ship, Shot shot, ArrayList<Ship> allShips, double collisionAngleShield, double collisionAngle) {
         boolean[] removed = {false, false}; // first is ship, second is shot.
         
         for (Ship s : allShips) {
@@ -231,7 +231,31 @@ public abstract class Ship{
         if (!ship.getShots().contains(shot)) {
             if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
             {
-                takeDamage(shot.getDamage(), collisionAngleShield, collisionAngle);
+                takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle);
+                if (hullDurability <= 0) {
+                    removed[0] = true;
+                }
+            }
+        }
+        
+        return removed;
+    }
+    public boolean[] CollisionEventWithShotWithHull(Ship ship, Shot shot, ArrayList<Ship> allShips) {
+        boolean[] removed = {false, false}; // first is ship, second is shot.
+        
+        for (Ship s : allShips) {
+            if (shot.getOwner().equals(s) && !s.equals(ship)) {  // if s fired the shot and s isn't the ship that collided with the shot...
+                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) { 
+                    s.removeShot(shot); // removing because it collided
+                    removed[1] = true;
+                } 
+            }
+        }
+        
+        if (!ship.getShots().contains(shot)) {
+            if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
+            {
+                takeDamageHull(shot.getDamage());
                 if (hullDurability <= 0) {
                     removed[0] = true;
                 }
@@ -241,8 +265,12 @@ public abstract class Ship{
         return removed;
     }
     
-    public EllipseHitbox returnHitbox() {
-        return shieldHitbox;
+    public Hitbox returnHitbox() {
+        if (hullHitbox == null || shield.getEnergy() > 0)
+        {
+            return shieldHitbox;
+        }
+        return hullHitbox;
     }
     
     public boolean canShoot() {
@@ -290,7 +318,7 @@ public abstract class Ship{
         return shotsToRemove;
     }
     
-    public void takeDamage(int damage, double collisionAngleShield, double collisionAngle) {
+    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle) {
         if (shield.getEnergy() - damage >= 0) {
             shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle);
         } else {
@@ -309,6 +337,13 @@ public abstract class Ship{
         {
             exploding = true;
         }
+    }
+    
+    public void takeDamageHull(int damage)
+    {
+        double healthToLoseHull = Math.abs(shield.getEnergy() - damage);
+            
+        reduceHull(healthToLoseHull);
     }
     
     public boolean isColliding() {

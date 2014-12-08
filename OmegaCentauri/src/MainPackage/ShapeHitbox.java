@@ -1,6 +1,9 @@
 package MainPackage;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Area;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
@@ -92,6 +95,25 @@ public class ShapeHitbox extends Area implements Hitbox{
         //Toolkit.getDefaultToolkit().beep();
         return !intersection.isEmpty();
     }
+    
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
+     {
+         g2d.setColor(Color.RED);
+         for (int i = 0; i < points.length; i++)
+         {
+            if (i != points.length - 1)
+            {
+                g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[i + 1].x - cameraLocation.x, points[i + 1].y - cameraLocation.y));
+                g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[i + 1].x - cameraLocation.x, points[i].y - cameraLocation.y));
+             }
+             else
+             {
+                g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[0].x - cameraLocation.x, points[0].y - cameraLocation.y));
+                g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[i].x - cameraLocation.x, points[i].y - cameraLocation.y));
+             }
+         }
+         
+     }
 
     private void setShape()
     {
