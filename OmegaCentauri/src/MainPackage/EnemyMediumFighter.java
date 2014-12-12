@@ -39,7 +39,7 @@ public class EnemyMediumFighter extends EnemyShip {
         activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true,
-                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 500, resources, false);
+                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 100, resources, false);
 
         setUpHitbox(cameraLocation);
 
@@ -67,10 +67,10 @@ public class EnemyMediumFighter extends EnemyShip {
             points[1] = new Point2D.Double(activeImage.getWidth(), 0);
             points[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
             points[3] = new Point2D.Double(27, activeImage.getHeight());
-            points[4] = new Point2D.Double(27, activeImage.getHeight() - 100);
-            points[5] = new Point2D.Double(0, activeImage.getHeight() - 100);
-            points[6] = new Point2D.Double(0, activeImage.getHeight() - 130);
-            points[7] = new Point2D.Double(27, activeImage.getHeight() - 130);
+            points[4] = new Point2D.Double(27, activeImage.getHeight() - 172);
+            points[5] = new Point2D.Double(0, activeImage.getHeight() - 172);
+            points[6] = new Point2D.Double(0, activeImage.getHeight() - 202);
+            points[7] = new Point2D.Double(27, activeImage.getHeight() - 202);
             hullHitbox = new ShapeHitbox(points, new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2));
         } catch (NullPointerException ex) {
             System.err.println("active image not initialized!");
@@ -147,7 +147,7 @@ public class EnemyMediumFighter extends EnemyShip {
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                 player.getLocation());
 
-        rotateToAngle(angleToPlayer);
+        //rotateToAngle(angleToPlayer);
         
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
@@ -160,11 +160,11 @@ public class EnemyMediumFighter extends EnemyShip {
             shoot(cameraLocation);
         }
 
-        if (distance > 500) {
-            move(ShipState.Thrusting);
-        } else {
-            move(ShipState.Drifting);
-        }
+//        if (distance > 500) {
+//            move(ShipState.Thrusting);
+//        } else {
+//            move(ShipState.Drifting);
+//        }
     }
 
     @Override

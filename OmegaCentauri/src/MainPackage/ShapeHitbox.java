@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
@@ -79,15 +80,13 @@ public class ShapeHitbox extends Area implements Hitbox{
     }
 
 
-    Area intersection;
+
     @Override
     public boolean collides(RectangularHitbox other) {
-        intersection = (Area)other.clone();
-        intersection.intersect(this);
         //Toolkit.getDefaultToolkit().beep();
-        return !intersection.isEmpty();
+        return this.contains(other.getCollisionPoint());
     }
-
+    Area intersection;
     @Override
     public boolean collides(ShapeHitbox other) {
         intersection = (Area)other.clone();
@@ -104,12 +103,10 @@ public class ShapeHitbox extends Area implements Hitbox{
             if (i != points.length - 1)
             {
                 g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[i + 1].x - cameraLocation.x, points[i + 1].y - cameraLocation.y));
-                g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[i + 1].x - cameraLocation.x, points[i].y - cameraLocation.y));
              }
              else
              {
                 g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[0].x - cameraLocation.x, points[0].y - cameraLocation.y));
-                g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[i].x - cameraLocation.x, points[i].y - cameraLocation.y));
              }
          }
          
