@@ -135,8 +135,8 @@ public class EnemyMediumFighter extends EnemyShip {
                 new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y), original,
                     faceAngle);
-        g2d.setColor(Color.red);
-        hullHitbox.draw(g2d, camera.getLocation());
+//        g2d.setColor(Color.red);
+//        hullHitbox.draw(g2d, camera.getLocation());
     }
 
     @Override
@@ -147,7 +147,7 @@ public class EnemyMediumFighter extends EnemyShip {
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                 player.getLocation());
 
-        //rotateToAngle(angleToPlayer);
+        rotateToAngle(angleToPlayer);
         
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
@@ -160,11 +160,11 @@ public class EnemyMediumFighter extends EnemyShip {
             shoot(cameraLocation);
         }
 
-//        if (distance > 500) {
-//            move(ShipState.Thrusting);
-//        } else {
-//            move(ShipState.Drifting);
-//        }
+        if (distance > 500) {
+            move(ShipState.Thrusting);
+        } else {
+            move(ShipState.Drifting);
+        }
     }
 
     @Override

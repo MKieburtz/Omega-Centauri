@@ -131,7 +131,7 @@ public class Shield {
     // shield angle is the angle on the shield, collision angle is the angle to the collision point on the shot
     public void activate(double damage, double shieldAngle, double collisionAngle, double faceAngle) {        
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
-        
+        //System.out.println(shieldAngle + " " + collisionAngle);
         energy -= damageToLose;
         shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle, faceAngle));
     }

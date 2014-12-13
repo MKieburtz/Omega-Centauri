@@ -96,8 +96,9 @@ public class EllipseHitbox implements Hitbox{
     
     public double getAngleToHitbox(RectangularHitbox other)
     {
-        Point2D.Double rotatedPoint =  Calculator.rotatePointAroundPoint(other.getTopLeftPoint(), other.getCenterPoint(), -other.getAngle());
-        double angleToHitbox = Calculator.getAngleBetweenTwoPoints(centerPoint, rotatedPoint);
+        //Point2D.Double rotatedPoint =  Calculator.rotatePointAroundPoint(other.getCollisionPoint(), other.getCenterPoint(), -other.getAngle());
+        double angleToHitbox = Calculator.getAngleBetweenTwoPoints(centerPoint, other.getCollisionPoint());
+        //System.err.println(angleToHitbox);
         return angleToHitbox;
     }
     
