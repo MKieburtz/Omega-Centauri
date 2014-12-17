@@ -44,7 +44,7 @@ public class EllipseHitbox implements Hitbox{
     @Override
     public void rotateRelitive(double amount) {
         angle += amount;
-        angle = Calculator.confineAngleToRange(angle);
+        angle = Calculator.confineAngleToRange(this.angle);
     }
 
     @Override

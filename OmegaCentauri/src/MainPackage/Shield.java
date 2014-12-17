@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -97,7 +98,6 @@ public class Shield {
             
             for (ShieldSegment segment : shieldSegments)
             {
-
                 transform.setToIdentity();
                 comp = AlphaComposite.getInstance(rule, (float)segment.getOpacity()/100);
 
@@ -113,7 +113,7 @@ public class Shield {
                     double distance = Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, translationAngle);
 
                     transform.translate(translationPoint.x + distance, translationPoint.y - activeImage.getHeight() / 2);
-                    //System.out.println(segment.getTranslationAngle() + " " + segment.getDrawingAngle());
+                    //System.out.println(segment.getTranslationAngle() + " " + segment.getDrawingAngle() + " " + faceAngle);
                     transform.rotate(Math.toRadians(360 - -(segment.getTranslationAngle() - segment.getDrawingAngle())), 0, 0);
                 }
 
