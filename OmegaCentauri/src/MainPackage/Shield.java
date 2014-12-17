@@ -111,8 +111,8 @@ public class Shield {
                 {
                     double translationAngle = segment.getTranslationAngle() - faceAngle;
                     double distance = Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, translationAngle);
-
-                    transform.translate(translationPoint.x + distance, translationPoint.y - activeImage.getHeight() / 2);
+ 
+                    transform.translate(translationPoint.x + distance + 30, translationPoint.y - activeImage.getHeight() / 2);
                     //System.out.println(segment.getTranslationAngle() + " " + segment.getDrawingAngle() + " " + faceAngle);
                     transform.rotate(Math.toRadians(360 - -(segment.getTranslationAngle() - segment.getDrawingAngle())), 0, 0);
                 }

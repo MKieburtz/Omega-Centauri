@@ -91,7 +91,7 @@ public class EllipseHitbox implements Hitbox{
     
     public double getAngleOnEllipse(RectangularHitbox other)
     {
-        return Calculator.confineAngleToRange(Calculator.getAngleOfEllipseAtAngle(getAngleToHitbox(other), horizontalRadiusLength, verticalRadiusLength));
+        return Calculator.confineAngleToRange(Calculator.getAngleOfEllipseAtAngle(getAngleToHitbox(other) - angle, horizontalRadiusLength, verticalRadiusLength) + angle);
     }
     
     public double getAngleToHitbox(RectangularHitbox other)

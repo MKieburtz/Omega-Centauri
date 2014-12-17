@@ -39,7 +39,7 @@ public class EnemyMediumFighter extends EnemyShip {
         activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
         shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true,
-                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 100, resources, false);
+                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 300, resources, false);
 
         setUpHitbox(cameraLocation);
 
@@ -147,7 +147,7 @@ public class EnemyMediumFighter extends EnemyShip {
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                 player.getLocation());
 
-        rotateToAngle(45);
+        rotateToAngle(faceAngle + 5);
         
         for (Turret t : turrets) {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
