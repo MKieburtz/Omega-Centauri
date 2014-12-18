@@ -22,7 +22,6 @@ public class Shield {
     private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private BufferedImage activeImage;
-    private double angle;
     private double regenRate;
     private int strengh;
     private int energy;
@@ -32,9 +31,8 @@ public class Shield {
     private Point size;
     private boolean circle;
 
-    public Shield(double angle, Point2D.Double location, Point2D.Double cameraLocation,
+    public Shield(Point2D.Double location, Point2D.Double cameraLocation,
             boolean enemy, Point size, int strength, int energy, Resources resources, boolean circle) {
-        this.angle = angle;
         this.energy = energy;
         this.maxEnergy = energy; // start at max power
         this.strengh = strength;
@@ -51,14 +49,12 @@ public class Shield {
     {
         private double angleToDraw;
         private double angleToTranslate;
-        private double faceAngle;
         private int opacity = 100;        
         
-        public ShieldSegment(double drawingAngle, double translationAngle, double faceAngle)
+        public ShieldSegment(double drawingAngle, double translationAngle)
         {
             this.angleToDraw = drawingAngle;
             this.angleToTranslate = translationAngle;
-            this.faceAngle = faceAngle;
         }
 
         public double getTranslationAngle()
@@ -81,9 +77,9 @@ public class Shield {
             return angleToDraw;
         }
         
-        public double getFaceAngle()
+        public void updateAngle(double amount)
         {
-            return faceAngle;
+            angleToTranslate += amount;
         }
     }
     
@@ -133,7 +129,15 @@ public class Shield {
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         //System.out.println(shieldAngle + " " + collisionAngle);
         energy -= damageToLose;
-        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle, faceAngle));
+        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle));
+    }
+    
+    public void updateSegments(double angleChange)
+    {
+        for (ShieldSegment segment : shieldSegments)
+        {
+            segment.updateAngle(angleChange);
+        }
     }
     
     public double getEnergy()

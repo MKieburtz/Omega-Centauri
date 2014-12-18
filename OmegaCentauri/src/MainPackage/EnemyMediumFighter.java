@@ -38,7 +38,7 @@ public class EnemyMediumFighter extends EnemyShip {
        
         activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
-        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true,
+        shield = new Shield(location, new Point2D.Double(0, 0), true,
                 new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 300, resources, false);
 
         setUpHitbox(cameraLocation);

@@ -159,6 +159,8 @@ public abstract class Ship{
     }
     
     protected void updateAngle(ShipState state) {
+        double beforeUpdate = faceAngle;
+        boolean throughCircle;
         if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight) {
             faceAngle -= angularVelocity;
             if (faceAngle <= 0) {
@@ -170,11 +172,23 @@ public abstract class Ship{
                 faceAngle = faceAngle - 360;
             }
         }
-        
+        if (shield.isActive())
+        {
+            double[] distances = Calculator.getDistancesBetweenAngles(beforeUpdate, faceAngle);
+            double change;
+            if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight)
+            {
+                change = distances[0] > distances[1] ? -distances[0] : -distances[1];
+            }
+            else
+            {
+                change = distances[0] > distances[1] ? distances[0] : distances[1];
+            }
+            shield.updateSegments(change);
+        }
     }
     
     public void rotate(ShipState state) {
-        
         rotatingRight = state == ShipState.AngleDriftingRight || state == ShipState.TurningRight;
         
         if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) {

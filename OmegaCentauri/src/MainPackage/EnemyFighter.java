@@ -50,7 +50,7 @@ public class EnemyFighter extends EnemyShip {
         activeImage = images.get(0);
         
         setUpHitbox(cameraLocation);
-        shield = new Shield(faceAngle, location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(),
+        shield = new Shield(location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(),
                 activeImage.getHeight()), 10, 50, resources, activeImage.getWidth() == activeImage.getHeight());
         
         this.id = id;
