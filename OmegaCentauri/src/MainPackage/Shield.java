@@ -79,6 +79,7 @@ public class Shield {
         
         public void updateAngle(double amount)
         {
+            angleToDraw += amount;
             angleToTranslate += amount;
         }
     }

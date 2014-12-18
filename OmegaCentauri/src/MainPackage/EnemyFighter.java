@@ -80,7 +80,7 @@ public class EnemyFighter extends EnemyShip {
         if (!movingAway) {
             targetingAngle = angleToPlayer;
         }
-
+        
         if (!movingAway && distanceToPlayer < 200) {
             movingAway = true;
             if (hullDurability < 30) {
@@ -96,7 +96,6 @@ public class EnemyFighter extends EnemyShip {
                 targetingAngle = (angleToPlayer + 180) % 360;
             }
         }
-
         // this block performs logic based on movingAway
         if (!movingAway) {
             for (EnemyShip ship : others) {
@@ -107,7 +106,7 @@ public class EnemyFighter extends EnemyShip {
                     }
                 }
             }
-
+            
             rotateToAngle(targetingAngle);
 
             if (Math.abs(angleToPlayer - faceAngle) < 45) {
@@ -117,7 +116,8 @@ public class EnemyFighter extends EnemyShip {
             rotateToAngle(targetingAngle);
         }
 
-        if (distanceToPlayer > 200) {
+        if ((movingAway && Math.abs(faceAngle - targetingAngle) < 15) || (distanceToPlayer > 200 && !movingAway))
+        {
             move(ShipState.Thrusting);
             thrusting = true;
         } else {

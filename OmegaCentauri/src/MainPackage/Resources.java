@@ -48,9 +48,6 @@ public class Resources {
         imagePaths.add("resources/Turret.png");
         imagePaths.add("resources/TempScannerModule.png");
         imagePaths.add("resources/healthbackground.png");
-        imagePaths.add("resources/HealthyTick.png");
-        imagePaths.add("resources/WarningTick.png");
-        imagePaths.add("resources/DangerTick.png");
         imagePaths.add("resources/StartButtonNoHover.png");
         imagePaths.add("resources/StartButtonHover.png");
         imagePaths.add("resources/CloseButtonNoHover.png");

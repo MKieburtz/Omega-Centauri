@@ -160,7 +160,6 @@ public abstract class Ship{
     
     protected void updateAngle(ShipState state) {
         double beforeUpdate = faceAngle;
-        boolean throughCircle;
         if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight) {
             faceAngle -= angularVelocity;
             if (faceAngle <= 0) {
@@ -178,11 +177,11 @@ public abstract class Ship{
             double change;
             if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight)
             {
-                change = distances[0] > distances[1] ? -distances[0] : -distances[1];
+                change = distances[0] > distances[1] ? distances[0] : distances[1];
             }
             else
             {
-                change = distances[0] > distances[1] ? distances[0] : distances[1];
+                change = distances[0] > distances[1] ? -distances[0] : -distances[1];
             }
             shield.updateSegments(change);
         }
