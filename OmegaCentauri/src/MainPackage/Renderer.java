@@ -83,8 +83,7 @@ public class Renderer {
         }
 
         
-        // draw HUD
-        headsUpDisplayPlayer.draw(g2d, camera);
+        
 
         for (Ship ship : ships) {
             ship.draw(g2d, camera);
@@ -128,6 +127,9 @@ public class Renderer {
         //shots on screen
         g2d.drawString("Shots: " + allShots.size(), camera.getSize().x - 130, 40);
 
+        // draw HUD
+        headsUpDisplayPlayer.draw(g2d, camera);
+        
         //draw pause menu
         if (paused) {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
