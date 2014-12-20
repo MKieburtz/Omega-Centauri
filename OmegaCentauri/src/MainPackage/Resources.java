@@ -92,6 +92,7 @@ public class Resources {
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 32f));
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 24f));
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 16f));
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 12f));
 
         loadAllImages();
         loadAllSounds();
@@ -141,6 +142,7 @@ public class Resources {
     
     public Font getFontForObject(FontInfo info)
     {
+        System.out.println(info.path + " " + info.size + " " + fonts.containsKey(info));
         return fonts.get(info);
     }
 

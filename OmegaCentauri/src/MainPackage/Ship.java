@@ -359,6 +359,16 @@ public abstract class Ship{
         reduceHull(healthToLoseHull);
     }
     
+    public double getMaxHull()
+    {
+        return maxhullDurabilty;
+    }
+    
+    public double getMaxShield()
+    {
+        return shield.getMaxEnergy();
+    }
+    
     public boolean isColliding() {
         return colliding;
     }

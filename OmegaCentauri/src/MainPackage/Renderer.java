@@ -31,6 +31,7 @@ public class Renderer {
     public Renderer(Resources resources) {
         
         fonts.add(resources.getFontForObject(new FontInfo("resources/OCR A Std.ttf", 10f)));
+        
 
         imagePaths.add("resources/PauseMenu.png");
         imagePaths.add("resources/PauseButton_ToMenu.png");
@@ -84,10 +85,11 @@ public class Renderer {
 
         
         
-
+        Player playerShip = null;
         for (Ship ship : ships) {
             ship.draw(g2d, camera);
             if (ship instanceof Player) {
+                playerShip = (Player)ship;
                 g2d.setColor(Color.CYAN);
 
                 if (ship.getHullHealth() <= 0) {
@@ -128,7 +130,16 @@ public class Renderer {
         g2d.drawString("Shots: " + allShots.size(), camera.getSize().x - 130, 40);
 
         // draw HUD
-        headsUpDisplayPlayer.draw(g2d, camera);
+        if (playerShip != null)
+        {
+            double shieldPercent = (playerShip.getShieldHealth() / playerShip.getMaxShield()) * 100;
+            double hullPercent = (playerShip.getHullHealth() / playerShip.getMaxHull()) * 100;
+            headsUpDisplayPlayer.draw(g2d, camera, shieldPercent, hullPercent);
+        }
+        else
+        {
+            System.err.println("ERROR: playerShip is null in renderer");
+        }
         
         //draw pause menu
         if (paused) {
