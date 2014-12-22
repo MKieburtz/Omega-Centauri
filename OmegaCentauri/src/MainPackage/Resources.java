@@ -46,8 +46,6 @@ public class Resources {
         imagePaths.add("resources/EnemyFighterThrustingRight.png");
         imagePaths.add("resources/MediumEnemyFighter.png");
         imagePaths.add("resources/Turret.png");
-        imagePaths.add("resources/TempScannerModule.png");
-        imagePaths.add("resources/healthbackground.png");
         imagePaths.add("resources/StartButtonNoHover.png");
         imagePaths.add("resources/StartButtonHover.png");
         imagePaths.add("resources/CloseButtonNoHover.png");
@@ -83,6 +81,9 @@ public class Resources {
         imagePaths.add("resources/ShieldStatusGood.png");
         imagePaths.add("resources/ShieldStatusWarning.png");
         imagePaths.add("resources/WarningBar.png");
+        imagePaths.add("resources/ShipStatusGood.png");
+        imagePaths.add("resources/ShipStatusWarning.png");
+        imagePaths.add("resources/ShipStatusBad.png");
         
         soundPaths.add("resources/Pulse.wav");
         soundPaths.add("resources/Mouseclick.wav");
@@ -142,7 +143,6 @@ public class Resources {
     
     public Font getFontForObject(FontInfo info)
     {
-        System.out.println(info.path + " " + info.size + " " + fonts.containsKey(info));
         return fonts.get(info);
     }
 
