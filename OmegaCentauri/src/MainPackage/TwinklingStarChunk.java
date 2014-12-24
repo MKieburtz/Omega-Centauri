@@ -10,21 +10,23 @@ import java.util.Random;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class TwinklingStarChunk extends StarChunk {
+public class TwinklingStarChunk extends StarChunk 
+{
 
     private Random random = new Random();
 
     private float opacity = 100f;
-    private HashMap<Ellipse2D.Double, Float> starOpacity = new HashMap<Ellipse2D.Double, Float>();
-    private HashMap<Ellipse2D.Double, Boolean> fading = new HashMap<Ellipse2D.Double, Boolean>();
-    private HashMap<Ellipse2D.Double, Float> rate = new HashMap<Ellipse2D.Double, Float>();
+    private HashMap<Ellipse2D.Double, Float> starOpacity = new HashMap<>();
+    private HashMap<Ellipse2D.Double, Boolean> fading = new HashMap<>();
+    private HashMap<Ellipse2D.Double, Float> rate = new HashMap<>();
 
     private final int startingTime = random.nextInt(100) + 1;
     private int time = 0;
-    private ArrayList<Float> possibleDelays = new ArrayList<Float>();
-    protected ArrayList<Integer> possibleSizes = new ArrayList<Integer>();
+    private ArrayList<Float> possibleDelays = new ArrayList<>();
+    protected ArrayList<Integer> possibleSizes = new ArrayList<>();
 
-    public TwinklingStarChunk(double x, double y, int size, int amount) {
+    public TwinklingStarChunk(double x, double y, int size, int amount)
+    {
         super(x, y, size, amount);
 
         possibleSizes.add(1);
@@ -35,7 +37,8 @@ public class TwinklingStarChunk extends StarChunk {
         possibleDelays.add(1f);
         possibleDelays.add(2f);
 
-        for (Ellipse2D.Double star : stars) {
+        for (Ellipse2D.Double star : stars) 
+        {
             int starSize = possibleSizes.get(random.nextInt(possibleSizes.size()));
             possibleSizes.remove(new Integer(starSize));
             star.setFrame(star.getX(), star.getY(), starSize, starSize);
@@ -50,14 +53,19 @@ public class TwinklingStarChunk extends StarChunk {
 
     }
 
-    public void draw(Graphics2D g2d) {
+    public void draw(Graphics2D g2d) 
+    {
 
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        for (Ellipse2D.Double star : stars) {
-            if (time != 0) {
-                if (time <= startingTime * 3) {
-                    switch (time / startingTime) {
+        for (Ellipse2D.Double star : stars)
+        {
+            if (time != 0) 
+            {
+                if (time <= startingTime * 3)
+                {
+                    switch (time / startingTime) 
+                    {
                         case 3: // don't break
                             drawStar(g2d, star);
                             break;
@@ -68,11 +76,15 @@ public class TwinklingStarChunk extends StarChunk {
                             drawStar(g2d, star);
                             break;
                     }
-                } else {
+                } 
+                else 
+                {
                     drawStar(g2d, star);
                 }
                 drawStar(g2d, star);
-            } else {
+            } 
+            else 
+            {
                 drawStar(g2d, star);
             }
 
@@ -80,7 +92,8 @@ public class TwinklingStarChunk extends StarChunk {
         time++;
     }
 
-    private void drawStar(Graphics2D g2d, Ellipse2D.Double star) {
+    private void drawStar(Graphics2D g2d, Ellipse2D.Double star) 
+    {
 
         Composite originalComposite = g2d.getComposite();
 
@@ -94,14 +107,19 @@ public class TwinklingStarChunk extends StarChunk {
 
         g2d.setComposite(originalComposite);
 
-        if (fading.get(star)) {
+        if (fading.get(star)) 
+        {
             starOpacity.put(star, starOpacity.get(star) - rate.get(star));
-            if (starOpacity.get(star) == 0) {
+            if (starOpacity.get(star) == 0) 
+            {
                 fading.put(star, Boolean.FALSE);
             }
-        } else if (!fading.get(star)) {
+        } 
+        else if (!fading.get(star)) 
+        {
             starOpacity.put(star, starOpacity.get(star) + rate.get(star));
-            if (starOpacity.get(star) == 100) {
+            if (starOpacity.get(star) == 100) 
+            {
                 fading.put(star, Boolean.TRUE);
             }
         }

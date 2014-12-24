@@ -8,7 +8,8 @@ import java.awt.geom.Point2D;
 /**
  * @author Michael Kieburtz
  */
-public abstract class PhysicalShot extends Shot {
+public abstract class PhysicalShot extends Shot 
+{
 
     protected Ship targetShip;
     
@@ -18,7 +19,8 @@ public abstract class PhysicalShot extends Shot {
     protected boolean exploding;
     
     public PhysicalShot(int damage, int range, Point2D.Double location,
-            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) {
+            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) 
+    {
         super(damage, range, location, velocity, angle, cameraLocation, owner);
     }
     
@@ -27,14 +29,17 @@ public abstract class PhysicalShot extends Shot {
     {
         Point2D.Double[] hitboxPoints = new Point2D.Double[4]; 
 
-        try {
+        try 
+        {
             hitboxPoints[0] = new Point2D.Double(0, 0);
             hitboxPoints[1] = new Point2D.Double(activeImage.getWidth(), 0);
             hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
             hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
             hitbox = new RectangularHitbox(hitboxPoints, false);
 
-        } catch (NullPointerException e) {
+        }
+        catch (NullPointerException e)
+        {
             System.err.println("activeimage not initialized!");
         }
     }

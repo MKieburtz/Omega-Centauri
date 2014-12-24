@@ -6,7 +6,8 @@ import java.util.ArrayList;
 /**
  * @author Michael Kieburtz
  */
-public abstract class EnemyShip extends Ship{
+public abstract class EnemyShip extends Ship
+{
     
     public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
             double maxAngleVelocity, double angleIncrement, double acceleration, int shootingDelay, int health)
@@ -22,16 +23,23 @@ public abstract class EnemyShip extends Ship{
     public abstract Point2D.Double getLocation();
     
     
-     protected void rotateToAngle(double angle) {
+     protected void rotateToAngle(double angle) 
+     {
         double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, angle);
 
-        if (Math.abs(angle - faceAngle) >= 5) {
-            if (distances[0] < distances[1]) {
-                if (distances[0] > angleIcrement) {
+        if (Math.abs(angle - faceAngle) >= 5) 
+        {
+            if (distances[0] < distances[1]) 
+            {
+                if (distances[0] > angleIcrement) 
+                {
                     rotate(ShipState.TurningLeft);
                 }
-            } else {
-                if (distances[1] > angleIcrement) {
+            }
+            else 
+            {
+                if (distances[1] > angleIcrement) 
+                {
                     rotate(ShipState.TurningRight);
                 }
             }

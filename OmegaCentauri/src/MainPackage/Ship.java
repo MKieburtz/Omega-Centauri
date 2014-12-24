@@ -11,7 +11,8 @@ import java.util.concurrent.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public abstract class Ship{
+public abstract class Ship
+{
 
     // make sure image loading order is correct!
     protected final int IDLE = 0;
@@ -63,7 +64,8 @@ public abstract class Ship{
     protected boolean exploding;
     
     public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
-            double maxAngularVelocity, double angleIncrement, double acceleration, int shootingDelay, int health) {
+            double maxAngularVelocity, double angleIncrement, double acceleration, int shootingDelay, int health)
+    {
         
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
@@ -80,15 +82,18 @@ public abstract class Ship{
         ex = Executors.newSingleThreadScheduledExecutor();
     }
     
-    public BufferedImage getImage() {
+    public BufferedImage getImage()
+    {
         return activeImage;
     }
     
-    public BufferedImage getImage(int index) {
+    public BufferedImage getImage(int index)
+    {
         return this.images.get(index);
     }
     
-    public void draw(Graphics2D g2d, Camera camera) {
+    public void draw(Graphics2D g2d, Camera camera)
+    {
         if (!exploding)
         {
             g2d.rotate(Math.toRadians(360 - faceAngle),
@@ -110,22 +115,30 @@ public abstract class Ship{
         }
     }
     
-    protected void move(ShipState state) {
+    protected void move(ShipState state)
+    {
         
-        if (state == ShipState.Thrusting) {
+        if (state == ShipState.Thrusting)
+        {
             movementVelocity.x += Calculator.CalcAngleMoveX(360 - faceAngle) * acceleration;
             
-            if (movementVelocity.x > maxVel) {
+            if (movementVelocity.x > maxVel)
+            {
                 movementVelocity.x = maxVel;
-            } else if (movementVelocity.x < -maxVel) {
+            } 
+            else if (movementVelocity.x < -maxVel)
+            {
                 movementVelocity.x = -maxVel;
             }
             
             movementVelocity.y += Calculator.CalcAngleMoveY(360 - faceAngle) * acceleration;
             
-            if (movementVelocity.y > maxVel) {
+            if (movementVelocity.y > maxVel) 
+            {
                 movementVelocity.y = maxVel;
-            } else if (movementVelocity.y < -maxVel) {
+            } 
+            else if (movementVelocity.y < -maxVel)
+            {
                 movementVelocity.y = -maxVel;
             }
         }
@@ -133,12 +146,15 @@ public abstract class Ship{
         movementVelocity.x *= .99;
         movementVelocity.y *= .99;
         
-        if (state == ShipState.Drifting) {
-            if (Math.abs(movementVelocity.x) < .1) {
+        if (state == ShipState.Drifting)
+        {
+            if (Math.abs(movementVelocity.x) < .1)
+            {
                 movementVelocity.x = 0;
             }
             
-            if (Math.abs(movementVelocity.y) < .1) {
+            if (Math.abs(movementVelocity.y) < .1) 
+            {
                 movementVelocity.y = 0;
             }
         }
@@ -147,27 +163,35 @@ public abstract class Ship{
         
     }
     
-    protected void updatePosition() {
+    protected void updatePosition() 
+    {
         location.x += movementVelocity.x;
         location.y += movementVelocity.y;
     }
     
     public abstract void shoot(Point2D.Double cameraLocation);
     
-    public Point2D.Double getLocation() {
+    public Point2D.Double getLocation()
+    {
         return location;
     }
     
-    protected void updateAngle(ShipState state) {
+    protected void updateAngle(ShipState state) 
+    {
         double beforeUpdate = faceAngle;
-        if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight) {
+        if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight)
+        {
             faceAngle -= angularVelocity;
-            if (faceAngle <= 0) {
+            if (faceAngle <= 0)
+            {
                 faceAngle = 360 + faceAngle;
             }
-        } else if (state == ShipState.TurningLeft || state == ShipState.AngleDriftingLeft) {
+        } 
+        else if (state == ShipState.TurningLeft || state == ShipState.AngleDriftingLeft) 
+        {
             faceAngle += angularVelocity;
-            if (faceAngle >= 360) {
+            if (faceAngle >= 360) 
+            {
                 faceAngle = faceAngle - 360;
             }
         }
@@ -187,65 +211,84 @@ public abstract class Ship{
         }
     }
     
-    public void rotate(ShipState state) {
+    public void rotate(ShipState state) 
+    {
         rotatingRight = state == ShipState.AngleDriftingRight || state == ShipState.TurningRight;
         
-        if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) {
+        if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) 
+        {
             
             angularVelocity += angleIcrement * .1;
             
-            if (angularVelocity > maxAngularVel) {
+            if (angularVelocity > maxAngularVel) 
+            {
                 angularVelocity = maxAngularVel;
-            } else if (angularVelocity < -maxAngularVel) {
+            } 
+            else if (angularVelocity < -maxAngularVel) 
+            {
                 angularVelocity = -maxAngularVel;
             }
             
-            if ((angularVelocity < .01 && angularVelocity > 0) || (angularVelocity > -.01 && angularVelocity < 0)) {
+            if ((angularVelocity < .01 && angularVelocity > 0) || (angularVelocity > -.01 && angularVelocity < 0)) 
+            {
                 angularVelocity = 0;
             }
-        } else {
+        }
+        else 
+        {
             angularVelocity *= .90;
         }
         
         updateAngle(state);
     }
     
-    public void setUpHitbox(Point2D.Double cameraLocation) {        
-        try {
+    public void setUpHitbox(Point2D.Double cameraLocation) 
+    {        
+        try
+        {
             shieldHitbox = new EllipseHitbox(activeImage.getWidth(), activeImage.getHeight());
-        } catch (NullPointerException ex) {
+        } 
+        catch (NullPointerException ex)
+        {
             System.err.println("active image not initialized!");
         }
         
     }
     
-    protected void updateHitbox(Point2D.Double cameraLocation) {
-        
+    protected void updateHitbox(Point2D.Double cameraLocation) 
+    {
         shieldHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
         shieldHitbox.rotateToAngle(faceAngle);
     }
     
-    public ArrayList<Shot> getShots() {
+    public ArrayList<Shot> getShots() 
+    {
         return shots;
     }
     
-    public boolean[] CollisionEventWithShotWithShield(Ship ship, Shot shot, ArrayList<Ship> allShips, double collisionAngleShield, double collisionAngle) {
+    public boolean[] CollisionEventWithShotWithShield(Ship ship, Shot shot, ArrayList<Ship> allShips, double collisionAngleShield, double collisionAngle) 
+    {
         boolean[] removed = {false, false}; // first is ship, second is shot.
         
-        for (Ship s : allShips) {
-            if (shot.getOwner().equals(s) && !s.equals(ship)) {  // if s fired the shot and s isn't the ship that collided with the shot...
-                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) { 
+        for (Ship s : allShips) 
+        {
+            if (shot.getOwner().equals(s) && !s.equals(ship)) // if s fired the shot and s isn't the ship that collided with the shot...
+            {  
+                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) 
+                { 
                     s.removeShot(shot); // removing because it collided
                     removed[1] = true;
                 } 
             }
         }
         
-        if (!ship.getShots().contains(shot)) {
+        if (!ship.getShots().contains(shot)) 
+        {
             if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
             {
                 takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle);
-                if (hullDurability <= 0) {
+                if (hullDurability <= 0) 
+                {
                     removed[0] = true;
                 }
             }
@@ -253,23 +296,29 @@ public abstract class Ship{
         
         return removed;
     }
-    public boolean[] CollisionEventWithShotWithHull(Ship ship, Shot shot, ArrayList<Ship> allShips) {
+    public boolean[] CollisionEventWithShotWithHull(Ship ship, Shot shot, ArrayList<Ship> allShips)
+    {
         boolean[] removed = {false, false}; // first is ship, second is shot.
         
-        for (Ship s : allShips) {
-            if (shot.getOwner().equals(s) && !s.equals(ship)) {  // if s fired the shot and s isn't the ship that collided with the shot...
-                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) { 
+        for (Ship s : allShips)
+        {
+            if (shot.getOwner().equals(s) && !s.equals(ship)) // if s fired the shot and s isn't the ship that collided with the shot...
+            {  
+                if (!(ship instanceof EnemyShip && s instanceof EnemyShip))
+                { 
                     s.removeShot(shot); // removing because it collided
                     removed[1] = true;
                 } 
             }
         }
         
-        if (!ship.getShots().contains(shot)) {
+        if (!ship.getShots().contains(shot)) 
+        {
             if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
             {
                 takeDamageHull(shot.getDamage());
-                if (hullDurability <= 0) {
+                if (hullDurability <= 0) 
+                {
                     removed[0] = true;
                 }
             }
@@ -278,7 +327,8 @@ public abstract class Ship{
         return removed;
     }
     
-    public Hitbox returnHitbox() {
+    public Hitbox returnHitbox() 
+    {
         if (hullHitbox == null || shield.getEnergy() > 0)
         {
             return shieldHitbox;
@@ -286,43 +336,54 @@ public abstract class Ship{
         return hullHitbox;
     }
     
-    public boolean canShoot() {
+    public boolean canShoot()
+    {
         return canshoot;
     }
     
-    class ShootingService implements Runnable {
+    class ShootingService implements Runnable 
+    {
         
         @Override
-        public void run() {
+        public void run() 
+        {
             canshoot = true;
         }
     }
     
-    public Shield getShield() {
+    public Shield getShield() 
+    {
         return shield;
     }
     
-    public void removeShot(Shot shotToRemove) {
+    public void removeShot(Shot shotToRemove) 
+    {
         shots.remove(shotToRemove);
     }
     
-    public double getShieldHealth() {
+    public double getShieldHealth() 
+    {
         return shield.getEnergy();
     }
     
-    public int getHullHealth() {
+    public int getHullHealth() 
+    {
         return hullDurability;
     }
     
-    public void reduceHull(double damage) {
+    public void reduceHull(double damage) 
+    {
         hullDurability -= damage;
     }
     
     ArrayList<Shot> shotsToRemove = new ArrayList<>();
-    public ArrayList<Shot> purgeShots(Dimension screensize) {
+    public ArrayList<Shot> purgeShots(Dimension screensize) 
+    {
         shotsToRemove.clear();
-        for (int i = shots.size() - 1; i > -1; i--) {
-            if (shots.get(i).outsideScreen(screensize)) {
+        for (int i = shots.size() - 1; i > -1; i--) 
+        {
+            if (shots.get(i).outsideScreen(screensize)) 
+            {
                 shotsToRemove.add(shots.get(i));
                 shots.remove(i);
             }
@@ -331,19 +392,22 @@ public abstract class Ship{
         return shotsToRemove;
     }
     
-    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle) {
-        if (shield.getEnergy() - damage >= 0) {
+    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle) 
+    {
+        if (shield.getEnergy() - damage >= 0)
+        {
             shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle);
-        } else {
+        }
+        else
+        {
             double healthToLoseShield = damage - Math.abs(shield.getEnergy() - damage);
             double healthToLoseHull = Math.abs(shield.getEnergy() - damage);
             
-            if (healthToLoseShield > 0) {
+            if (healthToLoseShield > 0) 
+            {
                 shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle);
             }
-            
             reduceHull(healthToLoseHull);
-            
         }
         
         if (hullDurability <= 0)
@@ -386,33 +450,28 @@ public abstract class Ship{
         return exploding;
     }
     
-    public void changeImage(ShipState state) {
-        switch (state) {
-            case Idle: {
+    public void changeImage(ShipState state) 
+    {
+        switch (state) 
+        {
+            case Idle:
                 activeImage = images.get(IDLE);
                 break;
-            }
-            case Thrusting: {
+            case Thrusting:
                 activeImage = images.get(THRUSTING);
                 break;
-            }
-            case TurningLeft: {
+            case TurningLeft: 
                 activeImage = images.get(TURNINGLEFT);
                 break;
-            }
-            case TurningRight: {
+            case TurningRight: 
                 activeImage = images.get(TURNINGRIGHT);
                 break;
-            }
-            case TurningLeftThrusting: {
+            case TurningLeftThrusting: 
                 activeImage = images.get(TURNINGLEFTTHRUSTING);
                 break;
-            }
-            case TurningRightThrusting: {
+            case TurningRightThrusting: 
                 activeImage = images.get(TURNINGRIGHTTHRUSTING);
-                break;
-            }
-            
+                break;            
         }
     }
 }

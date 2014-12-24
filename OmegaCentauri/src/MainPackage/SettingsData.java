@@ -4,7 +4,8 @@ import java.io.*;
 /**
  * @author Michael Kieburtz
  */
-public class SettingsData implements Serializable{
+public class SettingsData implements Serializable
+{
     
     private boolean graphicsQualityLow = false;
     private boolean windowed = true;
@@ -29,7 +30,8 @@ public class SettingsData implements Serializable{
         this.windowed = windowed;
     }
     
-    public void resetDefaults() {
+    public void resetDefaults() 
+    {
         windowed = true;
         graphicsQualityLow = false;
     }

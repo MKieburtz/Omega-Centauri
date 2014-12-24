@@ -11,7 +11,8 @@ import java.util.concurrent.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class OmegaCentauri extends Game implements GameActionListener {
+public class OmegaCentauri extends Game implements GameActionListener 
+{
 
     private final String Version = "Dev 1.0.5";
     /*
@@ -53,7 +54,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
     private ArrayList<Ship> deadShips = new ArrayList<>();
     private ArrayList<Shot> deadShots = new ArrayList<>();
 
-    public OmegaCentauri() {
+    public OmegaCentauri() 
+    {
 
         /* change this one, Michael */ mapSize = new Dimension(10000, 10000);
 
@@ -71,7 +73,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
         setUpWindow();
     }
 
-    private void addShips() {
+    private void addShips() 
+    {
         player = new Player(5000, 5000, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 1000, resources);
         enemyShips.add(new EnemyFighter(5000, 1000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
         enemyShips.add(new EnemyFighter(9000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
@@ -101,7 +104,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
         syncGameStateVaribles();
     }
 
-    private void setUpWindow() {
+    private void setUpWindow() 
+    {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
@@ -113,14 +117,19 @@ public class OmegaCentauri extends Game implements GameActionListener {
         if (!mainMenu.getSettings().getData().getWindowed()) // if fullscreen
         {
             setUndecorated(true);
-            if (!System.getProperty("os.name").contains("Mac")) {
+            if (!System.getProperty("os.name").contains("Mac")) 
+            {
                 setExtendedState(JFrame.MAXIMIZED_BOTH);
-            } else {
+            } 
+            else 
+            {
                 gd.setFullScreenWindow(this);
             }
             this.setVisible(false);
             panel = new Panel(true);
-        } else {
+        } 
+        else 
+        {
             setPreferredSize(new Dimension(1000, 600));
             panel = new Panel(false);
         }        
@@ -133,22 +142,29 @@ public class OmegaCentauri extends Game implements GameActionListener {
         borderSize = new Dimension(getSize().width - getContentPane().getSize().width,
                 getSize().height - getContentPane().getSize().height);
         
-        addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() 
+        {
             @Override
-            public void windowClosing(WindowEvent we) {
-                try {
+            public void windowClosing(WindowEvent we) 
+            {
+                try 
+                {
                     setVisible(false);
                     dispose();
-                } catch (java.awt.IllegalComponentStateException ex) {
+                } 
+                catch (java.awt.IllegalComponentStateException ex)
+                {
                     System.err.println("ERROR!");
                 }
             }
         });
 
-        addWindowFocusListener(new WindowAdapter() {
+        addWindowFocusListener(new WindowAdapter()
+        {
 
             @Override
-            public void windowLostFocus(WindowEvent e) {
+            public void windowLostFocus(WindowEvent e) 
+            {
 //                shooting = false;
 //                rotateLeft = false;
 //                rotateRight = false;
@@ -170,13 +186,16 @@ public class OmegaCentauri extends Game implements GameActionListener {
         mouseRecordingEx.schedule(new MouseChecker(), 1, TimeUnit.MILLISECONDS);
     }
 
-    private void setInputMaps() {
+    private void setInputMaps() 
+    {
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "W");
-        panel.getActionMap().put("W", new AbstractAction() {
+        panel.getActionMap().put("W", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
 
                 wPressed();
             }
@@ -184,123 +203,147 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "Wr");
-        panel.getActionMap().put("Wr", new AbstractAction() {
+        panel.getActionMap().put("Wr", new AbstractAction() 
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 wReleased();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false), "D");
-        panel.getActionMap().put("D", new AbstractAction() {
+        panel.getActionMap().put("D", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 dPressed();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "Dr");
-        panel.getActionMap().put("Dr", new AbstractAction() {
+        panel.getActionMap().put("Dr", new AbstractAction() 
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 dReleased();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "A");
-        panel.getActionMap().put("A", new AbstractAction() {
+        panel.getActionMap().put("A", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 aPressed();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "Ar");
-        panel.getActionMap().put("Ar", new AbstractAction() {
+        panel.getActionMap().put("Ar", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 aReleased();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, false), "Shift");
-        panel.getActionMap().put("Shift", new AbstractAction() {
+        panel.getActionMap().put("Shift", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) 
+            {
                 shiftPressed();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "Shiftr");
-        panel.getActionMap().put("Shiftr", new AbstractAction() {
+        panel.getActionMap().put("Shiftr", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 shiftReleased();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false), "Space");
-        panel.getActionMap().put("Space", new AbstractAction() {
+        panel.getActionMap().put("Space", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) 
+            {
                 spacePressed();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "Spacer");
-        panel.getActionMap().put("Spacer", new AbstractAction() {
+        panel.getActionMap().put("Spacer", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 spaceReleased();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0, false), "Q");
-        panel.getActionMap().put("Q", new AbstractAction() {
+        panel.getActionMap().put("Q", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 qPressed();
             }
         });
 
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "Esc");
-        panel.getActionMap().put("Esc", new AbstractAction() {
+        panel.getActionMap().put("Esc", new AbstractAction()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 escapePressed();
             }
         });
     }
 
     @Override
-    public void gameStart() {
+    public void gameStart() 
+    {
         //System.gc();
         startGame();
     }
 
     @Override
-    public void enteredFullScreen() {
+    public void enteredFullScreen() 
+    {
         dispose();
         setUndecorated(true);
         gd.setFullScreenWindow(this);
@@ -310,7 +353,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
     }
 
     @Override
-    public void exitedFullScreen() {
+    public void exitedFullScreen()
+    {
         dispose();
         gd.setFullScreenWindow(null);
         setUndecorated(false);
@@ -321,54 +365,70 @@ public class OmegaCentauri extends Game implements GameActionListener {
     }
 
     @Override
-    public void settingsChangedToHigh() {
+    public void settingsChangedToHigh() 
+    {
+        
     }
 
     @Override
-    public void settingsChangedToLow() {
+    public void settingsChangedToLow() 
+    {
+        
     }
 
-    private void startGame() {
+    private void startGame() 
+    {
         timingEx.schedule(new LoadingService(), 1, TimeUnit.MILLISECONDS);
     }
 
-    private void gameUpdate() {
-
+    private void gameUpdate() 
+    {
         //long start = 0;
-        if (!paused) {
+        if (!paused) 
+        {
             //start = System.currentTimeMillis();
-            if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight()) {
+            if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight())
+            {
                 camera.setSize(getWidth(), getHeight());
             }
 
-            if (forward) {
+            if (forward) 
+            {
                 player.move(ShipState.Thrusting);
             }
-            if (rotateRight) {
-
+            if (rotateRight)
+            {
                 player.rotate(ShipState.TurningRight);
             }
-            if (rotateLeft) {
+            if (rotateLeft) 
+            {
                 player.rotate(ShipState.TurningLeft);
             }
-            if (!forward && player.isMoving()) {
+            if (!forward && player.isMoving()) 
+            {
                 player.move(ShipState.Drifting);
             }
-            if (!rotateRight && !rotateLeft && player.isRotating()) {
+            if (!rotateRight && !rotateLeft && player.isRotating())
+            {
                 player.rotate(player.rotatingRight() ? ShipState.AngleDriftingRight : ShipState.AngleDriftingLeft);
             }
-            if (shooting && player.canShoot()) {
+            if (shooting && player.canShoot()) 
+            {
                 player.shoot(camera.getLocation());
             }
-            for (EnemyShip enemyShip : enemyShips) {
+            for (EnemyShip enemyShip : enemyShips) 
+            {
                 enemyShip.update(player, camera.getLocation(), enemyShips);
             }
 
-            for (int i = deadShips.size() - 1; i > -1; i--) {
-                if (!deadShips.get(i).isExploding()) {
+            for (int i = deadShips.size() - 1; i > -1; i--)
+            {
+                if (!deadShips.get(i).isExploding())
+                {
                     deadShots.addAll(deadShips.get(i).getShots());
 
-                    if (enemyShips.contains(deadShips.get(i))) {
+                    if (enemyShips.contains(deadShips.get(i)))
+                    {
                         enemyShips.remove(deadShips.get(i));
                     }
                     shipsToDraw.remove(deadShips.get(i));
@@ -376,68 +436,53 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 }
             }
 
-            for (int i = deadShots.size() - 1; i > -1; i--) {
+            for (int i = deadShots.size() - 1; i > -1; i--) 
+            {
                 deadShots.get(i).getOwner().removeShot(deadShots.get(i));
 
-                if (!deadShots.get(i).isDying()) {
+                if (!deadShots.get(i).isDying()) 
+                {
                     allShots.remove(deadShots.get(i));
                     deadShots.remove(deadShots.get(i));
                 }
             }
 
-            for (Ship ship : shipsToDraw) {
+            for (Ship ship : shipsToDraw)
+            {
                 ship.updateHitbox(camera.getLocation());
 
                 allShots.addAll(ship.getShots()); // should be fine because hashset doesn't allow dups
             }
 
-            for (Shot shot : allShots) {
+            for (Shot shot : allShots) 
+            {
                 shot.updateHitbox(camera.getLocation());
 
                 shot.update();
-                if (shot.isDying() && !deadShots.contains(shot)) {
+                if (shot.isDying() && !deadShots.contains(shot))
+                {
                     deadShots.add(shot);
                 }
             }
 
-            for (Ship ship : shipsToDraw) {
+            for (Ship ship : shipsToDraw) 
+            {
 
-                if (ship.getShield().isActive()) {
+                if (ship.getShield().isActive()) 
+                {
                     ship.getShield().decay();
                 }
-//                boolean collision = false;
-//                for (Ship collisionShip : shipsToDraw) {
-//                    //System.out.println(ship.getClass() + " " + collisionShip.getClass());
-//                    if (Calculator.getDistance(ship.getLocation(), collisionShip.getLocation()) < 500) {
-//
-//                        if (!collisionShip.equals(ship) && !(collisionShip instanceof EnemyShip && ship instanceof EnemyShip)
-//                                && !((collisionShip.isColliding() || collisionShip.isExploding())
-//                                || (ship.isColliding() || ship.isExploding()))) {
-//                            if (ship.returnRectangularHitbox().collides(collisionShip.returnRectangularHitbox())) {
-//                                collision = true;
-//                                boolean shipDied = ship.CollisionEventWithShip(ship, collisionShip);
-//                                boolean collisionShipDied = collisionShip.CollisionEventWithShip(ship, collisionShip);
-//
-//                                if (shipDied) {
-//                                    deadShips.add(ship);
-//                                }
-//                                if (collisionShipDied) {
-//                                    deadShips.add(collisionShip);
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                if (!collision) {
-//                    ship.setColliding(false);
-//                }
 
-                for (Shot shot : allShots) {
-                    if (!shot.isDying() && !ship.isExploding()) {
-                        if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500) {
-                            if (!shot.getOwner().equals(ship) || !(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip)) {
-                                if (ship.returnHitbox().collides(shot.returnHitbox())) {
+                for (Shot shot : allShots) 
+                {
+                    if (!shot.isDying() && !ship.isExploding())
+                    {
+                        if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500)
+                        {
+                            if (!shot.getOwner().equals(ship) || !(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip)) 
+                            {
+                                if (ship.returnHitbox().collides(shot.returnHitbox()))
+                                {
                                     boolean[] removals;
                                     if (ship.returnHitbox() instanceof EllipseHitbox)
                                     {
@@ -456,7 +501,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
                                     }
                                     if (removals[1]) // shot
                                     {
-                                        if (shot instanceof Missile) {
+                                        if (shot instanceof Missile) 
+                                        {
                                             Missile m = (Missile) shot;
                                             m.explode();
                                         }
@@ -470,23 +516,30 @@ public class OmegaCentauri extends Game implements GameActionListener {
                 deadShots.addAll(ship.purgeShots(mapSize));
             }
 
-            for (Shot shot : allShots) {
-                if (!shot.isDying()) {
-                    for (Shot collisionShot : allShots) {
-                        if (Calculator.getDistance(shot.getLocation(), collisionShot.getLocation()) < 500) {
-                            
+            for (Shot shot : allShots) 
+            {
+                if (!shot.isDying()) 
+                {
+                    for (Shot collisionShot : allShots) 
+                    {
+                        if (Calculator.getDistance(shot.getLocation(), collisionShot.getLocation()) < 500) 
+                        {   
                             if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner()))
-                                    && !(shot.getOwner() instanceof EnemyShip && collisionShot.getOwner() instanceof EnemyShip)) {
+                                    && !(shot.getOwner() instanceof EnemyShip && collisionShot.getOwner() instanceof EnemyShip))
+                            {
                                 
-                                if (shot.returnHitbox().collides(collisionShot.returnHitbox())) {
+                                if (shot.returnHitbox().collides(collisionShot.returnHitbox())) 
+                                {
                                     
                                     boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, shipsToDraw);
                                     boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, shipsToDraw);
 
-                                    if (shotGotRemoved) {
+                                    if (shotGotRemoved)
+                                    {
                                         deadShots.add(shot);
                                     }
-                                    if (collisionShotGotRemoved) {
+                                    if (collisionShotGotRemoved) 
+                                    {
                                         deadShots.add(collisionShot);
                                     }
                                 }
@@ -509,120 +562,167 @@ public class OmegaCentauri extends Game implements GameActionListener {
      * 3 = turning left
      */
     //<editor-fold defaultstate="collapsed" desc="Key bindings">
-    private void wPressed() {
-        if (!paused) {
+    private void wPressed() 
+    {
+        if (!paused) 
+        {
             forward = true;
-            if (!rotateRight && !rotateLeft) {
+            if (!rotateRight && !rotateLeft) 
+            {
                 player.changeImage(ShipState.Thrusting);
-            } else if (rotateLeft && !rotateRight) {
+            } 
+            else if (rotateLeft && !rotateRight) 
+            {
                 player.changeImage(ShipState.TurningLeftThrusting);
-            } else if (!rotateLeft && rotateRight) {
+            } 
+            else if (!rotateLeft && rotateRight) 
+            {
                 player.changeImage(ShipState.TurningRightThrusting);
             }
         }
     }
 
-    private void wReleased() {
+    private void wReleased() 
+    {
         forward = false;
         player.changeImage(ShipState.Idle);
-        if (rotateRight) {
+        if (rotateRight) 
+        {
             player.changeImage(ShipState.TurningLeft);
-        } else if (rotateLeft) {
+        } else if (rotateLeft) 
+        {
             player.changeImage(ShipState.TurningRight);
         }
     }
 
-    private void dPressed() {
-        if (!paused) {
-            if (rotateLeft) {
+    private void dPressed() 
+    {
+        if (!paused) 
+        {
+            if (rotateLeft) 
+            {
                 rotateRight = false;
                 rotateLeft = false;
                 player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
                 return;
-            } else {
+            }
+            else
+            {
                 rotateRight = true;
             }
-            if (!forward) {
+            if (!forward) 
+            {
                 player.changeImage(ShipState.TurningRight);
-            } else if (forward) {
+            } 
+            else if (forward)
+            {
                 player.changeImage(ShipState.TurningRightThrusting);
-            } else if (rotateLeft) {
+            } 
+            else if (rotateLeft) 
+            {
                 player.changeImage(ShipState.Idle);
             }
         }
     }
 
-    private void dReleased() {
+    private void dReleased() 
+    {
         rotateRight = false;
-        if (!forward) {
+        if (!forward)
+        {
             player.changeImage(ShipState.Idle);
-        } else {
+        } 
+        else 
+        {
             player.changeImage(ShipState.Thrusting);
         }
     }
 
-    private void aPressed() {
-        if (!paused) {
-
-            if (rotateRight) {
+    private void aPressed() 
+    {
+        if (!paused) 
+        {
+            if (rotateRight) 
+            {
                 rotateRight = false;
                 rotateLeft = false;
                 player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
                 return;
-            } else {
+            } 
+            else
+            {
                 rotateLeft = true;
             }
 
-            if (!forward) {
+            if (!forward) 
+            {
                 player.changeImage(ShipState.TurningLeft);
-            } else if (forward) {
+            } 
+            else if (forward)
+            {
                 player.changeImage(ShipState.TurningLeftThrusting);
-            } else if (rotateRight) {
+            } 
+            else if (rotateRight)
+            {
                 player.changeImage(ShipState.Idle);
             }
         }
     }
 
-    private void aReleased() {
+    private void aReleased()
+    {
         rotateLeft = false;
-        if (!forward) {
+        if (!forward) 
+        {
             player.changeImage(ShipState.Idle);
-        } else {
+        } 
+        else
+        {
             player.changeImage(ShipState.Thrusting);
         }
     }
 
-    private void shiftPressed() {
-        if (!paused) {
+    private void shiftPressed() 
+    {
+        if (!paused)
+        {
             player.speedBoost();
         }
     }
 
-    private void shiftReleased() {
+    private void shiftReleased() 
+    {
         player.stopSpeedBoosting();
     }
 
-    private void spacePressed() {
-        if (!paused) {
+    private void spacePressed()
+    {
+        if (!paused)
+        {
             shooting = true;
         }
     }
 
-    private void spaceReleased() {
+    private void spaceReleased()
+    {
         shooting = false;
     }
 
-    private void qPressed() {
+    private void qPressed()
+    {
         System.exit(0);
     }
 
-    private void escapePressed() {
+    private void escapePressed()
+    {
         paused = !paused;
     }
 //</editor-fold>
-    public class Panel extends JPanel {
+    public class Panel extends JPanel 
+    {
 
-        public Panel(boolean fullScreen) {
+        public Panel(boolean fullScreen) 
+        {
             if (fullScreen)
             {
                 setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -633,24 +733,32 @@ public class OmegaCentauri extends Game implements GameActionListener {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
 
-            addMouseListener(new MouseAdapter() {
+            addMouseListener(new MouseAdapter() 
+            {
                 @Override
-                public void mousePressed(MouseEvent e) {
-                    if (!mainMenu.isActive()) {
+                public void mousePressed(MouseEvent e) 
+                {
+                    if (!mainMenu.isActive()) 
+                    {
                         Rectangle rect = new Rectangle(20, 110, 200, 100);
-                        if (rect.contains(e.getPoint()) && paused) {
+                        if (rect.contains(e.getPoint()) && paused) 
+                        {
                             resetGame();
                             mainMenu.setActive(true);
                             timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
                         }
-                    } else {
+                    } 
+                    else
+                    {
                         mainMenu.checkMousePressed(e.getPoint());
                     }
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
-                    if (mainMenu.isActive()) {
+                public void mouseExited(MouseEvent e)
+                {
+                    if (mainMenu.isActive())
+                    {
                         mainMenu.checkMouseExited();
                     }
                 }
@@ -660,14 +768,15 @@ public class OmegaCentauri extends Game implements GameActionListener {
         }
     }
 
-    private void syncGameStateVaribles() {
+    private void syncGameStateVaribles() 
+    {
         camera.move(player.getLocation().x - (getWidth() / 2), player.getLocation().y - (getHeight() / 2));
 
         middleOfPlayer = Calculator.getScreenLocationMiddle(player.getLocation(), camera.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight());
     }
 
-    class RecordingService implements Runnable {
-
+    class RecordingService implements Runnable
+    {
         @Override
         public void run() {
             FPS = framesDrawn;
@@ -681,19 +790,26 @@ public class OmegaCentauri extends Game implements GameActionListener {
 
     long startTime, endtime, sleeptime, additionalTime;
 
-    class UpdatingService implements Runnable {
+    class UpdatingService implements Runnable 
+    {
 
         @Override
-        public void run() {
-            SwingUtilities.invokeLater(new Runnable() {
+        public void run() 
+        {
+            SwingUtilities.invokeLater(new Runnable() 
+            {
 
                 @Override
-                public void run() {
-                    try {
-                        if (!mainMenu.isActive()) {
+                public void run() 
+                {
+                    try
+                    {
+                        if (!mainMenu.isActive()) 
+                        {
                             startTime = System.nanoTime();
 
-                            if (endtime != 0) {
+                            if (endtime != 0) 
+                            {
                                 additionalTime = Math.abs(Math.abs(sleeptime) - (startTime - endtime));
                             }
 
@@ -711,7 +827,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             //System.out.println("render time: " + (System.nanoTime() - startRenderTime));
 
                             // doesn't work
-                            if (!OmegaCentauri.this.hasFocus()) {
+                            if (!OmegaCentauri.this.hasFocus()) 
+                            {
                                 //paused = true;
                             }
 
@@ -719,12 +836,15 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             sleeptime = loopTimeUPS - (endtime - startTime) - additionalTime;
                             //System.out.println(sleeptime);
                             timingEx.schedule(new UpdatingService(), sleeptime, TimeUnit.NANOSECONDS);
-                            if (sleeptime < 0) {
+                            if (sleeptime < 0) 
+                            {
                                 sleeptime = 0;
                             }
                             endtime = System.nanoTime();
                         }
-                    } catch (Exception ex) {
+                    }
+                    catch (Exception ex) 
+                    {
                         ex.printStackTrace();
                     }
                 }
@@ -732,22 +852,29 @@ public class OmegaCentauri extends Game implements GameActionListener {
         }
     }
 
-    class LoadingService implements Runnable {
+    class LoadingService implements Runnable 
+    {
 
         int numStarsPerQuadH = (int) Math.ceil(mapSize.width / 400D);
         int numStarsPerQuadV = (int) Math.ceil(mapSize.height / 400D);
         int max = (numStarsPerQuadH * numStarsPerQuadV) * 4;
 
         @Override
-        public void run() {
-            SwingUtilities.invokeLater(new Runnable() {
+        public void run() 
+        {
+            SwingUtilities.invokeLater(new Runnable() 
+            {
 
                 @Override
-                public void run() {
-                    try {
+                public void run() 
+                {
+                    try
+                    {
 
-                        for (int x = 1; x < mapSize.width; x += 400) {
-                            for (int y = 1; y < mapSize.height; y += 400) {
+                        for (int x = 1; x < mapSize.width; x += 400)
+                        {
+                            for (int y = 1; y < mapSize.height; y += 400)
+                            {
                                 stars.add(new StarChunk(x, y, 400, 8));
                                 starChunksLoaded++;
                             }
@@ -755,14 +882,18 @@ public class OmegaCentauri extends Game implements GameActionListener {
                         // use active rendering to draw the screen
                         renderer.drawLoadingScreen(panel.getGraphics(), (starChunksLoaded / max) * 100, panel.getWidth(), panel.getHeight());
 
-                        if (starChunksLoaded == max) {
+                        if (starChunksLoaded == max) 
+                        {
                             loading = false;
 
                         }
 
-                        if (loading) {
+                        if (loading) 
+                        {
                             timingEx.schedule(new LoadingService(), 3, TimeUnit.MILLISECONDS);
-                        } else {
+                        }
+                        else 
+                        {
                             shipsToDraw.add(player);
                             shipsToDraw.addAll(enemyShips);
                             shipsToDraw.addAll(allyShips);
@@ -771,7 +902,9 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             timingEx.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
                         }
 
-                    } catch (Exception ex) {
+                    } 
+                    catch (Exception ex)
+                    {
                         ex.printStackTrace();
                     }
                 }
@@ -779,20 +912,27 @@ public class OmegaCentauri extends Game implements GameActionListener {
         }
     }
 
-    class MainMenuService implements Runnable {
+    class MainMenuService implements Runnable
+    {
 
         @Override
-        public void run() {
-            SwingUtilities.invokeLater(new Runnable() {
+        public void run() 
+        {
+            SwingUtilities.invokeLater(new Runnable()
+            {
 
                 @Override
-                public void run() {
-                    try {
-                        if (mainMenu.isActive()) {
+                public void run()
+                {
+                    try 
+                    {
+                        if (mainMenu.isActive()) 
+                        {
                             long start = System.currentTimeMillis();
 
                             if (mainMenu.getSize().x != OmegaCentauri.this.getWidth()
-                                    || mainMenu.getSize().y != OmegaCentauri.this.getHeight()) {
+                                    || mainMenu.getSize().y != OmegaCentauri.this.getHeight()) 
+                            {
                                 mainMenu.setSize(OmegaCentauri.this.getWidth(), OmegaCentauri.this.getHeight());
                             }
                             mainMenu.checkMouseMoved(mouseLocation);
@@ -801,7 +941,9 @@ public class OmegaCentauri extends Game implements GameActionListener {
                             long elapsed = System.currentTimeMillis() - start;
                             timingEx.schedule(new MainMenuService(), 15 - elapsed, TimeUnit.MILLISECONDS);
                         }
-                    } catch (Exception ex) {
+                    } 
+                    catch (Exception ex) 
+                    {
                         ex.printStackTrace();
                     }
                 }
@@ -814,10 +956,12 @@ public class OmegaCentauri extends Game implements GameActionListener {
         @Override
         public void run()
         {
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable() 
+            {
 
                 @Override
-                public void run() {
+                public void run() 
+                {
                     mouseLocation.x = MouseInfo.getPointerInfo().getLocation().x
                             - OmegaCentauri.this.getLocationOnScreen().x
                             - borderSize.width;
@@ -832,7 +976,8 @@ public class OmegaCentauri extends Game implements GameActionListener {
         }
     }
 
-    private void resetGame() {
+    private void resetGame() 
+    {
         shipsToDraw.clear();
         enemyShips.clear();
         allyShips.clear();
@@ -846,10 +991,14 @@ public class OmegaCentauri extends Game implements GameActionListener {
         updates = 0;
     }
 
-    public static void main(String[] args) {
-        try {
+    public static void main(String[] args) 
+    {
+        try 
+        {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+        } 
+        catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) 
+        {
             e.printStackTrace();
         }
 

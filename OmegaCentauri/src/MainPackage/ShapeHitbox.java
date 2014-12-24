@@ -11,7 +11,8 @@ import java.awt.geom.Point2D;
 /**
  * @author Michael Kieburtz
  */
-public class ShapeHitbox extends Area implements Hitbox{
+public class ShapeHitbox extends Area implements Hitbox
+{
 
     private Point2D.Double[] points = new Point2D.Double[4];
     private Point2D.Double centerPoint = new Point2D.Double();
@@ -25,7 +26,8 @@ public class ShapeHitbox extends Area implements Hitbox{
     }
     
     @Override
-    public void rotateToAngle(double angle) {
+    public void rotateToAngle(double angle)
+    {
         if (this.angle - angle == 0)
         {
             return;
@@ -42,8 +44,9 @@ public class ShapeHitbox extends Area implements Hitbox{
     }
 
     @Override
-    public void rotateRelitive(double amount) {
-         for (Point2D.Double point : points)
+    public void rotateRelitive(double amount)
+    {
+        for (Point2D.Double point : points)
         {
             Point2D.Double newPoint = Calculator.rotatePointAroundPoint(point, centerPoint, angle);
             point.x = newPoint.x;
@@ -54,7 +57,8 @@ public class ShapeHitbox extends Area implements Hitbox{
     }
 
     @Override
-    public void moveToLocation(Point2D.Double location) {
+    public void moveToLocation(Point2D.Double location)
+    {
         double distanceX = location.x - centerPoint.x;
         double distanceY = location.y - centerPoint.y;
         centerPoint.x += distanceX;
@@ -68,7 +72,8 @@ public class ShapeHitbox extends Area implements Hitbox{
     }
 
     @Override
-    public void moveRelitive(Point2D.Double distance) {
+    public void moveRelitive(Point2D.Double distance)
+    {
         centerPoint.x += distance.x;
         centerPoint.y += distance.y;
         for (Point2D.Double point : points)
@@ -82,13 +87,15 @@ public class ShapeHitbox extends Area implements Hitbox{
 
 
     @Override
-    public boolean collides(RectangularHitbox other) {
+    public boolean collides(RectangularHitbox other)
+    {
         //Toolkit.getDefaultToolkit().beep();
         return this.contains(other.getCollisionPoint());
     }
     Area intersection;
     @Override
-    public boolean collides(ShapeHitbox other) {
+    public boolean collides(ShapeHitbox other)
+    {
         intersection = (Area)other.clone();
         intersection.intersect(this);
         //Toolkit.getDefaultToolkit().beep();
@@ -103,11 +110,11 @@ public class ShapeHitbox extends Area implements Hitbox{
             if (i != points.length - 1)
             {
                 g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[i + 1].x - cameraLocation.x, points[i + 1].y - cameraLocation.y));
-             }
-             else
-             {
+            }
+            else
+            {
                 g2d.draw(new Line2D.Double(points[i].x - cameraLocation.x, points[i].y - cameraLocation.y, points[0].x - cameraLocation.x, points[0].y - cameraLocation.y));
-             }
+            }
          }
          
      }

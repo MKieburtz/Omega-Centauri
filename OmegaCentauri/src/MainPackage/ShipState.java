@@ -4,8 +4,8 @@ package MainPackage;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public enum ShipState {
-
+public enum ShipState 
+{
     Idle,
     Thrusting,
     Drifting,

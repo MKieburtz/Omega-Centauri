@@ -114,11 +114,13 @@ public class HeadsUpDisplayPlayer
         {
             g2d.setColor(Color.green);
             g2d.drawImage(images.get(GOODSHIELD), 40, 25, null);
-        } else if (shieldHealth > 20)
+        } 
+        else if (shieldHealth > 20)
         {
             g2d.setColor(Color.ORANGE);
             g2d.drawImage(images.get(WARNINGSHIELD), 40, 25, null);
-        } else if (shieldHealth <= 20)
+        } 
+        else if (shieldHealth <= 20)
         {
             g2d.setColor(Color.red);
             g2d.drawImage(images.get(BADSHIELD), 40, 25, null);
@@ -127,7 +129,8 @@ public class HeadsUpDisplayPlayer
         if (shieldHealth == 0) 
         {
             g2d.drawString("%0.0", 105, 360); // draw shield percent
-        } else 
+        } 
+        else 
         {
             g2d.drawString("%" + format.format(shieldHealth), 100, 360); // draw shield percent
         }
@@ -136,11 +139,13 @@ public class HeadsUpDisplayPlayer
         {
             g2d.setColor(Color.green);
             g2d.drawImage(images.get(SHIPSTATUSGOOD), 53, 30, null);
-        } else if (hullHealth >= 30)
+        } 
+        else if (hullHealth >= 30)
         {
             g2d.setColor(Color.ORANGE);
             g2d.drawImage(images.get(SHIPSTATUSWARNING), 53, 30, null);
-        } else if (hullHealth < 30) 
+        } 
+        else if (hullHealth < 30) 
         {
             g2d.setColor(Color.red);
             g2d.drawImage(images.get(SHIPSTATUSBAD), 53, 30, null);
@@ -149,7 +154,8 @@ public class HeadsUpDisplayPlayer
         if (hullHealth == 0)
         {
             g2d.drawString("%0.0", HEALTHSTARTINGX - 15, 360); // draw shield percent
-        } else 
+        } 
+        else 
         {
             g2d.drawString("%" + format.format(hullHealth), HEALTHSTARTINGX - 20, 360); // draw health percent
         }

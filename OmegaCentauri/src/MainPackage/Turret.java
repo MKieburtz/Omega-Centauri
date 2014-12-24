@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Kieburtz
  */
-public class Turret {
+public class Turret 
+{
 
     private BufferedImage activeImage;
 
@@ -48,7 +49,8 @@ public class Turret {
 
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
             Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint,
-            double angleFromCenter, double shipAngle, Ship owner, Resources resources) {
+            double angleFromCenter, double shipAngle, Ship owner, Resources resources)
+    {
         
         this.resources = resources;
         
@@ -77,7 +79,8 @@ public class Turret {
         this.owner = owner;
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double entityLocation) {
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double entityLocation) 
+    {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = new AffineTransform();
 
@@ -90,7 +93,8 @@ public class Turret {
         g2d.setTransform(original);
     }
 
-    public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation) {
+    public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation)
+    {
         shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle + angleFromCenter));
 
         shotSpawnPoint.y = shipLocationMiddle.y + distanceToShotSpawnPoint.y * Math.sin(Math.toRadians(360 - shipAngle + angleFromCenter));
@@ -103,17 +107,22 @@ public class Turret {
 
     }
 
-    private void rotateToAngle(double angleToRotate, double shipAngle) {
+    private void rotateToAngle(double angleToRotate, double shipAngle) 
+    {
         double[] distances = Calculator.getDistancesBetweenAngles(angle, angleToRotate);
 
         double nextAngle = distances[0] < distances[1] ?
                                angle + angularVelocity : 
                                angle - angularVelocity;
         
-        if (!(nextAngle < maxRotation && nextAngle > minRotation)) {
-            if (distances[0] < distances[1]) {
+        if (!(nextAngle < maxRotation && nextAngle > minRotation)) 
+        {
+            if (distances[0] < distances[1])
+            {
                 angle += angularVelocity;
-            } else {
+            }
+            else
+            {
                 angle -= angularVelocity;
             }
             
@@ -126,8 +135,8 @@ public class Turret {
 
     }
     
-    public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity) { // ASSUMES THAT CANSHOOT IS TESTED BEFORE THIS IS CALLED!
-        
+    public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity) // ASSUMES THAT CANSHOOT IS TESTED BEFORE THIS IS CALLED!
+    { 
         Random rand = new Random();
         
         double shootingAngle = 360 - displayAngle + rand.nextInt(10) - 5;

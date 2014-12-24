@@ -17,7 +17,8 @@ import java.util.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class Shield {
+public class Shield 
+{
 
     private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
@@ -32,7 +33,8 @@ public class Shield {
     private boolean circle;
 
     public Shield(Point2D.Double location, Point2D.Double cameraLocation,
-            boolean enemy, Point size, int strength, int energy, Resources resources, boolean circle) {
+            boolean enemy, Point size, int strength, int energy, Resources resources, boolean circle)
+    {
         this.energy = energy;
         this.maxEnergy = energy; // start at max power
         this.strengh = strength;
@@ -85,7 +87,8 @@ public class Shield {
     }
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation,
-            Point2D.Double rotationPoint, Point2D.Double translationPoint, AffineTransform original, double faceAngle) {      
+            Point2D.Double rotationPoint, Point2D.Double translationPoint, AffineTransform original, double faceAngle) 
+    {      
             int rule = AlphaComposite.SRC_OVER;
             
             Composite originalComposite = g2d.getComposite();
@@ -126,7 +129,8 @@ public class Shield {
             }
     }
     // shield angle is the angle on the shield, collision angle is the angle to the collision point on the shot
-    public void activate(double damage, double shieldAngle, double collisionAngle, double faceAngle) {        
+    public void activate(double damage, double shieldAngle, double collisionAngle, double faceAngle)
+    {        
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         //System.out.println(shieldAngle + " " + collisionAngle);
         energy -= damageToLose;

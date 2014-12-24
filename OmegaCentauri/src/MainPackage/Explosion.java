@@ -11,7 +11,8 @@ import java.awt.image.BufferedImage;
 /**
  * @author Michael Kieburtz
  */
-public class Explosion {
+public class Explosion 
+{
 
     private final Dimension fighterExplosionSize = new Dimension(1000, 1200);
     private final Dimension fighterExplosionImageSize = new Dimension(200, 200);
@@ -27,8 +28,8 @@ public class Explosion {
 
     private int frame = 0;
 
-    public static enum Type {
-
+    public static enum Type 
+    {
         fighter, missile
     };
 
@@ -39,8 +40,10 @@ public class Explosion {
     private final String fighterExplosionPath = "resources/FighterExplosionSpritesheet.png";
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
 
-    public Explosion(Type type, Dimension imageSize, Resources resources) {
-        switch (type) {
+    public Explosion(Type type, Dimension imageSize, Resources resources) 
+    {
+        switch (type) 
+        {
             case fighter:
                 spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(fighterExplosionPath));
                 images = new BufferedImage[30];
@@ -61,12 +64,15 @@ public class Explosion {
 
         this.entityImageSize = imageSize;
         
-        drawingManipulation = new Point2D.Double(
+        drawingManipulation = new Point2D.Double
+        (
                 (explosionImageSize.width - entityImageSize.width) / 2,
-                (explosionImageSize.height - entityImageSize.height) / 2);
+                (explosionImageSize.height - entityImageSize.height) / 2
+        );
     }
 
-    private void loadImages(Dimension spriteSheetSize, BufferedImage spriteSheet, Dimension imageSize) {
+    private void loadImages(Dimension spriteSheetSize, BufferedImage spriteSheet, Dimension imageSize) 
+    {
         int index = 0;
         for (int y = 0; y < spriteSheetSize.height; y += imageSize.height) 
         {
@@ -78,7 +84,8 @@ public class Explosion {
         }
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) {
+    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) 
+    {
 
         g2d.drawImage(images[frame],
                 (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
@@ -86,7 +93,8 @@ public class Explosion {
         frame++;
     }
 
-    public boolean isDone() {
+    public boolean isDone() 
+    {
         return frame == images.length;
     }
 }

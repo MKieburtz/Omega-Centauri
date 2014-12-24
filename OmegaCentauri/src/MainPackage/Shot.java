@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public abstract class Shot {
-
+public abstract class Shot 
+{
     protected int range;
     protected double distanceTraveled = 0;
     protected int damage;
@@ -27,7 +27,8 @@ public abstract class Shot {
     protected Ship owner; // the ship that fired the shot
 
     public Shot(int damage, int range, Point2D.Double location,
-            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) {
+            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) 
+    {
         this.damage = damage;
         this.range = range;
         this.location = location;
@@ -60,31 +61,43 @@ public abstract class Shot {
         //hitbox.draw(g2d, cameraLocation);
     }
 
-    public void update() {}
+    public void update() 
+    {
+        
+    }
 
-    protected void setUpHitbox(Point2D.Double cameraLocation) {
+    protected void setUpHitbox(Point2D.Double cameraLocation) 
+    {
         Point2D.Double[] hitboxPoints = new Point2D.Double[4]; 
 
-        try {
+        try 
+        {
             hitboxPoints[0] = new Point2D.Double(0, 0);
             hitboxPoints[1] = new Point2D.Double(activeImage.getWidth(), 0);
             hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
             hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
             hitbox = new RectangularHitbox(hitboxPoints, true);
 
-        } catch (NullPointerException e) {
+        } 
+        catch (NullPointerException e)
+        {
             System.err.println("activeimage not initialized!");
         }
     }
 
-    public boolean collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) { // the return value is only useful to subclasses
+    public boolean collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) // the return value is only useful to subclasses
+    { 
         boolean removed = false;
         //TODO: missiles can collide with eachother if they're different (Enemy, Ally).
-        if (shot instanceof PhysicalShot ^ otherShot instanceof PhysicalShot) { // ^ means one or the other but not both (exclusive OR) (XOR)
+        if (shot instanceof PhysicalShot ^ otherShot instanceof PhysicalShot) // ^ means one or the other but not both (exclusive OR) (XOR)
+        { 
             // enemy ship's shots shouldn't destroy eachother
-            if (!(shot.getOwner() instanceof EnemyShip && otherShot.getOwner() instanceof EnemyShip)) {
-                for (Ship ship : allShips) {
-                    if (shot.getOwner().equals(ship)) {
+            if (!(shot.getOwner() instanceof EnemyShip && otherShot.getOwner() instanceof EnemyShip)) 
+            {
+                for (Ship ship : allShips)
+                {
+                    if (shot.getOwner().equals(ship))
+                    {
                         ship.removeShot(shot);
                         removed = true;
                     }
@@ -95,15 +108,18 @@ public abstract class Shot {
         return removed;
     }
 
-    protected void updateHitbox(Point2D.Double cameraLocation) {
+    protected void updateHitbox(Point2D.Double cameraLocation) 
+    {
         hitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
     }
 
-    public RectangularHitbox returnHitbox() {
+    public RectangularHitbox returnHitbox() 
+    {
         return hitbox;  
     }
 
-    public Point2D.Double getLocation() {
+    public Point2D.Double getLocation() 
+    {
         return location;
     }
 
@@ -112,31 +128,41 @@ public abstract class Shot {
         return new Point(images.get(0).getWidth(), images.get(0).getHeight());
     }
 
-    public BufferedImage getImage() {
+    public BufferedImage getImage()
+    {
         return images.get(0);
     }
 
     public boolean outsideScreen(Dimension screensize) 
     {
-        if (location.x < screensize.width && location.x > 0) {
-            if (location.y < screensize.height && location.y > 0) {
+        if (location.x < screensize.width && location.x > 0) 
+        {
+            if (location.y < screensize.height && location.y > 0) 
+            {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean imagesLoaded() {
+    public boolean imagesLoaded() 
+    {
         return !images.isEmpty();
     }
 
-    public int getDamage() {
+    public int getDamage() 
+    {
         return damage;
     }
 
-    public Ship getOwner() {
+    public Ship getOwner() 
+    {
         return owner;
     }
     
-    public boolean isDying(){return false;}
+    // overriden
+    public boolean isDying()
+    {
+        return false;
+    }
 }

@@ -6,16 +6,20 @@ import java.awt.geom.Point2D;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class PulseShot extends LaserShot {
+public class PulseShot extends LaserShot 
+{
 
     public PulseShot(int damage, Point2D.Double location,
             Point2D.Double velocity, double angle, boolean enemy, Point2D.Double cameraLocation, Ship owner, Resources resources) {
 
         super(damage, 1200, location, velocity, angle, cameraLocation, owner);
         
-        if (enemy) {
+        if (enemy) 
+        {
             activeImage = resources.getImageForObject("resources/EnemyShot.png");
-        } else {
+        } 
+        else 
+        {
             activeImage = resources.getImageForObject("resources/Pulse.png");
         }
         

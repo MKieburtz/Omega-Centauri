@@ -10,7 +10,8 @@ import java.util.ArrayList;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class Calculator {
+public class Calculator 
+{
     /* 
      * this class that will have all sorts of useful methods to help
      * calculate stuff
@@ -19,11 +20,13 @@ public class Calculator {
     private Calculator(){}
     
 
-    public static double CalcAngleMoveX(double angle) {
+    public static double CalcAngleMoveX(double angle) 
+    {
         return Math.cos(Math.toRadians(angle));
     }
 
-    public static double CalcAngleMoveY(double angle) {
+    public static double CalcAngleMoveY(double angle) 
+    {
         return Math.sin(Math.toRadians(angle));
     }
     /**
@@ -31,17 +34,20 @@ public class Calculator {
      * @param pt2 Second point
      * @return distance between two points
      */
-    public static double getDistance(Point2D.Double pt1, Point2D.Double pt2) {
+    public static double getDistance(Point2D.Double pt1, Point2D.Double pt2) 
+    {
         return Math.sqrt(Math.pow(Math.abs(pt2.x - pt1.x), 2) + Math.pow(Math.abs(pt2.y - pt1.y), 2));
     }
 
     /**
      * @return angle between two points IN DEGREES
      */ 
-    public static double getAngleBetweenTwoPoints(Point2D.Double pt1, Point2D.Double pt2) {
+    public static double getAngleBetweenTwoPoints(Point2D.Double pt1, Point2D.Double pt2) 
+    {
         double angle = (double) Math.toDegrees(Math.atan2(pt2.x - pt1.x, pt2.y - pt1.y)) - 90;
 
-        if (angle < 0) {
+        if (angle < 0) 
+        {
             angle += 360;
         }
 
@@ -62,7 +68,8 @@ public class Calculator {
         return new double[] {0.0, 360};
     }
     
-    public static Point2D.Double getScreenLocation(Point2D.Double cameraLocation, Point2D.Double location) {
+    public static Point2D.Double getScreenLocation(Point2D.Double cameraLocation, Point2D.Double location) 
+    {
         double x = location.x - cameraLocation.x;
         double y = location.y - cameraLocation.y;
 
@@ -70,7 +77,8 @@ public class Calculator {
     }
     
     public static Point2D.Double getScreenLocationMiddle(Point2D.Double cameraLocation, Point2D.Double location,
-            double imageWidth, double imageHeight) {
+            double imageWidth, double imageHeight) 
+    {
         double x = location.x - cameraLocation.x + (imageWidth / 2);
         double y = location.y - cameraLocation.y + (imageHeight / 2);
         
@@ -78,7 +86,8 @@ public class Calculator {
     }
     
     public static Point2D.Double getGameLocationMiddle(Point2D.Double location,
-            double imageWidth, double imageHeight) {
+            double imageWidth, double imageHeight) 
+    {
         double x = location.x + imageWidth / 2;
         double y = location.y + imageHeight / 2;
 

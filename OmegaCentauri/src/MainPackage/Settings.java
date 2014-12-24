@@ -11,7 +11,8 @@ import java.io.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class Settings {
+public class Settings
+{
 
     private Dimension windowResolution = new Dimension();
 
@@ -68,7 +69,8 @@ public class Settings {
     
     private final HashMap<SettingsTypes, Boolean> changes = new HashMap<SettingsTypes, Boolean>();
 
-    public Settings(Dimension windowSize, GameActionListener actionListener, Resources resources) {
+    public Settings(Dimension windowSize, GameActionListener actionListener, Resources resources)
+    {
         this.windowResolution = windowSize;
 
         imagePaths.add("resources/RadioButtonEnabled.png");
@@ -112,7 +114,8 @@ public class Settings {
         
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g)
+    {
         BufferedImage drawingImage = new BufferedImage(windowResolution.width, windowResolution.height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = drawingImage.createGraphics();
 
@@ -137,17 +140,20 @@ public class Settings {
             g2d.setFont(fonts.get(SMALLTEXTFONT));
             g2d.setColor(Color.RED);
             g2d.drawString("There are unsaved changes!", windowResolution.width - 310, 20);
-        } else if (saved)
+        } 
+        else if (saved)
         {
             g2d.setFont(fonts.get(SMALLTEXTFONT));
             g2d.setColor(Color.GREEN);
             g2d.drawString("Changes saved!", windowResolution.width - 310, 20);
         }
         
-        if (settingsData.getGraphicsQualityLow()) {
+        if (settingsData.getGraphicsQualityLow()) 
+        {
             g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, windowResolution.height / 2 - 70, null);
             g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, windowResolution.height / 2 - 40, null);
-        } else {
+        } 
+        else {
             g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, windowResolution.height / 2 - 70, null);
             g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, windowResolution.height / 2 - 40, null);
         }
@@ -162,35 +168,50 @@ public class Settings {
         g2d.drawString("FULLSCREEN", windowResolution.width / 2 - 110, windowResolution.height / 2 - 20);
 
         
-        if (settingsData.getWindowed()) {
+        if (settingsData.getWindowed()) 
+        {
             g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 70, null);
             g2d.drawImage(images.get(RADIOBUTTONDISABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 40, null);
-        } else {
+        } 
+        else 
+        {
             g2d.drawImage(images.get(RADIOBUTTONDISABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 70, null);
             g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 40, null);
         }
 
-        if (controlHover) {
+        if (controlHover) 
+        {
             g2d.drawImage(images.get(CONTROLSBUTTONHOVER), controlsRectangle.x, controlsRectangle.y, null);
-        } else {
+        } 
+        else 
+        {
             g2d.drawImage(images.get(CONTROLSBUTTONNOHOVER), controlsRectangle.x, controlsRectangle.y, null);
         }
 
-        if (backHover) {
+        if (backHover)
+        {
             g2d.drawImage(images.get(BACKBUTTONHOVER), backRectangle.x, backRectangle.y, null);
-        } else {
+        } 
+        else
+        {
             g2d.drawImage(images.get(BACKBUTTONNOHOVER), backRectangle.x, backRectangle.y, null);
         }
 
-        if (saveHover) {
+        if (saveHover) 
+        {
             g2d.drawImage(images.get(SAVEBUTTONHOVER), saveRectangle.x, saveRectangle.y, null);
-        } else {
+        } 
+        else
+        {
             g2d.drawImage(images.get(SAVEBUTTONNOHOVER), saveRectangle.x, saveRectangle.y, null);
         }
 
-        if (resetHover) {
+        if (resetHover)
+        {
             g2d.drawImage(images.get(RESETBUTTONHOVER), resetRectangle.x, resetRectangle.y, null);
-        } else {
+        } 
+        else
+        {
             g2d.drawImage(images.get(RESETBUTTONNOHOVER), resetRectangle.x, resetRectangle.y, null);
         }
 
@@ -207,70 +228,82 @@ public class Settings {
         g.drawImage(drawingImage, 0, 0, null);
     }
 
-    public void setActive(boolean active) {
+    public void setActive(boolean active)
+    {
         this.active = active;
     }
 
-    public boolean isActive() {
+    public boolean isActive()
+    {
         return active;
     }
 
-    public void setWindowSize(Dimension windowSize) {
+    public void setWindowSize(Dimension windowSize)
+    {
         this.windowResolution = windowSize;
         setRects();
     }
 
-    private void setRects() {
-        lowGraphicsRectangle = new Rectangle(
+    private void setRects() 
+    {
+        lowGraphicsRectangle = new Rectangle
+        (
                 100,
                 windowResolution.height / 2 - 70,
                 120,
                 20
         );
 
-        highGraphicsRectangle = new Rectangle(
+        highGraphicsRectangle = new Rectangle
+        (
                 100,
                 windowResolution.height / 2 - 40,
                 120,
                 20
         );
 
-        windowedResolutionRectangle = new Rectangle(
+        windowedResolutionRectangle = new Rectangle
+        (
                 windowResolution.width / 2 - 100,
                 windowResolution.height / 2 - 70,
                 210,
                 20
         );
 
-        fullscreenResolutionRectangle = new Rectangle(
+        fullscreenResolutionRectangle = new Rectangle
+        (
                 windowResolution.width / 2 - 100,
                 windowResolution.height / 2 - 40,
                 210,
                 20
         );
 
-        controlsRectangle = new Rectangle(
+        controlsRectangle = new Rectangle
+        (
                 windowResolution.width - 100 - images.get(CONTROLSBUTTONNOHOVER).getWidth(),
                 windowResolution.height / 2 - 80,
                 images.get(CONTROLSBUTTONNOHOVER).getWidth(),
                 images.get(CONTROLSBUTTONNOHOVER).getHeight()
         );
         
-        backRectangle = new Rectangle(
+        backRectangle = new Rectangle
+        (
                 100,
                 windowResolution.height - 90,
                 images.get(BACKBUTTONNOHOVER).getWidth(),
                 images.get(BACKBUTTONNOHOVER).getHeight()
         );
 
-        saveRectangle = new Rectangle(
+        saveRectangle = new Rectangle
+        (
                 windowResolution.width / 2 - images.get(SAVEBUTTONNOHOVER).getWidth() / 2,
                 windowResolution.height - 90,
                 images.get(SAVEBUTTONNOHOVER).getWidth(),
                 images.get(SAVEBUTTONNOHOVER).getHeight()
         );
 
-        resetRectangle = new Rectangle(
+        resetRectangle = new Rectangle
+        (
                 windowResolution.width - 100 - images.get(RESETBUTTONNOHOVER).getWidth(),
                 windowResolution.height - 90,
                 images.get(RESETBUTTONNOHOVER).getWidth(),
@@ -279,17 +312,28 @@ public class Settings {
 
     }
 
-    public void checkMouseMoved(Point location) {
-        if (active) {
-            if (controlsRectangle.contains(location)) {
+    public void checkMouseMoved(Point location) 
+    {
+        if (active) 
+        {
+            if (controlsRectangle.contains(location)) 
+            {
                 controlHover = true;
-            } else if (backRectangle.contains(location)) {
+            } 
+            else if (backRectangle.contains(location))
+            {
                 backHover = true;
-            } else if (saveRectangle.contains(location)) {
+            } 
+            else if (saveRectangle.contains(location))
+            {
                 saveHover = true;
-            } else if (resetRectangle.contains(location)) {
+            }
+            else if (resetRectangle.contains(location)) 
+            {
                 resetHover = true;
-            } else {
+            }
+            else 
+            {
                 controlHover = false;
                 backHover = false;
                 saveHover = false;
@@ -298,24 +342,38 @@ public class Settings {
         }
     }
 
-    public void checkMousePressed(Point location) {
-        if (lowGraphicsRectangle.contains(location)) {
+    public void checkMousePressed(Point location) 
+    {
+        if (lowGraphicsRectangle.contains(location)) 
+        {
             settingsData.setGraphicsQualityLow(true);
-        } else if (highGraphicsRectangle.contains(location)) {
+        } 
+        else if (highGraphicsRectangle.contains(location)) 
+        {
             settingsData.setGraphicsQualityLow(false);
-        } else if (windowedResolutionRectangle.contains(location)) {
+        } 
+        else if (windowedResolutionRectangle.contains(location)) 
+        {
             settingsData.setWindowed(true);
-        } else if (fullscreenResolutionRectangle.contains(location)) {
+        } 
+        else if (fullscreenResolutionRectangle.contains(location)) 
+        {
             settingsData.setWindowed(false);
-        } else if (backRectangle.contains(location)) {
+        } 
+        else if (backRectangle.contains(location))
+        {
             sounds.get(CLICKSOUND).setFramePosition(0);
             sounds.get(CLICKSOUND).start();
             active = false;
-        } else if (resetRectangle.contains(location)) {
+        } 
+        else if (resetRectangle.contains(location)) 
+        {
             sounds.get(CLICKSOUND).setFramePosition(0);
             sounds.get(CLICKSOUND).start();
             settingsData.resetDefaults();
-        } else if (saveRectangle.contains(location)) {
+        } 
+        else if (saveRectangle.contains(location)) 
+        {
             sounds.get(CLICKSOUND).setFramePosition(0);
             sounds.get(CLICKSOUND).start();
             
@@ -327,15 +385,18 @@ public class Settings {
         saved = wasChanged && !changed;
     }
 
-    public void checkMouseExited() {
+    public void checkMouseExited() 
+    {
         controlHover = false;
         backHover = false;
         saveHover = false;
         resetHover = false;
     }
 
-    private void save() {
-        try {
+    private void save()
+    {
+        try 
+        {
             OutputStream output = new FileOutputStream("Data/settings.ser");
             OutputStream buffer = new BufferedOutputStream(output);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(buffer);
@@ -344,14 +405,17 @@ public class Settings {
             
             objectOutputStream.close();
             
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         
         if (settingsData.getWindowed())
         {
             settingsChangedListener.exitedFullScreen();
-        } else
+        } 
+        else
         {
             settingsChangedListener.enteredFullScreen();
         }
@@ -359,7 +423,8 @@ public class Settings {
         if (settingsData.getGraphicsQualityLow())
         {
             settingsChangedListener.settingsChangedToLow();
-        } else
+        } 
+        else
         {
             settingsChangedListener.settingsChangedToHigh();
         }
@@ -368,9 +433,11 @@ public class Settings {
         changes.put(SettingsTypes.resolutionWindowed, settingsData.getWindowed());
     }
 
-    private void load() {
+    private void load()
+    {
         SettingsData settings;
-        try {
+        try 
+        {    
             InputStream input = new FileInputStream("Data/settings.ser");
             InputStream buffer = new BufferedInputStream(input);
             ObjectInputStream objectInputStream = new ObjectInputStream(buffer);
@@ -382,7 +449,9 @@ public class Settings {
             
             objectInputStream.close();
             
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             ex.printStackTrace();
         }
         

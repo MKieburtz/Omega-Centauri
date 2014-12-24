@@ -13,7 +13,8 @@ import javax.sound.sampled.Clip;
  */
 public class Resources {
 
-    private enum ThingsToClear {
+    private enum ThingsToClear
+    {
 
         images,
         sounds,
@@ -31,7 +32,8 @@ public class Resources {
     private ArrayList<FontInfo> fontData = new ArrayList<>();
     private HashMap<FontInfo, Font> fonts = new HashMap<>();
 
-    public Resources() {
+    public Resources() 
+    {
         imagePaths.add("resources/FighterIdle.png");
         imagePaths.add("resources/FighterThrust.png");
         imagePaths.add("resources/FighterLeft.png");
@@ -147,19 +149,24 @@ public class Resources {
     }
 
     private void loadAllImages() {
-        for (String s : imagePaths) {
+        for (String s : imagePaths) 
+        {
             images.put(s, loader.loadImage(s));
         }
     }
 
-    private void loadAllSounds() {
-        for (String s : soundPaths) {
+    private void loadAllSounds() 
+    {
+        for (String s : soundPaths) 
+        {
             sounds.put(s, loader.loadSound(s));
         }
     }
 
-    private void loadAllFonts() {
-        for (FontInfo info : fontData) {
+    private void loadAllFonts() 
+    {
+        for (FontInfo info : fontData) 
+        {
             fonts.put(info, loader.loadFont(info.path, info.size));
         }
     }

@@ -9,7 +9,8 @@ import java.util.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class Renderer {
+public class Renderer 
+{
 
     private ArrayList<String> imagePaths = new ArrayList<>();
     
@@ -28,7 +29,8 @@ public class Renderer {
     VolatileImage drawingImage = config.createCompatibleVolatileImage(1, 1);
     boolean isMac;
 
-    public Renderer(Resources resources) {
+    public Renderer(Resources resources) 
+    {
         
         fonts.add(resources.getFontForObject(new FontInfo("resources/OCR A Std.ttf", 10f)));
         
@@ -50,14 +52,19 @@ public class Renderer {
     }
 
     public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
-            ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused, HashSet<Shot> allShots, Dimension mapSize) {
+            ArrayList<StarChunk> stars, Camera camera, String version, int ups, boolean paused, HashSet<Shot> allShots, Dimension mapSize)
+    {
 
         //long start = System.currentTimeMillis();
         
-        if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y) {
-            if (isMac) {
+        if (drawingImage.getWidth() != camera.getSize().x || drawingImage.getHeight() != camera.getSize().y)
+        {
+            if (isMac)
+            {
                 drawingImage = config.createCompatibleVolatileImage(camera.getSize().x, camera.getSize().y, Transparency.TRANSLUCENT);
-            } else {
+            } 
+            else 
+            {
                 drawingImage = config.createCompatibleVolatileImage(camera.getSize().x, camera.getSize().y);
             }
             //System.err.println(drawingImage.getColorModel().equals(config.getColorModel()));
@@ -77,8 +84,10 @@ public class Renderer {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // draw stars. Costs 2-7 ms
-        for (StarChunk starChunk : stars) {
-            if (camera.insideView(starChunk.getBoundingRect())) {
+        for (StarChunk starChunk : stars) 
+        {
+            if (camera.insideView(starChunk.getBoundingRect()))
+            {
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
@@ -86,22 +95,31 @@ public class Renderer {
         
         
         Player playerShip = null;
-        for (Ship ship : ships) {
+        for (Ship ship : ships) 
+        {
             ship.draw(g2d, camera);
-            if (ship instanceof Player) {
+            if (ship instanceof Player)
+            {
                 playerShip = (Player)ship;
                 g2d.setColor(Color.CYAN);
 
-                if (ship.getHullHealth() <= 0) {
+                if (ship.getHullHealth() <= 0)
+                {
                     //g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
-                } else if ((ship.getLocation().x > mapSize.width || ship.getLocation().x < 0) ||
-                        (ship.getLocation().y > mapSize.height || ship.getLocation().y < 0)) {
+                } 
+                else if ((ship.getLocation().x > mapSize.width || ship.getLocation().x < 0) ||
+                        (ship.getLocation().y > mapSize.height || ship.getLocation().y < 0))
+                {
                     g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
                 }
 
-            } else if (ship instanceof EnemyShip) {
+            } 
+            else if (ship instanceof EnemyShip)
+            {
                 g2d.setColor(Color.RED);
-            } else {
+            } 
+            else 
+            {
                 g2d.setColor(Color.YELLOW);
             }
 
@@ -112,7 +130,8 @@ public class Renderer {
         }
         
         // draw shots TODO: check if on screen.
-        for (Shot shot : allShots) {
+        for (Shot shot : allShots)
+        {
             shot.draw(g2d, camera.getLocation());
         }
 
@@ -142,7 +161,8 @@ public class Renderer {
         }
         
         //draw pause menu
-        if (paused) {
+        if (paused) 
+        {
             g2d.drawImage(images.get(PAUSEMENU), null, 10, 100);
             g2d.drawImage(images.get(PAUSETOMENU), null, 20, 110);
         }
@@ -155,7 +175,8 @@ public class Renderer {
         //System.out.println(System.currentTimeMillis() - start);
     }
 
-    public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) {
+    public void drawLoadingScreen(Graphics g, int percentDone, int width, int height) 
+    {
 
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 

@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Michael Kieburtz
  */
-public class EnemyMediumFighter extends EnemyShip {
+public class EnemyMediumFighter extends EnemyShip 
+{
 
     private int id;
 
@@ -30,7 +31,8 @@ public class EnemyMediumFighter extends EnemyShip {
     
     public EnemyMediumFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
-            int shootingDelayTurret, int shootingDelayMissile, int health, int id, Player player, Resources resources) {
+            int shootingDelayTurret, int shootingDelayMissile, int health, int id, Player player, Resources resources) 
+    {
         super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
 
         this.id = id;
@@ -60,7 +62,8 @@ public class EnemyMediumFighter extends EnemyShip {
     @Override
     public void setUpHitbox(Point2D.Double cameraLocation)
     {
-        try {
+        try 
+        {
             shieldHitbox = new EllipseHitbox(activeImage.getWidth() + 50, activeImage.getHeight() + 50); // constants added to the end compensate for the wings
             Point2D.Double points[] = new Point2D.Double[8];
             points[0] = new Point2D.Double(27, 0);
@@ -72,7 +75,9 @@ public class EnemyMediumFighter extends EnemyShip {
             points[6] = new Point2D.Double(0, activeImage.getHeight() - 202);
             points[7] = new Point2D.Double(27, activeImage.getHeight() - 202);
             hullHitbox = new ShapeHitbox(points, new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2));
-        } catch (NullPointerException ex) {
+        } 
+        catch (NullPointerException ex) 
+        {
             System.err.println("active image not initialized!");
         }
     }
@@ -123,7 +128,8 @@ public class EnemyMediumFighter extends EnemyShip {
 
         super.draw(g2d, camera);
 
-        for (Turret t : turrets) {
+        for (Turret t : turrets) 
+        {
             t.draw(g2d, camera.getLocation(), location);
         }
 
@@ -149,46 +155,57 @@ public class EnemyMediumFighter extends EnemyShip {
 
         rotateToAngle(angleToPlayer);
         
-        for (Turret t : turrets) {
+        for (Turret t : turrets) 
+        {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                     faceAngle, cameraLocation);
 
         }
 
-        if (Math.abs(angleToPlayer - faceAngle) <= 45) {
+        if (Math.abs(angleToPlayer - faceAngle) <= 45)
+        {
             shoot(cameraLocation);
         }
 
-        if (distance > 500) {
+        if (distance > 500)
+        {
             move(ShipState.Thrusting);
-        } else {
+        } 
+        else
+        {
             move(ShipState.Drifting);
         }
     }
 
     @Override
-    public int getID() {
+    public int getID() 
+    {
         return id;
     }
 
     @Override
-    public Point2D.Double getLocation() {
+    public Point2D.Double getLocation() 
+    {
         return location;
     }
 
-    class ShootingServiceMisisle implements Runnable {
+    class ShootingServiceMisisle implements Runnable 
+    {
 
         @Override
-        public void run() {
+        public void run() 
+        {
             canShootMissile = true;
         }
     }
 
-    class ShootingServiceTurrets implements Runnable {
+    class ShootingServiceTurrets implements Runnable 
+    {
 
         @Override
-        public void run() {
+        public void run()
+        {
             canShootTurret = true;
         }
     }

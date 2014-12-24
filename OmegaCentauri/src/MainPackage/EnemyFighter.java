@@ -15,7 +15,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class EnemyFighter extends EnemyShip {
+public class EnemyFighter extends EnemyShip 
+{
 
     private Point dimensions = new Point(0, 0);
     private ArrayList<EnemyShip> others = new ArrayList<>();
@@ -58,8 +59,10 @@ public class EnemyFighter extends EnemyShip {
         explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
         
     }
+    
     @Override
-    public void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) {
+    public void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) 
+    {
         shield.setRegenRate(.05);
         // main AI goes here
         this.dimensions.x = player.getActiveImage().getWidth();
@@ -77,31 +80,45 @@ public class EnemyFighter extends EnemyShip {
         others.remove(this);
 
         // this block sets movingAway
-        if (!movingAway) {
+        if (!movingAway) 
+        {
             targetingAngle = angleToPlayer;
         }
         
-        if (!movingAway && distanceToPlayer < 200) {
+        if (!movingAway && distanceToPlayer < 200) 
+        {
             movingAway = true;
-            if (hullDurability < 30) {
+            if (hullDurability < 30) 
+            {
                 targetingAngle = (angleToPlayer + 180) % 360;
-            } else if (distanceToPlayer < 200) {
+            } 
+            else if (distanceToPlayer < 200) 
+            {
                 targetingAngle = (angleToPlayer + 90) % 360;
             }
-        } else if (distanceToPlayer > 400 && movingAway) {
+        } 
+        else if (distanceToPlayer > 400 && movingAway) 
+        {
             movingAway = false;
             targetingAngle = angleToPlayer;
-        } else if (distanceToPlayer < 250 && movingAway) {
-            if (Math.abs((angleToPlayer + 180) % 360 - faceAngle) > 5) {
+        }
+        else if (distanceToPlayer < 250 && movingAway)
+        {
+            if (Math.abs((angleToPlayer + 180) % 360 - faceAngle) > 5) 
+            {
                 targetingAngle = (angleToPlayer + 180) % 360;
             }
         }
         // this block performs logic based on movingAway
-        if (!movingAway) {
-            for (EnemyShip ship : others) {
-                if (Calculator.getDistance(location, ship.getLocation()) < 200) {
+        if (!movingAway) 
+        {
+            for (EnemyShip ship : others) 
+            {
+                if (Calculator.getDistance(location, ship.getLocation()) < 200) 
+                {
                     double angle = Calculator.getAngleBetweenTwoPoints(location, ship.getLocation());
-                    if (id < ship.getID()) {
+                    if (id < ship.getID()) 
+                    {
                         targetingAngle = angle > faceAngle ? targetingAngle - 45 : targetingAngle + 45;
                     }
                 }
@@ -109,10 +126,13 @@ public class EnemyFighter extends EnemyShip {
             
             rotateToAngle(targetingAngle);
 
-            if (Math.abs(angleToPlayer - faceAngle) < 45) {
+            if (Math.abs(angleToPlayer - faceAngle) < 45) 
+            {
                 shoot(cameraLocation);
             }
-        } else {
+        } 
+        else 
+        {
             rotateToAngle(targetingAngle);
         }
 
@@ -120,7 +140,9 @@ public class EnemyFighter extends EnemyShip {
         {
             move(ShipState.Thrusting);
             thrusting = true;
-        } else {
+        } 
+        else 
+        {
             move(ShipState.Drifting);
             thrusting = false;
         }
@@ -128,7 +150,8 @@ public class EnemyFighter extends EnemyShip {
         setImage();
 
         // regen shield
-        if (shield.getEnergy() <= 100) {
+        if (shield.getEnergy() <= 100)
+        {
             shield.regen();
         }
     }
@@ -136,9 +159,11 @@ public class EnemyFighter extends EnemyShip {
     private boolean right = startingRight;
     
     @Override
-    public void shoot(Point2D.Double cameraLocation) {
+    public void shoot(Point2D.Double cameraLocation) 
+    {
 
-        if (canshoot) {
+        if (canshoot) 
+        {
             Random rand = new Random();
 
             double angle = 360 - faceAngle + rand.nextInt(10) - 5;
@@ -188,35 +213,50 @@ public class EnemyFighter extends EnemyShip {
         //hitbox.draw(g2d, camera.getLocation());
     }
 
-    public boolean isMovingAway() {
+    public boolean isMovingAway() 
+    {
         return movingAway;
     }
 
     @Override
-    public int getID() {
+    public int getID() 
+    {
         return id;
     }
 
     boolean rotating;
-    private void setImage() {
+    private void setImage() 
+    {
         rotating = isRotating();
-        if (rotating && thrusting && rotatingRight) {
+        if (rotating && thrusting && rotatingRight) 
+        {
             changeImage(ShipState.TurningRightThrusting);
-        } else if (rotating && thrusting && !rotatingRight) {
+        } 
+        else if (rotating && thrusting && !rotatingRight) 
+        {
             changeImage(ShipState.TurningLeftThrusting);
-        } else if (rotating && !thrusting && rotatingRight) {
+        } 
+        else if (rotating && !thrusting && rotatingRight) 
+        {
             changeImage(ShipState.TurningRight);
-        } else if (rotating && !thrusting && !rotatingRight) {
+        } 
+        else if (rotating && !thrusting && !rotatingRight)
+        {
             changeImage(ShipState.TurningLeft);
-        } else if (!rotating && thrusting) {
+        } 
+        else if (!rotating && thrusting) 
+        {
             changeImage(ShipState.Thrusting);
-        } else if (!rotating && !thrusting) {
+        } 
+        else if (!rotating && !thrusting) 
+        {
             changeImage(ShipState.Idle);
         }
     }
 
     @Override
-    public Point2D.Double getLocation() {
+    public Point2D.Double getLocation() 
+    {
         return location;
     }
 }

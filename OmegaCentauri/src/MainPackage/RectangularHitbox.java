@@ -9,7 +9,8 @@ import java.awt.geom.*;
 /**
  * @author Michael Kieburtz
  */
-public class RectangularHitbox extends Area implements Hitbox{
+public class RectangularHitbox extends Area implements Hitbox
+{
     // in order of addition clockwise from top left!!!!!
     private Point2D.Double[] points = new Point2D.Double[4];
     private Point2D.Double centerPoint = new Point2D.Double();

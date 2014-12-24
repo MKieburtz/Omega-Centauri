@@ -12,36 +12,46 @@ import javax.sound.sampled.*;
 /**
 * @author Michael Kieburtz
 */
-public class MediaLoader {
+public class MediaLoader 
+{
 
-    public MediaLoader() {
+    public MediaLoader() 
+    {
         // default constructor
     }
 
-    public BufferedImage loadImage(String path) {
+    public BufferedImage loadImage(String path) 
+    {
         BufferedImage image = null;
         InputStream stream = getClass().getResourceAsStream(path);
 
-        try {
+        try 
+        {
             image = ImageIO.read(stream);
             stream.close();
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex)
+        {
             System.err.println("image loading problem");
         }
 
         return image;
     }
 
-    public Clip loadSound(String path) {
+    public Clip loadSound(String path) 
+    {
         Clip sound = null;
         URL url = getClass().getResource(path);
 
-        try {
+        try 
+        {
             AudioInputStream a = AudioSystem.getAudioInputStream(url);
 
             sound = AudioSystem.getClip();
             sound.open(a);
-        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ex) {
+        } 
+        catch (UnsupportedAudioFileException | LineUnavailableException | IOException ex) 
+        {
             System.err.println("error loading sound");
             ex.printStackTrace();
 
@@ -54,13 +64,18 @@ public class MediaLoader {
         Font font = null;
         InputStream stream = getClass().getResourceAsStream(path);
         
-        try {
+        try 
+        {
         font = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(size);
         stream.close();
-        }  catch (FontFormatException ex) {
+        }  
+        catch (FontFormatException ex) 
+        {
              System.err.println("Bad font");
             ex.printStackTrace();
-        } catch (IOException ex) {
+        } 
+        catch (IOException ex) 
+        {
             System.err.println("Bad file");
             ex.printStackTrace();
         }

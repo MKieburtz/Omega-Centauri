@@ -3,10 +3,12 @@ package MainPackage;
 /**
  * @author Michael Kieburtz
  */
-public class EDTExceptionHandler implements Thread.UncaughtExceptionHandler{
+public class EDTExceptionHandler implements Thread.UncaughtExceptionHandler
+{
 
     @Override
-    public void uncaughtException(Thread thread, Throwable thrwbl) {
+    public void uncaughtException(Thread thread, Throwable thrwbl) 
+    {
         handleException(thread.getName(), thrwbl);
     }
     

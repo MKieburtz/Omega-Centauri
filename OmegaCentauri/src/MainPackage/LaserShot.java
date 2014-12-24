@@ -10,13 +10,15 @@ import java.awt.geom.Point2D;
 /**
  * @author Michael Kieburtz
  */
-public abstract class LaserShot extends Shot {
+public abstract class LaserShot extends Shot 
+{
     
     private boolean fading = false;
     private int opacity = 100;
 
     public LaserShot(int damage, int range, Point2D.Double location,
-            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) {
+            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) 
+    {
         super(damage, range, location, velocity, angle, cameraLocation, owner);
     }
     

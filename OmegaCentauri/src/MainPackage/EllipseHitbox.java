@@ -9,7 +9,8 @@ import java.awt.geom.Point2D;
 /**
  * @author Michael Kieburtz
  */
-public class EllipseHitbox implements Hitbox{
+public class EllipseHitbox implements Hitbox
+{
 
     private Point2D.Double centerPoint = new Point2D.Double();
     // this is the longer "radius" length
@@ -24,7 +25,8 @@ public class EllipseHitbox implements Hitbox{
 
     private boolean circle;
 
-    public EllipseHitbox(double horizontalLength, double verticalLength) { // the !entire! horizontal length
+    public EllipseHitbox(double horizontalLength, double verticalLength)
+    { // the !entire! horizontal length
         this.horizontalRadiusLength = horizontalLength;
         this.verticalRadiusLength = verticalLength;
 
@@ -36,29 +38,34 @@ public class EllipseHitbox implements Hitbox{
     }
 
     @Override
-    public void rotateToAngle(double angle) {
+    public void rotateToAngle(double angle) 
+    {
         this.angle = angle;
         this.angle = Calculator.confineAngleToRange(this.angle);
     }
 
     @Override
-    public void rotateRelitive(double amount) {
+    public void rotateRelitive(double amount) 
+    {
         angle += amount;
         angle = Calculator.confineAngleToRange(this.angle);
     }
 
     @Override
-    public void moveToLocation(Point2D.Double location) {
+    public void moveToLocation(Point2D.Double location) 
+    {
         this.centerPoint = location;
     }
 
     @Override
-    public void moveRelitive(Point2D.Double distance) {
+    public void moveRelitive(Point2D.Double distance) 
+    {
         centerPoint.x += distance.x;
         centerPoint.y += distance.y;
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation) {
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation) 
+    {
         AffineTransform original = g2d.getTransform();
         g2d.rotate(Math.toRadians(360 - angle),
                 Calculator.getScreenLocation(cameraLocation, centerPoint).x,
@@ -71,7 +78,8 @@ public class EllipseHitbox implements Hitbox{
     }
 
     @Override
-    public boolean collides(RectangularHitbox other) {
+    public boolean collides(RectangularHitbox other) 
+    {
         Point2D.Double rotatedPoint = Calculator.rotatePointAroundPoint(other.getCollisionPoint(), centerPoint, -angle);
         return pointInsideEllipse(centerPoint, rotatedPoint);
     }
@@ -82,7 +90,8 @@ public class EllipseHitbox implements Hitbox{
         throw new UnsupportedOperationException();
     }
 
-    private boolean pointInsideEllipse(Point2D.Double ellipseCenter, Point2D.Double point) {
+    private boolean pointInsideEllipse(Point2D.Double ellipseCenter, Point2D.Double point) 
+    {
         double xPart = Math.pow(point.x - ellipseCenter.x, 2) / Math.pow(horizontalRadiusLength / 2, 2);
         double yPart = Math.pow(point.y - ellipseCenter.y, 2) / Math.pow(verticalRadiusLength / 2, 2);
 

@@ -9,7 +9,8 @@ import javax.sound.sampled.Clip;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class MainMenu {
+public class MainMenu 
+{
 
     private GameActionListener startListener;
 
@@ -50,7 +51,8 @@ public class MainMenu {
     private BufferedImage drawingImage;
     
 
-    public MainMenu(OmegaCentauri game, Resources resources) {
+    public MainMenu(OmegaCentauri game, Resources resources) 
+    {
         active = true;
         startListener = game;
 
@@ -77,7 +79,9 @@ public class MainMenu {
 
         // load enough stars for the entire screen
         for (int x = 0; x < screenSize.width; x += 100) {
-            for (int y = 0; y < screenSize.height; y += 100) {
+            
+            for (int y = 0; y < screenSize.height; y += 100)
+            {
                 stars.add(new TwinklingStarChunk(x, y, 100, 3));
             }
         }
@@ -87,8 +91,10 @@ public class MainMenu {
         setRects();
     }
 
-    public void draw(Graphics g) {
-        if (!settings.isActive()) {
+    public void draw(Graphics g) 
+    {
+        if (!settings.isActive()) 
+        {
 
             if (drawingImage.getWidth() != size.x || drawingImage.getHeight() != size.y)
             {
@@ -100,8 +106,10 @@ public class MainMenu {
             g2d.setColor(Color.BLACK);
             g2d.fillRect(0, 0, size.x, size.y);
 
-            for (TwinklingStarChunk s : stars) {
-                if (s.getBoundingRect().intersects(screenRect)) {
+            for (TwinklingStarChunk s : stars) 
+            {
+                if (s.getBoundingRect().intersects(screenRect)) 
+                {
                     s.draw(g2d);
                 }
             }
@@ -111,21 +119,30 @@ public class MainMenu {
 
             g2d.setColor(Color.RED);
 
-            if (startHover) {
+            if (startHover) 
+            {
                 g2d.drawImage(images.get(STARTHOVER), startRectangle.x, startRectangle.y, null);
-            } else {
+            } 
+            else 
+            {
                 g2d.drawImage(images.get(STARTNOHOVER), startRectangle.x, startRectangle.y, null);
             }
 
-            if (closeHover) {
+            if (closeHover) 
+            {
                 g2d.drawImage(images.get(CLOSEHOVER), closeRectangle.x, closeRectangle.y, null);
-            } else {
+            } 
+            else 
+            {
                 g2d.drawImage(images.get(CLOSENOHOVER), closeRectangle.x, closeRectangle.y, null);
             }
 
-            if (settingsHover) {
+            if (settingsHover)
+            {
                 g2d.drawImage(images.get(SETTINGSHOVER), settingsRectangle.x, settingsRectangle.y, null);
-            } else {
+            } 
+            else 
+            {
                 g2d.drawImage(images.get(SETTINGSNOHOVER), settingsRectangle.x, settingsRectangle.y, null);
             }
 
@@ -139,26 +156,32 @@ public class MainMenu {
 //        g2d.draw(settingsRectangle);
         
             g.drawImage(drawingImage, 0, 0, null);
-        } else {
+        } 
+        else 
+        {
             settings.draw(g);
         }
     }
     
     public void checkMousePressed(Point location)
     {
-        if (!settings.isActive() && active) {
-            if (startRectangle.contains(location)) {
+        if (!settings.isActive() && active) 
+        {
+            if (startRectangle.contains(location))
+            {
                 active = false;
                 startListener.gameStart();
                 sounds.get(CLICKSOUND).setFramePosition(0);
                 sounds.get(CLICKSOUND).start();
             }
-            if (closeRectangle.contains(location)) {
+            if (closeRectangle.contains(location)) 
+            {
 //                sounds.get(CLICKSOUND).setFramePosition(0);
 //                sounds.get(CLICKSOUND).start();                
                 System.exit(0);
             }
-            if (settingsRectangle.contains(location)) {
+            if (settingsRectangle.contains(location)) 
+            {
                 sounds.get(CLICKSOUND).setFramePosition(0);
                 sounds.get(CLICKSOUND).start();
                 settings.setActive(true);
@@ -172,7 +195,8 @@ public class MainMenu {
 
     public void checkMouseExited()
     {
-        if (!settings.isActive() && active) {
+        if (!settings.isActive() && active) 
+        {
             startHover = false;
             closeHover = false;
             settingsHover = false;
@@ -185,59 +209,76 @@ public class MainMenu {
     
     public void checkMouseMoved(Point location)
     {
-        if (!settings.isActive() && active) {
-            if (startRectangle.contains(location)) {
+        if (!settings.isActive() && active) 
+        {
+            if (startRectangle.contains(location))
+            {
                 startHover = true;
-            } else if (closeRectangle.contains(location)) {
+            } 
+            else if (closeRectangle.contains(location))
+            {
                 closeHover = true;
-            } else if (settingsRectangle.contains(location)) {
+            } 
+            else if (settingsRectangle.contains(location))
+            {
                 settingsHover = true;
-            } else {
+            } 
+            else 
+            {
                 startHover = false;
                 closeHover = false;
                 settingsHover = false;
             }
-        } else if (settings.isActive())
+        } 
+        else if (settings.isActive())
         {
             settings.checkMouseMoved(location);
         }
     }
 
-    public boolean isActive() {
+    public boolean isActive()
+    {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(boolean active)
+    {
         this.active = active;
     }
 
-    public Point getSize() {
+    public Point getSize()
+    {
         return size;
     }
 
-    public void setSize(int width, int height) {
+    public void setSize(int width, int height)
+    {
         size.setLocation(width, height);
         settings.setWindowSize(new Dimension(width, height));
         setRects();
     }
 
-    private void setRects() {
+    private void setRects()
+    {
 
-        startRectangle = new Rectangle(
+        startRectangle = new Rectangle
+        (
                 size.x / 2  - images.get(STARTNOHOVER).getWidth() / 2,
                 size.y - 90,
                 images.get(STARTNOHOVER).getWidth(),
                 images.get(STARTNOHOVER).getHeight()
         );
 
-        closeRectangle = new Rectangle(
+        closeRectangle = new Rectangle
+        (
                 size.x - 100 - images.get(CLOSENOHOVER).getWidth(),
                 size.y - 90,
                 images.get(CLOSENOHOVER).getWidth(),
                 images.get(CLOSENOHOVER).getHeight()
         );
 
-        settingsRectangle = new Rectangle(
+        settingsRectangle = new Rectangle
+        (
                 100,
                 size.y - 90,
                 images.get(SETTINGSNOHOVER).getWidth(),
@@ -247,7 +288,8 @@ public class MainMenu {
         screenRect.setBounds(0, 0, size.x, size.y);
     }
 
-    public Settings getSettings() {
+    public Settings getSettings() 
+    {
         return settings;
     }
 }

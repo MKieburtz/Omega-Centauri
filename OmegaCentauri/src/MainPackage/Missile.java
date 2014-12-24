@@ -8,7 +8,8 @@ import java.util.ArrayList;
 /**
  * @author Kieburtz
  */
-public class Missile extends PhysicalShot {
+public class Missile extends PhysicalShot 
+{
     
     
     public Missile(int damage, Point2D.Double location,
