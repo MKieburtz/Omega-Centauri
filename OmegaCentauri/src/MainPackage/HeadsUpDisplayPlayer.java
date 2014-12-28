@@ -28,6 +28,7 @@ public class HeadsUpDisplayPlayer
     private final int SHIPSTATUSGOOD = 7;
     private final int SHIPSTATUSWARNING = 8;
     private final int SHIPSTATUSBAD = 9;
+    private final int STATUSBACKGROUND = 10;
 
     private final int HEALTHSTARTINGY = 230;
     private final int HEALTHSTARTINGX = 40;
@@ -50,14 +51,26 @@ public class HeadsUpDisplayPlayer
         imagePaths.add("resources/ShipStatusGood.png");
         imagePaths.add("resources/ShipStatusWarning.png");
         imagePaths.add("resources/ShipStatusBad.png");
+        imagePaths.add("resources/StatusBackground.png");
 
         images = resources.getImagesForObject(imagePaths);
     }
 
     public void draw(Graphics2D g2d, Camera camera, double shieldHealth, double hullHealth) 
     {
+        AffineTransform original = g2d.getTransform();
+        AffineTransform transform = (AffineTransform)original.clone();
         //g2d.drawLine(HEALTHSTARTINGX, HEALTHSTARTINGY, HEALTHSTARTINGX, HEALTHSTARTINGY - 200);
         g2d.drawImage(images.get(TOPLEFTHUD), -10, -35, null); // wierd coords. I know
+        
+        transform.translate(HEALTHSTARTINGX - 2.5, 148);
+        g2d.transform(transform);
+        g2d.drawImage(images.get(STATUSBACKGROUND), 0, 0, null);
+        transform.translate(-17.5, -148);
+        g2d.transform(transform);
+        g2d.drawImage(images.get(STATUSBACKGROUND), SPACEBETWEENX - 20, 0, null);
+        
+        g2d.setTransform(original);
         int amountShield = (int) (10 * Math.ceil(shieldHealth / 10)) / 10; // rounding up to 10's
         int amountHull = (int) (10 * Math.ceil(hullHealth / 10)) / 10;
 

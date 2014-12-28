@@ -86,6 +86,7 @@ public class Resources {
         imagePaths.add("resources/ShipStatusGood.png");
         imagePaths.add("resources/ShipStatusWarning.png");
         imagePaths.add("resources/ShipStatusBad.png");
+        imagePaths.add("resources/StatusBackground.png");
         
         soundPaths.add("resources/Pulse.wav");
         soundPaths.add("resources/Mouseclick.wav");
