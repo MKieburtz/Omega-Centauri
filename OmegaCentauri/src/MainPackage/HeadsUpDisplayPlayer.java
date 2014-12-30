@@ -1,9 +1,11 @@
 package MainPackage;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,7 +30,8 @@ public class HeadsUpDisplayPlayer
     private final int SHIPSTATUSGOOD = 7;
     private final int SHIPSTATUSWARNING = 8;
     private final int SHIPSTATUSBAD = 9;
-    private final int STATUSBACKGROUND = 10;
+    private final int GAMEOVER = 10;
+    private final int RETURNTOBATTLEFIELD = 11;
 
     private final int HEALTHSTARTINGY = 230;
     private final int HEALTHSTARTINGX = 40;
@@ -51,28 +54,31 @@ public class HeadsUpDisplayPlayer
         imagePaths.add("resources/ShipStatusGood.png");
         imagePaths.add("resources/ShipStatusWarning.png");
         imagePaths.add("resources/ShipStatusBad.png");
-        imagePaths.add("resources/StatusBackground.png");
+        imagePaths.add("resources/GameOver.png");
+        imagePaths.add("resources/ReturnToTheBattlefield.png");
 
         images = resources.getImagesForObject(imagePaths);
     }
 
-    public void draw(Graphics2D g2d, Camera camera, double shieldHealth, double hullHealth) 
+    public void draw(Graphics2D g2d, Camera camera, ArrayList<Ship> ships, Dimension mapSize) 
     {
-        AffineTransform original = g2d.getTransform();
-        AffineTransform transform = (AffineTransform)original.clone();
         //g2d.drawLine(HEALTHSTARTINGX, HEALTHSTARTINGY, HEALTHSTARTINGX, HEALTHSTARTINGY - 200);
         g2d.drawImage(images.get(TOPLEFTHUD), -10, -35, null); // wierd coords. I know
+        Player playerShip = null;
         
-        transform.translate(HEALTHSTARTINGX - 2.5, 148);
-        g2d.transform(transform);
-        g2d.drawImage(images.get(STATUSBACKGROUND), 0, 0, null);
-        transform.translate(-17.5, -148);
-        g2d.transform(transform);
-        g2d.drawImage(images.get(STATUSBACKGROUND), SPACEBETWEENX - 20, 0, null);
+        for (Ship ship : ships)
+        {
+            if (ship instanceof Player)
+            {
+                playerShip = (Player)ship;
+            }
+        }
         
-        g2d.setTransform(original);
-        int amountShield = (int) (10 * Math.ceil(shieldHealth / 10)) / 10; // rounding up to 10's
-        int amountHull = (int) (10 * Math.ceil(hullHealth / 10)) / 10;
+        double shieldPercent = (playerShip.getShieldHealth() / playerShip.getMaxShield()) * 100;
+        double hullPercent = (playerShip.getHullHealth() / playerShip.getMaxHull()) * 100;
+        
+        int amountShield = (int) (10 * Math.ceil(shieldPercent / 10)) / 10; // rounding up to 10's
+        int amountHull = (int) (10 * Math.ceil(hullPercent / 10)) / 10;
 
         int[] shieldAmounts = getAmounts(amountShield);
         int[] hullAmounts = getAmounts(amountHull);
@@ -123,54 +129,87 @@ public class HeadsUpDisplayPlayer
         }
         
         g2d.setFont(font);
-        if (shieldHealth >= 50)
+        if (shieldPercent >= 50)
         {
             g2d.setColor(Color.green);
             g2d.drawImage(images.get(GOODSHIELD), 40, 25, null);
         } 
-        else if (shieldHealth > 20)
+        else if (shieldPercent > 20)
         {
             g2d.setColor(Color.ORANGE);
             g2d.drawImage(images.get(WARNINGSHIELD), 40, 25, null);
         } 
-        else if (shieldHealth <= 20)
+        else if (shieldPercent <= 20)
         {
             g2d.setColor(Color.red);
             g2d.drawImage(images.get(BADSHIELD), 40, 25, null);
         }
 
-        if (shieldHealth == 0) 
+        if (shieldPercent == 0) 
         {
             g2d.drawString("%0.0", 105, 360); // draw shield percent
         } 
         else 
         {
-            g2d.drawString("%" + format.format(shieldHealth), 100, 360); // draw shield percent
+            g2d.drawString("%" + format.format(shieldPercent), 100, 360); // draw shield percent
         }
 
-        if (hullHealth >= 50) 
+        if (hullPercent >= 50) 
         {
             g2d.setColor(Color.green);
             g2d.drawImage(images.get(SHIPSTATUSGOOD), 53, 30, null);
         } 
-        else if (hullHealth >= 30)
+        else if (hullPercent >= 30)
         {
             g2d.setColor(Color.ORANGE);
             g2d.drawImage(images.get(SHIPSTATUSWARNING), 53, 30, null);
         } 
-        else if (hullHealth < 30) 
+        else if (hullPercent < 30) 
         {
             g2d.setColor(Color.red);
             g2d.drawImage(images.get(SHIPSTATUSBAD), 53, 30, null);
         }
 
-        if (hullHealth == 0)
+        if (hullPercent == 0)
         {
             g2d.drawString("%0.0", HEALTHSTARTINGX - 15, 360); // draw shield percent
         } 
         else 
         {
-            g2d.drawString("%" + format.format(hullHealth), HEALTHSTARTINGX - 20, 360); // draw health percent
+            g2d.drawString("%" + format.format(hullPercent), HEALTHSTARTINGX - 20, 360); // draw health percent
+        }
+        
+        for (Ship ship : ships) 
+        {
+            ship.draw(g2d, camera);
+            if (ship instanceof Player)
+            {
+                g2d.setColor(Color.CYAN);
+
+                if (ship.getHullHealth() <= 0)
+                {
+                    g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
+                } 
+                else if ((ship.getLocation().x > mapSize.width || ship.getLocation().x < 0) ||
+                        (ship.getLocation().y > mapSize.height || ship.getLocation().y < 0))
+                {
+                    g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
+                }
+
+            } 
+            else if (ship instanceof EnemyShip)
+            {
+                g2d.setColor(Color.RED);
+            } 
+            else 
+            {
+                g2d.setColor(Color.YELLOW);
+            }
+//
+//            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
+//                        camera.getSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
+//                g2d.draw(minimapShip);
+            
         }
     }
 

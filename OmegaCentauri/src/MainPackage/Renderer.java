@@ -19,8 +19,6 @@ public class Renderer
     private Font dataFont;
     private final int PAUSEMENU = 0;
     private final int PAUSETOMENU = 1;
-    private final int GAMEOVER = 2;
-    private final int RETURNTOBATTLEFIELD = 3;
     
     private HeadsUpDisplayPlayer headsUpDisplayPlayer;
 
@@ -37,8 +35,6 @@ public class Renderer
 
         imagePaths.add("resources/PauseMenu.png");
         imagePaths.add("resources/PauseButton_ToMenu.png");
-        imagePaths.add("resources/GameOver.png");
-        imagePaths.add("resources/ReturnToTheBattlefield.png");
         
         images = resources.getImagesForObject(imagePaths);
 
@@ -94,40 +90,7 @@ public class Renderer
 
         
         
-        Player playerShip = null;
-        for (Ship ship : ships) 
-        {
-            ship.draw(g2d, camera);
-            if (ship instanceof Player)
-            {
-                playerShip = (Player)ship;
-                g2d.setColor(Color.CYAN);
-
-                if (ship.getHullHealth() <= 0)
-                {
-                    //g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
-                } 
-                else if ((ship.getLocation().x > mapSize.width || ship.getLocation().x < 0) ||
-                        (ship.getLocation().y > mapSize.height || ship.getLocation().y < 0))
-                {
-                    g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
-                }
-
-            } 
-            else if (ship instanceof EnemyShip)
-            {
-                g2d.setColor(Color.RED);
-            } 
-            else 
-            {
-                g2d.setColor(Color.YELLOW);
-            }
-
-            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
-                        camera.getSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
-                g2d.draw(minimapShip);
-            
-        }
+       
         
         // draw shots TODO: check if on screen.
         for (Shot shot : allShots)
@@ -149,16 +112,7 @@ public class Renderer
         g2d.drawString("Shots: " + allShots.size(), camera.getSize().x - 130, 40);
 
         // draw HUD
-        if (playerShip != null)
-        {
-            double shieldPercent = (playerShip.getShieldHealth() / playerShip.getMaxShield()) * 100;
-            double hullPercent = (playerShip.getHullHealth() / playerShip.getMaxHull()) * 100;
-            headsUpDisplayPlayer.draw(g2d, camera, shieldPercent, hullPercent);
-        }
-        else
-        {
-            System.err.println("ERROR: playerShip is null in renderer");
-        }
+        headsUpDisplayPlayer.draw(g2d, camera, ships, mapSize);
         
         //draw pause menu
         if (paused) 
