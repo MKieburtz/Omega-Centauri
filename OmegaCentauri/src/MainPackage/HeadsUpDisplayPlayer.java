@@ -38,12 +38,14 @@ public class HeadsUpDisplayPlayer
     private final int SPACEBETWEENY = 20;
     private final int SPACEBETWEENX = 80;
 
-    private Font font;
+    private Font healthFont;
+    private Font dataFont;
 
     public HeadsUpDisplayPlayer(Resources resources) 
     {
-        font = resources.getFontForObject(new FontInfo("resources/Orbitron-Regular.ttf", 12f));
-
+        healthFont = resources.getFontForObject(new FontInfo("resources/Orbitron-Regular.ttf", 12f));
+        dataFont = resources.getFontForObject(new FontInfo("resources/OCR A Std.ttf", 10f));
+        
         imagePaths.add("resources/DangerBar.png");
         imagePaths.add("resources/WarningBar.png");
         imagePaths.add("resources/HealthyBar.png");
@@ -60,7 +62,8 @@ public class HeadsUpDisplayPlayer
         images = resources.getImagesForObject(imagePaths);
     }
 
-    public void draw(Graphics2D g2d, Camera camera, ArrayList<Ship> ships, Dimension mapSize) 
+    public void draw(Graphics2D g2d, Camera camera, ArrayList<Ship> ships, Dimension mapSize, int fps, int ups, String version,
+            int numShots) 
     {
         //g2d.drawLine(HEALTHSTARTINGX, HEALTHSTARTINGY, HEALTHSTARTINGX, HEALTHSTARTINGY - 200);
         g2d.drawImage(images.get(TOPLEFTHUD), -10, -35, null); // wierd coords. I know
@@ -128,7 +131,7 @@ public class HeadsUpDisplayPlayer
             g2d.drawImage(images.get(DANGERBAR), HEALTHSTARTINGX + SPACEBETWEENX, HEALTHSTARTINGY + 100 - (SPACEBETWEENY * i), null);
         }
         
-        g2d.setFont(font);
+        g2d.setFont(healthFont);
         if (shieldPercent >= 50)
         {
             g2d.setColor(Color.green);
@@ -209,6 +212,18 @@ public class HeadsUpDisplayPlayer
 //            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
 //                        camera.getSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
 //                g2d.draw(minimapShip);
+            
+        g2d.setFont(dataFont);
+        g2d.setColor(Color.WHITE);
+            
+        // draw the stats n stuff.
+        g2d.drawString("Version: " + version, camera.getSize().x - 150, 10);
+        //fps
+        g2d.drawString("FPS: " + fps, camera.getSize().x - 130, 20);
+        //ups
+        g2d.drawString("UPS: " + ups, camera.getSize().x - 130, 30);
+        //shots on screen
+        g2d.drawString("Shots: " + numShots, camera.getSize().x - 130, 40);
             
         }
     }

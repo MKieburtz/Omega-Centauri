@@ -88,31 +88,14 @@ public class Renderer
             }
         }
 
-        
-        
-       
-        
         // draw shots TODO: check if on screen.
         for (Shot shot : allShots)
         {
             shot.draw(g2d, camera.getLocation());
         }
 
-        // draw fps info and other stats
-        g2d.setFont(dataFont);
-        g2d.setColor(Color.WHITE);
-
-        //version
-        g2d.drawString("Version: " + version, camera.getSize().x - 150, 10);
-        //fps
-        g2d.drawString("FPS: " + String.valueOf(fps), camera.getSize().x - 130, 20);
-        //ups
-        g2d.drawString("UPS: " + String.valueOf(ups), camera.getSize().x - 130, 30);
-        //shots on screen
-        g2d.drawString("Shots: " + allShots.size(), camera.getSize().x - 130, 40);
-
         // draw HUD
-        headsUpDisplayPlayer.draw(g2d, camera, ships, mapSize);
+        headsUpDisplayPlayer.draw(g2d, camera, ships, mapSize, fps, ups, version, allShots.size());
         
         //draw pause menu
         if (paused) 

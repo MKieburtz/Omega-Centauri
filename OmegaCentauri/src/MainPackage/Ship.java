@@ -286,7 +286,14 @@ public abstract class Ship
         {
             if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
             {
-                takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle);
+                if (ship instanceof EnemyMediumFighter)
+                {
+                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 30);
+                }
+                else
+                {
+                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 0);
+                }
                 if (hullDurability <= 0) 
                 {
                     removed[0] = true;
@@ -392,11 +399,11 @@ public abstract class Ship
         return shotsToRemove;
     }
     
-    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle) 
+    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle, int extra) 
     {
         if (shield.getEnergy() - damage >= 0)
         {
-            shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle);
+            shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle, extra);
         }
         else
         {
@@ -405,7 +412,7 @@ public abstract class Ship
             
             if (healthToLoseShield > 0) 
             {
-                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle);
+                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle, extra);
             }
             reduceHull(healthToLoseHull);
         }

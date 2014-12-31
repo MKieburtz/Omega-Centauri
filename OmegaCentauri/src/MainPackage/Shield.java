@@ -51,12 +51,14 @@ public class Shield
     {
         private double angleToDraw;
         private double angleToTranslate;
+        private int extraTranslation; // to add the the second translation to get over big wings
         private int opacity = 100;        
         
-        public ShieldSegment(double drawingAngle, double translationAngle)
+        public ShieldSegment(double drawingAngle, double translationAngle, int extra)
         {
             this.angleToDraw = drawingAngle;
             this.angleToTranslate = translationAngle;
+            this.extraTranslation = extra;
         }
 
         public double getTranslationAngle()
@@ -83,6 +85,11 @@ public class Shield
         {
             angleToDraw += amount;
             angleToTranslate += amount;
+        }
+        
+        public int getExtra()
+        {
+            return extraTranslation;
         }
     }
     
@@ -112,7 +119,7 @@ public class Shield
                     double translationAngle = segment.getTranslationAngle() - faceAngle;
                     double distance = Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, translationAngle);
  
-                    transform.translate(translationPoint.x + distance + 30, translationPoint.y - activeImage.getHeight() / 2);
+                    transform.translate(translationPoint.x + distance + segment.getExtra(), translationPoint.y - activeImage.getHeight() / 2);
                     //System.out.println(segment.getTranslationAngle() + " " + segment.getDrawingAngle() + " " + faceAngle);
                     transform.rotate(Math.toRadians(360 - -(segment.getTranslationAngle() - segment.getDrawingAngle())), 0, 0);
                 }
@@ -129,12 +136,12 @@ public class Shield
             }
     }
     // shield angle is the angle on the shield, collision angle is the angle to the collision point on the shot
-    public void activate(double damage, double shieldAngle, double collisionAngle, double faceAngle)
+    public void activate(double damage, double shieldAngle, double collisionAngle, double faceAngle, int extra)
     {        
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         //System.out.println(shieldAngle + " " + collisionAngle);
         energy -= damageToLose;
-        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle));
+        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle, extra));
     }
     
     public void updateSegments(double angleChange)
