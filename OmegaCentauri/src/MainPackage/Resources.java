@@ -46,12 +46,6 @@ public class Resources {
         imagePaths.add("resources/EnemyFighterThrustingRight.png");
         imagePaths.add("resources/MediumEnemyFighter.png");
         imagePaths.add("resources/Turret.png");
-        imagePaths.add("resources/StartButtonNoHover.png");
-        imagePaths.add("resources/StartButtonHover.png");
-        imagePaths.add("resources/CloseButtonNoHover.png");
-        imagePaths.add("resources/CloseButtonHover.png");
-        imagePaths.add("resources/SettingsButtonNoHover.png");
-        imagePaths.add("resources/SettingsButtonHover.png");
         imagePaths.add("resources/Pulse.png");
         imagePaths.add("resources/EnemyShot.png");
         imagePaths.add("resources/PauseMenu.png");
@@ -60,14 +54,6 @@ public class Resources {
         imagePaths.add("resources/ReturnToTheBattlefield.png");
         imagePaths.add("resources/RadioButtonEnabled.png");
         imagePaths.add("resources/RadioButtonDisabled.png");
-        imagePaths.add("resources/BackButtonHover.png");
-        imagePaths.add("resources/BackButtonNoHover.png");
-        imagePaths.add("resources/ControlsButtonHover.png");
-        imagePaths.add("resources/ControlsButtonNoHover.png");
-        imagePaths.add("resources/ResetButtonHover.png");
-        imagePaths.add("resources/ResetButtonNoHover.png");
-        imagePaths.add("resources/SaveButtonHover.png");
-        imagePaths.add("resources/SaveButtonNoHover.png");
         imagePaths.add("resources/shield.png");
         imagePaths.add("resources/EnemyShield.png");
         imagePaths.add("resources/Level2Shot.png");
@@ -84,6 +70,7 @@ public class Resources {
         imagePaths.add("resources/ShipStatusGood.png");
         imagePaths.add("resources/ShipStatusWarning.png");
         imagePaths.add("resources/ShipStatusBad.png");
+        imagePaths.add("resources/ButtonHover.png");
         
         soundPaths.add("resources/Pulse.wav");
         soundPaths.add("resources/Mouseclick.wav");
@@ -94,6 +81,7 @@ public class Resources {
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 24f));
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 16f));
         fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 12f));
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 30f));
 
         loadAllImages();
         loadAllSounds();

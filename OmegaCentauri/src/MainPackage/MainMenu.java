@@ -14,24 +14,33 @@ public class MainMenu
 
     private GameActionListener startListener;
 
-    private ArrayList<String> imagePaths = new ArrayList<String>();
-    private ArrayList<String> soundPaths = new ArrayList<String>();
+    private ArrayList<String> imagePaths = new ArrayList<>();
+    private ArrayList<String> soundPaths = new ArrayList<>();
+    private ArrayList<FontInfo> fontData = new ArrayList<>();
 
-    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-    private ArrayList<Clip> sounds = new ArrayList<Clip>();
+    private ArrayList<BufferedImage> images = new ArrayList<>();
+    private ArrayList<Clip> sounds = new ArrayList<>();
+    private ArrayList<Font> fonts = new ArrayList<>();
 
-    private ArrayList<TwinklingStarChunk> stars = new ArrayList<TwinklingStarChunk>();
+    private ArrayList<TwinklingStarChunk> stars = new ArrayList<>();
 
     private Settings settings;
 
-    private final int STARTNOHOVER = 0;
-    private final int STARTHOVER = 1; 
-    private final int CLOSENOHOVER = 2;
-    private final int CLOSEHOVER = 3;
-    private final int SETTINGSNOHOVER = 4;
-    private final int SETTINGSHOVER = 5;
+    private final int HOVER = 0;
     
     private final int CLICKSOUND = 0;
+    
+    private final int FONT = 0;
+    
+    private final int TEXTWIDTHSETTINGS = 174;
+    private final int TEXTHEIGHTSETTINGS = 24;
+    
+    private final int TEXTWIDTHSTART = 120;
+    private final int TEXTHEIGHTSTART = 24;
+    
+    private final int TEXTWIDTHCLOSE = 120;
+    private final int TEXTHEIGHTCLOSE = 24;
+    
 
     private boolean startHover = false;
     private boolean closeHover = false;
@@ -40,6 +49,10 @@ public class MainMenu
     private Rectangle startRectangle;
     private Rectangle closeRectangle;
     private Rectangle settingsRectangle;
+    
+    private Point startDrawPoint;
+    private Point closeDrawPoint;
+    private Point settingsDrawPoint;
 
     private boolean active;
 
@@ -55,20 +68,17 @@ public class MainMenu
     {
         active = true;
         startListener = game;
-
-        imagePaths.add("resources/StartButtonNoHover.png");
-        imagePaths.add("resources/StartButtonHover.png");
-        imagePaths.add("resources/CloseButtonNoHover.png");
-        imagePaths.add("resources/CloseButtonHover.png");
-        imagePaths.add("resources/SettingsButtonNoHover.png");
-        imagePaths.add("resources/SettingsButtonHover.png");
         
+        imagePaths.add("resources/ButtonHover.png");
         images = resources.getImagesForObject(imagePaths);
         
-        soundPaths.add("resources/Mouseclick.wav");
-        
+        soundPaths.add("resources/Mouseclick.wav");        
         sounds = resources.getSoundsForObject(soundPaths);
 
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 30f));
+        
+        fonts = resources.getFontsForObject(fontData);
+        
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         size = new Point(game.getWidth(), game.getHeight());
@@ -103,6 +113,8 @@ public class MainMenu
             
             Graphics2D g2d = drawingImage.createGraphics();
 
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            
             g2d.setColor(Color.BLACK);
             g2d.fillRect(0, 0, size.x, size.y);
 
@@ -117,34 +129,43 @@ public class MainMenu
             g2d.setColor(Color.BLACK);
             g2d.fillRect(0, size.y - 100, size.x, size.y - 100);
 
-            g2d.setColor(Color.RED);
-
-            if (startHover) 
-            {
-                g2d.drawImage(images.get(STARTHOVER), startRectangle.x, startRectangle.y, null);
-            } 
-            else 
-            {
-                g2d.drawImage(images.get(STARTNOHOVER), startRectangle.x, startRectangle.y, null);
-            }
-
-            if (closeHover) 
-            {
-                g2d.drawImage(images.get(CLOSEHOVER), closeRectangle.x, closeRectangle.y, null);
-            } 
-            else 
-            {
-                g2d.drawImage(images.get(CLOSENOHOVER), closeRectangle.x, closeRectangle.y, null);
-            }
-
-            if (settingsHover)
-            {
-                g2d.drawImage(images.get(SETTINGSHOVER), settingsRectangle.x, settingsRectangle.y, null);
-            } 
-            else 
-            {
-                g2d.drawImage(images.get(SETTINGSNOHOVER), settingsRectangle.x, settingsRectangle.y, null);
-            }
+            g2d.setColor(new Color(119, 119, 119));
+            
+            g2d.setFont(fonts.get(FONT));
+            
+            g2d.drawString("START", startDrawPoint.x, startDrawPoint.y);
+            g2d.drawString("CLOSE", closeDrawPoint.x, closeDrawPoint.y);
+            g2d.drawString("SETTINGS", settingsDrawPoint.x, settingsDrawPoint.y);
+            
+//            g2d.draw(settingsRectangle);
+//            g2d.draw(startRectangle);
+//            g2d.draw(closeRectangle);
+//            if (startHover) 
+//            {
+//                g2d.drawImage(images.get(STARTHOVER), startRectangle.x, startRectangle.y, null);
+//            } 
+//            else 
+//            {
+//                g2d.drawImage(images.get(STARTNOHOVER), startRectangle.x, startRectangle.y, null);
+//            }
+//
+//            if (closeHover) 
+//            {
+//                g2d.drawImage(images.get(CLOSEHOVER), closeRectangle.x, closeRectangle.y, null);
+//            } 
+//            else 
+//            {
+//                g2d.drawImage(images.get(CLOSENOHOVER), closeRectangle.x, closeRectangle.y, null);
+//            }
+//
+//            if (settingsHover)
+//            {
+//                g2d.drawImage(images.get(SETTINGSHOVER), settingsRectangle.x, settingsRectangle.y, null);
+//            } 
+//            else 
+//            {
+//                g2d.drawImage(images.get(SETTINGSNOHOVER), settingsRectangle.x, settingsRectangle.y, null);
+//            }
 
             g2d.setColor(Color.CYAN);
             g2d.drawLine(0, size.y - 100, size.x, size.y - 100);
@@ -260,29 +281,30 @@ public class MainMenu
 
     private void setRects()
     {
-
-        startRectangle = new Rectangle
-        (
-                size.x / 2  - images.get(STARTNOHOVER).getWidth() / 2,
-                size.y - 90,
-                images.get(STARTNOHOVER).getWidth(),
-                images.get(STARTNOHOVER).getHeight()
-        );
-
+        closeDrawPoint = new Point(size.x - 100 - TEXTWIDTHCLOSE, size.y - 50);
         closeRectangle = new Rectangle
         (
-                size.x - 100 - images.get(CLOSENOHOVER).getWidth(),
-                size.y - 90,
-                images.get(CLOSENOHOVER).getWidth(),
-                images.get(CLOSENOHOVER).getHeight()
+                size.x - 100 - TEXTWIDTHCLOSE,
+                size.y - 50 - TEXTHEIGHTCLOSE,
+                TEXTWIDTHCLOSE,
+                TEXTHEIGHTCLOSE
         );
-
+        settingsDrawPoint = new Point(100, size.y - 50);
         settingsRectangle = new Rectangle
         (
                 100,
-                size.y - 90,
-                images.get(SETTINGSNOHOVER).getWidth(),
-                images.get(SETTINGSNOHOVER).getHeight()
+                size.y - 50 - TEXTHEIGHTSETTINGS,
+                TEXTWIDTHSETTINGS,
+                TEXTHEIGHTSETTINGS
+        );
+        startDrawPoint = new Point((int)(settingsRectangle.x + settingsRectangle.getWidth() + closeRectangle.x) / 2 - TEXTWIDTHSTART / 2,
+                size.y - 50);
+        startRectangle = new Rectangle
+        (
+                (int)(settingsRectangle.x + settingsRectangle.getWidth() + closeRectangle.x) / 2 - TEXTWIDTHSTART / 2 ,
+                size.y - 50 - TEXTHEIGHTSTART,
+                TEXTWIDTHSTART,
+                TEXTHEIGHTSTART
         );
 
         screenRect.setBounds(0, 0, size.x, size.y);

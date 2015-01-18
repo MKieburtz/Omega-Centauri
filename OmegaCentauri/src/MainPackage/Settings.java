@@ -13,7 +13,6 @@ import java.io.*;
  */
 public class Settings
 {
-
     private Dimension windowResolution = new Dimension();
 
     private boolean active = false;
@@ -75,14 +74,6 @@ public class Settings
 
         imagePaths.add("resources/RadioButtonEnabled.png");
         imagePaths.add("resources/RadioButtonDisabled.png");
-        imagePaths.add("resources/BackButtonHover.png");
-        imagePaths.add("resources/BackButtonNoHover.png");
-        imagePaths.add("resources/ControlsButtonHover.png");
-        imagePaths.add("resources/ControlsButtonNoHover.png");
-        imagePaths.add("resources/ResetButtonHover.png");
-        imagePaths.add("resources/ResetButtonNoHover.png");
-        imagePaths.add("resources/SaveButtonHover.png");
-        imagePaths.add("resources/SaveButtonNoHover.png");
         
         images = resources.getImagesForObject(imagePaths);
         
@@ -94,6 +85,7 @@ public class Settings
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 32f));
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 24f));
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 16f));
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 50f));
         
         fonts = resources.getFontsForObject(fontData);
 
@@ -246,69 +238,69 @@ public class Settings
 
     private void setRects() 
     {
-        lowGraphicsRectangle = new Rectangle
-        (
-                100,
-                windowResolution.height / 2 - 70,
-                120,
-                20
-        );
-
-        highGraphicsRectangle = new Rectangle
-        (
-                100,
-                windowResolution.height / 2 - 40,
-                120,
-                20
-        );
-
-        windowedResolutionRectangle = new Rectangle
-        (
-                windowResolution.width / 2 - 100,
-                windowResolution.height / 2 - 70,
-                210,
-                20
-        );
-
-        fullscreenResolutionRectangle = new Rectangle
-        (
-                windowResolution.width / 2 - 100,
-                windowResolution.height / 2 - 40,
-                210,
-                20
-        );
-
-        controlsRectangle = new Rectangle
-        (
-                windowResolution.width - 100 - images.get(CONTROLSBUTTONNOHOVER).getWidth(),
-                windowResolution.height / 2 - 80,
-                images.get(CONTROLSBUTTONNOHOVER).getWidth(),
-                images.get(CONTROLSBUTTONNOHOVER).getHeight()
-        );
-        
-        backRectangle = new Rectangle
-        (
-                100,
-                windowResolution.height - 90,
-                images.get(BACKBUTTONNOHOVER).getWidth(),
-                images.get(BACKBUTTONNOHOVER).getHeight()
-        );
-
-        saveRectangle = new Rectangle
-        (
-                windowResolution.width / 2 - images.get(SAVEBUTTONNOHOVER).getWidth() / 2,
-                windowResolution.height - 90,
-                images.get(SAVEBUTTONNOHOVER).getWidth(),
-                images.get(SAVEBUTTONNOHOVER).getHeight()
-        );
-
-        resetRectangle = new Rectangle
-        (
-                windowResolution.width - 100 - images.get(RESETBUTTONNOHOVER).getWidth(),
-                windowResolution.height - 90,
-                images.get(RESETBUTTONNOHOVER).getWidth(),
-                images.get(RESETBUTTONNOHOVER).getHeight()
-        );
+//        lowGraphicsRectangle = new Rectangle
+//        (
+//                100,
+//                windowResolution.height / 2 - 70,
+//                120,
+//                20
+//        );
+//
+//        highGraphicsRectangle = new Rectangle
+//        (
+//                100,
+//                windowResolution.height / 2 - 40,
+//                120,
+//                20
+//        );
+//
+//        windowedResolutionRectangle = new Rectangle
+//        (
+//                windowResolution.width / 2 - 100,
+//                windowResolution.height / 2 - 70,
+//                210,
+//                20
+//        );
+//
+//        fullscreenResolutionRectangle = new Rectangle
+//        (
+//                windowResolution.width / 2 - 100,
+//                windowResolution.height / 2 - 40,
+//                210,
+//                20
+//        );
+//
+//        controlsRectangle = new Rectangle
+//        (
+//                windowResolution.width - 100 - images.get(CONTROLSBUTTONNOHOVER).getWidth(),
+//                windowResolution.height / 2 - 80,
+//                images.get(CONTROLSBUTTONNOHOVER).getWidth(),
+//                images.get(CONTROLSBUTTONNOHOVER).getHeight()
+//        );
+//        
+//        backRectangle = new Rectangle
+//        (
+//                100,
+//                windowResolution.height - 90,
+//                images.get(BACKBUTTONNOHOVER).getWidth(),
+//                images.get(BACKBUTTONNOHOVER).getHeight()
+//        );
+//
+//        saveRectangle = new Rectangle
+//        (
+//                windowResolution.width / 2 - images.get(SAVEBUTTONNOHOVER).getWidth() / 2,
+//                windowResolution.height - 90,
+//                images.get(SAVEBUTTONNOHOVER).getWidth(),
+//                images.get(SAVEBUTTONNOHOVER).getHeight()
+//        );
+//
+//        resetRectangle = new Rectangle
+//        (
+//                windowResolution.width - 100 - images.get(RESETBUTTONNOHOVER).getWidth(),
+//                windowResolution.height - 90,
+//                images.get(RESETBUTTONNOHOVER).getWidth(),
+//                images.get(RESETBUTTONNOHOVER).getHeight()
+//        );
 
     }
 
