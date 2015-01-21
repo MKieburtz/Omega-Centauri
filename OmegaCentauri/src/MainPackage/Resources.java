@@ -71,9 +71,10 @@ public class Resources {
         imagePaths.add("resources/ShipStatusWarning.png");
         imagePaths.add("resources/ShipStatusBad.png");
         imagePaths.add("resources/ButtonHover.png");
+        imagePaths.add("resources/LogoWindows.png");
         
-        soundPaths.add("resources/Pulse.wav");
-        soundPaths.add("resources/Mouseclick.wav");
+//        soundPaths.add("resources/Pulse.wav");
+//        soundPaths.add("resources/Mouseclick.wav");
 
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 10f));
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 50f));

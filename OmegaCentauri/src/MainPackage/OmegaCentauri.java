@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import javax.swing.*;
 import java.util.concurrent.*;
@@ -106,7 +107,9 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void setUpWindow() 
     {
-
+        BufferedImage logo =  resources.getImageForObject("resources/LogoWindows.png");
+        setIconImage(logo);
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
         setMinimumSize(new Dimension(600, 600));
