@@ -112,7 +112,7 @@ public class OmegaCentauri extends Game implements GameActionListener
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Omega Centauri");
-        setMinimumSize(new Dimension(600, 600));
+        setMinimumSize(new Dimension(700, 600));
         this.setFocusable(true);
 
         mainMenu = new MainMenu(this, resources);

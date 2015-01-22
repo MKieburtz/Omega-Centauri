@@ -137,36 +137,25 @@ public class MainMenu
             g2d.drawString("CLOSE", closeDrawPoint.x, closeDrawPoint.y);
             g2d.drawString("SETTINGS", settingsDrawPoint.x, settingsDrawPoint.y);
             
+//            g2d.setColor(Color.red);
 //            g2d.draw(settingsRectangle);
 //            g2d.draw(startRectangle);
 //            g2d.draw(closeRectangle);
-//            if (startHover) 
-//            {
-//                g2d.drawImage(images.get(STARTHOVER), startRectangle.x, startRectangle.y, null);
-//            } 
-//            else 
-//            {
-//                g2d.drawImage(images.get(STARTNOHOVER), startRectangle.x, startRectangle.y, null);
-//            }
-//
-//            if (closeHover) 
-//            {
-//                g2d.drawImage(images.get(CLOSEHOVER), closeRectangle.x, closeRectangle.y, null);
-//            } 
-//            else 
-//            {
-//                g2d.drawImage(images.get(CLOSENOHOVER), closeRectangle.x, closeRectangle.y, null);
-//            }
-//
-//            if (settingsHover)
-//            {
-//                g2d.drawImage(images.get(SETTINGSHOVER), settingsRectangle.x, settingsRectangle.y, null);
-//            } 
-//            else 
-//            {
-//                g2d.drawImage(images.get(SETTINGSNOHOVER), settingsRectangle.x, settingsRectangle.y, null);
-//            }
+            if (startHover) 
+            {
+                g2d.drawImage(images.get(HOVER), startDrawPoint.x, startDrawPoint.y, null);
+            } 
+            
+            if (closeHover) 
+            {
+                g2d.drawImage(images.get(HOVER), closeRectangle.x, closeRectangle.y, null);
+            } 
 
+            if (settingsHover)
+            {
+                g2d.drawImage(images.get(HOVER), settingsRectangle.x, settingsRectangle.y, null);
+            } 
+          
             g2d.setColor(Color.CYAN);
             g2d.drawLine(0, size.y - 100, size.x, size.y - 100);
             //g2d.drawLine(settingsRectangle.x, settingsRectangle.y + settingsRectangle.height, size.x, settingsRectangle.y + settingsRectangle.height);
@@ -192,8 +181,8 @@ public class MainMenu
             {
                 active = false;
                 startListener.gameStart();
-                sounds.get(CLICKSOUND).setFramePosition(0);
-                sounds.get(CLICKSOUND).start();
+//                sounds.get(CLICKSOUND).setFramePosition(0);
+//                sounds.get(CLICKSOUND).start();
             }
             if (closeRectangle.contains(location)) 
             {
@@ -203,8 +192,8 @@ public class MainMenu
             }
             if (settingsRectangle.contains(location)) 
             {
-                sounds.get(CLICKSOUND).setFramePosition(0);
-                sounds.get(CLICKSOUND).start();
+//                sounds.get(CLICKSOUND).setFramePosition(0);
+//                sounds.get(CLICKSOUND).start();
                 settings.setActive(true);
             }
         }
@@ -281,28 +270,29 @@ public class MainMenu
 
     private void setRects()
     {
-        closeDrawPoint = new Point(size.x - 100 - TEXTWIDTHCLOSE, size.y - 50);
+        int distanceFromBottom = 55;
+        closeDrawPoint = new Point(size.x - 100 - TEXTWIDTHCLOSE, size.y - distanceFromBottom);
         closeRectangle = new Rectangle
         (
                 size.x - 100 - TEXTWIDTHCLOSE,
-                size.y - 50 - TEXTHEIGHTCLOSE,
+                size.y - distanceFromBottom - TEXTHEIGHTCLOSE,
                 TEXTWIDTHCLOSE,
                 TEXTHEIGHTCLOSE
         );
-        settingsDrawPoint = new Point(100, size.y - 50);
+        settingsDrawPoint = new Point(100, size.y - distanceFromBottom);
         settingsRectangle = new Rectangle
         (
                 100,
-                size.y - 50 - TEXTHEIGHTSETTINGS,
+                size.y - distanceFromBottom - TEXTHEIGHTSETTINGS,
                 TEXTWIDTHSETTINGS,
                 TEXTHEIGHTSETTINGS
         );
         startDrawPoint = new Point((int)(settingsRectangle.x + settingsRectangle.getWidth() + closeRectangle.x) / 2 - TEXTWIDTHSTART / 2,
-                size.y - 50);
+                size.y - distanceFromBottom);
         startRectangle = new Rectangle
         (
                 (int)(settingsRectangle.x + settingsRectangle.getWidth() + closeRectangle.x) / 2 - TEXTWIDTHSTART / 2 ,
-                size.y - 50 - TEXTHEIGHTSTART,
+                size.y - distanceFromBottom - TEXTHEIGHTSTART,
                 TEXTWIDTHSTART,
                 TEXTHEIGHTSTART
         );
