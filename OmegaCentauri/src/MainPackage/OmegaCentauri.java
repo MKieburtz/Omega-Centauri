@@ -41,7 +41,7 @@ public class OmegaCentauri extends Game implements GameActionListener
     private Resources resources;
     private Dimension mapSize;
     private Point mouseLocation = new Point();
-    private Dimension borderSize;
+    private Dimension borderSize = null;
     // TIMERS
     private ScheduledExecutorService timingEx;
     private ScheduledExecutorService recordingEx;
@@ -142,8 +142,16 @@ public class OmegaCentauri extends Game implements GameActionListener
 
         getContentPane().add(panel);
 
-        borderSize = new Dimension(getSize().width - getContentPane().getSize().width,
+        if (System.getProperty("os.name").contains("Mac"))
+        {
+            borderSize = new Dimension(getSize().width - getContentPane().getSize().width,
                 getSize().height - getContentPane().getSize().height);
+        }
+        else
+        {
+            borderSize = new Dimension(getSize().width - getContentPane().getSize().width - 6,
+                getSize().height - getContentPane().getSize().height - 8);
+        }
         
         addWindowListener(new WindowAdapter() 
         {
@@ -917,7 +925,6 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     class MainMenuService implements Runnable
     {
-
         @Override
         public void run() 
         {
@@ -961,10 +968,10 @@ public class OmegaCentauri extends Game implements GameActionListener
         {
             SwingUtilities.invokeLater(new Runnable() 
             {
-
                 @Override
                 public void run() 
                 {
+                    
                     mouseLocation.x = MouseInfo.getPointerInfo().getLocation().x
                             - OmegaCentauri.this.getLocationOnScreen().x
                             - borderSize.width;
@@ -972,7 +979,10 @@ public class OmegaCentauri extends Game implements GameActionListener
                     mouseLocation.y = MouseInfo.getPointerInfo().getLocation().y
                             - OmegaCentauri.this.getLocationOnScreen().y
                             -borderSize.height;
-
+                    
+                    
+                    System.out.println(mouseLocation);
+                    
                     mouseRecordingEx.schedule(new MouseChecker(), 10, TimeUnit.MILLISECONDS);
                 }
             });

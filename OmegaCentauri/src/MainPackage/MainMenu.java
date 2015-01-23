@@ -140,20 +140,20 @@ public class MainMenu
 //            g2d.setColor(Color.red);
 //            g2d.draw(settingsRectangle);
 //            g2d.draw(startRectangle);
-//            g2d.draw(closeRectangle);
+//            g2d.draw(closeRectangle)
             if (startHover) 
             {
-                g2d.drawImage(images.get(HOVER), startDrawPoint.x, startDrawPoint.y, null);
+                g2d.drawImage(images.get(HOVER), startDrawPoint.x - (images.get(HOVER).getWidth() - TEXTWIDTHSTART) / 2, startDrawPoint.y, null);
             } 
             
             if (closeHover) 
             {
-                g2d.drawImage(images.get(HOVER), closeRectangle.x, closeRectangle.y, null);
+                g2d.drawImage(images.get(HOVER), closeDrawPoint.x - (images.get(HOVER).getWidth() - TEXTWIDTHCLOSE) / 2, closeDrawPoint.y, null);
             } 
 
             if (settingsHover)
             {
-                g2d.drawImage(images.get(HOVER), settingsRectangle.x, settingsRectangle.y, null);
+                g2d.drawImage(images.get(HOVER), settingsDrawPoint.x - (images.get(HOVER).getWidth() - TEXTWIDTHSETTINGS) / 2, settingsDrawPoint.y, null);
             } 
           
             g2d.setColor(Color.CYAN);
