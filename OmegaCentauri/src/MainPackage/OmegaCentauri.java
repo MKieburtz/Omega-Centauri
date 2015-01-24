@@ -115,7 +115,7 @@ public class OmegaCentauri extends Game implements GameActionListener
         setMinimumSize(new Dimension(700, 600));
         this.setFocusable(true);
 
-        mainMenu = new MainMenu(this, resources);
+        mainMenu = new MainMenu(this, resources, System.getProperty("os.name").contains("Mac"));
 
         if (!mainMenu.getSettings().getData().getWindowed()) // if fullscreen
         {
@@ -979,9 +979,6 @@ public class OmegaCentauri extends Game implements GameActionListener
                     mouseLocation.y = MouseInfo.getPointerInfo().getLocation().y
                             - OmegaCentauri.this.getLocationOnScreen().y
                             -borderSize.height;
-                    
-                    
-                    System.out.println(mouseLocation);
                     
                     mouseRecordingEx.schedule(new MouseChecker(), 10, TimeUnit.MILLISECONDS);
                 }

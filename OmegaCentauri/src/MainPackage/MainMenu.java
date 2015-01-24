@@ -63,9 +63,12 @@ public class MainMenu
     
     private BufferedImage drawingImage;
     
+    private boolean isMac;
+    
 
-    public MainMenu(OmegaCentauri game, Resources resources) 
+    public MainMenu(OmegaCentauri game, Resources resources, boolean isMac) 
     {
+        this.isMac = isMac;
         active = true;
         startListener = game;
         
@@ -296,6 +299,16 @@ public class MainMenu
                 TEXTWIDTHSTART,
                 TEXTHEIGHTSTART
         );
+        
+        if (isMac)
+        {
+            closeDrawPoint.y += 5;
+            closeRectangle.y += 5;
+            settingsDrawPoint.y += 5;
+            settingsRectangle.y += 5;
+            startDrawPoint.y += 5;
+            startRectangle.y += 5;
+        }
 
         screenRect.setBounds(0, 0, size.x, size.y);
     }
