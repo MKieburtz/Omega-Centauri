@@ -27,19 +27,10 @@ public class Settings
 
     private final int RADIOBUTTONENABLED = 0;
     private final int RADIOBUTTONDISABLED = 1;
-    private final int BACKBUTTONHOVER = 2;
-    private final int BACKBUTTONNOHOVER = 3;
-    private final int CONTROLSBUTTONHOVER = 4;
-    private final int CONTROLSBUTTONNOHOVER = 5;
-    private final int RESETBUTTONHOVER = 6;
-    private final int RESETBUTTONNOHOVER = 7;
-    private final int SAVEBUTTONHOVER = 8;
-    private final int SAVEBUTTONNOHOVER = 9;
 
     private final int TITLEFONT = 0;
     private final int SUBTITLEFONT = 1;
     private final int TEXTFONT = 2;
-    private final int SMALLTEXTFONT = 3;
 
     private final int CLICKSOUND = 0;
 
@@ -48,8 +39,6 @@ public class Settings
     private boolean resetHover = false;
     private boolean saveHover = false;
     
-    private boolean changed = false;
-
     private Rectangle controlsRectangle;
     private Rectangle backRectangle;
     private Rectangle saveRectangle;
@@ -59,9 +48,7 @@ public class Settings
     private Rectangle windowedResolutionRectangle;
     private Rectangle fullscreenResolutionRectangle;
 
-    private SettingsData settingsData;
-    private boolean saved = false;
-    
+    private SettingsData settingsData;    
     private GameActionListener settingsChangedListener;
     
     private enum SettingsTypes { graphicsQualityLow, resolutionWindowed };
@@ -81,11 +68,9 @@ public class Settings
         
         sounds = resources.getSoundsForObject(soundPaths);
         
-        fontData.add(new FontInfo("resources/OCR A Std.ttf", 50f));
-        fontData.add(new FontInfo("resources/OCR A Std.ttf", 32f));
-        fontData.add(new FontInfo("resources/OCR A Std.ttf", 24f));
-        fontData.add(new FontInfo("resources/OCR A Std.ttf", 16f));
         fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 50f));
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 32f));
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 24f));
         
         fonts = resources.getFontsForObject(fontData);
 
@@ -126,26 +111,14 @@ public class Settings
         g2d.setFont(fonts.get(TEXTFONT));
         g2d.drawString("LOW", 100,  windowResolution.height / 2 - 50);
         g2d.drawString("HIGH", 100, windowResolution.height / 2 - 20);
-
-        if (changed)
-        {
-            g2d.setFont(fonts.get(SMALLTEXTFONT));
-            g2d.setColor(Color.RED);
-            g2d.drawString("There are unsaved changes!", windowResolution.width - 310, 20);
-        } 
-        else if (saved)
-        {
-            g2d.setFont(fonts.get(SMALLTEXTFONT));
-            g2d.setColor(Color.GREEN);
-            g2d.drawString("Changes saved!", windowResolution.width - 310, 20);
-        }
         
         if (settingsData.getGraphicsQualityLow()) 
         {
             g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, windowResolution.height / 2 - 70, null);
             g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, windowResolution.height / 2 - 40, null);
         } 
-        else {
+        else 
+        {
             g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, windowResolution.height / 2 - 70, null);
             g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, windowResolution.height / 2 - 40, null);
         }
@@ -171,41 +144,41 @@ public class Settings
             g2d.drawImage(images.get(RADIOBUTTONENABLED), windowResolution.width / 2 + 90, windowResolution.height / 2 - 40, null);
         }
 
-        if (controlHover) 
-        {
-            g2d.drawImage(images.get(CONTROLSBUTTONHOVER), controlsRectangle.x, controlsRectangle.y, null);
-        } 
-        else 
-        {
-            g2d.drawImage(images.get(CONTROLSBUTTONNOHOVER), controlsRectangle.x, controlsRectangle.y, null);
-        }
-
-        if (backHover)
-        {
-            g2d.drawImage(images.get(BACKBUTTONHOVER), backRectangle.x, backRectangle.y, null);
-        } 
-        else
-        {
-            g2d.drawImage(images.get(BACKBUTTONNOHOVER), backRectangle.x, backRectangle.y, null);
-        }
-
-        if (saveHover) 
-        {
-            g2d.drawImage(images.get(SAVEBUTTONHOVER), saveRectangle.x, saveRectangle.y, null);
-        } 
-        else
-        {
-            g2d.drawImage(images.get(SAVEBUTTONNOHOVER), saveRectangle.x, saveRectangle.y, null);
-        }
-
-        if (resetHover)
-        {
-            g2d.drawImage(images.get(RESETBUTTONHOVER), resetRectangle.x, resetRectangle.y, null);
-        } 
-        else
-        {
-            g2d.drawImage(images.get(RESETBUTTONNOHOVER), resetRectangle.x, resetRectangle.y, null);
-        }
+//        if (controlHover) 
+//        {
+//            g2d.drawImage(images.get(CONTROLSBUTTONHOVER), controlsRectangle.x, controlsRectangle.y, null);
+//        } 
+//        else 
+//        {
+//            g2d.drawImage(images.get(CONTROLSBUTTONNOHOVER), controlsRectangle.x, controlsRectangle.y, null);
+//        }
+//
+//        if (backHover)
+//        {
+//            g2d.drawImage(images.get(BACKBUTTONHOVER), backRectangle.x, backRectangle.y, null);
+//        } 
+//        else
+//        {
+//            g2d.drawImage(images.get(BACKBUTTONNOHOVER), backRectangle.x, backRectangle.y, null);
+//        }
+//
+//        if (saveHover) 
+//        {
+//            g2d.drawImage(images.get(SAVEBUTTONHOVER), saveRectangle.x, saveRectangle.y, null);
+//        } 
+//        else
+//        {
+//            g2d.drawImage(images.get(SAVEBUTTONNOHOVER), saveRectangle.x, saveRectangle.y, null);
+//        }
+//
+//        if (resetHover)
+//        {
+//            g2d.drawImage(images.get(RESETBUTTONHOVER), resetRectangle.x, resetRectangle.y, null);
+//        } 
+//        else
+//        {
+//            g2d.drawImage(images.get(RESETBUTTONNOHOVER), resetRectangle.x, resetRectangle.y, null);
+//        }
 
 //        g2d.setColor(Color.RED);
 //        g2d.draw(controlsRectangle);
@@ -238,38 +211,38 @@ public class Settings
 
     private void setRects() 
     {
-//        lowGraphicsRectangle = new Rectangle
-//        (
-//                100,
-//                windowResolution.height / 2 - 70,
-//                120,
-//                20
-//        );
-//
-//        highGraphicsRectangle = new Rectangle
-//        (
-//                100,
-//                windowResolution.height / 2 - 40,
-//                120,
-//                20
-//        );
-//
-//        windowedResolutionRectangle = new Rectangle
-//        (
-//                windowResolution.width / 2 - 100,
-//                windowResolution.height / 2 - 70,
-//                210,
-//                20
-//        );
-//
-//        fullscreenResolutionRectangle = new Rectangle
-//        (
-//                windowResolution.width / 2 - 100,
-//                windowResolution.height / 2 - 40,
-//                210,
-//                20
-//        );
-//
+        lowGraphicsRectangle = new Rectangle
+        (
+                100,
+                windowResolution.height / 2 - 70,
+                120,
+                20
+        );
+
+        highGraphicsRectangle = new Rectangle
+        (
+                100,
+                windowResolution.height / 2 - 40,
+                120,
+                20
+        );
+
+        windowedResolutionRectangle = new Rectangle
+        (
+                windowResolution.width / 2 - 100,
+                windowResolution.height / 2 - 70,
+                210,
+                20
+        );
+
+        fullscreenResolutionRectangle = new Rectangle
+        (
+                windowResolution.width / 2 - 100,
+                windowResolution.height / 2 - 40,
+                210,
+                20
+        );
+
 //        controlsRectangle = new Rectangle
 //        (
 //                windowResolution.width - 100 - images.get(CONTROLSBUTTONNOHOVER).getWidth(),
@@ -306,32 +279,32 @@ public class Settings
 
     public void checkMouseMoved(Point location) 
     {
-        if (active) 
-        {
-            if (controlsRectangle.contains(location)) 
-            {
-                controlHover = true;
-            } 
-            else if (backRectangle.contains(location))
-            {
-                backHover = true;
-            } 
-            else if (saveRectangle.contains(location))
-            {
-                saveHover = true;
-            }
-            else if (resetRectangle.contains(location)) 
-            {
-                resetHover = true;
-            }
-            else 
-            {
-                controlHover = false;
-                backHover = false;
-                saveHover = false;
-                resetHover = false;
-            }
-        }
+//        if (active) 
+//        {
+//            if (controlsRectangle.contains(location)) 
+//            {
+//                controlHover = true;
+//            } 
+//            else if (backRectangle.contains(location))
+//            {
+//                backHover = true;
+//            } 
+//            else if (saveRectangle.contains(location))
+//            {
+//                saveHover = true;
+//            }
+//            else if (resetRectangle.contains(location)) 
+//            {
+//                resetHover = true;
+//            }
+//            else 
+//            {
+//                controlHover = false;
+//                backHover = false;
+//                saveHover = false;
+//                resetHover = false;
+//            }
+//        }
     }
 
     public void checkMousePressed(Point location) 
@@ -371,10 +344,6 @@ public class Settings
             
             save();
         }
-        boolean wasChanged = changed;
-        changed = changes.get(SettingsTypes.graphicsQualityLow) != settingsData.getGraphicsQualityLow() ||
-                changes.get(SettingsTypes.resolutionWindowed) != settingsData.getWindowed();
-        saved = wasChanged && !changed;
     }
 
     public void checkMouseExited() 

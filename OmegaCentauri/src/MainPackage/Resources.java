@@ -72,6 +72,7 @@ public class Resources {
         imagePaths.add("resources/ShipStatusBad.png");
         imagePaths.add("resources/ButtonHover.png");
         imagePaths.add("resources/LogoWindows.png");
+        imagePaths.add("resources/ButtonHoverLong.png");
         
 //        soundPaths.add("resources/Pulse.wav");
 //        soundPaths.add("resources/Mouseclick.wav");
@@ -83,6 +84,9 @@ public class Resources {
         fontData.add(new FontInfo("resources/OCR A Std.ttf", 16f));
         fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 12f));
         fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 30f));
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 50f));
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 32f));
+        fontData.add(new FontInfo("resources/Orbitron-Regular.ttf", 24f));
 
         loadAllImages();
         loadAllSounds();

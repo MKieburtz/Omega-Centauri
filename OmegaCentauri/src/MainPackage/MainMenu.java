@@ -27,6 +27,7 @@ public class MainMenu
     private Settings settings;
 
     private final int HOVER = 0;
+    private final int LONGHOVER = 1;
     
     private final int CLICKSOUND = 0;
     
@@ -73,6 +74,7 @@ public class MainMenu
         startListener = game;
         
         imagePaths.add("resources/ButtonHover.png");
+        imagePaths.add("resources/ButtonHoverLong.png");
         images = resources.getImagesForObject(imagePaths);
         
         soundPaths.add("resources/Mouseclick.wav");        
@@ -156,7 +158,7 @@ public class MainMenu
 
             if (settingsHover)
             {
-                g2d.drawImage(images.get(HOVER), settingsDrawPoint.x - (images.get(HOVER).getWidth() - TEXTWIDTHSETTINGS) / 2, settingsDrawPoint.y, null);
+                g2d.drawImage(images.get(LONGHOVER), settingsDrawPoint.x - (images.get(LONGHOVER).getWidth() - TEXTWIDTHSETTINGS) / 2, settingsDrawPoint.y, null);
             } 
           
             g2d.setColor(Color.CYAN);
