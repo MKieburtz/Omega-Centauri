@@ -99,6 +99,38 @@ public class HeadsUpDisplayPlayer
         int amountOrangeHull = hullAmounts[1];
         int amountRedHull = hullAmounts[2];
 
+        for (Ship ship : ships) 
+        {
+            ship.draw(g2d, camera);
+            if (ship instanceof Player)
+            {
+                g2d.setColor(Color.CYAN);
+
+                if (ship.getHullHealth() <= 0)
+                {
+                    g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
+                } 
+                else if ((ship.getLocation().x > mapSize.width || ship.getLocation().x < 0) ||
+                        (ship.getLocation().y > mapSize.height || ship.getLocation().y < 0))
+                {
+                    g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
+                }
+
+            } 
+            else if (ship instanceof EnemyShip)
+            {
+                g2d.setColor(Color.RED);
+            } 
+            else 
+            {
+                g2d.setColor(Color.YELLOW);
+            }
+//
+//            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
+//                        camera.getSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
+//                g2d.draw(minimapShip);
+        }
+        
         // draw the hull bars
         for (int i = 0; i < amountGreenHull; i++) 
         {
@@ -182,37 +214,6 @@ public class HeadsUpDisplayPlayer
             g2d.drawString("%" + format.format(hullPercent), HEALTHSTARTINGX - 20, 360); // draw health percent
         }
         
-        for (Ship ship : ships) 
-        {
-            ship.draw(g2d, camera);
-            if (ship instanceof Player)
-            {
-                g2d.setColor(Color.CYAN);
-
-                if (ship.getHullHealth() <= 0)
-                {
-                    g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
-                } 
-                else if ((ship.getLocation().x > mapSize.width || ship.getLocation().x < 0) ||
-                        (ship.getLocation().y > mapSize.height || ship.getLocation().y < 0))
-                {
-                    g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
-                }
-
-            } 
-            else if (ship instanceof EnemyShip)
-            {
-                g2d.setColor(Color.RED);
-            } 
-            else 
-            {
-                g2d.setColor(Color.YELLOW);
-            }
-//
-//            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
-//                        camera.getSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
-//                g2d.draw(minimapShip);
-            
         g2d.setFont(dataFont);
         g2d.setColor(Color.WHITE);
             
@@ -224,8 +225,6 @@ public class HeadsUpDisplayPlayer
         g2d.drawString("UPS: " + ups, camera.getSize().x - 130, 30);
         //shots on screen
         g2d.drawString("Shots: " + numShots, camera.getSize().x - 130, 40);
-            
-        }
     }
 
     private int[] getAmounts(int amount) 
