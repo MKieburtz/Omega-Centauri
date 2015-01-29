@@ -296,7 +296,7 @@ public class MainMenu
                 size.y - distanceFromBottom);
         startRectangle = new Rectangle
         (
-                (int)(settingsRectangle.x + settingsRectangle.getWidth() + closeRectangle.x) / 2 - TEXTWIDTHSTART / 2 ,
+                (int)(settingsRectangle.x + settingsRectangle.getWidth() + closeRectangle.x) / 2 - TEXTWIDTHSTART / 2,
                 size.y - distanceFromBottom - TEXTHEIGHTSTART,
                 TEXTWIDTHSTART,
                 TEXTHEIGHTSTART

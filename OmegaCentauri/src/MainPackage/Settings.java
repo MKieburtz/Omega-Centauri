@@ -27,6 +27,8 @@ public class Settings
 
     private final int RADIOBUTTONENABLED = 0;
     private final int RADIOBUTTONDISABLED = 1;
+    private final int BUTTONHOVER = 2;
+    private final int BUTTONHOVERLONG = 3;
 
     private final int TITLEFONT = 0;
     private final int SUBTITLEFONT = 1;
@@ -36,18 +38,17 @@ public class Settings
     private final int CLICKSOUND = 0;
 
     private boolean controlHover = false;
-    private boolean backHover = false;
+    private boolean saveAndBackHover = false;
     private boolean resetHover = false;
-    private boolean saveHover = false;
     
     private final int SAVEEXITHEIGHT = 24;
     private final int SAVEEXITWIDTH = 215;
     
     private final int RESETHEIGHT = 24;
-    private final int RESETWIDTH = 195;
+    private final int RESETWIDTH = 120;
     
     private final int CONTROLSHEIGHT = 24;
-    private final int CONTROLSWIDTH = 120;
+    private final int CONTROLSWIDTH = 195;
     
     private Rectangle controlsRectangle;
     private Point controlsDrawPoint;
@@ -76,6 +77,8 @@ public class Settings
 
         imagePaths.add("resources/RadioButtonEnabled.png");
         imagePaths.add("resources/RadioButtonDisabled.png");
+        imagePaths.add("resources/ButtonHover.png");
+        imagePaths.add("resources/ButtonHoverLong.png");
         
         images = resources.getImagesForObject(imagePaths);
         
@@ -117,7 +120,7 @@ public class Settings
         g2d.setColor(Color.BLACK);
         g2d.fillRect(0, 0, windowResolution.width, windowResolution.height);
 
-        g2d.setColor(new Color(81, 81, 81));
+        g2d.setColor(new Color(119, 119, 119));
         g2d.setFont(fonts.get(TITLEFONT));
         g2d.drawString("OPTIONS", windowResolution.width / 2 - 125, 75);
 
@@ -138,8 +141,6 @@ public class Settings
             g2d.drawImage(images.get(RADIOBUTTONDISABLED), 190, windowResolution.height / 2 - 70, null);
             g2d.drawImage(images.get(RADIOBUTTONENABLED), 190, windowResolution.height / 2 - 40, null);
         }
-
-        g2d.setColor(new Color(81, 81, 81));
         
         g2d.setFont(fonts.get(SUBTITLEFONT));
         g2d.drawString("RESOLUTION", windowResolution.width / 2 - 110, windowResolution.height / 2 - 100);
@@ -163,36 +164,28 @@ public class Settings
         g2d.setFont(fonts.get(BUTTONFONT));
 
         g2d.drawString("SAVE + EXIT", saveAndBackDrawPoint.x, saveAndBackDrawPoint.y);
+        g2d.drawString("CONTROLS", controlsDrawPoint.x, controlsDrawPoint.y);
+        g2d.drawString("RESET", resetDrawPoint.x, resetDrawPoint.y);
         
-//        if (controlHover) 
-//        {
-//            g2d.drawImage(images.get(CONTROLSBUTTONHOVER), controlsRectangle.x, controlsRectangle.y, null);
-//        } 
-//        else 
-//        {
-//            g2d.drawImage(images.get(CONTROLSBUTTONNOHOVER), controlsRectangle.x, controlsRectangle.y, null);
-//        }
-//
-//
-//        if (resetHover)
-//        {
-//            g2d.drawImage(images.get(RESETBUTTONHOVER), resetRectangle.x, resetRectangle.y, null);
-//        } 
-//        else
-//        {
-//            g2d.drawImage(images.get(RESETBUTTONNOHOVER), resetRectangle.x, resetRectangle.y, null);
-//        }
-
-//        g2d.setColor(Color.RED);
-//        g2d.draw(controlsRectangle);
-//        g2d.draw(lowGraphicsRectangle);
-//        g2d.draw(highGraphicsRectangle);
-//        g2d.draw(windowedResolutionRectangle);
-//        g2d.draw(fullscreenResolutionRectangle);
-//        g2d.draw(backRectangle);
-//        g2d.draw(saveRectangle);
+//        g2d.setColor(Color.red);
+//        g2d.draw(saveAndBackRectangle);
 //        g2d.draw(resetRectangle);
+//        g2d.draw(controlsRectangle);
         
+        if (controlHover) 
+        {
+            g2d.drawImage(images.get(BUTTONHOVERLONG), controlsDrawPoint.x - (images.get(BUTTONHOVERLONG).getWidth() - CONTROLSWIDTH) / 2, controlsDrawPoint.y, null);
+        } 
+
+        if (saveAndBackHover)
+        {
+            g2d.drawImage(images.get(BUTTONHOVERLONG), saveAndBackDrawPoint.x- (images.get(BUTTONHOVERLONG).getWidth() - SAVEEXITWIDTH) / 2, saveAndBackDrawPoint.y, null);
+        }
+        
+        if (resetHover)
+        {
+            g2d.drawImage(images.get(BUTTONHOVER), resetDrawPoint.x- (images.get(BUTTONHOVER).getWidth() - RESETWIDTH) / 2, resetDrawPoint.y, null);
+        } 
         g.drawImage(drawingImage, 0, 0, null);
     }
 
@@ -246,14 +239,7 @@ public class Settings
                 210,
                 20
         );
-
-        controlsRectangle = new Rectangle
-        (
-                windowResolution.width - 100 - CONTROLSWIDTH,
-                windowResolution.height / 2 - 80,
-                CONTROLSWIDTH,
-                CONTROLSHEIGHT
-        );
+        
         saveAndBackDrawPoint = new Point(100, windowResolution.height - distanceFromBottom);
         saveAndBackRectangle = new Rectangle
         (
@@ -262,45 +248,50 @@ public class Settings
               SAVEEXITWIDTH,
               SAVEEXITHEIGHT
         );
+        resetDrawPoint = new Point(windowResolution.width - 100 - RESETWIDTH, windowResolution.height - distanceFromBottom);
+        resetRectangle = new Rectangle
+        (
+                windowResolution.width - 100 - RESETWIDTH,
+                windowResolution.height - distanceFromBottom - RESETHEIGHT,
+                RESETWIDTH,
+                RESETHEIGHT
+        );
         
-//        resetRectangle = new Rectangle
-//        (
-//                windowResolution.width - 100 - images.get(RESETBUTTONNOHOVER).getWidth(),
-//                windowResolution.height - 90,
-//                images.get(RESETBUTTONNOHOVER).getWidth(),
-//                images.get(RESETBUTTONNOHOVER).getHeight()
-//        );
+        controlsDrawPoint = new Point((int)(saveAndBackRectangle.x + saveAndBackRectangle.getWidth() + resetRectangle.x) / 2 - CONTROLSWIDTH / 2,
+        windowResolution.height - distanceFromBottom);
+        controlsRectangle = new Rectangle
+        (
+                (int)(saveAndBackRectangle.x + saveAndBackRectangle.getWidth() + resetRectangle.x) / 2 - CONTROLSWIDTH / 2,
+                windowResolution.height - distanceFromBottom - CONTROLSHEIGHT,
+                CONTROLSWIDTH,
+                CONTROLSHEIGHT
+        );
 
     }
 
     public void checkMouseMoved(Point location) 
     {
-//        if (active) 
-//        {
-//            if (controlsRectangle.contains(location)) 
-//            {
-//                controlHover = true;
-//            } 
-//            else if (backRectangle.contains(location))
-//            {
-//                backHover = true;
-//            } 
-//            else if (saveRectangle.contains(location))
-//            {
-//                saveHover = true;
-//            }
-//            else if (resetRectangle.contains(location)) 
-//            {
-//                resetHover = true;
-//            }
-//            else 
-//            {
-//                controlHover = false;
-//                backHover = false;
-//                saveHover = false;
-//                resetHover = false;
-//            }
-//        }
+        if (active) 
+        {
+            if (controlsRectangle.contains(location)) 
+            {
+                controlHover = true;
+            } 
+            else if (saveAndBackRectangle.contains(location))
+            {
+                saveAndBackHover = true;
+            } 
+            else if (resetRectangle.contains(location)) 
+            {
+                resetHover = true;
+            }
+            else 
+            {
+                controlHover = false;
+                saveAndBackHover = false;
+                resetHover = false;
+            }
+        }
     }
 
     public void checkMousePressed(Point location) 
@@ -321,32 +312,26 @@ public class Settings
         {
             settingsData.setWindowed(false);
         } 
-//        else if (backRectangle.contains(location))
-//        {
+        else if (resetRectangle.contains(location)) 
+        {
 //            sounds.get(CLICKSOUND).setFramePosition(0);
 //            sounds.get(CLICKSOUND).start();
-//            active = false;
-//        } 
-//        else if (resetRectangle.contains(location)) 
-//        {
+            settingsData.resetDefaults();
+        } 
+        else if (saveAndBackRectangle.contains(location)) 
+        {
 //            sounds.get(CLICKSOUND).setFramePosition(0);
 //            sounds.get(CLICKSOUND).start();
-//            settingsData.resetDefaults();
-//        } 
-//        else if (saveRectangle.contains(location)) 
-//        {
-//            sounds.get(CLICKSOUND).setFramePosition(0);
-//            sounds.get(CLICKSOUND).start();
-//            
-//            save();
-//        }
+            
+            save();
+            active = false;
+        }
     }
 
     public void checkMouseExited() 
     {
         controlHover = false;
-        backHover = false;
-        saveHover = false;
+        saveAndBackHover = false;
         resetHover = false;
     }
 
@@ -385,9 +370,6 @@ public class Settings
         {
             settingsChangedListener.settingsChangedToHigh();
         }
-        
-        changes.put(SettingsTypes.graphicsQualityLow, settingsData.getGraphicsQualityLow());
-        changes.put(SettingsTypes.resolutionWindowed, settingsData.getWindowed());
     }
 
     private void load()
