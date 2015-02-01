@@ -16,6 +16,8 @@ public class Settings
     private Dimension windowResolution = new Dimension();
 
     private boolean active = false;
+    private boolean windowed;
+    private boolean graphicsLow;
 
     private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<String> soundPaths = new ArrayList<>();
@@ -66,15 +68,11 @@ public class Settings
 
     private SettingsData settingsData;    
     private GameActionListener settingsChangedListener;
-    
-    private enum SettingsTypes { graphicsQualityLow, resolutionWindowed };
-    
-    private final HashMap<SettingsTypes, Boolean> changes = new HashMap<>();
 
     public Settings(Dimension windowSize, GameActionListener actionListener, Resources resources)
     {
         this.windowResolution = windowSize;
-
+        
         imagePaths.add("resources/RadioButtonEnabled.png");
         imagePaths.add("resources/RadioButtonDisabled.png");
         imagePaths.add("resources/ButtonHover.png");
@@ -103,11 +101,10 @@ public class Settings
             load();
         }
         
+        windowed = settingsData.getWindowed();
+        graphicsLow = settingsData.getGraphicsQualityLow();
+        
         settingsChangedListener = actionListener;
-        
-        changes.put(SettingsTypes.graphicsQualityLow, settingsData.getGraphicsQualityLow());
-        changes.put(SettingsTypes.resolutionWindowed, settingsData.getWindowed());
-        
     }
 
     public void draw(Graphics g)
@@ -353,20 +350,20 @@ public class Settings
             ex.printStackTrace();
         }
         
-        if (settingsData.getWindowed())
+        if (!windowed && settingsData.getWindowed()) // if it wasn't windowed origionaly.
         {
             settingsChangedListener.exitedFullScreen();
         } 
-        else
+        else if (windowed && !settingsData.getWindowed())
         {
             settingsChangedListener.enteredFullScreen();
         }
         
-        if (settingsData.getGraphicsQualityLow())
+        if (!graphicsLow && settingsData.getGraphicsQualityLow()) // " "
         {
             settingsChangedListener.settingsChangedToLow();
         } 
-        else
+        else if (graphicsLow && !settingsData.getGraphicsQualityLow())
         {
             settingsChangedListener.settingsChangedToHigh();
         }
