@@ -76,13 +76,13 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void addShips() 
     {
-        player = new Player(5000, 5000, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 500, resources);
-        enemyShips.add(new EnemyFighter(5000, 1000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(9000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(5000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(1000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 4, resources));
-        enemyShips.add(new EnemyFighter(5000, 4800, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
-        //enemyShips.add(new EnemyFighter(2000, 4900, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 2, resources));
+        player = new Player(5500, 5000, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 500, resources);
+        enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 700, 20, 1, resources));
+        enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 600, 20, 2, resources));
+        enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
+        enemyShips.add(new EnemyFighter(4800, 4975, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 800, 20, 4, resources));
+        enemyShips.add(new EnemyFighter(4700, 4950, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 750, 20, 5, resources));
+        enemyShips.add(new EnemyFighter(4600, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 1000, 20, 6, resources));
 //        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
 //        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 4, resources));
 //        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
@@ -100,7 +100,7 @@ public class OmegaCentauri extends Game implements GameActionListener
 //        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
 //        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
 //        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
-        //enemyShips.add(new EnemyMediumFighter(4000, 5000, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 150, 4000, 200, 5, player, resources));
+        //enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 300, 4000, 200, 5, player, resources));
         
         syncGameStateVaribles();
     }

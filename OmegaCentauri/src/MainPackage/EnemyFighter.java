@@ -124,7 +124,7 @@ public class EnemyFighter extends EnemyShip
                 }
             }
             
-            rotateToAngle(targetingAngle);
+            //rotateToAngle(targetingAngle);
 
             if (Math.abs(angleToPlayer - faceAngle) < 45) 
             {
@@ -133,17 +133,17 @@ public class EnemyFighter extends EnemyShip
         } 
         else 
         {
-            rotateToAngle(targetingAngle);
+            //rotateToAngle(targetingAngle);
         }
 
         if ((movingAway && Math.abs(faceAngle - targetingAngle) < 15) || (distanceToPlayer > 200 && !movingAway))
         {
-            move(ShipState.Thrusting);
+            //move(ShipState.Thrusting);
             thrusting = true;
         } 
         else 
         {
-            move(ShipState.Drifting);
+           // move(ShipState.Drifting);
             thrusting = false;
         }
         
@@ -169,8 +169,8 @@ public class EnemyFighter extends EnemyShip
             double angle = 360 - faceAngle + rand.nextInt(10) - 5;
 
             Point2D.Double shotStartingVel
-                    = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 20,
-                            movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 20);
+                    = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 10,
+                            movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 10);
 
             Point2D.Double shotStartingPos = new Point2D.Double();
                                                                                                          

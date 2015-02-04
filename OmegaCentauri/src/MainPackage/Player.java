@@ -40,7 +40,7 @@ public class Player extends Ship
 
         activeImage = images.get(0);
         shield = new Shield(location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 50, resources, true);
+                10, 5000, resources, true);
         setUpHitbox(cameraLocation);
 
         soundPaths.add("resources/Pulse.wav");
@@ -48,6 +48,8 @@ public class Player extends Ship
         sounds = resources.getSoundsForObject(soundPaths);
         
         explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
+        
+        faceAngle = 180;
     }
 
     public void moveTo(double x, double y) 

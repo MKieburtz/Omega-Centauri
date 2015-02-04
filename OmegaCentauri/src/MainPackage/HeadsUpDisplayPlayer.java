@@ -66,7 +66,7 @@ public class HeadsUpDisplayPlayer
             int numShots) 
     {
         //g2d.drawLine(HEALTHSTARTINGX, HEALTHSTARTINGY, HEALTHSTARTINGX, HEALTHSTARTINGY - 200);
-        g2d.drawImage(images.get(TOPLEFTHUD), -10, -35, null); // wierd coords. I know
+        //g2d.drawImage(images.get(TOPLEFTHUD), -10, -35, null); // wierd coords. I know
         Player playerShip = null;
         
         for (Ship ship : ships)
@@ -130,101 +130,101 @@ public class HeadsUpDisplayPlayer
 //                        camera.getSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
 //                g2d.draw(minimapShip);
         }
-        
-        // draw the hull bars
-        for (int i = 0; i < amountGreenHull; i++) 
-        {
-            g2d.drawImage(images.get(HEALTHYBAR), HEALTHSTARTINGX, HEALTHSTARTINGY - (SPACEBETWEENY * i), null);
-        }
-
-        for (int i = 0; i < amountOrangeHull; i++) 
-        {
-            g2d.drawImage(images.get(WARNINGBAR), HEALTHSTARTINGX, HEALTHSTARTINGY + 60 - (SPACEBETWEENY * i), null);
-        }
-
-        for (int i = 0; i < amountRedHull; i++)
-        {
-            g2d.drawImage(images.get(DANGERBAR), HEALTHSTARTINGX, HEALTHSTARTINGY + 100 - (SPACEBETWEENY * i), null);
-        }
-        
-        // draw the shield bars
-        for (int i = 0; i < amountGreenShield; i++) 
-        {
-            g2d.drawImage(images.get(HEALTHYBAR), HEALTHSTARTINGX + SPACEBETWEENX, HEALTHSTARTINGY - (SPACEBETWEENY * i), null);
-        }
-
-        for (int i = 0; i < amountOrangeShield; i++) 
-        {
-            g2d.drawImage(images.get(WARNINGBAR), HEALTHSTARTINGX + SPACEBETWEENX, HEALTHSTARTINGY + 60 - (SPACEBETWEENY * i), null);
-        }
-
-        for (int i = 0; i < amountRedShield; i++)
-        {
-            g2d.drawImage(images.get(DANGERBAR), HEALTHSTARTINGX + SPACEBETWEENX, HEALTHSTARTINGY + 100 - (SPACEBETWEENY * i), null);
-        }
-        
-        g2d.setFont(healthFont);
-        if (shieldPercent >= 50)
-        {
-            g2d.setColor(Color.green);
-            g2d.drawImage(images.get(GOODSHIELD), 40, 25, null);
-        } 
-        else if (shieldPercent > 20)
-        {
-            g2d.setColor(Color.ORANGE);
-            g2d.drawImage(images.get(WARNINGSHIELD), 40, 25, null);
-        } 
-        else if (shieldPercent <= 20)
-        {
-            g2d.setColor(Color.red);
-            g2d.drawImage(images.get(BADSHIELD), 40, 25, null);
-        }
-
-        if (shieldPercent == 0) 
-        {
-            g2d.drawString("%0.0", 105, 360); // draw shield percent
-        } 
-        else 
-        {
-            g2d.drawString("%" + format.format(shieldPercent), 100, 360); // draw shield percent
-        }
-
-        if (hullPercent >= 50) 
-        {
-            g2d.setColor(Color.green);
-            g2d.drawImage(images.get(SHIPSTATUSGOOD), 53, 30, null);
-        } 
-        else if (hullPercent >= 30)
-        {
-            g2d.setColor(Color.ORANGE);
-            g2d.drawImage(images.get(SHIPSTATUSWARNING), 53, 30, null);
-        } 
-        else if (hullPercent < 30) 
-        {
-            g2d.setColor(Color.red);
-            g2d.drawImage(images.get(SHIPSTATUSBAD), 53, 30, null);
-        }
-
-        if (hullPercent == 0)
-        {
-            g2d.drawString("%0.0", HEALTHSTARTINGX - 15, 360); // draw shield percent
-        } 
-        else 
-        {
-            g2d.drawString("%" + format.format(hullPercent), HEALTHSTARTINGX - 20, 360); // draw health percent
-        }
-        
-        g2d.setFont(dataFont);
-        g2d.setColor(Color.WHITE);
-            
-        // draw the stats n stuff.
-        g2d.drawString("Version: " + version, camera.getSize().x - 150, 10);
-        //fps
-        g2d.drawString("FPS: " + fps, camera.getSize().x - 130, 20);
-        //ups
-        g2d.drawString("UPS: " + ups, camera.getSize().x - 130, 30);
-        //shots on screen
-        g2d.drawString("Shots: " + numShots, camera.getSize().x - 130, 40);
+//        
+//        // draw the hull bars
+//        for (int i = 0; i < amountGreenHull; i++) 
+//        {
+//            g2d.drawImage(images.get(HEALTHYBAR), HEALTHSTARTINGX, HEALTHSTARTINGY - (SPACEBETWEENY * i), null);
+//        }
+//
+//        for (int i = 0; i < amountOrangeHull; i++) 
+//        {
+//            g2d.drawImage(images.get(WARNINGBAR), HEALTHSTARTINGX, HEALTHSTARTINGY + 60 - (SPACEBETWEENY * i), null);
+//        }
+//
+//        for (int i = 0; i < amountRedHull; i++)
+//        {
+//            g2d.drawImage(images.get(DANGERBAR), HEALTHSTARTINGX, HEALTHSTARTINGY + 100 - (SPACEBETWEENY * i), null);
+//        }
+//        
+//        // draw the shield bars
+//        for (int i = 0; i < amountGreenShield; i++) 
+//        {
+//            g2d.drawImage(images.get(HEALTHYBAR), HEALTHSTARTINGX + SPACEBETWEENX, HEALTHSTARTINGY - (SPACEBETWEENY * i), null);
+//        }
+//
+//        for (int i = 0; i < amountOrangeShield; i++) 
+//        {
+//            g2d.drawImage(images.get(WARNINGBAR), HEALTHSTARTINGX + SPACEBETWEENX, HEALTHSTARTINGY + 60 - (SPACEBETWEENY * i), null);
+//        }
+//
+//        for (int i = 0; i < amountRedShield; i++)
+//        {
+//            g2d.drawImage(images.get(DANGERBAR), HEALTHSTARTINGX + SPACEBETWEENX, HEALTHSTARTINGY + 100 - (SPACEBETWEENY * i), null);
+//        }
+//        
+//        g2d.setFont(healthFont);
+//        if (shieldPercent >= 50)
+//        {
+//            g2d.setColor(Color.green);
+//            g2d.drawImage(images.get(GOODSHIELD), 40, 25, null);
+//        } 
+//        else if (shieldPercent > 20)
+//        {
+//            g2d.setColor(Color.ORANGE);
+//            g2d.drawImage(images.get(WARNINGSHIELD), 40, 25, null);
+//        } 
+//        else if (shieldPercent <= 20)
+//        {
+//            g2d.setColor(Color.red);
+//            g2d.drawImage(images.get(BADSHIELD), 40, 25, null);
+//        }
+//
+//        if (shieldPercent == 0) 
+//        {
+//            g2d.drawString("%0.0", 105, 360); // draw shield percent
+//        } 
+//        else 
+//        {
+//            g2d.drawString("%" + format.format(shieldPercent), 100, 360); // draw shield percent
+//        }
+//
+//        if (hullPercent >= 50) 
+//        {
+//            g2d.setColor(Color.green);
+//            g2d.drawImage(images.get(SHIPSTATUSGOOD), 53, 30, null);
+//        } 
+//        else if (hullPercent >= 30)
+//        {
+//            g2d.setColor(Color.ORANGE);
+//            g2d.drawImage(images.get(SHIPSTATUSWARNING), 53, 30, null);
+//        } 
+//        else if (hullPercent < 30) 
+//        {
+//            g2d.setColor(Color.red);
+//            g2d.drawImage(images.get(SHIPSTATUSBAD), 53, 30, null);
+//        }
+//
+//        if (hullPercent == 0)
+//        {
+//            g2d.drawString("%0.0", HEALTHSTARTINGX - 15, 360); // draw shield percent
+//        } 
+//        else 
+//        {
+//            g2d.drawString("%" + format.format(hullPercent), HEALTHSTARTINGX - 20, 360); // draw health percent
+//        }
+//        
+//        g2d.setFont(dataFont);
+//        g2d.setColor(Color.WHITE);
+//            
+//        // draw the stats n stuff.
+//        g2d.drawString("Version: " + version, camera.getSize().x - 150, 10);
+//        //fps
+//        g2d.drawString("FPS: " + fps, camera.getSize().x - 130, 20);
+//        //ups
+//        g2d.drawString("UPS: " + ups, camera.getSize().x - 130, 30);
+//        //shots on screen
+//        g2d.drawString("Shots: " + numShots, camera.getSize().x - 130, 40);
     }
 
     private int[] getAmounts(int amount) 
