@@ -124,7 +124,7 @@ public class EnemyFighter extends EnemyShip
                 }
             }
             
-            //rotateToAngle(targetingAngle);
+            rotateToAngle(targetingAngle);
 
             if (Math.abs(angleToPlayer - faceAngle) < 45) 
             {
@@ -133,17 +133,17 @@ public class EnemyFighter extends EnemyShip
         } 
         else 
         {
-            //rotateToAngle(targetingAngle);
+            rotateToAngle(targetingAngle);
         }
 
         if ((movingAway && Math.abs(faceAngle - targetingAngle) < 15) || (distanceToPlayer > 200 && !movingAway))
         {
-            //move(ShipState.Thrusting);
+            move(ShipState.Thrusting);
             thrusting = true;
         } 
         else 
         {
-           // move(ShipState.Drifting);
+            move(ShipState.Drifting);
             thrusting = false;
         }
         
