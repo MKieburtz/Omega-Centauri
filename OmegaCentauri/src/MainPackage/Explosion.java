@@ -20,6 +20,9 @@ public class Explosion
     private final Dimension missileExplosionSize = new Dimension(400, 400);
     private final Dimension missileExplosionImageSize = new Dimension(100, 100);
 
+    private final Dimension rangeExplosionSize = new Dimension(700, 200);
+    private final Dimension rangeExplosionImageSize = new Dimension(100, 100);
+
     private final Dimension entityImageSize;
     
     private Dimension explosionImageSize;
@@ -43,6 +46,7 @@ public class Explosion
 
     public Explosion(Type type, Dimension imageSize, Resources resources) 
     {
+        System.out.println();
         switch (type) 
         {
             case fighter:
@@ -60,6 +64,15 @@ public class Explosion
                 loadImages(missileExplosionSize, spriteSheet, missileExplosionImageSize);
                 
                 explosionImageSize = missileExplosionImageSize;
+                break;
+            
+            case range:
+                spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(rangeExplosionPath));
+                images = new BufferedImage[14];
+                
+                loadImages(rangeExplosionSize, spriteSheet, rangeExplosionImageSize);
+                
+                explosionImageSize = rangeExplosionImageSize;
                 break;
         }
 
