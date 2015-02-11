@@ -30,7 +30,7 @@ public class Explosion
 
     public static enum Type 
     {
-        fighter, missile
+        fighter, missile, range
     };
 
     BufferedImage spriteSheet;
@@ -39,6 +39,7 @@ public class Explosion
     
     private final String fighterExplosionPath = "resources/FighterExplosionSpritesheet.png";
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
+    private final String rangeExplosionPath = "resources/RangeExplosionSpritesheet.png";
 
     public Explosion(Type type, Dimension imageSize, Resources resources) 
     {
