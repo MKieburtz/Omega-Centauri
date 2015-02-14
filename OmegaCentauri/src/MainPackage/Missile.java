@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class Missile extends PhysicalShot 
 {
     
-    
     public Missile(int damage, Point2D.Double location,
             Point2D.Double startingVel, double angle, Point2D.Double cameraLocation, Ship targetShip, Ship owner, Resources resources)
     {

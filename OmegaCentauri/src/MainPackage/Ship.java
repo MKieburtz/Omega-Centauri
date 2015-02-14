@@ -276,6 +276,7 @@ public abstract class Ship
             {  
                 if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) 
                 { 
+                    shot.explode();
                     s.removeShot(shot); // removing because it collided
                     removed[1] = true;
                 } 
@@ -313,6 +314,7 @@ public abstract class Ship
             {  
                 if (!(ship instanceof EnemyShip && s instanceof EnemyShip))
                 { 
+                    shot.explode();
                     s.removeShot(shot); // removing because it collided
                     removed[1] = true;
                 } 

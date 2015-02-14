@@ -14,10 +14,7 @@ public abstract class PhysicalShot extends Shot
     protected Ship targetShip;
     
     protected final double angleIncrement = 1;
-    
-    protected Explosion explosion;
-    protected boolean exploding;
-    
+        
     public PhysicalShot(int damage, int range, Point2D.Double location,
             Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) 
     {
@@ -100,20 +97,6 @@ public abstract class PhysicalShot extends Shot
         location.x += Calculator.CalcAngleMoveX(faceAngle) * 6;
         location.y += Calculator.CalcAngleMoveY(faceAngle) * 6;
         distanceTraveled += Calculator.getDistance(location, lastLocation);
-    }
-    
-    private void checkForExceededRange()
-    {
-        if (distanceTraveled > range)
-        {
-            exploding = true;
-        }
-    }
-    
-    @Override
-    public boolean isDying()
-    {
-        return exploding;
     }
     
     @Override

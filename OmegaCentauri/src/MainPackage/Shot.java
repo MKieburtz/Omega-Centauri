@@ -23,6 +23,9 @@ public abstract class Shot
     protected Point2D.Double velocity;
     protected int maxVel;
     protected RectangularHitbox hitbox;
+    protected boolean exploding = false;
+    protected Explosion explosion;
+    protected boolean outOfRange = false;
 
     protected Ship owner; // the ship that fired the shot
 
@@ -160,9 +163,23 @@ public abstract class Shot
         return owner;
     }
     
-    // overriden
+    
     public boolean isDying()
     {
-        return false;
+        return exploding;
+    }
+    
+    public void explode()
+    {
+        exploding = true;
+    }
+    
+    protected void checkForExceededRange()
+    {
+        if (distanceTraveled > range)
+        {
+            exploding = true;
+            outOfRange = true;
+        }
     }
 }
