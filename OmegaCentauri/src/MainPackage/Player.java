@@ -40,7 +40,7 @@ public class Player extends Ship
 
         activeImage = images.get(0);
         shield = new Shield(location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 5000, resources, true);
+                10, 500, resources, true);
         setUpHitbox(cameraLocation);
 
         soundPaths.add("resources/Pulse.wav");
