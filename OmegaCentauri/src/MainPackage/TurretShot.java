@@ -1,5 +1,6 @@
 package MainPackage;
 
+import java.awt.Dimension;
 import java.awt.geom.Point2D;
 
 /**
@@ -16,5 +17,7 @@ public class TurretShot extends LaserShot
         activeImage = resources.getImageForObject("resources/Level2Shot.png");
         
         setUpHitbox(cameraLocation);
+        
+        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
     }
 }
