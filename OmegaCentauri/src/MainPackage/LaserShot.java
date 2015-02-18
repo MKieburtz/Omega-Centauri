@@ -1,8 +1,7 @@
 package MainPackage;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
 /**
  * @author Michael Kieburtz
@@ -25,7 +24,7 @@ public abstract class LaserShot extends Shot
         }
         else
         {
-            explosion.draw(g2d, location, cameraLocation);
+            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
             if (explosion.isDone())
             {
                 exploding = false;
