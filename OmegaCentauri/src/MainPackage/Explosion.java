@@ -3,7 +3,10 @@ package MainPackage;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -37,6 +40,7 @@ public class Explosion
     BufferedImage spriteSheet;
 
     BufferedImage[] images = null;
+    BufferedImage[] shieldImages = null;
     
     private final String fighterExplosionPath = "resources/FighterExplosionSpritesheet.png";
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
@@ -44,12 +48,12 @@ public class Explosion
 
     public Explosion(Type type, Dimension imageSize, Resources resources) 
     {
-        System.out.println();
         switch (type) 
         {
             case fighter:
                 spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(fighterExplosionPath));
                 images = new BufferedImage[30];
+                shieldImages = new BufferedImage[30];
 
                 loadImages(fighterExplosionSize, spriteSheet, fighterExplosionImageSize);
                 explosionImageSize = fighterExplosionImageSize;
@@ -58,6 +62,7 @@ public class Explosion
             case missile:
                 spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(missileExplosionPath));
                 images = new BufferedImage[16];
+                shieldImages = new BufferedImage[16];
                 
                 loadImages(missileExplosionSize, spriteSheet, missileExplosionImageSize);
                 
@@ -67,10 +72,25 @@ public class Explosion
             case range:
                 spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(rangeExplosionPath));
                 images = new BufferedImage[14];
+                shieldImages = new BufferedImage[14];
                 
                 loadImages(rangeExplosionSize, spriteSheet, rangeExplosionImageSize);
                 
                 explosionImageSize = rangeExplosionImageSize;
+                
+                for (int i = 0; i < images.length; i++)
+                {
+                    Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, rangeExplosionImageSize.width, rangeExplosionImageSize.height);
+                    Ellipse2D.Double ellipse = new Ellipse2D.Double(-3, 100-50-(37/2), 53, 37);
+                    Area clipping = new Area(rect);
+                    clipping.subtract(new Area(ellipse));
+                    
+                    Graphics2D g2d = shieldImages[i].createGraphics();
+                    
+                    g2d.clip(clipping);
+                    g2d.drawImage(images[i], 0, 0, null);
+                }
+                
                 break;
         }
 
@@ -91,6 +111,7 @@ public class Explosion
             for (int x = 0; x < spriteSheetSize.width; x += imageSize.width) 
             {
                 images[index] = spriteSheet.getSubimage(x, y, imageSize.width, imageSize.height);
+                shieldImages[index] = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_INT_ARGB);
                 index++;
             }
         }
@@ -99,7 +120,7 @@ public class Explosion
     public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) 
     {
 
-        g2d.drawImage(images[frame],
+        g2d.drawImage(shieldImages[frame],
                 (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
                 (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
         frame++;
