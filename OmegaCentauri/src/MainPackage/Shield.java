@@ -52,13 +52,15 @@ public class Shield
         private double angleToDraw;
         private double angleToTranslate;
         private int extraTranslation; // to add the the second translation to get over big wings
-        private int opacity = 100;        
+        private int opacity = 100;       
+        private Shot collisionShot;
         
-        public ShieldSegment(double drawingAngle, double translationAngle, int extra)
+        public ShieldSegment(double drawingAngle, double translationAngle, int extra, Shot collisionShot)
         {
             this.angleToDraw = drawingAngle;
             this.angleToTranslate = translationAngle;
             this.extraTranslation = extra;
+            this.collisionShot = collisionShot;
         }
 
         public double getTranslationAngle()
@@ -136,12 +138,12 @@ public class Shield
             }
     }
     // shield angle is the angle on the shield, collision angle is the angle to the collision point on the shot
-    public void activate(double damage, double shieldAngle, double collisionAngle, double faceAngle, int extra)
+    public void activate(double damage, double shieldAngle, double collisionAngle, double faceAngle, int extra, Shot collisionShot)
     {        
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         //System.out.println(shieldAngle + " " + collisionAngle);
         energy -= damageToLose;
-        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle, extra));
+        shieldSegments.add(new ShieldSegment(shieldAngle, collisionAngle, extra, collisionShot));
     }
     
     public void updateSegments(double angleChange)

@@ -289,11 +289,11 @@ public abstract class Ship
             {
                 if (ship instanceof EnemyMediumFighter)
                 {
-                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 30);
+                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 30, shot);
                 }
                 else
                 {
-                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 0);
+                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 0, shot);
                 }
                 if (hullDurability <= 0) 
                 {
@@ -401,11 +401,11 @@ public abstract class Ship
         return shotsToRemove;
     }
     
-    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle, int extra) 
+    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle, int extra, Shot shot) 
     {
         if (shield.getEnergy() - damage >= 0)
         {
-            shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle, extra);
+            shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle, extra, shot);
         }
         else
         {
@@ -414,7 +414,7 @@ public abstract class Ship
             
             if (healthToLoseShield > 0) 
             {
-                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle, extra);
+                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle, extra, shot);
             }
             reduceHull(healthToLoseHull);
         }
