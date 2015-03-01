@@ -24,7 +24,7 @@ public abstract class LaserShot extends Shot
         }
         else
         {
-            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
+            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation, againstShield);
             if (explosion.isDone())
             {
                 exploding = false;

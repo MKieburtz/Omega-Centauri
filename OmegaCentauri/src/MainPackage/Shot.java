@@ -26,6 +26,7 @@ public abstract class Shot
     protected boolean exploding = false;
     protected Explosion explosion;
     protected boolean outOfRange = false;
+    protected boolean againstShield = false;
 
     protected Ship owner; // the ship that fired the shot
 
@@ -169,9 +170,10 @@ public abstract class Shot
         return exploding;
     }
     
-    public void explode()
+    public void explode(boolean againstShield)
     {
         exploding = true;
+        this.againstShield = againstShield;
     }
     
     protected void checkForExceededRange()
@@ -180,6 +182,12 @@ public abstract class Shot
         {
             exploding = true;
             outOfRange = true;
+            againstShield = false;
         }
+    }
+    
+    public boolean againstShield()
+    {
+        return againstShield;
     }
 }

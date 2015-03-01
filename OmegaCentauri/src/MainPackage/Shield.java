@@ -93,6 +93,11 @@ public class Shield
         {
             return extraTranslation;
         }
+        
+        public Shot getCollisionShot()
+        {
+            return collisionShot;
+        }
     }
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation,
@@ -135,6 +140,14 @@ public class Shield
 
                 g2d.setComposite(originalComposite);
                 g2d.setTransform(originalAffineTransform);
+                
+                if (segment.getCollisionShot().isDying())
+                {
+                    g2d.translate(-40, 0);
+                    
+                    segment.getCollisionShot().draw(g2d, cameraLocation);
+                    g2d.setTransform(original);
+                }
             }
     }
     // shield angle is the angle on the shield, collision angle is the angle to the collision point on the shot

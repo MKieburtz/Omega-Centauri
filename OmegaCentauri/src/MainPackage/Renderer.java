@@ -96,7 +96,10 @@ public class Renderer
         // draw shots TODO: check if on screen.
         for (Shot shot : allShots)
         {
-            shot.draw(g2d, camera.getLocation());
+            if (!shot.againstShield())
+            {
+                shot.draw(g2d, camera.getLocation());
+            }
         }
 
         //draw pause menu

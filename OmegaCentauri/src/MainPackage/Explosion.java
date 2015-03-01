@@ -81,7 +81,7 @@ public class Explosion
                 for (int i = 0; i < images.length; i++)
                 {
                     Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, rangeExplosionImageSize.width, rangeExplosionImageSize.height);
-                    Ellipse2D.Double ellipse = new Ellipse2D.Double(-3, 100-50-(37/2), 53, 37);
+                    Ellipse2D.Double ellipse = new Ellipse2D.Double(-3, 100-50-(37/2), 53, 37); // magic numbers! This ellipse wraps around the shield segment
                     Area clipping = new Area(rect);
                     clipping.subtract(new Area(ellipse));
                     
@@ -117,10 +117,27 @@ public class Explosion
         }
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) 
+    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation, boolean againstShield) 
     {
 
-        g2d.drawImage(shieldImages[frame],
+        if (againstShield)
+        {
+            g2d.drawImage(shieldImages[frame],
+                    (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
+                    (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
+        }
+        else
+        {
+            g2d.drawImage(images[frame],
+                    (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
+                    (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
+        }
+        frame++;
+    }
+    
+    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) 
+    {
+        g2d.drawImage(images[frame],
                 (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
                 (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
         frame++;
