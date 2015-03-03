@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -117,14 +118,23 @@ public class Explosion
         }
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation, boolean againstShield) 
+    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation, boolean againstShield, double shieldAngle) 
     {
 
         if (againstShield)
         {
+            Point2D.Double transformPoint = new Point2D.Double(
+                    Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x,
+                    Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y);
+            
+            AffineTransform original = g2d.getTransform();
+            AffineTransform transform = (AffineTransform)original.clone();
+            
+            transform.rotate(Math.toRadians(360 - (180 + shieldAngle)), transformPoint.x, transformPoint.y);
+            
             g2d.drawImage(shieldImages[frame],
                     (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
-                    (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
+                    (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null); 
         }
         else
         {

@@ -14,8 +14,7 @@ public abstract class LaserShot extends Shot
         super(damage, range, location, velocity, angle, cameraLocation, owner);
     }
     
-    @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double ShieldAngle)
     {
         if (!exploding)
         {
@@ -24,7 +23,15 @@ public abstract class LaserShot extends Shot
         }
         else
         {
-            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation, againstShield);
+            if (againstShield)
+            {
+                explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation, againstShield, ShieldAngle);
+            }
+            else
+            {
+                explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation, againstShield, ShieldAngle);
+            }
+            
             if (explosion.isDone())
             {
                 exploding = false;

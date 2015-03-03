@@ -119,7 +119,7 @@ public class Shield
                 transform.rotate(Math.toRadians(360 - segment.getTranslationAngle()), rotationPoint.x, rotationPoint.y);
                 if (circle)
                 {
-                    transform.translate(translationPoint.x + size.x / 2, translationPoint.y - activeImage.getHeight() / 2);
+                    transform.translate(translationPoint.x + size.x / 2, translationPoint.y - activeImage.getHeight() / 2); // translation point is the center of the ship
                 }
                 else
                 {
@@ -141,12 +141,12 @@ public class Shield
                 g2d.setComposite(originalComposite);
                 g2d.setTransform(originalAffineTransform);
                 
+                g2d.setTransform(original);
+                
                 if (segment.getCollisionShot().isDying())
-                {
-                    g2d.translate(-40, 0);
-                    
+                {   
                     segment.getCollisionShot().draw(g2d, cameraLocation);
-                    g2d.setTransform(original);
+                    // add parameter in Shot in case it's drawing as exploding on a shield.
                 }
             }
     }
