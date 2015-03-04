@@ -490,7 +490,7 @@ public class OmegaCentauri extends Game implements GameActionListener
                     {
                         if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500)
                         {
-                            if (!shot.getOwner().equals(ship) || !(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip)) 
+                            if (!(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip)) 
                             {
                                 if (ship.returnHitbox().collides(shot.returnHitbox()))
                                 {
@@ -512,11 +512,7 @@ public class OmegaCentauri extends Game implements GameActionListener
                                     }
                                     if (removals[1]) // shot
                                     {
-                                        if (shot instanceof Missile) 
-                                        {
-                                            Missile m = (Missile) shot;
-                                            m.explode();
-                                        }
+                                        shot.explode(ship.returnHitbox() instanceof EllipseHitbox);
                                         deadShots.add(shot);
                                     }
                                 }

@@ -118,23 +118,24 @@ public class Explosion
         }
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation, boolean againstShield, double shieldAngle) 
+    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation, boolean againstShield,
+            double shieldAngle, Point2D.Double translationPoint) 
     {
-
         if (againstShield)
-        {
-            Point2D.Double transformPoint = new Point2D.Double(
-                    Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x,
-                    Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y);
-            
+        {   
             AffineTransform original = g2d.getTransform();
             AffineTransform transform = (AffineTransform)original.clone();
             
-            transform.rotate(Math.toRadians(360 - (180 + shieldAngle)), transformPoint.x, transformPoint.y);
+           // transform.rotate(Math.toRadians(360 - shieldAngle), translationPoint.x - drawingManipulation.x, translationPoint.y - drawingManipulation.y);
             
-            g2d.drawImage(shieldImages[frame],
-                    (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
-                    (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null); 
+            transform.translate(translationPoint.x - drawingManipulation.x, translationPoint.y - drawingManipulation.y);
+            //transform.translate(-40, 0);
+            
+            g2d.transform(transform);
+            
+            g2d.drawImage(shieldImages[frame], 0, 0, null); 
+            
+            g2d.setTransform(original); 
         }
         else
         {

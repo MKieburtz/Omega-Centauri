@@ -145,7 +145,7 @@ public class Shield
                 
                 if (segment.getCollisionShot().isDying())
                 {   
-                    segment.getCollisionShot().draw(g2d, cameraLocation);
+                    segment.getCollisionShot().draw(g2d, cameraLocation, segment.getDrawingAngle(), translationPoint);
                     // add parameter in Shot in case it's drawing as exploding on a shield.
                 }
             }

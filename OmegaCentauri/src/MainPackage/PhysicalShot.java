@@ -10,7 +10,6 @@ import java.awt.geom.Point2D;
  */
 public abstract class PhysicalShot extends Shot 
 {
-
     protected Ship targetShip;
     
     protected final double angleIncrement = 1;
@@ -56,6 +55,12 @@ public abstract class PhysicalShot extends Shot
                 exploding = false;
             }
         }
+    }
+    
+    @Override
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint)
+    {
+        // to do later
     }
     
     @Override
