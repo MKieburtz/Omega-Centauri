@@ -69,6 +69,20 @@ public class Explosion
                 loadImages(missileExplosionSize, spriteSheet, missileExplosionImageSize);
                 
                 explosionImageSize = missileExplosionImageSize;
+                
+//                for (int i = 0; i < images.length; i++)
+//                {
+//                    Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, rangeExplosionImageSize.width, rangeExplosionImageSize.height);
+//                    Ellipse2D.Double ellipse = new Ellipse2D.Double(-3, 100-50-(37/2), 53, 37); // magic numbers! This ellipse wraps around the shield segment
+//                    Area clipping = new Area(rect);
+//                    clipping.subtract(new Area(ellipse));
+//                    
+//                    Graphics2D g2d = shieldImages[i].createGraphics();
+//                    
+//                    g2d.clip(clipping);
+//                    g2d.drawImage(images[i], 0, 0, null);
+//                }
+                
                 break;
             
             case range:
@@ -119,31 +133,22 @@ public class Explosion
         }
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation, boolean againstShield,
-            double shieldAngle, Point2D.Double translationPoint) 
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint) 
     {
-        if (againstShield)
-        {   
-            AffineTransform original = g2d.getTransform();
-            AffineTransform transform = (AffineTransform)original.clone();
-            
-            transform.rotate(Math.toRadians(360 - shieldAngle), translationPoint.x, translationPoint.y);
-            
-            transform.translate(translationPoint.x - drawingManipulation.x, translationPoint.y - drawingManipulation.y);
-            transform.translate(20, 0);
-            
-            g2d.transform(transform);
-            
-            g2d.drawImage(shieldImages[frame], 0, 0, null); 
-            
-            g2d.setTransform(original); 
-        }
-        else
-        {
-            g2d.drawImage(images[frame],
-                    (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
-                    (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
-        }
+        AffineTransform original = g2d.getTransform();
+        AffineTransform transform = (AffineTransform)original.clone();
+
+        transform.rotate(Math.toRadians(360 - shieldAngle), translationPoint.x, translationPoint.y);
+
+        transform.translate(translationPoint.x - drawingManipulation.x, translationPoint.y - drawingManipulation.y);
+        transform.translate(19, 0);
+
+        g2d.transform(transform);
+
+        g2d.drawImage(shieldImages[frame], 0, 0, null); 
+
+        g2d.setTransform(original); 
+
         frame++;
     }
     

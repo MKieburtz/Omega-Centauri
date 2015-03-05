@@ -495,7 +495,7 @@ public class OmegaCentauri extends Game implements GameActionListener
                                 if (ship.returnHitbox().collides(shot.returnHitbox()))
                                 {
                                     boolean[] removals;
-                                    if (ship.returnHitbox() instanceof EllipseHitbox)
+                                    if (ship.getShield().getEnergy() > 0)
                                     {
                                         EllipseHitbox hitbox = (EllipseHitbox)ship.returnHitbox();
                                         removals = ship.CollisionEventWithShotWithShield(ship, shot, shipsToDraw,
@@ -512,7 +512,7 @@ public class OmegaCentauri extends Game implements GameActionListener
                                     }
                                     if (removals[1]) // shot
                                     {
-                                        shot.explode(ship.returnHitbox() instanceof EllipseHitbox);
+                                        shot.explode(ship.getShield().getEnergy() > 0);
                                         deadShots.add(shot);
                                     }
                                 }

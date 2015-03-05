@@ -314,8 +314,6 @@ public abstract class Ship
             {  
                 if (!(ship instanceof EnemyShip && s instanceof EnemyShip))
                 { 
-                    shot.explode(false);
-                    s.removeShot(shot); // removing because it collided
                     removed[1] = true;
                 } 
             }
