@@ -1,5 +1,6 @@
 package MainPackage;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -126,10 +127,10 @@ public class Explosion
             AffineTransform original = g2d.getTransform();
             AffineTransform transform = (AffineTransform)original.clone();
             
-           // transform.rotate(Math.toRadians(360 - shieldAngle), translationPoint.x - drawingManipulation.x, translationPoint.y - drawingManipulation.y);
+            transform.rotate(Math.toRadians(360 - shieldAngle), translationPoint.x, translationPoint.y);
             
             transform.translate(translationPoint.x - drawingManipulation.x, translationPoint.y - drawingManipulation.y);
-            //transform.translate(-40, 0);
+            transform.translate(20, 0);
             
             g2d.transform(transform);
             

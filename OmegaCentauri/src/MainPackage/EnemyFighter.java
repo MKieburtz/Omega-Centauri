@@ -166,7 +166,7 @@ public class EnemyFighter extends EnemyShip
         {
             Random rand = new Random();
 
-            double angle = 360 - faceAngle + rand.nextInt(10) - 5;
+            double angle = 360 - faceAngle + rand.nextInt(5) - 5;
 
             Point2D.Double shotStartingVel
                     = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 10,
