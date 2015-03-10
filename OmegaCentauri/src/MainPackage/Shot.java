@@ -46,21 +46,27 @@ public abstract class Shot
 
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation) 
     {
-        AffineTransform original = g2d.getTransform();
-        AffineTransform transform = (AffineTransform) original.clone();
+        if (!exploding)
+        {
+            AffineTransform original = g2d.getTransform();
+            AffineTransform transform = (AffineTransform) original.clone();
 
-        transform.rotate(Math.toRadians(faceAngle),
-                Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
-                Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y);
+            transform.rotate(Math.toRadians(faceAngle),
+                    Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y);
 
-        transform.translate(Calculator.getScreenLocation(cameraLocation, location).x, Calculator.getScreenLocation(cameraLocation, location).y);
+            transform.translate(Calculator.getScreenLocation(cameraLocation, location).x, Calculator.getScreenLocation(cameraLocation, location).y);
 
-        g2d.transform(transform);
+            g2d.transform(transform);
 
-        g2d.drawImage(activeImage, 0, 0, null);
+            g2d.drawImage(activeImage, 0, 0, null);
 
-        g2d.setTransform(original);
-        
+            g2d.setTransform(original);
+        }
+        else
+        {
+            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
+        }
         
         //hitbox.draw(g2d, cameraLocation);
     }
@@ -165,8 +171,7 @@ public abstract class Shot
     {
         return owner;
     }
-    
-    
+
     public boolean isDying()
     {
         return exploding;
