@@ -66,6 +66,10 @@ public abstract class Shot
         else
         {
             explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
+            if (explosion.isDone())
+            {
+                exploding = false;
+            }
         }
         
         //hitbox.draw(g2d, cameraLocation);
@@ -196,5 +200,10 @@ public abstract class Shot
     public boolean againstShield()
     {
         return againstShield;
+    }
+    
+    public Explosion getExplosion()
+    {
+        return explosion;
     }
 }
