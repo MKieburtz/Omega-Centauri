@@ -56,7 +56,7 @@ public class EnemyFighter extends EnemyShip
         
         this.id = id;
         
-        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
+        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources, this);
         
     }
     

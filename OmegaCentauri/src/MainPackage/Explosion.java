@@ -31,6 +31,9 @@ public class Explosion
     private Dimension explosionImageSize;
     
     private Point2D.Double drawingManipulation = new Point2D.Double();
+    
+    private double translationDistance = 0;
+    private boolean circle;
 
     private int frame = 0;
 
@@ -48,7 +51,7 @@ public class Explosion
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
     private final String rangeExplosionPath = "resources/RangeExplosionSpritesheet.png";
 
-    public Explosion(Type type, Dimension imageSize, Resources resources) 
+    public Explosion(Type type, Dimension imageSize, Resources resources, Ship owner) 
     {
         switch (type) 
         {
@@ -107,6 +110,17 @@ public class Explosion
                     g2d.drawImage(images[i], 0, 0, null);
                 }
                 
+                if (owner instanceof EnemyFighter || owner instanceof Player)
+                {
+                    circle = true;
+                    translationDistance = 19;
+                }
+                else if (owner instanceof EnemyMediumFighter)
+                {
+                    circle = false;
+                    // changes based on ship angle
+                }
+                
                 break;
         }
 
@@ -141,7 +155,7 @@ public class Explosion
         transform.rotate(Math.toRadians(360 - shieldAngle), translationPoint.x, translationPoint.y);
 
         transform.translate(translationPoint.x - drawingManipulation.x, translationPoint.y - drawingManipulation.y);
-        transform.translate(19, 0);
+        transform.translate(translationDistance, 0);
 
         g2d.transform(transform);
 

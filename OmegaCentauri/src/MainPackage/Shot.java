@@ -197,6 +197,11 @@ public abstract class Shot
         }
     }
     
+    public boolean outOfRange()
+    {
+        return outOfRange;
+    }
+    
     public boolean againstShield()
     {
         return againstShield;

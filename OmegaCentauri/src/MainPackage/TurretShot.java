@@ -18,6 +18,6 @@ public class TurretShot extends LaserShot
         
         setUpHitbox(cameraLocation);
         
-        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
+        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources, owner);
     }
 }
