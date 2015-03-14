@@ -1007,7 +1007,7 @@ public class OmegaCentauri extends Game implements GameActionListener
         }
 
         Thread.setDefaultUncaughtExceptionHandler(new EDTExceptionHandler());
-//        System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
+        System.setProperty("sun.awt.exception.handler", EDTExceptionHandler.class.getName());
 //        System.setProperty("sun.java2d.opengl", "true");
 //        System.setProperty("sun.java2d.ddscale", "true");
 //        System.setProperty("sun.java2d.translaccel", "true");

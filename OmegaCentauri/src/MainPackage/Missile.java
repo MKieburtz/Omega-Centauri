@@ -23,7 +23,7 @@ public class Missile extends PhysicalShot
         this.targetShip = targetShip;
         setUpHitbox(cameraLocation);
         
-        explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources, owner);
+        explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
     }
     
     @Override

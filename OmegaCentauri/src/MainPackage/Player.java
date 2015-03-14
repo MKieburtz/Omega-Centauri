@@ -47,7 +47,7 @@ public class Player extends Ship
         
         sounds = resources.getSoundsForObject(soundPaths);
         
-        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources, this);
+        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
         
         faceAngle = 180;
     }

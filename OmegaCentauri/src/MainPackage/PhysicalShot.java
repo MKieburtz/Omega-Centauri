@@ -63,6 +63,12 @@ public abstract class PhysicalShot extends Shot
     }
     
     @Override
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint, double distance)
+    {
+        // also to do later
+    }
+    
+    @Override
     public void update()
     {
         double targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());

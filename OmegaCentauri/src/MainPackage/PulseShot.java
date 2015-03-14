@@ -30,6 +30,6 @@ public class PulseShot extends LaserShot
         
         setUpHitbox(cameraLocation);
         
-        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources, owner);
+        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
     }
 }

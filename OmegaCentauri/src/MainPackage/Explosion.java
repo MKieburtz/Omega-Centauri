@@ -10,6 +10,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.*;
 
 /**
  * @author Michael Kieburtz
@@ -33,7 +34,6 @@ public class Explosion
     private Point2D.Double drawingManipulation = new Point2D.Double();
     
     private double translationDistance = 0;
-    private boolean circle;
 
     private int frame = 0;
 
@@ -51,7 +51,7 @@ public class Explosion
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
     private final String rangeExplosionPath = "resources/RangeExplosionSpritesheet.png";
 
-    public Explosion(Type type, Dimension imageSize, Resources resources, Ship owner) 
+    public Explosion(Type type, Dimension imageSize, Resources resources) 
     {
         switch (type) 
         {
@@ -110,15 +110,9 @@ public class Explosion
                     g2d.drawImage(images[i], 0, 0, null);
                 }
                 
-                if (owner instanceof EnemyFighter || owner instanceof Player)
+                for (int i = 0; i < shieldImages.length; i++)
                 {
-                    circle = true;
-                    translationDistance = 19;
-                }
-                else if (owner instanceof EnemyMediumFighter)
-                {
-                    circle = false;
-                    // changes based on ship angle
+                    shieldImages[i] = Calculator.toCompatibleImage(shieldImages[i]);
                 }
                 
                 break;
