@@ -117,15 +117,14 @@ public class Shield
 
                 g2d.setComposite(comp);
                 transform.rotate(Math.toRadians(360 - segment.getTranslationAngle()), rotationPoint.x, rotationPoint.y);
+                double translationAngle = segment.getTranslationAngle() - faceAngle;
+                double distance = Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, translationAngle);
                 if (circle)
                 {
                     transform.translate(translationPoint.x + size.x / 2, translationPoint.y - activeImage.getHeight() / 2); // translation point is the center of the ship
                 }
                 else
                 {
-                    double translationAngle = segment.getTranslationAngle() - faceAngle;
-                    double distance = Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, translationAngle);
- 
                     transform.translate(translationPoint.x + distance + segment.getExtra(), translationPoint.y - activeImage.getHeight() / 2);
                     //System.out.println(segment.getTranslationAngle() + " " + segment.getDrawingAngle() + " " + faceAngle);
                     transform.rotate(Math.toRadians(360 - -(segment.getTranslationAngle() - segment.getDrawingAngle())), 0, 0);
@@ -145,7 +144,14 @@ public class Shield
                 
                 if (segment.getCollisionShot().isDying())
                 {   
-                    segment.getCollisionShot().draw(g2d, cameraLocation, segment.getDrawingAngle(), translationPoint);
+                    if (circle)
+                    {
+                        segment.getCollisionShot().draw(g2d, cameraLocation, segment.getDrawingAngle(), translationPoint, 19);
+                    }
+                    else
+                    {
+                        segment.getCollisionShot().draw(g2d, cameraLocation, segment.getDrawingAngle(), translationPoint, distance);
+                    }
                 }
             }
     }

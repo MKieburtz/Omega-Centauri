@@ -14,24 +14,6 @@ public abstract class LaserShot extends Shot
         super(damage, range, location, velocity, angle, cameraLocation, owner);
     }
     
-    @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint)
-    {
-        if (againstShield)
-        {
-            explosion.draw(g2d, cameraLocation, shieldAngle, translationPoint);
-        } 
-        else
-        {
-            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
-        }
-
-        if (explosion.isDone())
-        {
-            exploding = false;
-        }
-    }
-    
     // for oblong ships
     @Override
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint, double distance) 

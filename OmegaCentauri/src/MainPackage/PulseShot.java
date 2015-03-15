@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class PulseShot extends LaserShot 
 {
-
     public PulseShot(int damage, Point2D.Double location,
             Point2D.Double velocity, double angle, boolean enemy, Point2D.Double cameraLocation, Ship owner, Resources resources) 
     {
