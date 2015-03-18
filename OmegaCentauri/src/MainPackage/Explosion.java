@@ -141,6 +141,30 @@ public class Explosion
         }
     }
     
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint, double distance,
+            double secondTranslation)
+    {
+        AffineTransform original = g2d.getTransform();
+        AffineTransform transform = (AffineTransform)original.clone();
+        translationDistance = distance;
+     
+        transform.rotate(Math.toRadians(360 - shieldAngle), translationPoint.x, translationPoint.y);
+
+        transform.translate(translationPoint.x - drawingManipulation.x, translationPoint.y - drawingManipulation.y);
+
+        transform.translate(translationDistance, 0);
+        
+        transform.rotate(Math.toRadians(360 - secondTranslation), 0, 0);
+
+        g2d.transform(transform);
+
+        g2d.drawImage(shieldImages[frame], 0, 0, null); 
+
+        g2d.setTransform(original); 
+
+        frame++;
+    }
+    
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint, double distance)
     {
         AffineTransform original = g2d.getTransform();

@@ -150,7 +150,7 @@ public class Shield
                     }
                     else
                     {
-                        segment.getCollisionShot().draw(g2d, cameraLocation, segment.getDrawingAngle(), translationPoint, distance);
+                        segment.getCollisionShot().draw(g2d, cameraLocation, segment.getTranslationAngle(), translationPoint, distance + 19, -(segment.getTranslationAngle() - segment.getDrawingAngle()));
                     }
                 }
             }
