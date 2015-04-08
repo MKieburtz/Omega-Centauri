@@ -2,6 +2,7 @@ package MainPackage;
 
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 /**
@@ -58,13 +59,7 @@ public abstract class PhysicalShot extends Shot
 
     
     @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint, double distance)
-    {
-        // to do later
-    }
-    
-    @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint, double distance, double secondTranslation)
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform)
     {
         // to do later
     }

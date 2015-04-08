@@ -14,31 +14,12 @@ public abstract class LaserShot extends Shot
         super(damage, range, location, velocity, angle, cameraLocation, owner);
     }
     
-    // for oblong ships
     @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint, double distance, double secondTranslation) 
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform) 
     {
         if (againstShield)
         {
-            explosion.draw(g2d, cameraLocation, shieldAngle, translationPoint, distance, secondTranslation);
-        } 
-        else
-        {
-            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
-        }
-
-        if (explosion.isDone())
-        {
-            exploding = false;
-        }
-    }
-    
-    @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, double shieldAngle, Point2D.Double translationPoint, double distance) 
-    {
-        if (againstShield)
-        {
-            explosion.draw(g2d, cameraLocation, shieldAngle, translationPoint, distance);
+            explosion.draw(g2d, cameraLocation, transform);
         } 
         else
         {

@@ -144,13 +144,13 @@ public class Player extends Ship
         g2d.setColor(Color.red);
         //hitbox.draw(g2d, camera.getLocation());
         
+        Point2D.Double shipMiddle = new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         if (shield.isActive())
         {
             shield.draw(g2d, camera.getLocation(), location,
-                    new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
-                    new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y),
+                    shipMiddle,
+                    shipMiddle,
                     original, faceAngle);
         }
     }
