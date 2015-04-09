@@ -101,19 +101,19 @@ public class Shield
     }
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation,
-            Point2D.Double rotationPoint, Point2D.Double translationPoint, AffineTransform original, double faceAngle) 
+            Point2D.Double rotationPoint, Point2D.Double translationPoint, double faceAngle) 
     {      
             int rule = AlphaComposite.SRC_OVER;
             
             Composite originalComposite = g2d.getComposite();
             Composite comp;
-            AffineTransform originalAffineTransform = original;
+            AffineTransform original = g2d.getTransform();
             AffineTransform transform = new AffineTransform();
             
             for (ShieldSegment segment : shieldSegments)
             {
                 transform.setToIdentity();
-                comp = AlphaComposite.getInstance(rule, (float)segment.getOpacity()/100);
+                comp = AlphaComposite.getInstance(rule, (float)segment.getOpacity() / 100);
 
                 g2d.setComposite(comp);
                 transform.rotate(Math.toRadians(360 - segment.getTranslationAngle()), rotationPoint.x, rotationPoint.y);
@@ -138,14 +138,13 @@ public class Shield
 //                g2d.fillRect(0, 0, 2, 2);
 
                 g2d.setComposite(originalComposite);
-                g2d.setTransform(originalAffineTransform);
-                
-                g2d.setTransform(original);
                 
                 if (segment.getCollisionShot().isDying())
                 {   
                     segment.getCollisionShot().draw(g2d, cameraLocation, transform);
                 }
+                
+                g2d.setTransform(original);
             }
     }
     // drawingAngle is the angle on the shield, translationAngle is the angle to the collision point on the shot

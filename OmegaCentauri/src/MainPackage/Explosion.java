@@ -143,13 +143,13 @@ public class Explosion
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform)
     {
-        AffineTransform original = g2d.getTransform();
+        //AffineTransform original = g2d.getTransform();
 
-        g2d.transform(transform); // this is the problem
-
+        //g2d.transform(transform); // this is the problem
+        
         g2d.drawImage(shieldImages[frame], 0, 0, null); 
 
-        g2d.setTransform(original); 
+       // g2d.setTransform(original); 
 
         frame++;
     }
