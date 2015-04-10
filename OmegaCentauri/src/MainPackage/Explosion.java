@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -141,24 +142,11 @@ public class Explosion
         }
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform)
-    {
-        //AffineTransform original = g2d.getTransform();
-
-        //g2d.transform(transform); // this is the problem
-        
-        g2d.drawImage(shieldImages[frame], 0, 0, null); 
-
-       // g2d.setTransform(original); 
-
-        frame++;
-    }
-    
-    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) 
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double drawLocation) 
     {
         g2d.drawImage(images[frame],
-                (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
-                (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
+                (int)(drawLocation.x - drawingManipulation.x),
+                (int)(drawLocation.y - drawingManipulation.y), null);
         frame++;
     }
 

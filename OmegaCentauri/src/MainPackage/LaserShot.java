@@ -15,15 +15,15 @@ public abstract class LaserShot extends Shot
     }
     
     @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform) 
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double drawLocation) 
     {
         if (againstShield)
         {
-            explosion.draw(g2d, cameraLocation, transform);
+            explosion.draw(g2d, cameraLocation, drawLocation);
         } 
         else
         {
-            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
+            explosion.draw(g2d, cameraLocation, Calculator.getScreenLocation(cameraLocation, hitbox.getCollisionPoint()));
         }
 
         if (explosion.isDone())

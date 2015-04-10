@@ -75,7 +75,7 @@ public abstract class Shot
         //hitbox.draw(g2d, cameraLocation);
     }
     
-    public abstract void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform);
+    public abstract void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double drawLocation);
 
     public void update() 
     {
