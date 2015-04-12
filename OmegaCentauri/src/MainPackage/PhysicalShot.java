@@ -59,7 +59,7 @@ public abstract class PhysicalShot extends Shot
 
     
     @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double drawLocation)
+    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform)
     {
         // to do later
     }

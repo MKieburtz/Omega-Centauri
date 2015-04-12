@@ -133,8 +133,7 @@ public class Shield
                 g2d.transform(transform);
                 
                 g2d.drawImage(activeImage, 0, 0, null);
-
-                g2d.setTransform(original);
+                
 //                g2d.setColor(Color.red);
 //                g2d.fillRect(0, 0, 2, 2);
 
@@ -142,9 +141,10 @@ public class Shield
                 
                 if (segment.getCollisionShot().isDying())
                 {   
-                    segment.getCollisionShot().draw(g2d, cameraLocation, new Point2D.Double(100, 100)); // to do 
+                    segment.getCollisionShot().draw(g2d, cameraLocation, transform);
                 }
                 
+                g2d.setTransform(original);
             }
     }
     // drawingAngle is the angle on the shield, translationAngle is the angle to the collision point on the shot
