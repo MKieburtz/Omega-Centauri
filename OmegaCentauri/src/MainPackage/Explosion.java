@@ -32,9 +32,7 @@ public class Explosion
     private Dimension explosionImageSize;
     
     private Point2D.Double drawingManipulation = new Point2D.Double();
-    
-    private double translationDistance = 0;
-
+   
     private int frame = 0;
 
     public static enum Type 
@@ -143,13 +141,15 @@ public class Explosion
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform)
     {
-        //AffineTransform original = g2d.getTransform();
+        AffineTransform original = g2d.getTransform();
 
-        //g2d.transform(transform); // this is the problem
+        transform.rotate(Math.toRadians(360 - -1.5), 0, 0);
         
-        g2d.drawImage(shieldImages[frame], 0, 0, null); 
+        g2d.transform(transform); // this is the problem
+        
+        g2d.drawImage(shieldImages[frame], (int)-drawingManipulation.x - 1 , (int)-drawingManipulation.y + 12, null); 
 
-       // g2d.setTransform(original); 
+        g2d.setTransform(original); 
 
         frame++;
     }
