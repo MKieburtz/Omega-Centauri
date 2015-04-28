@@ -143,7 +143,7 @@ public class Explosion
     {
         AffineTransform original = g2d.getTransform();
 
-        transform.rotate(Math.toRadians(360 - -1.5), 0, 0);
+        transform.rotate(Math.toRadians(360 - -1.73), 0, 0);
         
         g2d.transform(transform); // this is the problem
         
