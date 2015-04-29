@@ -17,7 +17,6 @@ import java.util.*;
  */
 public class Explosion 
 {
-
     private final Dimension fighterExplosionSize = new Dimension(1000, 1200);
     private final Dimension fighterExplosionImageSize = new Dimension(200, 200);
 
@@ -48,7 +47,7 @@ public class Explosion
     private final String fighterExplosionPath = "resources/FighterExplosionSpritesheet.png";
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
     private final String rangeExplosionPath = "resources/RangeExplosionSpritesheet.png";
-    
+        
     public Explosion(Type type, Dimension imageSize, Resources resources) 
     {
         switch (type) 
@@ -147,7 +146,7 @@ public class Explosion
         
         g2d.transform(transform); // this is the problem
         
-        g2d.drawImage(shieldImages[frame], (int)-drawingManipulation.x - 1 , (int)-drawingManipulation.y + 12, null); 
+        g2d.drawImage(shieldImages[8], (int)-drawingManipulation.x - 1, (int)-drawingManipulation.y + 12, null); 
 
         g2d.setTransform(original); 
 
