@@ -203,11 +203,10 @@ public class OmegaCentauri extends Game implements GameActionListener
                 KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "W");
         panel.getActionMap().put("W", new AbstractAction()
         {
-
             @Override
             public void actionPerformed(ActionEvent e)
             {
-
+                
                 wPressed();
             }
         });
@@ -566,7 +565,29 @@ public class OmegaCentauri extends Game implements GameActionListener
      * 2 = turning right
      * 3 = turning left
      */
-    //<editor-fold defaultstate="collapsed" desc="Key bindings">
+    private void handleInput(int keycode, boolean released)
+    {
+        switch (player.rotationState)
+        {
+            case Idle: // either both keys or niether key
+                if (keycode == KeyEvent.VK_A)
+                {
+                    if (released) // both keys were down and a was released so we go right
+                    {
+                        player.changeImage(player.movementState == MovementState.Thrusting
+                                ? ShipState.TurningRightThrusting
+                                : ShipState.TurningRight);
+                    }
+                    else
+                    {
+                        player.changeImage(player.movementState == MovementState.Thrusting
+                                ? ShipState.TurningLeftThrusting
+                                : ShipState.TurningLeft);
+                    }
+                }
+        }
+    }
+    
     private void wPressed() 
     {
         if (!paused) 
@@ -722,7 +743,7 @@ public class OmegaCentauri extends Game implements GameActionListener
     {
         paused = !paused;
     }
-//</editor-fold>
+
     public class Panel extends JPanel 
     {
 

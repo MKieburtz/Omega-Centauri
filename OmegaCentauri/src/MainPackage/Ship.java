@@ -42,6 +42,8 @@ public abstract class Ship
     protected double maxVel;
     protected double angleIcrement;
     protected double acceleration = .15;
+    protected RotationState rotationState;
+    protected MovementState movementState;
     
     protected ArrayList<String> imagePaths = new ArrayList<>();
     protected ArrayList<String> soundPaths = new ArrayList<>();
@@ -462,21 +464,33 @@ public abstract class Ship
         switch (state) 
         {
             case Idle:
+                movementState = movementState.Idle;
+                rotationState = rotationState.Idle;
                 activeImage = images.get(IDLE);
                 break;
             case Thrusting:
+                movementState = movementState.Thrusting;
+                rotationState = rotationState.Idle;
                 activeImage = images.get(THRUSTING);
                 break;
             case TurningLeft: 
+                movementState = movementState.Idle;
+                rotationState = rotationState.rotatingLeft;
                 activeImage = images.get(TURNINGLEFT);
                 break;
             case TurningRight: 
+                movementState = movementState.Idle;
+                rotationState = rotationState.rotatingRight;
                 activeImage = images.get(TURNINGRIGHT);
                 break;
             case TurningLeftThrusting: 
+                movementState = movementState.Thrusting;
+                rotationState = rotationState.rotatingLeft;
                 activeImage = images.get(TURNINGLEFTTHRUSTING);
                 break;
             case TurningRightThrusting: 
+                movementState = movementState.Thrusting;
+                rotationState = rotationState.rotatingRight;
                 activeImage = images.get(TURNINGRIGHTTHRUSTING);
                 break;            
         }
