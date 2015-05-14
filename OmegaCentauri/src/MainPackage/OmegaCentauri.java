@@ -585,6 +585,56 @@ public class OmegaCentauri extends Game implements GameActionListener
                                 : ShipState.TurningLeft);
                     }
                 }
+                else if (keycode == KeyEvent.VK_D)
+                {
+                    if (released) // both keys were down and d was released so we go left
+                    {
+                        player.changeImage(player.movementState == MovementState.Thrusting
+                                ? ShipState.TurningLeftThrusting
+                                : ShipState.TurningLeft);
+                    }
+                    else
+                    {
+                        player.changeImage(player.movementState == MovementState.Thrusting
+                                ? ShipState.TurningRightThrusting
+                                : ShipState.TurningRight);
+                    }
+                }
+                break;
+            case rotatingRight: // d has to be down
+                // do released
+                if (keycode == KeyEvent.VK_A)
+                {
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                                ? ShipState.Thrusting
+                                : ShipState.Idle);
+                }
+                break;
+            case rotatingLeft: // a has to be down
+                if (keycode == KeyEvent.VK_D)
+                {
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                                ? ShipState.Thrusting
+                                : ShipState.Idle);
+                }
+                break;
+        }
+        
+        switch(player.movementState)
+        {
+            case Idle:
+                if (keycode == KeyEvent.VK_W)
+                {
+                    // do released 
+                    if (player.rotationState == RotationState.Idle)
+                    {
+                        player.changeImage(ShipState.Thrusting);
+                    }
+                    else
+                    {
+                        
+                    }
+                }
         }
     }
     
