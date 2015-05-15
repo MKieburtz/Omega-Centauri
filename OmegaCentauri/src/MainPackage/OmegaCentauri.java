@@ -602,8 +602,14 @@ public class OmegaCentauri extends Game implements GameActionListener
                 }
                 break;
             case rotatingRight: // d has to be down
-                // do released
-                if (keycode == KeyEvent.VK_A)
+                if (released && keycode == KeyEvent.VK_D)
+                {
+                    // may have to check for a, but I don't think so
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                    ? ShipState.Thrusting
+                    : ShipState.Idle);
+                }
+                else if (keycode == KeyEvent.VK_A)
                 {
                     player.changeImage(player.movementState == MovementState.Thrusting
                                 ? ShipState.Thrusting
@@ -611,7 +617,14 @@ public class OmegaCentauri extends Game implements GameActionListener
                 }
                 break;
             case rotatingLeft: // a has to be down
-                if (keycode == KeyEvent.VK_D)
+                if (released && keycode == KeyEvent.VK_A)
+                {
+                    // may have to check for d, but I don't think so
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                    ? ShipState.Thrusting
+                    : ShipState.Idle);
+                }
+                else if (keycode == KeyEvent.VK_D)
                 {
                     player.changeImage(player.movementState == MovementState.Thrusting
                                 ? ShipState.Thrusting
@@ -623,16 +636,23 @@ public class OmegaCentauri extends Game implements GameActionListener
         switch(player.movementState)
         {
             case Idle:
-                if (keycode == KeyEvent.VK_W)
+                if (released && keycode == KeyEvent.VK_W)
                 {
-                    // do released 
-                    if (player.rotationState == RotationState.Idle)
+                    
+                }
+                else if (keycode == KeyEvent.VK_W)
+                {
+                    switch (player.rotationState)
                     {
-                        player.changeImage(ShipState.Thrusting);
-                    }
-                    else
-                    {
-                        
+                        case Idle:
+                            player.changeImage(ShipState.Thrusting);
+                            break;
+                        case rotatingLeft:
+                            player.changeImage(ShipState.TurningLeftThrusting);
+                            break;
+                        case rotatingRight:
+                            player.changeImage(ShipState.DriftTurningRightThrusting);
+                            break;
                     }
                 }
         }
