@@ -29,11 +29,11 @@ public class EnemyMediumFighter extends EnemyShip
     private boolean canShootMissile = true;
     private boolean canShootTurret = true;
     
-    public EnemyMediumFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
+    public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
             int shootingDelayTurret, int shootingDelayMissile, int health, int id, Player player, Resources resources) 
     {
-        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
+        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
 
         this.id = id;
         this.resources = resources;

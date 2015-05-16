@@ -32,11 +32,11 @@ public class EnemyFighter extends EnemyShip
     
     private Resources resources;
 
-    public EnemyFighter(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
+    public EnemyFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
             int shootingDelay, int health, int id, Resources resources)
     {
-        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
+        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
         
         this.resources = resources;
         

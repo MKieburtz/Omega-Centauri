@@ -20,12 +20,12 @@ public class Player extends Ship
     
     private Resources resources;
     
-    public Player(int x, int y, Type shipType, double baseMaxVel, double maxVel, double maxAngleVelocity,
+    public Player(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, Point2D.Double cameraLocation,
             int timerDelay, int health, Resources resources) 
     {
 
-        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, timerDelay, health);
+        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, timerDelay, health);
 
         this.resources = resources;
         
@@ -109,23 +109,6 @@ public class Player extends Ship
     public boolean rotatingRight() 
     {
         return rotatingRight;
-    }
-
-    public void speedBoost() 
-    {
-        if (maxVel == baseMaxVel) 
-        {
-            maxVel *= 2;
-        }
-    }
-
-    public void stopSpeedBoosting() 
-    {
-        while (maxVel > baseMaxVel) 
-        {
-            maxVel *= .98;
-        }
-        maxVel = 5.0;
     }
 
     public String getName() 

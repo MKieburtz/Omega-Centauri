@@ -38,7 +38,6 @@ public abstract class Ship
     protected EllipseHitbox shieldHitbox;
     protected ShapeHitbox hullHitbox = null;
     protected String name;
-    protected double baseMaxVel;
     protected double maxVel;
     protected double angleIcrement;
     protected double acceleration = .15;
@@ -65,7 +64,7 @@ public abstract class Ship
     
     protected boolean exploding;
     
-    public Ship(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+    public Ship(int x, int y, Type shipType, double maxVel,
             double maxAngularVelocity, double angleIncrement, double acceleration, int shootingDelay, int health)
     {
         
@@ -73,7 +72,6 @@ public abstract class Ship
         nextLocation = new Point2D.Double();
         type = shipType;
         
-        this.baseMaxVel = baseMaxVel;
         this.maxVel = maxVel;
         this.angleIcrement = angleIncrement;
         this.maxAngularVel = maxAngularVelocity;
@@ -82,6 +80,9 @@ public abstract class Ship
         this.hullDurability = health;
         this.maxhullDurabilty = health;
         ex = Executors.newSingleThreadScheduledExecutor();
+        
+        rotationState = RotationState.Idle;
+        movementState = MovementState.Idle;
     }
     
     public BufferedImage getImage()

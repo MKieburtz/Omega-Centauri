@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public abstract class EnemyShip extends Ship
 {
     
-    public EnemyShip(int x, int y, Type shipType, double baseMaxVel, double maxVel,
+    public EnemyShip(int x, int y, Type shipType, double maxVel,
             double maxAngleVelocity, double angleIncrement, double acceleration, int shootingDelay, int health)
     {
-        super(x, y, shipType, baseMaxVel, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
+        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
     }
     
     public abstract void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips);

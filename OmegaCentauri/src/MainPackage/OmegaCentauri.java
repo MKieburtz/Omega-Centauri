@@ -76,31 +76,31 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void addShips() 
     {
-        player = new Player(5500, 5000, MainPackage.Type.Fighter, 8, 8, 4, 4, .15, camera.getLocation(), 150, 500, resources);
-//        enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 700, 20, 1, resources));
-//        enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 600, 20, 2, resources));
-//        enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-//        enemyShips.add(new EnemyFighter(4800, 4975, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 800, 20, 4, resources));
-//        enemyShips.add(new EnemyFighter(4700, 4950, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 750, 20, 5, resources));
-//        enemyShips.add(new EnemyFighter(4600, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 1000, 20, 6, resources));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-//        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 4, resources));
-//        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 6, resources));
-//        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 7, resources));
-//        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 8, resources));
-//        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 9, resources));
-//        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 10, resources));
-//        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 11, resources));
-//        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 12, resources));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 13, resources));
-//        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 14, resources));
-//        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 15, resources));
-//        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 16, resources));
-//        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
-//        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
-//        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 5, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
-         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 3, 2, 1, .15, camera.getLocation(), 300, 4000, 200, 5, player, resources));
+        player = new Player(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, camera.getLocation(), 150, 500, resources);
+        enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 700, 20, 1, resources));
+        enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 600, 20, 2, resources));
+        enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
+        enemyShips.add(new EnemyFighter(4800, 4975, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 800, 20, 4, resources));
+        enemyShips.add(new EnemyFighter(4700, 4950, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 750, 20, 5, resources));
+        enemyShips.add(new EnemyFighter(4600, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 1000, 20, 6, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
+//        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 4, resources));
+//        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 6, resources));
+//        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 7, resources));
+//        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 8, resources));
+//        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 9, resources));
+//        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 10, resources));
+//        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 11, resources));
+//        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 12, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 13, resources));
+//        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 14, resources));
+//        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 15, resources));
+//        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 16, resources));
+//        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
+//        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
+//        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
+         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 2, 1, .15, camera.getLocation(), 300, 4000, 200, 5, player, resources));
         
         syncGameStateVaribles();
     }
@@ -196,7 +196,8 @@ public class OmegaCentauri extends Game implements GameActionListener
         timingEx.schedule(new MainMenuService(), 1, TimeUnit.MILLISECONDS);
         mouseRecordingEx.schedule(new MouseChecker(), 1, TimeUnit.MILLISECONDS);
     }
-
+    
+    //<editor-fold defaultstate="collapsed" desc="Key bindings">
     private void setInputMaps() 
     {
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -207,7 +208,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             public void actionPerformed(ActionEvent e)
             {
                 
-                wPressed();
+                handleInput(KeyEvent.VK_W, false);
             }
         });
 
@@ -219,7 +220,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                wReleased();
+                handleInput(KeyEvent.VK_W, true);
             }
         });
 
@@ -231,7 +232,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                dPressed();
+                handleInput(KeyEvent.VK_D, false);
             }
         });
 
@@ -243,7 +244,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                dReleased();
+                handleInput(KeyEvent.VK_D, true);
             }
         });
 
@@ -255,7 +256,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                aPressed();
+                handleInput(KeyEvent.VK_A, false);
             }
         });
 
@@ -267,31 +268,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                aReleased();
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, false), "Shift");
-        panel.getActionMap().put("Shift", new AbstractAction()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e) 
-            {
-                shiftPressed();
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "Shiftr");
-        panel.getActionMap().put("Shiftr", new AbstractAction()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                shiftReleased();
+                handleInput(KeyEvent.VK_A, true);
             }
         });
 
@@ -303,7 +280,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e) 
             {
-                spacePressed();
+                handleInput(KeyEvent.VK_SPACE, false);
             }
         });
 
@@ -315,7 +292,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                spaceReleased();
+                handleInput(KeyEvent.VK_SPACE, true);
             }
         });
 
@@ -327,7 +304,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                qPressed();
+                handleInput(KeyEvent.VK_Q, false);
             }
         });
 
@@ -339,11 +316,12 @@ public class OmegaCentauri extends Game implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                escapePressed();
+                handleInput(KeyEvent.VK_ESCAPE, false);
             }
         });
     }
-
+//</editor-fold>
+    
     @Override
     public void gameStart() 
     {
@@ -559,89 +537,85 @@ public class OmegaCentauri extends Game implements GameActionListener
 //        System.out.println(end - start);
     }
 
-    /*
-     * 0 = stationary
-     * 1 = thrusting
-     * 2 = turning right
-     * 3 = turning left
-     */
     private void handleInput(int keycode, boolean released)
     {
         switch (player.rotationState)
         {
             case Idle: // either both keys or niether key
-                if (keycode == KeyEvent.VK_A)
+                if (!released && keycode == KeyEvent.VK_A)
                 {
-                    if (released) // both keys were down and a was released so we go right
-                    {
-                        player.changeImage(player.movementState == MovementState.Thrusting
-                                ? ShipState.TurningRightThrusting
-                                : ShipState.TurningRight);
-                    }
-                    else
-                    {
-                        player.changeImage(player.movementState == MovementState.Thrusting
-                                ? ShipState.TurningLeftThrusting
-                                : ShipState.TurningLeft);
-                    }
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                            ? ShipState.TurningLeftThrusting
+                            : ShipState.TurningLeft);
+                    rotateLeft = true;
                 }
-                else if (keycode == KeyEvent.VK_D)
+                else if (released && keycode == KeyEvent.VK_A) // both keys were down and a was released so we go right
                 {
-                    if (released) // both keys were down and d was released so we go left
-                    {
-                        player.changeImage(player.movementState == MovementState.Thrusting
-                                ? ShipState.TurningLeftThrusting
-                                : ShipState.TurningLeft);
-                    }
-                    else
-                    {
-                        player.changeImage(player.movementState == MovementState.Thrusting
-                                ? ShipState.TurningRightThrusting
-                                : ShipState.TurningRight);
-                    }
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                            ? ShipState.TurningRightThrusting
+                            : ShipState.TurningRight);
+                    rotateLeft = false;
+                    rotateRight = true;
+                }
+                if (!released && keycode == KeyEvent.VK_D) 
+                {
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                            ? ShipState.TurningRightThrusting
+                            : ShipState.TurningRight);
+                    rotateRight = true;
+                    
+                }
+                else if (released && keycode == KeyEvent.VK_D) // both keys were down and d was released so we go left
+                {
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                            ? ShipState.TurningLeftThrusting
+                            : ShipState.TurningLeft);
+                    rotateRight = false;
+                    rotateLeft = true;
                 }
                 break;
             case rotatingRight: // d has to be down
-                if (released && keycode == KeyEvent.VK_D)
+                if (!released && keycode == KeyEvent.VK_A)
+                {
+                    player.changeImage(player.movementState == MovementState.Thrusting
+                                ? ShipState.Thrusting
+                                : ShipState.Idle);
+                    rotateRight = false;
+                }
+                else if (released && keycode == KeyEvent.VK_D)
                 {
                     // may have to check for a, but I don't think so
                     player.changeImage(player.movementState == MovementState.Thrusting
                     ? ShipState.Thrusting
                     : ShipState.Idle);
+                    rotateRight = false;
                 }
-                else if (keycode == KeyEvent.VK_A)
+                break;
+            case rotatingLeft: // a has to be down
+                if (!released && keycode == KeyEvent.VK_D)
                 {
                     player.changeImage(player.movementState == MovementState.Thrusting
                                 ? ShipState.Thrusting
                                 : ShipState.Idle);
+                    rotateLeft = false;
                 }
-                break;
-            case rotatingLeft: // a has to be down
-                if (released && keycode == KeyEvent.VK_A)
+                else if (released && keycode == KeyEvent.VK_A)
                 {
                     // may have to check for d, but I don't think so
                     player.changeImage(player.movementState == MovementState.Thrusting
                     ? ShipState.Thrusting
                     : ShipState.Idle);
-                }
-                else if (keycode == KeyEvent.VK_D)
-                {
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                                ? ShipState.Thrusting
-                                : ShipState.Idle);
+                    rotateLeft = false;
                 }
                 break;
         }
         
         switch(player.movementState)
         {
-            case Idle:
-                if (released && keycode == KeyEvent.VK_W)
+            case Idle: // w isn't down
+                if (!released && keycode == KeyEvent.VK_W)
                 {
-                    
-                }
-                else if (keycode == KeyEvent.VK_W)
-                {
+                    forward = true;
                     switch (player.rotationState)
                     {
                         case Idle:
@@ -651,169 +625,51 @@ public class OmegaCentauri extends Game implements GameActionListener
                             player.changeImage(ShipState.TurningLeftThrusting);
                             break;
                         case rotatingRight:
-                            player.changeImage(ShipState.DriftTurningRightThrusting);
+                            player.changeImage(ShipState.TurningRightThrusting);
                             break;
                     }
                 }
+                break;
+            case Thrusting:
+                if (released && keycode == KeyEvent.VK_W)
+                {
+                    forward = false;
+                    switch (player.rotationState)
+                    {
+                        case Idle:
+                            player.changeImage(ShipState.Idle);
+                            break;
+                        case rotatingLeft:
+                            player.changeImage(ShipState.TurningLeft);
+                            break;
+                        case rotatingRight:
+                            player.changeImage(ShipState.TurningRight);
+                            break;
+                    }
+                }
+                break;
         }
-    }
-    
-    private void wPressed() 
-    {
-        if (!paused) 
-        {
-            forward = true;
-            if (!rotateRight && !rotateLeft) 
-            {
-                player.changeImage(ShipState.Thrusting);
-            } 
-            else if (rotateLeft && !rotateRight) 
-            {
-                player.changeImage(ShipState.TurningLeftThrusting);
-            } 
-            else if (!rotateLeft && rotateRight) 
-            {
-                player.changeImage(ShipState.TurningRightThrusting);
-            }
-        }
-    }
-
-    private void wReleased() 
-    {
-        forward = false;
-        player.changeImage(ShipState.Idle);
-        if (rotateRight) 
-        {
-            player.changeImage(ShipState.TurningLeft);
-        } else if (rotateLeft) 
-        {
-            player.changeImage(ShipState.TurningRight);
-        }
-    }
-
-    private void dPressed() 
-    {
-        if (!paused) 
-        {
-            if (rotateLeft) 
-            {
-                rotateRight = false;
-                rotateLeft = false;
-                player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
-                return;
-            }
-            else
-            {
-                rotateRight = true;
-            }
-            if (!forward) 
-            {
-                player.changeImage(ShipState.TurningRight);
-            } 
-            else if (forward)
-            {
-                player.changeImage(ShipState.TurningRightThrusting);
-            } 
-            else if (rotateLeft) 
-            {
-                player.changeImage(ShipState.Idle);
-            }
-        }
-    }
-
-    private void dReleased() 
-    {
-        rotateRight = false;
-        if (!forward)
-        {
-            player.changeImage(ShipState.Idle);
-        } 
-        else 
-        {
-            player.changeImage(ShipState.Thrusting);
-        }
-    }
-
-    private void aPressed() 
-    {
-        if (!paused) 
-        {
-            if (rotateRight) 
-            {
-                rotateRight = false;
-                rotateLeft = false;
-                player.changeImage(forward ? ShipState.Thrusting : ShipState.Idle);
-                return;
-            } 
-            else
-            {
-                rotateLeft = true;
-            }
-
-            if (!forward) 
-            {
-                player.changeImage(ShipState.TurningLeft);
-            } 
-            else if (forward)
-            {
-                player.changeImage(ShipState.TurningLeftThrusting);
-            } 
-            else if (rotateRight)
-            {
-                player.changeImage(ShipState.Idle);
-            }
-        }
-    }
-
-    private void aReleased()
-    {
-        rotateLeft = false;
-        if (!forward) 
-        {
-            player.changeImage(ShipState.Idle);
-        } 
-        else
-        {
-            player.changeImage(ShipState.Thrusting);
-        }
-    }
-
-    private void shiftPressed() 
-    {
-        if (!paused)
-        {
-            player.speedBoost();
-        }
-    }
-
-    private void shiftReleased() 
-    {
-        player.stopSpeedBoosting();
-    }
-
-    private void spacePressed()
-    {
-        if (!paused)
+        
+        if (!released && keycode == KeyEvent.VK_SPACE)
         {
             shooting = true;
         }
+        else if (released && keycode == KeyEvent.VK_SPACE)
+        {
+            shooting = false;
+        }
+        
+        if (!released && keycode == KeyEvent.VK_Q)
+        {
+            System.exit(0);
+        }
+        
+        if (!released && keycode == KeyEvent.VK_ESCAPE)
+        {
+            paused = !paused;
+        }
     }
-
-    private void spaceReleased()
-    {
-        shooting = false;
-    }
-
-    private void qPressed()
-    {
-        System.exit(0);
-    }
-
-    private void escapePressed()
-    {
-        paused = !paused;
-    }
-
+    
     public class Panel extends JPanel 
     {
 
@@ -912,8 +768,12 @@ public class OmegaCentauri extends Game implements GameActionListener
 //                            System.out.println(additionalTime);
 //                            System.out.println(loopTimeUPS);
                             //long startUpdateTime = System.nanoTime();
-                            gameUpdate();
-                            updates++;
+                            if (!paused)
+                            {
+                                gameUpdate();
+                                updates++;
+                            }
+                            
                             //System.out.println("update time: " + (System.nanoTime() - startUpdateTime));
 
                             //long startRenderTime = System.nanoTime();
