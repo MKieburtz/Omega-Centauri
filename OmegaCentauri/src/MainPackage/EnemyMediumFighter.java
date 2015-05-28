@@ -191,6 +191,11 @@ public class EnemyMediumFighter extends EnemyShip
         return location;
     }
 
+    @Override
+    protected void changeImage(StateChange change) {
+        // only one image so far
+    }
+
     class ShootingServiceMisisle implements Runnable 
     {
 

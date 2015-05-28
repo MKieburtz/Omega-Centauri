@@ -106,11 +106,6 @@ public class Player extends Ship
         return angularVelocity != 0;
     }
 
-    public boolean rotatingRight() 
-    {
-        return rotatingRight;
-    }
-
     public String getName() 
     {
         return this.name;

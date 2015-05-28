@@ -398,7 +398,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             }
             if (!rotateRight && !rotateLeft && player.isRotating())
             {
-                player.rotate(player.rotatingRight() ? ShipState.AngleDriftingRight : ShipState.AngleDriftingLeft);
+                player.rotate(player.rotationState == RotationState.rotatingRight ? ShipState.AngleDriftingRight : ShipState.AngleDriftingLeft);
             }
             if (shooting && player.canShoot()) 
             {

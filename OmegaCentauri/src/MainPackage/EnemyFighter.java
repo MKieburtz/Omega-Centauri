@@ -26,8 +26,6 @@ public class EnemyFighter extends EnemyShip
     
     private final boolean startingRight = new Random().nextBoolean();
 
-    private boolean thrusting = false;
-
     private double targetingAngle = 0;
     
     private Resources resources;
@@ -63,7 +61,6 @@ public class EnemyFighter extends EnemyShip
     @Override
     public void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) 
     {
-        shield.setRegenRate(.05);
         // main AI goes here
         this.dimensions.x = player.getActiveImage().getWidth();
         this.dimensions.y = player.getActiveImage().getHeight();
@@ -123,8 +120,7 @@ public class EnemyFighter extends EnemyShip
                     }
                 }
             }
-            
-            rotateToAngle(targetingAngle);
+            rotateToAngle(targetingAngle); // calls changeImage
 
             if (Math.abs(angleToPlayer - faceAngle) < 45) 
             {
@@ -133,26 +129,18 @@ public class EnemyFighter extends EnemyShip
         } 
         else 
         {
-            rotateToAngle(targetingAngle);
+            rotateToAngle(targetingAngle); // calls changeImage
         }
 
         if ((movingAway && Math.abs(faceAngle - targetingAngle) < 15) || (distanceToPlayer > 200 && !movingAway))
         {
             move(ShipState.Thrusting);
-            thrusting = true;
+            changeImage(StateChange.thrust);
         } 
         else 
         {
             move(ShipState.Drifting);
-            thrusting = false;
-        }
-        
-        setImage();
-
-        // regen shield
-        if (shield.getEnergy() <= 100)
-        {
-            shield.regen();
+            changeImage(StateChange.stopThrust);
         }
     }
 
@@ -226,33 +214,86 @@ public class EnemyFighter extends EnemyShip
         return id;
     }
 
-    boolean rotating;
-    private void setImage() 
+    @Override
+    protected void changeImage(StateChange change) 
+    // remember that this is for the IMAGE not the action of the ship. An IDLE ship might or might not be drifting, the images are the same
     {
-        rotating = isRotating();
-        if (rotating && thrusting && rotatingRight) 
+        switch (rotationState)
         {
-            changeImage(ShipState.TurningRightThrusting);
-        } 
-        else if (rotating && thrusting && !rotatingRight) 
+            case Idle:
+                switch (change)
+                {
+                    case rotateLeft:
+                        changeImage(movementState == MovementState.Thrusting ? ShipState.TurningLeftThrusting : ShipState.TurningLeft);
+                        break;
+                    case rotateRight:
+                        changeImage(movementState == MovementState.Thrusting ? ShipState.TurningRightThrusting : ShipState.TurningRight);
+                        break;
+                    case stopRotating:
+                        changeImage(movementState == MovementState.Thrusting ? ShipState.Thrusting : ShipState.Idle);
+                        break;
+                }
+                break;
+            case rotatingLeft:
+                switch (change)
+                {
+                    case rotateRight:
+                        changeImage(movementState == MovementState.Thrusting ? ShipState.TurningRightThrusting : ShipState.TurningRight);
+                        break;
+                    case stopRotating:
+                        changeImage(movementState == MovementState.Thrusting ? ShipState.Thrusting : ShipState.Idle);
+                        break;
+                }
+                break;
+            case rotatingRight:
+                switch (change)
+                {
+                    case rotateLeft:
+                        changeImage(movementState == MovementState.Thrusting ? ShipState.TurningLeftThrusting : ShipState.TurningLeft);
+                        break;
+                    case stopRotating:
+                        changeImage(movementState == MovementState.Thrusting ? ShipState.Thrusting : ShipState.Idle);
+                        break;
+                }
+                break;   
+        }
+        
+        switch (movementState)
         {
-            changeImage(ShipState.TurningLeftThrusting);
-        } 
-        else if (rotating && !thrusting && rotatingRight) 
-        {
-            changeImage(ShipState.TurningRight);
-        } 
-        else if (rotating && !thrusting && !rotatingRight)
-        {
-            changeImage(ShipState.TurningLeft);
-        } 
-        else if (!rotating && thrusting) 
-        {
-            changeImage(ShipState.Thrusting);
-        } 
-        else if (!rotating && !thrusting) 
-        {
-            changeImage(ShipState.Idle);
+            case Idle:
+                if (change == StateChange.thrust)
+                {
+                    switch (rotationState)
+                    {
+                        case Idle:
+                            changeImage(ShipState.Thrusting);
+                            break;
+                        case rotatingLeft:
+                            changeImage(ShipState.TurningLeftThrusting);
+                            break;
+                        case rotatingRight:
+                            changeImage(ShipState.TurningRightThrusting);
+                            break;
+                    }
+                }
+                break;
+            case Thrusting:
+                if (change == StateChange.stopThrust)
+                {
+                    switch (rotationState)
+                    {
+                        case Idle:
+                            changeImage(ShipState.Idle);
+                            break;
+                        case rotatingLeft:
+                            changeImage(ShipState.TurningLeft);
+                            break;
+                        case rotatingRight:
+                            changeImage(ShipState.TurningRight);
+                            break;
+                    }
+                }
+                break;
         }
     }
 

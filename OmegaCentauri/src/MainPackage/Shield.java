@@ -23,7 +23,6 @@ public class Shield
     private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private BufferedImage activeImage;
-    private double regenRate;
     private int strengh;
     private int energy;
     private int maxEnergy;
@@ -206,20 +205,5 @@ public class Shield
        }
        
        shieldSegments.removeAll(decayedSegments);
-    }
-    
-    public double getRegenRate()
-    {
-        return regenRate;
-    }
-    
-    public void regen()
-    {
-        energy += regenRate;
-    }
-    
-    public void setRegenRate(double regenRate)
-    {
-        this.regenRate = regenRate;
     }
 }
