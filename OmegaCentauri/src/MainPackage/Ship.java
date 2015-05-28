@@ -54,7 +54,6 @@ public abstract class Ship
     protected boolean canshoot = true;
     protected int shootingDelay;
     protected Shield shield;
-    protected boolean rotatingRight = false;
     protected boolean colliding = false;
     protected ScheduledExecutorService ex;
         
@@ -215,9 +214,7 @@ public abstract class Ship
     }
     
     public void rotate(ShipState state) 
-    {
-        rotatingRight = state == ShipState.AngleDriftingRight || state == ShipState.TurningRight;
-        
+    {   
         if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) 
         {
             
@@ -384,6 +381,11 @@ public abstract class Ship
     public void reduceHull(double damage) 
     {
         hullDurability -= damage;
+        
+        if (hullDurability <= 0)
+        {
+            exploding = true;
+        }
     }
     
     ArrayList<Shot> shotsToRemove = new ArrayList<>();
@@ -418,11 +420,6 @@ public abstract class Ship
                 shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle, extra, shot);
             }
             reduceHull(healthToLoseHull);
-        }
-        
-        if (hullDurability <= 0)
-        {
-            exploding = true;
         }
     }
     
