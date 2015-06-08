@@ -3,8 +3,8 @@ package MainPackage;
 /**
  * @author Michael Kieburtz
  */
-public enum MovementState {
+public enum ImageRotationState {
     Idle,
-    Drifting,
-    Thrusting
+    rotatingRight,
+    rotatingLeft
 }

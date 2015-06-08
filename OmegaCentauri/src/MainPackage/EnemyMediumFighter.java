@@ -171,11 +171,11 @@ public class EnemyMediumFighter extends EnemyShip
 
         if (distance > 500)
         {
-            move(ShipState.Thrusting);
+            move(MovementState.Thrusting);
         } 
         else
         {
-            move(ShipState.Drifting);
+            move(MovementState.Drifting);
         }
     }
 

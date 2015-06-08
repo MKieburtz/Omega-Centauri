@@ -5,6 +5,8 @@ package MainPackage;
  */
 public enum RotationState {
     Idle,
-    rotatingRight,
-    rotatingLeft
+    TurningLeft,
+    TurningRight,
+    TurningLeftDrifting,
+    TurningRightDrifting
 }

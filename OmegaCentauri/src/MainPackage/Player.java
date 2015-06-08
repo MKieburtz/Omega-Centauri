@@ -1,6 +1,5 @@
 package MainPackage;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -51,30 +50,7 @@ public class Player extends Ship
         
         faceAngle = 180;
     }
-
-    public void moveTo(double x, double y) 
-    {
-        location.x = x;
-        location.y = y;
-    }
-
-    public void moveTo(Point2D.Double location) 
-    {
-        this.location.x = location.x;
-        this.location.y = location.y;
-    }
-
-    public void moveRelitive(double dx, double dy) 
-    {
-        this.location.x += dx;
-        this.location.y += dy;
-    }
-
-    public void rotate(double amount) 
-    {
-        faceAngle = amount;
-    }
-
+    
     public double getAngle() 
     {
         return faceAngle;
@@ -83,12 +59,6 @@ public class Player extends Ship
     public Point2D.Double getVel() 
     {
         return this.movementVelocity;
-    }
-
-    public void setVel(int vert, int hor) 
-    {
-        this.movementVelocity.x = vert;
-        this.movementVelocity.y = hor;
     }
 
     public ArrayList getImages() 

@@ -134,12 +134,12 @@ public class EnemyFighter extends EnemyShip
 
         if ((movingAway && Math.abs(faceAngle - targetingAngle) < 15) || (distanceToPlayer > 200 && !movingAway))
         {
-            move(ShipState.Thrusting);
+            move(MovementState.Thrusting);
             changeImage(StateChange.thrust);
         } 
         else 
         {
-            move(ShipState.Drifting);
+            move(MovementState.Drifting);
             changeImage(StateChange.stopThrust);
         }
     }
@@ -218,19 +218,19 @@ public class EnemyFighter extends EnemyShip
     protected void changeImage(StateChange change) 
     // remember that this is for the IMAGE not the action of the ship. An IDLE ship might or might not be drifting, the images are the same
     {
-        switch (rotationState)
+        switch (imageRotationState)
         {
             case Idle:
                 switch (change)
                 {
                     case rotateLeft:
-                        changeImage(movementState == MovementState.Thrusting ? ShipState.TurningLeftThrusting : ShipState.TurningLeft);
+                        changeImage(imageMovementState, ImageRotationState.rotatingLeft);
                         break;
                     case rotateRight:
-                        changeImage(movementState == MovementState.Thrusting ? ShipState.TurningRightThrusting : ShipState.TurningRight);
+                        changeImage(imageMovementState, ImageRotationState.rotatingRight);
                         break;
                     case stopRotating:
-                        changeImage(movementState == MovementState.Thrusting ? ShipState.Thrusting : ShipState.Idle);
+                        changeImage(imageMovementState, ImageRotationState.Idle);
                         break;
                 }
                 break;
@@ -238,10 +238,10 @@ public class EnemyFighter extends EnemyShip
                 switch (change)
                 {
                     case rotateRight:
-                        changeImage(movementState == MovementState.Thrusting ? ShipState.TurningRightThrusting : ShipState.TurningRight);
+                        changeImage(imageMovementState, ImageRotationState.rotatingRight);
                         break;
                     case stopRotating:
-                        changeImage(movementState == MovementState.Thrusting ? ShipState.Thrusting : ShipState.Idle);
+                        changeImage(imageMovementState, ImageRotationState.Idle);
                         break;
                 }
                 break;
@@ -249,49 +249,27 @@ public class EnemyFighter extends EnemyShip
                 switch (change)
                 {
                     case rotateLeft:
-                        changeImage(movementState == MovementState.Thrusting ? ShipState.TurningLeftThrusting : ShipState.TurningLeft);
+                        changeImage(imageMovementState, ImageRotationState.rotatingLeft);
                         break;
                     case stopRotating:
-                        changeImage(movementState == MovementState.Thrusting ? ShipState.Thrusting : ShipState.Idle);
+                        changeImage(imageMovementState, imageRotationState.Idle);
                         break;
                 }
                 break;   
         }
         
-        switch (movementState)
+        switch (imageMovementState)
         {
             case Idle:
                 if (change == StateChange.thrust)
                 {
-                    switch (rotationState)
-                    {
-                        case Idle:
-                            changeImage(ShipState.Thrusting);
-                            break;
-                        case rotatingLeft:
-                            changeImage(ShipState.TurningLeftThrusting);
-                            break;
-                        case rotatingRight:
-                            changeImage(ShipState.TurningRightThrusting);
-                            break;
-                    }
+                    changeImage(ImageMovementState.Thrusting, imageRotationState);
                 }
                 break;
             case Thrusting:
                 if (change == StateChange.stopThrust)
                 {
-                    switch (rotationState)
-                    {
-                        case Idle:
-                            changeImage(ShipState.Idle);
-                            break;
-                        case rotatingLeft:
-                            changeImage(ShipState.TurningLeft);
-                            break;
-                        case rotatingRight:
-                            changeImage(ShipState.TurningRight);
-                            break;
-                    }
+                    changeImage(ImageMovementState.Idle, imageRotationState);
                 }
                 break;
         }

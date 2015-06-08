@@ -41,6 +41,8 @@ public abstract class Ship
     protected double maxVel;
     protected double angleIcrement;
     protected double acceleration = .15;
+    protected ImageRotationState imageRotationState; 
+    protected ImageMovementState imageMovementState;  
     protected RotationState rotationState;
     protected MovementState movementState;
     
@@ -80,6 +82,8 @@ public abstract class Ship
         this.maxhullDurabilty = health;
         ex = Executors.newSingleThreadScheduledExecutor();
         
+        imageRotationState = ImageRotationState.Idle;
+        imageMovementState = ImageMovementState.Idle;
         rotationState = RotationState.Idle;
         movementState = MovementState.Idle;
     }
@@ -117,11 +121,12 @@ public abstract class Ship
         }
     }
     
-    protected void move(ShipState state)
+    protected void move(MovementState state)
     {
         
-        if (state == ShipState.Thrusting)
+        if (state == MovementState.Thrusting)
         {
+            movementState = MovementState.Thrusting;
             movementVelocity.x += Calculator.CalcAngleMoveX(360 - faceAngle) * acceleration;
             
             if (movementVelocity.x > maxVel)
@@ -148,16 +153,21 @@ public abstract class Ship
         movementVelocity.x *= .99;
         movementVelocity.y *= .99;
         
-        if (state == ShipState.Drifting)
+        if (state == MovementState.Drifting)
         {
+            movementState = MovementState.Drifting;
             if (Math.abs(movementVelocity.x) < .1)
             {
                 movementVelocity.x = 0;
             }
-            
             if (Math.abs(movementVelocity.y) < .1) 
             {
                 movementVelocity.y = 0;
+            }
+            
+            if (movementVelocity.x == 0 && movementVelocity.y == 0)
+            {
+                movementState = MovementState.Idle;
             }
         }
         
@@ -178,19 +188,37 @@ public abstract class Ship
         return location;
     }
     
-    protected void updateAngle(ShipState state) 
+    protected void updateAngle(RotationState state) 
     {
         double beforeUpdate = faceAngle;
-        if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight)
+        if (state == RotationState.TurningRight || state == RotationState.TurningRightDrifting)
         {
+            if (state == RotationState.TurningRightDrifting)
+            {
+                rotationState = RotationState.TurningRightDrifting;
+            }
+            else
+            {
+                rotationState = RotationState.TurningRight;
+            }
+            
             faceAngle -= angularVelocity;
             if (faceAngle <= 0)
             {
                 faceAngle = 360 + faceAngle;
             }
         } 
-        else if (state == ShipState.TurningLeft || state == ShipState.AngleDriftingLeft) 
+        else if (state == RotationState.TurningLeft || state == RotationState.TurningLeftDrifting) 
         {
+            if (state == RotationState.TurningLeftDrifting)
+            {
+                rotationState = RotationState.TurningLeftDrifting;
+            }
+            else
+            {
+                rotationState = RotationState.TurningLeft;
+            }
+            
             faceAngle += angularVelocity;
             if (faceAngle >= 360) 
             {
@@ -201,7 +229,7 @@ public abstract class Ship
         {
             double[] distances = Calculator.getDistancesBetweenAngles(beforeUpdate, faceAngle);
             double change;
-            if (state == ShipState.TurningRight || state == ShipState.AngleDriftingRight)
+            if (state == RotationState.TurningRight || state == RotationState.TurningRightDrifting)
             {
                 change = distances[0] > distances[1] ? distances[0] : distances[1];
             }
@@ -213,11 +241,11 @@ public abstract class Ship
         }
     }
     
-    public void rotate(ShipState state) 
+    public void rotate(RotationState state) 
     {   
-        if (state != ShipState.AngleDriftingLeft && state != ShipState.AngleDriftingRight) 
+        
+        if (state != RotationState.TurningLeftDrifting && state != RotationState.TurningRightDrifting) 
         {
-            
             angularVelocity += angleIcrement * .1;
             
             if (angularVelocity > maxAngularVel) 
@@ -232,11 +260,12 @@ public abstract class Ship
             if ((angularVelocity < .01 && angularVelocity > 0) || (angularVelocity > -.01 && angularVelocity < 0)) 
             {
                 angularVelocity = 0;
+                rotationState = RotationState.Idle;
             }
         }
         else 
         {
-            angularVelocity *= .90;
+            angularVelocity *= .90; // causes acceleration
         }
         
         updateAngle(state);
@@ -457,40 +486,46 @@ public abstract class Ship
         return exploding;
     }
     
-    public void changeImage(ShipState state) 
+    public void changeImage(ImageMovementState movementState, ImageRotationState rotationState) 
     {
-        switch (state) 
+        switch (movementState) 
         {
             case Idle:
-                movementState = movementState.Idle;
-                rotationState = rotationState.Idle;
-                activeImage = images.get(IDLE);
+                imageMovementState = ImageMovementState.Idle;
+                switch (rotationState)
+                {
+                    case Idle:
+                        imageRotationState = ImageRotationState.Idle;
+                        activeImage = images.get(IDLE);
+                        break;
+                    case rotatingLeft:
+                        imageRotationState = ImageRotationState.rotatingLeft;
+                        activeImage = images.get(TURNINGLEFT);
+                        break;
+                    case rotatingRight:
+                        imageRotationState = ImageRotationState.rotatingRight;
+                        activeImage = images.get(TURNINGRIGHT);
+                        break;
+                }
                 break;
             case Thrusting:
-                movementState = movementState.Thrusting;
-                rotationState = rotationState.Idle;
-                activeImage = images.get(THRUSTING);
-                break;
-            case TurningLeft: 
-                movementState = movementState.Idle;
-                rotationState = rotationState.rotatingLeft;
-                activeImage = images.get(TURNINGLEFT);
-                break;
-            case TurningRight: 
-                movementState = movementState.Idle;
-                rotationState = rotationState.rotatingRight;
-                activeImage = images.get(TURNINGRIGHT);
-                break;
-            case TurningLeftThrusting: 
-                movementState = movementState.Thrusting;
-                rotationState = rotationState.rotatingLeft;
-                activeImage = images.get(TURNINGLEFTTHRUSTING);
-                break;
-            case TurningRightThrusting: 
-                movementState = movementState.Thrusting;
-                rotationState = rotationState.rotatingRight;
-                activeImage = images.get(TURNINGRIGHTTHRUSTING);
-                break;            
+                imageMovementState = ImageMovementState.Thrusting;
+                switch (rotationState)
+                {
+                    case Idle:
+                        imageRotationState = ImageRotationState.Idle;
+                        activeImage = images.get(THRUSTING);
+                        break;
+                    case rotatingLeft:
+                        imageRotationState = ImageRotationState.rotatingLeft;
+                        activeImage = images.get(TURNINGLEFTTHRUSTING);
+                        break;
+                    case rotatingRight: 
+                        imageRotationState = ImageRotationState.rotatingRight;
+                        activeImage = images.get(TURNINGRIGHTTHRUSTING);
+                        break;
+                }
+                break;         
         }
     }
 }

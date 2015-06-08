@@ -382,23 +382,30 @@ public class OmegaCentauri extends Game implements GameActionListener
 
             if (forward) 
             {
-                player.move(ShipState.Thrusting);
+                player.move(MovementState.Thrusting);
             }
             if (rotateRight)
             {
-                player.rotate(ShipState.TurningRight);
+                player.rotate(RotationState.TurningRight);
             }
             if (rotateLeft) 
             {
-                player.rotate(ShipState.TurningLeft);
+                player.rotate(RotationState.TurningLeft);
             }
             if (!forward && player.isMoving()) 
             {
-                player.move(ShipState.Drifting);
+                player.move(MovementState.Drifting);
             }
             if (!rotateRight && !rotateLeft && player.isRotating())
             {
-                player.rotate(player.rotationState == RotationState.rotatingRight ? ShipState.AngleDriftingLeft : ShipState.AngleDriftingRight);
+                if (player.rotationState == RotationState.TurningLeft || player.rotationState == RotationState.TurningLeftDrifting)
+                {
+                    player.rotate(RotationState.TurningLeftDrifting);
+                }
+                else if (player.rotationState == RotationState.TurningRight || player.rotationState == RotationState.TurningRightDrifting)
+                {
+                    player.rotate(RotationState.TurningRightDrifting);
+                }
             }
             if (shooting && player.canShoot()) 
             {
@@ -539,37 +546,29 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void handleInput(int keycode, boolean released)
     {
-        switch (player.rotationState)
+        switch (player.imageRotationState)
         {
             case Idle: // either both keys or niether key
                 if (!released && keycode == KeyEvent.VK_A)
                 {
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                            ? ShipState.TurningLeftThrusting
-                            : ShipState.TurningLeft);
+                    player.changeImage(player.imageMovementState, ImageRotationState.rotatingLeft);
                     rotateLeft = true;
                 }
                 else if (released && keycode == KeyEvent.VK_A) // both keys were down and a was released so we go right
                 {
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                            ? ShipState.TurningRightThrusting
-                            : ShipState.TurningRight);
+                    player.changeImage(player.imageMovementState, ImageRotationState.rotatingRight);
                     rotateLeft = false;
                     rotateRight = true;
                 }
                 if (!released && keycode == KeyEvent.VK_D) 
                 {
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                            ? ShipState.TurningRightThrusting
-                            : ShipState.TurningRight);
+                    player.changeImage(player.imageMovementState, ImageRotationState.rotatingRight);
                     rotateRight = true;
                     
                 }
                 else if (released && keycode == KeyEvent.VK_D) // both keys were down and d was released so we go left
                 {
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                            ? ShipState.TurningLeftThrusting
-                            : ShipState.TurningLeft);
+                    player.changeImage(player.imageMovementState, ImageRotationState.rotatingLeft);
                     rotateRight = false;
                     rotateLeft = true;
                 }
@@ -577,75 +576,45 @@ public class OmegaCentauri extends Game implements GameActionListener
             case rotatingRight: // d has to be down
                 if (!released && keycode == KeyEvent.VK_A)
                 {
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                                ? ShipState.Thrusting
-                                : ShipState.Idle);
+                    player.changeImage(player.imageMovementState, ImageRotationState.Idle);
                     rotateRight = false;
                 }
                 else if (released && keycode == KeyEvent.VK_D)
                 {
                     // may have to check for a, but I don't think so
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                    ? ShipState.Thrusting
-                    : ShipState.Idle);
+                    player.changeImage(player.imageMovementState, ImageRotationState.Idle);
                     rotateRight = false;
                 }
                 break;
             case rotatingLeft: // a has to be down
                 if (!released && keycode == KeyEvent.VK_D)
                 {
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                                ? ShipState.Thrusting
-                                : ShipState.Idle);
+                    player.changeImage(player.imageMovementState, ImageRotationState.Idle);
                     rotateLeft = false;
                 }
                 else if (released && keycode == KeyEvent.VK_A)
                 {
                     // may have to check for d, but I don't think so
-                    player.changeImage(player.movementState == MovementState.Thrusting
-                    ? ShipState.Thrusting
-                    : ShipState.Idle);
+                    player.changeImage(player.imageMovementState, ImageRotationState.Idle);
                     rotateLeft = false;
                 }
                 break;
         }
         
-        switch(player.movementState)
+        switch(player.imageMovementState)
         {
             case Idle: // w isn't down
                 if (!released && keycode == KeyEvent.VK_W)
                 {
                     forward = true;
-                    switch (player.rotationState)
-                    {
-                        case Idle:
-                            player.changeImage(ShipState.Thrusting);
-                            break;
-                        case rotatingLeft:
-                            player.changeImage(ShipState.TurningLeftThrusting);
-                            break;
-                        case rotatingRight:
-                            player.changeImage(ShipState.TurningRightThrusting);
-                            break;
-                    }
+                    player.changeImage(ImageMovementState.Thrusting, player.imageRotationState);
                 }
                 break;
             case Thrusting:
                 if (released && keycode == KeyEvent.VK_W)
                 {
                     forward = false;
-                    switch (player.rotationState)
-                    {
-                        case Idle:
-                            player.changeImage(ShipState.Idle);
-                            break;
-                        case rotatingLeft:
-                            player.changeImage(ShipState.TurningLeft);
-                            break;
-                        case rotatingRight:
-                            player.changeImage(ShipState.TurningRight);
-                            break;
-                    }
+                    player.changeImage(ImageMovementState.Idle, player.imageRotationState);
                 }
                 break;
         }

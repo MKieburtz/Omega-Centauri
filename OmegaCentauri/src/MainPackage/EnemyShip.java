@@ -2,7 +2,6 @@ package MainPackage;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import sun.security.util.AuthResources_it;
 
 /**
  * @author Michael Kieburtz
@@ -41,7 +40,7 @@ public abstract class EnemyShip extends Ship
                 if (distances[0] > angleIcrement) 
                 {
                     changeImage(StateChange.rotateLeft);
-                    rotate(ShipState.TurningLeft);
+                    rotate(RotationState.TurningLeft);
                 }
             }
             else 
@@ -49,21 +48,21 @@ public abstract class EnemyShip extends Ship
                 if (distances[1] > angleIcrement) 
                 {
                     changeImage(StateChange.rotateRight);
-                    rotate(ShipState.TurningRight);
+                    rotate(RotationState.TurningRight);
                 }
             }
         }
         else
         {
-            if (rotationState == RotationState.rotatingRight)
+            if (imageRotationState == ImageRotationState.rotatingRight)
             {
                 changeImage(StateChange.stopRotating); // just for the image
-                rotate(ShipState.AngleDriftingRight);
+                rotate(RotationState.TurningRightDrifting);
             }
-            else if (rotationState == RotationState.rotatingLeft)
+            else if (imageRotationState == ImageRotationState.rotatingLeft)
             {
                 changeImage(StateChange.stopRotating); // also just for the image
-                rotate(ShipState.AngleDriftingLeft);
+                rotate(RotationState.TurningLeftDrifting);
             }
         }
     }
