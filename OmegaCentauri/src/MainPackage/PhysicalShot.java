@@ -23,21 +23,7 @@ public abstract class PhysicalShot extends Shot
     @Override
     public void setUpHitbox(Point2D.Double cameraLocation)
     {
-        Point2D.Double[] hitboxPoints = new Point2D.Double[4]; 
-
-        try 
-        {
-            hitboxPoints[0] = new Point2D.Double(0, 0);
-            hitboxPoints[1] = new Point2D.Double(activeImage.getWidth(), 0);
-            hitboxPoints[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
-            hitboxPoints[3] = new Point2D.Double(0, activeImage.getHeight());
-            hitbox = new RectangularHitbox(hitboxPoints, false);
-
-        }
-        catch (NullPointerException e)
-        {
-            System.err.println("activeimage not initialized!");
-        }
+        super.setUpHitbox(cameraLocation);
     }
     
     @Override
