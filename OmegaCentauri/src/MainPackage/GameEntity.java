@@ -12,10 +12,15 @@ public abstract class GameEntity {
     private Point2D.Double location;
     private Point2D.Double faceAngle;
     private ArrayList<BufferedImage> images;
-    private Explosion explosion;
-    
+    private Explosion explosion; // might not be needed
     
     public void update()
+    {
+        
+    }
+    
+    // for the ship that the player's controlling 
+    public void update(int movementCommand, int rotationCommand)
     {
         
     }
