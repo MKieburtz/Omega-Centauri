@@ -54,6 +54,7 @@ public class OmegaCentauri extends Game implements GameActionListener
     private ArrayList<StarChunk> stars = new ArrayList<>();
     private ArrayList<Ship> deadShips = new ArrayList<>();
     private ArrayList<Shot> deadShots = new ArrayList<>();
+    private ArrayList<Command> updateCommands = new ArrayList<>();
 
     public OmegaCentauri() 
     {
@@ -379,43 +380,29 @@ public class OmegaCentauri extends Game implements GameActionListener
             {
                 camera.setSize(getWidth(), getHeight());
             }
-
-            if (forward) 
+            
+            if (forward)
             {
-                player.move(MovementState.Thrusting);
+                updateCommands.add(new MovementCommand(MovementCommand.MOVE_FORWARD));
             }
+            
             if (rotateRight)
             {
-                player.rotate(RotationState.TurningRight);
+                updateCommands.add(new RotationCommand(RotationCommand.ROTATE_RIGHT));
             }
-            if (rotateLeft) 
+            else if (rotateLeft)
             {
-                player.rotate(RotationState.TurningLeft);
+                updateCommands.add(new RotationCommand(RotationCommand.ROTATE_LEFT));
             }
-            if (!forward && player.isMoving()) 
+            
+            if (shooting) 
             {
-                player.move(MovementState.Drifting);
-            }
-            if (!rotateRight && !rotateLeft && player.isRotating())
-            {
-                if (player.rotationState == RotationState.TurningLeft || player.rotationState == RotationState.TurningLeftDrifting)
-                {
-                    player.rotate(RotationState.TurningLeftDrifting);
-                }
-                else if (player.rotationState == RotationState.TurningRight || player.rotationState == RotationState.TurningRightDrifting)
-                {
-                    player.rotate(RotationState.TurningRightDrifting);
-                }
-            }
-            if (shooting && player.canShoot()) 
-            {
-                player.shoot(camera.getLocation());
             }
             for (EnemyShip enemyShip : enemyShips) 
             {
                 enemyShip.update(player, camera.getLocation(), enemyShips);
             }
-
+            updateCommands.clear();
             for (int i = deadShips.size() - 1; i > -1; i--)
             {
                 if (!deadShips.get(i).isExploding())

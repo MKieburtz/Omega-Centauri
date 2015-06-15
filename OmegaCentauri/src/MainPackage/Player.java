@@ -51,6 +51,11 @@ public class Player extends Ship
         faceAngle = 180;
     }
     
+    public void update(ArrayList<Command> commands)
+    {
+        
+    }
+    
     public double getAngle() 
     {
         return faceAngle;
