@@ -53,7 +53,57 @@ public class Player extends Ship
     
     public void update(ArrayList<Command> commands)
     {
-        
+        boolean noMovementCommand = true;
+        boolean noRotationCommand = true;
+        for (Command c : commands)
+        {
+            if (c instanceof MovementCommand)
+            {
+                noMovementCommand = false;
+                move(MovementState.Thrusting);
+            }
+            else if (c instanceof RotationCommand)
+            {
+                noRotationCommand = false;
+                switch(c.getValue())
+                {
+                    case 0: // rotate left
+                        rotate(RotationState.TurningLeft);
+                        break;
+                    case 1: // rotate right
+                        rotate(RotationState.TurningRight);
+                }
+            }
+            else if (c instanceof ShootingCommand)
+            {
+                if (canshoot)
+                {
+                    // shoot! Needs camera location.
+                }
+            }
+        }
+        // check for drifts
+        if (noMovementCommand)
+        {
+            if (moving())
+            {
+                move(MovementState.Drifting);
+            }
+        }
+        if (noRotationCommand)
+        {
+            if (rotating())
+            {
+                if (rotationState == RotationState.TurningRight || rotationState == RotationState.TurningRightDrifting)
+                {
+                    rotate(RotationState.TurningRightDrifting);
+                }
+                else if (rotationState == RotationState.TurningLeft || rotationState == RotationState.TurningLeftDrifting)
+                {
+                    rotate(RotationState.TurningLeftDrifting);
+                }
+            }
+        }
     }
     
     public double getAngle() 
@@ -71,9 +121,14 @@ public class Player extends Ship
         return images;
     }
 
-    public boolean isMoving() 
+    public boolean moving() 
     {
         return movementVelocity.x != 0 || movementVelocity.y != 0;
+    }
+    
+    public boolean rotating()
+    {
+        return angularVelocity != 0;
     }
 
     public boolean isRotating() 

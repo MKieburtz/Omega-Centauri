@@ -380,12 +380,12 @@ public class OmegaCentauri extends Game implements GameActionListener
             {
                 camera.setSize(getWidth(), getHeight());
             }
-            
+            // player has to decide if they need to drift. If no command is sent to move,
+            // and they still have velocity of some kind, they need to drift.
             if (forward)
             {
                 updateCommands.add(new MovementCommand(MovementCommand.MOVE_FORWARD));
             }
-            
             if (rotateRight)
             {
                 updateCommands.add(new RotationCommand(RotationCommand.ROTATE_RIGHT));
@@ -394,15 +394,19 @@ public class OmegaCentauri extends Game implements GameActionListener
             {
                 updateCommands.add(new RotationCommand(RotationCommand.ROTATE_LEFT));
             }
-            
             if (shooting) 
             {
+                updateCommands.add(new ShootingCommand(ShootingCommand.SHOOT));
             }
+            player.update(updateCommands);
+            
+            updateCommands.clear();
+            
             for (EnemyShip enemyShip : enemyShips) 
             {
                 enemyShip.update(player, camera.getLocation(), enemyShips);
             }
-            updateCommands.clear();
+            
             for (int i = deadShips.size() - 1; i > -1; i--)
             {
                 if (!deadShips.get(i).isExploding())

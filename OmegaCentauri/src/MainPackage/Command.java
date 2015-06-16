@@ -5,4 +5,5 @@ package MainPackage;
  */
 public interface Command 
 {  
+    int getValue();
 }
