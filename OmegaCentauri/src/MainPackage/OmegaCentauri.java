@@ -542,24 +542,19 @@ public class OmegaCentauri extends Game implements GameActionListener
             case Idle: // either both keys or niether key
                 if (!released && keycode == KeyEvent.VK_A)
                 {
-                    player.changeImage(player.imageMovementState, ImageRotationState.rotatingLeft);
                     rotateLeft = true;
                 }
                 else if (released && keycode == KeyEvent.VK_A) // both keys were down and a was released so we go right
                 {
-                    player.changeImage(player.imageMovementState, ImageRotationState.rotatingRight);
                     rotateLeft = false;
                     rotateRight = true;
                 }
                 if (!released && keycode == KeyEvent.VK_D) 
                 {
-                    player.changeImage(player.imageMovementState, ImageRotationState.rotatingRight);
-                    rotateRight = true;
-                    
+                    rotateRight = true; 
                 }
                 else if (released && keycode == KeyEvent.VK_D) // both keys were down and d was released so we go left
                 {
-                    player.changeImage(player.imageMovementState, ImageRotationState.rotatingLeft);
                     rotateRight = false;
                     rotateLeft = true;
                 }
@@ -567,26 +562,22 @@ public class OmegaCentauri extends Game implements GameActionListener
             case rotatingRight: // d has to be down
                 if (!released && keycode == KeyEvent.VK_A)
                 {
-                    player.changeImage(player.imageMovementState, ImageRotationState.Idle);
                     rotateRight = false;
                 }
                 else if (released && keycode == KeyEvent.VK_D)
                 {
                     // may have to check for a, but I don't think so
-                    player.changeImage(player.imageMovementState, ImageRotationState.Idle);
                     rotateRight = false;
                 }
                 break;
             case rotatingLeft: // a has to be down
                 if (!released && keycode == KeyEvent.VK_D)
                 {
-                    player.changeImage(player.imageMovementState, ImageRotationState.Idle);
                     rotateLeft = false;
                 }
                 else if (released && keycode == KeyEvent.VK_A)
                 {
                     // may have to check for d, but I don't think so
-                    player.changeImage(player.imageMovementState, ImageRotationState.Idle);
                     rotateLeft = false;
                 }
                 break;
@@ -598,14 +589,12 @@ public class OmegaCentauri extends Game implements GameActionListener
                 if (!released && keycode == KeyEvent.VK_W)
                 {
                     forward = true;
-                    player.changeImage(ImageMovementState.Thrusting, player.imageRotationState);
                 }
                 break;
             case Thrusting:
                 if (released && keycode == KeyEvent.VK_W)
                 {
                     forward = false;
-                    player.changeImage(ImageMovementState.Idle, player.imageRotationState);
                 }
                 break;
         }

@@ -61,6 +61,7 @@ public class Player extends Ship
             {
                 noMovementCommand = false;
                 move(MovementState.Thrusting);
+                changeImage(ImageMovementState.Thrusting, imageRotationState);
             }
             else if (c instanceof RotationCommand)
             {
@@ -69,9 +70,12 @@ public class Player extends Ship
                 {
                     case 0: // rotate left
                         rotate(RotationState.TurningLeft);
+                        changeImage(imageMovementState, ImageRotationState.rotatingLeft);
                         break;
                     case 1: // rotate right
                         rotate(RotationState.TurningRight);
+                        changeImage(imageMovementState, ImageRotationState.rotatingRight);
+                        break;
                 }
             }
             else if (c instanceof ShootingCommand)
@@ -88,6 +92,7 @@ public class Player extends Ship
             if (moving())
             {
                 move(MovementState.Drifting);
+                changeImage(ImageMovementState.Idle, imageRotationState);
             }
         }
         if (noRotationCommand)
@@ -97,10 +102,12 @@ public class Player extends Ship
                 if (rotationState == RotationState.TurningRight || rotationState == RotationState.TurningRightDrifting)
                 {
                     rotate(RotationState.TurningRightDrifting);
+                    changeImage(imageMovementState, ImageRotationState.Idle);
                 }
                 else if (rotationState == RotationState.TurningLeft || rotationState == RotationState.TurningLeftDrifting)
                 {
                     rotate(RotationState.TurningLeftDrifting);
+                    changeImage(imageMovementState, ImageRotationState.Idle);
                 }
             }
         }
