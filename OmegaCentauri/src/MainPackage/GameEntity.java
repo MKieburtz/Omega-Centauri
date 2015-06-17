@@ -10,10 +10,11 @@ import java.util.ArrayList;
  */
 public abstract class GameEntity 
 {
-    private Point2D.Double location;
-    private Point2D.Double faceAngle;
-    private ArrayList<BufferedImage> images;
-    private Explosion explosion; // might not be needed
+    protected Point2D.Double location;
+    protected Point2D.Double faceAngle;
+    protected ArrayList<BufferedImage> images;
+    protected Explosion explosion; // might not be needed
+    protected GameData gameData;
     
     public void update()
     {

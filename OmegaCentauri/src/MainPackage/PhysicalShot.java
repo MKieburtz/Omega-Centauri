@@ -15,27 +15,27 @@ public abstract class PhysicalShot extends Shot
     protected final double angleIncrement = 1;
         
     public PhysicalShot(int damage, int range, Point2D.Double location,
-            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) 
+            Point2D.Double velocity, double angle, Ship owner) 
     {
-        super(damage, range, location, velocity, angle, cameraLocation, owner);
+        super(damage, range, location, velocity, angle, owner);
     }
     
     @Override
-    public void setUpHitbox(Point2D.Double cameraLocation)
+    public void setUpHitbox()
     {
-        super.setUpHitbox(cameraLocation);
+        super.setUpHitbox();
     }
     
     @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation)
+    public void draw(Graphics2D g2d)
     {
         if (!exploding)
         {
-            super.draw(g2d, cameraLocation);
+            super.draw(g2d);
         }
         else
         {
-            explosion.draw(g2d, location, cameraLocation);
+            explosion.draw(g2d, location);
             if (explosion.isDone())
             {
                 exploding = false;
@@ -45,7 +45,7 @@ public abstract class PhysicalShot extends Shot
 
     
     @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform)
+    public void draw(Graphics2D g2d, AffineTransform transform)
     {
         // to do later
     }
@@ -92,9 +92,9 @@ public abstract class PhysicalShot extends Shot
     }
     
     @Override
-    protected void updateHitbox(Point2D.Double cameraLocation)
+    protected void updateHitbox()
     {
-        super.updateHitbox(cameraLocation);
+        super.updateHitbox();
         hitbox.rotateToAngle(360 - faceAngle);
     }
 }

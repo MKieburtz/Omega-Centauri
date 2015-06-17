@@ -31,6 +31,8 @@ public class Explosion
     private Dimension explosionImageSize;
     
     private Point2D.Double drawingManipulation = new Point2D.Double();
+    
+    private GameData gameData;
    
     private int frame = 0;
 
@@ -138,7 +140,7 @@ public class Explosion
         }
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform)
+    public void draw(Graphics2D g2d, AffineTransform transform)
     {
         AffineTransform original = g2d.getTransform();
 
@@ -153,11 +155,11 @@ public class Explosion
         frame++;
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double location, Point2D.Double cameraLocation) 
+    public void draw(Graphics2D g2d, Point2D.Double location) 
     {
         g2d.drawImage(images[frame],
-                (int)(Calculator.getScreenLocation(cameraLocation, location).x - drawingManipulation.x),
-                (int)(Calculator.getScreenLocation(cameraLocation, location).y - drawingManipulation.y), null);
+                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x - drawingManipulation.x),
+                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
         frame++;
     }
 

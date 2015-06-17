@@ -48,8 +48,8 @@ public class EnemyFighter extends EnemyShip
         images = resources.getImagesForObject(imagePaths);
         activeImage = images.get(0);
         
-        setUpHitbox(cameraLocation);
-        shield = new Shield(location, new Point2D.Double(0, 0), true, new Point(activeImage.getWidth(),
+        setUpHitbox();
+        shield = new Shield(location, true, new Point(activeImage.getWidth(),
                 activeImage.getHeight()), 10, 50, resources, activeImage.getWidth() == activeImage.getHeight());
         
         this.id = id;
@@ -59,7 +59,7 @@ public class EnemyFighter extends EnemyShip
     }
     
     @Override
-    public void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) 
+    public void update(Player player, ArrayList<EnemyShip> otherShips) 
     {
         // main AI goes here
         this.dimensions.x = player.getActiveImage().getWidth();
@@ -124,7 +124,7 @@ public class EnemyFighter extends EnemyShip
 
             if (Math.abs(angleToPlayer - faceAngle) < 45) 
             {
-                shoot(cameraLocation);
+                shoot();
             }
         } 
         else 
@@ -147,7 +147,7 @@ public class EnemyFighter extends EnemyShip
     private boolean right = startingRight;
     
     @Override
-    public void shoot(Point2D.Double cameraLocation) 
+    public void shoot() 
     {
 
         if (canshoot) 
@@ -175,29 +175,25 @@ public class EnemyFighter extends EnemyShip
             
             canshoot = false;
 
-            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, cameraLocation, this, resources));
+            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, this, resources));
 
             ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         }
     }
     
     @Override
-    public void draw(Graphics2D g2d, Camera camera) {
+    public void draw(Graphics2D g2d) {
         
         AffineTransform original = g2d.getTransform();
         
-        super.draw(g2d, camera);
+        super.draw(g2d);
         
         g2d.setTransform(original);
         
-        Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
+        Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         
-        shield.draw(g2d, camera.getLocation(),
-                location,
-                middle,
-                middle,
-                faceAngle);
+        shield.draw(g2d, location, middle, middle, faceAngle);
         
         g2d.setColor(Color.red);
         //hitbox.draw(g2d, camera.getLocation());

@@ -20,8 +20,8 @@ public class Player extends Ship
     private Resources resources;
     
     public Player(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
-            double angleIncrement, double acceleration, Point2D.Double cameraLocation,
-            int timerDelay, int health, Resources resources) 
+            double angleIncrement, double acceleration, int timerDelay, int health,
+            Resources resources) 
     {
 
         super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, timerDelay, health);
@@ -40,7 +40,7 @@ public class Player extends Ship
         activeImage = images.get(0);
         shield = new Shield(location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
                 10, 500, resources, true);
-        setUpHitbox(cameraLocation);
+        setUpHitbox();
 
         soundPaths.add("resources/Pulse.wav");
         
@@ -149,29 +149,26 @@ public class Player extends Ship
     }
 
     @Override
-    public void draw(Graphics2D g2d, Camera camera) 
+    public void draw(Graphics2D g2d) 
     {
         AffineTransform original = g2d.getTransform();
         
-        super.draw(g2d, camera);
+        super.draw(g2d);
 
         g2d.setTransform(original);
         //g2d.setColor(Color.red);
         //hitbox.draw(g2d, camera.getLocation());
         
-        Point2D.Double shipMiddle = new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
+        Point2D.Double shipMiddle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         if (shield.isActive())
         {
-            shield.draw(g2d, camera.getLocation(), location,
-                    shipMiddle,
-                    shipMiddle,
-                    faceAngle);
+            shield.draw(g2d, location, shipMiddle, shipMiddle, faceAngle);
         }
     }
 
     @Override
-    public void shoot(Point2D.Double cameraLocation) 
+    public void shoot() 
     {
         //playSound(0);
         Random rand = new Random();
@@ -190,7 +187,7 @@ public class Player extends Ship
 
         canshoot = false;
 
-        shots.add(new PulseShot(5, ShotStartingPos, ShotStartingVel, angle, false, cameraLocation, this, resources));
+        shots.add(new PulseShot(5, ShotStartingPos, ShotStartingVel, angle, false, this, resources));
 
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }

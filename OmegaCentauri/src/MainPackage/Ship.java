@@ -45,6 +45,7 @@ public abstract class Ship
     protected ImageMovementState imageMovementState;  
     protected RotationState rotationState;
     protected MovementState movementState;
+    protected GameData gameData;
     
     protected ArrayList<String> imagePaths = new ArrayList<>();
     protected ArrayList<String> soundPaths = new ArrayList<>();
@@ -86,6 +87,8 @@ public abstract class Ship
         imageMovementState = ImageMovementState.Idle;
         rotationState = RotationState.Idle;
         movementState = MovementState.Idle;
+        
+        gameData = new GameData();
     }
     
     public BufferedImage getImage()
@@ -98,22 +101,22 @@ public abstract class Ship
         return this.images.get(index);
     }
     
-    public void draw(Graphics2D g2d, Camera camera)
+    public void draw(Graphics2D g2d)
     {
         if (!exploding)
         {
             g2d.rotate(Math.toRadians(360 - faceAngle),
-                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
             
-            g2d.translate(Calculator.getScreenLocation(camera.getLocation(), location).x,
-                    Calculator.getScreenLocation(camera.getLocation(), location).y);
+            g2d.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
+                    Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
             
             g2d.drawImage(activeImage, 0, 0, null);
         }
         else
         {
-            explosion.draw(g2d, location, camera.getLocation());
+            explosion.draw(g2d, location);
             if (explosion.isDone())
             {
                 exploding = false;
@@ -181,7 +184,7 @@ public abstract class Ship
         location.y += movementVelocity.y;
     }
     
-    public abstract void shoot(Point2D.Double cameraLocation);
+    public abstract void shoot();
     
     public Point2D.Double getLocation()
     {
@@ -271,7 +274,7 @@ public abstract class Ship
         updateAngle(state);
     }
     
-    public void setUpHitbox(Point2D.Double cameraLocation) 
+    public void setUpHitbox() 
     {        
         try
         {
@@ -281,10 +284,9 @@ public abstract class Ship
         {
             System.err.println("active image not initialized!");
         }
-        
     }
     
-    protected void updateHitbox(Point2D.Double cameraLocation) 
+    protected void updateHitbox() 
     {
         shieldHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
         shieldHitbox.rotateToAngle(faceAngle);

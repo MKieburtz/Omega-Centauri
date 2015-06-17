@@ -9,21 +9,21 @@ import java.awt.geom.*;
 public abstract class LaserShot extends Shot 
 {
     public LaserShot(int damage, int range, Point2D.Double location,
-            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) 
+            Point2D.Double velocity, double angle, Ship owner) 
     {
-        super(damage, range, location, velocity, angle, cameraLocation, owner);
+        super(damage, range, location, velocity, angle, owner);
     }
     
     @Override
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform) 
+    public void draw(Graphics2D g2d, AffineTransform transform) 
     {
         if (againstShield)
         {
-            explosion.draw(g2d, cameraLocation, transform);
+            explosion.draw(g2d, transform);
         } 
         else
         {
-            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
+            explosion.draw(g2d, hitbox.getCollisionPoint());
         }
 
         if (explosion.isDone())
@@ -33,9 +33,9 @@ public abstract class LaserShot extends Shot
     }
     
     @Override
-    protected void setUpHitbox(Point2D.Double cameraLocation)
+    protected void setUpHitbox()
     {
-        super.setUpHitbox(cameraLocation);
+        super.setUpHitbox();
         hitbox.rotateRelitive(360 - faceAngle);
     }
     

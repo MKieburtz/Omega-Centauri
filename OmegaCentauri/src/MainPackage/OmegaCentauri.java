@@ -16,13 +16,12 @@ public class OmegaCentauri extends Game implements GameActionListener
 {
 
     private final String Version = "Dev 1.0.5";
-    /*
-     * GAME STATE VARIBLES:
-     */
+    // GAME STATE VARIBLES:
     private boolean forward, rotateRight, rotateLeft, shooting = false; // movement booleans
     private boolean paused = false;
     private boolean loading = false;
     private Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
+    private ArrayList<Command> updateCommands = new ArrayList<>();
     // TIMING STUFF
     private int FPS = 0;
     private int UPS = 0;
@@ -30,9 +29,7 @@ public class OmegaCentauri extends Game implements GameActionListener
     private final int TARGETFPS = 70;
     private final long loopTimeUPS = (long) ((1000.0 / TARGETFPS) * 1000000); // Change the constant
     private int framesDrawn = 0;
-    /*
-     * OBJECTS:
-     */
+    // Objects
     private final Renderer renderer;
     private Panel panel;
     private Camera camera;
@@ -42,23 +39,20 @@ public class OmegaCentauri extends Game implements GameActionListener
     private Dimension mapSize;
     private Point mouseLocation = new Point();
     private Dimension borderSize = null;
+    private GameData gameData = new GameData();
     // TIMERS
     private ScheduledExecutorService timingEx;
     private ScheduledExecutorService recordingEx;
     private ScheduledExecutorService mouseRecordingEx;
-    /*
-     * LOADING VARIBLES:
-     */
+    // LOADING VARIBLES:
     private int[] yPositions;
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<>();
     private ArrayList<Ship> deadShips = new ArrayList<>();
     private ArrayList<Shot> deadShots = new ArrayList<>();
-    private ArrayList<Command> updateCommands = new ArrayList<>();
-
+    
     public OmegaCentauri() 
     {
-
         /* change this one, Michael */ mapSize = new Dimension(10000, 10000);
 
         yPositions = new int[]{-mapSize.width, -mapSize.height, 0, 0};
@@ -674,6 +668,8 @@ public class OmegaCentauri extends Game implements GameActionListener
         camera.move(player.getLocation().x - (getWidth() / 2), player.getLocation().y - (getHeight() / 2));
 
         middleOfPlayer = Calculator.getScreenLocationMiddle(player.getLocation(), camera.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight());
+        
+        gameData.updateCameraLocation(camera.getLocation().x, camera.getLocation().y);
     }
 
     class RecordingService implements Runnable

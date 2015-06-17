@@ -30,8 +30,8 @@ public class EnemyMediumFighter extends EnemyShip
     private boolean canShootTurret = true;
     
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
-            double angleIncrement, double acceleration, Point2D.Double cameraLocation,
-            int shootingDelayTurret, int shootingDelayMissile, int health, int id, Player player, Resources resources) 
+            double angleIncrement, double acceleration, int shootingDelayTurret, 
+            int shootingDelayMissile, int health, int id, Player player, Resources resources) 
     {
         super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
 
@@ -40,10 +40,10 @@ public class EnemyMediumFighter extends EnemyShip
        
         activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
-        shield = new Shield(location, new Point2D.Double(0, 0), true,
+        shield = new Shield(location, true,
                 new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 150, resources, false);
 
-        setUpHitbox(cameraLocation);
+        setUpHitbox();
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
                 cameraLocation, new Point2D.Double(65, 70), 65,faceAngle, this, resources);

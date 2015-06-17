@@ -27,11 +27,12 @@ public abstract class Shot
     protected Explosion explosion;
     protected boolean outOfRange = false;
     protected boolean againstShield = false;
+    protected GameData gameData;
 
     protected Ship owner; // the ship that fired the shot
 
     public Shot(int damage, int range, Point2D.Double location,
-            Point2D.Double velocity, double angle, Point2D.Double cameraLocation, Ship owner) 
+            Point2D.Double velocity, double angle, Ship owner) 
     {
         this.damage = damage;
         this.range = range;
@@ -44,7 +45,7 @@ public abstract class Shot
         this.owner = owner;
     }
 
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation) 
+    public void draw(Graphics2D g2d) 
     {
         if (!exploding)
         {
@@ -52,10 +53,10 @@ public abstract class Shot
             AffineTransform transform = (AffineTransform) original.clone();
 
             transform.rotate(Math.toRadians(faceAngle),
-                    Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(cameraLocation, location, activeImage.getWidth(), activeImage.getHeight()).y);
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
 
-            transform.translate(Calculator.getScreenLocation(cameraLocation, location).x, Calculator.getScreenLocation(cameraLocation, location).y);
+            transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x, Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
 
             g2d.transform(transform);
 
@@ -65,7 +66,7 @@ public abstract class Shot
         }
         else
         {
-            explosion.draw(g2d, hitbox.getCollisionPoint(), cameraLocation);
+            explosion.draw(g2d, hitbox.getCollisionPoint(), gameData.getCameraLocation());
             if (explosion.isDone())
             {
                 exploding = false;
@@ -75,14 +76,14 @@ public abstract class Shot
         //hitbox.draw(g2d, cameraLocation);
     }
     
-    public abstract void draw(Graphics2D g2d, Point2D.Double cameraLocation, AffineTransform transform);
+    public abstract void draw(Graphics2D g2d, AffineTransform transform);
 
     public void update() 
     {
         
     }
 
-    protected void setUpHitbox(Point2D.Double cameraLocation) 
+    protected void setUpHitbox() 
     {
         Point2D.Double[] hitboxPoints = new Point2D.Double[4]; 
 
@@ -124,7 +125,7 @@ public abstract class Shot
         return removed;
     }
 
-    protected void updateHitbox(Point2D.Double cameraLocation) 
+    protected void updateHitbox() 
     {
         hitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
     }

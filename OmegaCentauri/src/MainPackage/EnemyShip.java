@@ -14,7 +14,7 @@ public abstract class EnemyShip extends Ship
         super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
     }
     
-    public abstract void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips);
+    public abstract void update(Player player, ArrayList<EnemyShip> otherShips);
     
     public abstract int getID();
     

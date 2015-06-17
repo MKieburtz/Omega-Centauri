@@ -31,8 +31,8 @@ public class Shield
     private Point size;
     private boolean circle;
 
-    public Shield(Point2D.Double location, Point2D.Double cameraLocation,
-            boolean enemy, Point size, int strength, int energy, Resources resources, boolean circle)
+    public Shield(Point2D.Double location, boolean enemy, Point size, int strength,
+            int energy, Resources resources, boolean circle)
     {
         this.energy = energy;
         this.maxEnergy = energy; // start at max power
@@ -99,8 +99,8 @@ public class Shield
         }
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation,
-        Point2D.Double rotationPoint, Point2D.Double translationPoint, double faceAngle) 
+    public void draw(Graphics2D g2d, Point2D.Double instanceLocation, Point2D.Double rotationPoint,
+            Point2D.Double translationPoint, double faceAngle) 
     {      
             int rule = AlphaComposite.SRC_OVER;
             
@@ -141,7 +141,7 @@ public class Shield
                 
                 if (segment.getCollisionShot().isDying())
                 {   
-                    segment.getCollisionShot().draw(g2d, cameraLocation, transform);
+                    segment.getCollisionShot().draw(g2d, transform);
                 }
             }
     }
