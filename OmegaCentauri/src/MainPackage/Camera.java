@@ -9,7 +9,6 @@ import java.awt.geom.*;
  */
 public class Camera 
 {
-
     private Point size;
     private Point2D.Double location;
     private Rectangle2D.Double screenRect;

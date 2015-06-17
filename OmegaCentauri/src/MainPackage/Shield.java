@@ -100,7 +100,7 @@ public class Shield
     }
     
     public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double instanceLocation,
-            Point2D.Double rotationPoint, Point2D.Double translationPoint, double faceAngle) 
+        Point2D.Double rotationPoint, Point2D.Double translationPoint, double faceAngle) 
     {      
             int rule = AlphaComposite.SRC_OVER;
             
