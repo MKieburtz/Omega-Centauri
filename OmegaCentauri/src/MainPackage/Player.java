@@ -38,7 +38,7 @@ public class Player extends Ship
         images = resources.getImagesForObject(imagePaths);
 
         activeImage = images.get(0);
-        shield = new Shield(location, new Point2D.Double(0, 0), false, new Point(activeImage.getWidth(), activeImage.getHeight()),
+        shield = new Shield(location, false, new Point(activeImage.getWidth(), activeImage.getHeight()),
                 10, 500, resources, true);
         setUpHitbox();
 
@@ -82,7 +82,7 @@ public class Player extends Ship
             {
                 if (canshoot)
                 {
-                    // shoot! Needs camera location.
+                    shoot();
                 }
             }
         }

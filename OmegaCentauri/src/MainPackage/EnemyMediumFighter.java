@@ -46,10 +46,10 @@ public class EnemyMediumFighter extends EnemyShip
         setUpHitbox();
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(65, 70), 65,faceAngle, this, resources);
+                new Point2D.Double(65, 70), 65,faceAngle, this, resources);
 
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                cameraLocation, new Point2D.Double(95, 75), -65, faceAngle, this, resources);
+                new Point2D.Double(95, 75), -65, faceAngle, this, resources);
 
         this.targetShip = player;
         
@@ -60,7 +60,7 @@ public class EnemyMediumFighter extends EnemyShip
     }
     
     @Override
-    public void setUpHitbox(Point2D.Double cameraLocation)
+    public void setUpHitbox()
     {
         try 
         {
@@ -83,25 +83,25 @@ public class EnemyMediumFighter extends EnemyShip
     }
     
     @Override
-    protected void updateHitbox(Point2D.Double cameraLocation)
+    protected void updateHitbox()
     {
-        super.updateHitbox(cameraLocation);
+        super.updateHitbox();
         hullHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
         hullHitbox.rotateToAngle(faceAngle);
     }
 
     @Override
-    public void shoot(Point2D.Double cameraLocation) {
+    public void shoot() {
         if (canShootTurret)
         {
             if (right)
             {
-                shots.add(turrets[0].shoot(cameraLocation, movementVelocity));
+                shots.add(turrets[0].shoot(movementVelocity));
                 right = !right;
             }
             else
             {
-                shots.add(turrets[1].shoot(cameraLocation, movementVelocity));
+                shots.add(turrets[1].shoot(movementVelocity));
                 right = !right;
             }
             canShootTurret = false;
@@ -114,7 +114,7 @@ public class EnemyMediumFighter extends EnemyShip
 
             Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
             
-            shots.add(new Missile(60, startingLocation, null, 360 - angle, cameraLocation, targetShip, this, resources));
+            shots.add(new Missile(60, startingLocation, null, 360 - angle, targetShip, this, resources));
 
             canShootMissile = false;
 
@@ -123,31 +123,28 @@ public class EnemyMediumFighter extends EnemyShip
     }
 
     @Override
-    public void draw(Graphics2D g2d, Camera camera) {
+    public void draw(Graphics2D g2d) {
         AffineTransform original = g2d.getTransform();
 
-        super.draw(g2d, camera);
+        super.draw(g2d);
 
         for (Turret t : turrets) 
         {
-            t.draw(g2d, camera.getLocation(), location);
+            t.draw(g2d, location);
         }
 
         g2d.setTransform(original);
 
-        Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(camera.getLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
+        Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         
-        shield.draw(g2d, camera.getLocation(), location, 
-                middle,
-                middle,
-                faceAngle);
+        shield.draw(g2d, location, middle, middle, faceAngle);
 //        g2d.setColor(Color.red);
 //        hullHitbox.draw(g2d, camera.getLocation());
     }
 
     @Override
-    public void update(Player player, Point2D.Double cameraLocation, ArrayList<EnemyShip> otherShips) {
+    public void update(Player player, ArrayList<EnemyShip> otherShips) {
 
         double distance = Calculator.getDistance(location, player.getLocation());
 
@@ -160,13 +157,13 @@ public class EnemyMediumFighter extends EnemyShip
         {
             t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
-                    faceAngle, cameraLocation);
+                    faceAngle);
 
         }
 
         if (Math.abs(angleToPlayer - faceAngle) <= 45)
         {
-            shoot(cameraLocation);
+            shoot();
         }
 
         if (distance > 500)

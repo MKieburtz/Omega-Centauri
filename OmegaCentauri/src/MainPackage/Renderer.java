@@ -98,7 +98,7 @@ public class Renderer
         {
             if (!shot.againstShield())
             {
-                shot.draw(g2d, camera.getLocation());
+                shot.draw(g2d);
             }
         }
 

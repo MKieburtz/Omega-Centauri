@@ -16,7 +16,7 @@ public class Ally extends Ship {
     }
 
     @Override
-    public void shoot(Point2D.Double cameraLocation) 
+    public void shoot() 
     {
         
     }

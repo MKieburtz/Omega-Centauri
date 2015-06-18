@@ -101,7 +101,7 @@ public class HeadsUpDisplayPlayer
 
         for (Ship ship : ships) 
         {
-            ship.draw(g2d, camera);
+            ship.draw(g2d);
             if (ship instanceof Player)
             {
                 g2d.setColor(Color.CYAN);

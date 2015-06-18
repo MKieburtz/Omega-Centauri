@@ -43,6 +43,8 @@ public abstract class Shot
         this.maxVel = 5;
 
         this.owner = owner;
+        
+        gameData = new GameData();
     }
 
     public void draw(Graphics2D g2d) 
@@ -66,7 +68,7 @@ public abstract class Shot
         }
         else
         {
-            explosion.draw(g2d, hitbox.getCollisionPoint(), gameData.getCameraLocation());
+            explosion.draw(g2d, hitbox.getCollisionPoint());
             if (explosion.isDone())
             {
                 exploding = false;

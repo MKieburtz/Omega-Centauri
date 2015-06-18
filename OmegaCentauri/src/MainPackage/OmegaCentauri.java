@@ -71,31 +71,31 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void addShips() 
     {
-        player = new Player(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, camera.getLocation(), 150, 500, resources);
-        enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 700, 20, 1, resources));
-        enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 600, 20, 2, resources));
-        enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-        enemyShips.add(new EnemyFighter(4800, 4975, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 800, 20, 4, resources));
-        enemyShips.add(new EnemyFighter(4700, 4950, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 750, 20, 5, resources));
-        enemyShips.add(new EnemyFighter(4600, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 1000, 20, 6, resources));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 3, resources));
-//        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 5000, 20, 4, resources));
-//        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 5, resources));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 6, resources));
-//        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 7, resources));
-//        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 8, resources));
-//        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 9, resources));
-//        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 10, resources));
-//        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 11, resources));
-//        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 12, resources));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 13, resources));
-//        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 14, resources));
-//        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 15, resources));
-//        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 16, resources));
-//        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 17, resources));
-//        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 19, resources));
-//        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, camera.getLocation(), 500, 20, 20, resources));
-         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 2, 1, .15, camera.getLocation(), 300, 4000, 200, 5, player, resources));
+        player = new Player(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500, resources);
+        enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 3, 5, 5, .15, 700, 20, 1, resources));
+        enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 3, 5, 5, .15, 600, 20, 2, resources));
+        enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3, resources));
+        enemyShips.add(new EnemyFighter(4800, 4975, MainPackage.Type.Fighter, 3, 5, 5, .15, 800, 20, 4, resources));
+        enemyShips.add(new EnemyFighter(4700, 4950, MainPackage.Type.Fighter, 3, 5, 5, .15, 750, 20, 5, resources));
+        enemyShips.add(new EnemyFighter(4600, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 1000, 20, 6, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3, resources));
+//        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 3, 5, 5, .15, 5000, 20, 4, resources));
+//        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 5, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 6, resources));
+//        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 7, resources));
+//        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 8, resources));
+//        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 9, resources));
+//        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 10, resources));
+//        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 11, resources));
+//        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 12, resources));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 13, resources));
+//        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 14, resources));
+//        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 15, resources));
+//        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 16, resources));
+//        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 17, resources));
+//        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 19, resources));
+//        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 20, resources));
+         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 5, player, resources));
         
         syncGameStateVaribles();
     }
@@ -398,7 +398,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             
             for (EnemyShip enemyShip : enemyShips) 
             {
-                enemyShip.update(player, camera.getLocation(), enemyShips);
+                enemyShip.update(player, enemyShips);
             }
             
             for (int i = deadShips.size() - 1; i > -1; i--)
@@ -427,14 +427,14 @@ public class OmegaCentauri extends Game implements GameActionListener
 
             for (Ship ship : shipsToDraw)
             {
-                ship.updateHitbox(camera.getLocation());
+                ship.updateHitbox();
 
                 allShots.addAll(ship.getShots()); // should be fine because hashset doesn't allow dups
             }
 
             for (Shot shot : allShots) 
             {
-                shot.updateHitbox(camera.getLocation());
+                shot.updateHitbox();
                 shot.update();
                
                 if (shot.outOfRange())

@@ -31,7 +31,7 @@ public class EnemyFighter extends EnemyShip
     private Resources resources;
 
     public EnemyFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
-            double angleIncrement, double acceleration, Point2D.Double cameraLocation,
+            double angleIncrement, double acceleration,
             int shootingDelay, int health, int id, Resources resources)
     {
         super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);

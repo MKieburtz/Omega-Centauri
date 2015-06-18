@@ -48,7 +48,7 @@ public class Turret
     private Resources resources;
 
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
-            Dimension imageDimensions, Point2D.Double cameraLocation, Point2D.Double distanceToShotSpawnPoint,
+            Dimension imageDimensions, Point2D.Double distanceToShotSpawnPoint,
             double angleFromCenter, double shipAngle, Ship owner, Resources resources)
     {
         
@@ -79,7 +79,7 @@ public class Turret
         this.owner = owner;
     }
     
-    public void draw(Graphics2D g2d, Point2D.Double cameraLocation, Point2D.Double entityLocation) 
+    public void draw(Graphics2D g2d, Point2D.Double entityLocation) 
     {
         AffineTransform original = g2d.getTransform();
         AffineTransform transform = new AffineTransform();
@@ -93,7 +93,7 @@ public class Turret
         g2d.setTransform(original);
     }
 
-    public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle, Point2D.Double cameraLocation)
+    public void update(Point2D.Double playerLocation, Point2D.Double shipLocationMiddle, double shipAngle)
     {
         shotSpawnPoint.x = shipLocationMiddle.x + distanceToShotSpawnPoint.x * Math.cos(Math.toRadians(360 - shipAngle + angleFromCenter));
 
@@ -135,7 +135,7 @@ public class Turret
 
     }
     
-    public Shot shoot(Point2D.Double cameraLocation, Point2D.Double velocity) // ASSUMES THAT CANSHOOT IS TESTED BEFORE THIS IS CALLED!
+    public Shot shoot(Point2D.Double velocity) // ASSUMES THAT CANSHOOT IS TESTED BEFORE THIS IS CALLED!
     { 
         Random rand = new Random();
         
@@ -146,7 +146,7 @@ public class Turret
         Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(shootingAngle),
                 velocity.y + 20 * Calculator.CalcAngleMoveY(shootingAngle));
         
-        return new TurretShot(10, shotStartingPos, shotStartingVel, shootingAngle, cameraLocation, owner, resources);
+        return new TurretShot(10, shotStartingPos, shotStartingVel, shootingAngle, owner, resources);
     }
     
 }

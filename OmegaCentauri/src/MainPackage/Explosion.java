@@ -124,6 +124,8 @@ public class Explosion
                 (explosionImageSize.width - entityImageSize.width) / 2,
                 (explosionImageSize.height - entityImageSize.height) / 2
         );
+        
+        gameData = new GameData();
     }
 
     private void loadImages(Dimension spriteSheetSize, BufferedImage spriteSheet, Dimension imageSize) 
