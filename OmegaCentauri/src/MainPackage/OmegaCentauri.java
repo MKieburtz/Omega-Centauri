@@ -71,7 +71,9 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void addShips() 
     {
-        player = new Player(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500, resources);
+        player = new Player();
+        player.controlShip(new Fighter(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500, resources));
+        
         enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 3, 5, 5, .15, 700, 20, 1, resources));
         enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 3, 5, 5, .15, 600, 20, 2, resources));
         enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3, resources));
@@ -95,7 +97,7 @@ public class OmegaCentauri extends Game implements GameActionListener
 //        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 17, resources));
 //        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 19, resources));
 //        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 20, resources));
-         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 5, player, resources));
+         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 5, resources));
         
         syncGameStateVaribles();
     }
@@ -398,7 +400,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             
             for (EnemyShip enemyShip : enemyShips) 
             {
-                enemyShip.update(player, enemyShips);
+                enemyShip.update();
             }
             
             for (int i = deadShips.size() - 1; i > -1; i--)
@@ -531,7 +533,7 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void handleInput(int keycode, boolean released)
     {
-        switch (player.imageRotationState)
+        switch (player.getImageRotationState())
         {
             case Idle: // either both keys or niether key
                 if (!released && keycode == KeyEvent.VK_A)
@@ -577,7 +579,7 @@ public class OmegaCentauri extends Game implements GameActionListener
                 break;
         }
         
-        switch(player.imageMovementState)
+        switch(player.getImageMovementState())
         {
             case Idle: // w isn't down
                 if (!released && keycode == KeyEvent.VK_W)
@@ -665,11 +667,14 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void syncGameStateVaribles() 
     {
-        camera.move(player.getLocation().x - (getWidth() / 2), player.getLocation().y - (getHeight() / 2));
+        camera.move(player.getShipLocation().x - (getWidth() / 2), player.getShipLocation().y - (getHeight() / 2));
 
-        middleOfPlayer = Calculator.getScreenLocationMiddle(player.getLocation(), camera.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight());
+        middleOfPlayer = Calculator.getScreenLocationMiddle(player.getShipLocation(),
+                camera.getLocation(), player.getShipActiveImage().getWidth(), player.getShipActiveImage().getHeight());
         
         gameData.updateCameraLocation(camera.getLocation().x, camera.getLocation().y);
+        gameData.updatePlayer(player.getControllingShip());
+        gameData.updateShips(enemyShips);
     }
 
     class RecordingService implements Runnable
@@ -795,7 +800,7 @@ public class OmegaCentauri extends Game implements GameActionListener
                         }
                         else 
                         {
-                            shipsToDraw.add(player);
+                            shipsToDraw.add(player.getControllingShip());
                             shipsToDraw.addAll(enemyShips);
                             shipsToDraw.addAll(allyShips);
 

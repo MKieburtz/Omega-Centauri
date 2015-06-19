@@ -40,6 +40,8 @@ public class HeadsUpDisplayPlayer
 
     private Font healthFont;
     private Font dataFont;
+    
+    private GameData gameData = new GameData();
 
     public HeadsUpDisplayPlayer(Resources resources) 
     {
@@ -67,13 +69,13 @@ public class HeadsUpDisplayPlayer
     {
         //g2d.drawLine(HEALTHSTARTINGX, HEALTHSTARTINGY, HEALTHSTARTINGX, HEALTHSTARTINGY - 200);
         g2d.drawImage(images.get(TOPLEFTHUD), -10, -35, null); // wierd coords. I know
-        Player playerShip = null;
+        Ally playerShip = null;
         
         for (Ship ship : ships)
         {
-            if (ship instanceof Player)
+            if (ship instanceof Ally)
             {
-                playerShip = (Player)ship;
+                playerShip = (Ally)ship;
             }
         }
         
@@ -102,7 +104,7 @@ public class HeadsUpDisplayPlayer
         for (Ship ship : ships) 
         {
             ship.draw(g2d);
-            if (ship instanceof Player)
+            if (ship.equals(playerShip))
             {
                 g2d.setColor(Color.CYAN);
 
@@ -115,7 +117,6 @@ public class HeadsUpDisplayPlayer
                 {
                     g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
                 }
-
             } 
             else if (ship instanceof EnemyShip)
             {

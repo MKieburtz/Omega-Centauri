@@ -17,8 +17,15 @@ import java.util.concurrent.*;
 
 public class EnemyFighter extends EnemyShip 
 {
-
-    private Point dimensions = new Point(0, 0);
+    // make sure image loading order is correct!
+    private final int IDLE = 0;
+    private final int THRUSTING = 1;
+    private final int TURNINGLEFT = 2;
+    private final int TURNINGRIGHT = 3;
+    private final int TURNINGLEFTTHRUSTING = 4;
+    private final int TURNINGRIGHTTHRUSTING = 5;
+    
+    private Point playerDimensions = new Point(0, 0);
     private ArrayList<EnemyShip> others = new ArrayList<>();
     //private boolean incorrectAngle = false;
     private boolean movingAway;
@@ -59,21 +66,21 @@ public class EnemyFighter extends EnemyShip
     }
     
     @Override
-    public void update(Player player, ArrayList<EnemyShip> otherShips) 
+    public void update() 
     {
         // main AI goes here
-        this.dimensions.x = player.getActiveImage().getWidth();
-        this.dimensions.y = player.getActiveImage().getHeight();
+        this.playerDimensions.x = gameData.getPlayerShip().getActiveImage().getWidth();
+        this.playerDimensions.y = gameData.getPlayerShip().getActiveImage().getHeight();
 
         // move in the direction of the ship if it is far away
         // and shoot if it is in range.
-        double distanceToPlayer = Calculator.getDistance(location, player.getLocation());
+        double distanceToPlayer = Calculator.getDistance(location, gameData.getPlayerShip().getLocation());
 
-        double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, player.getLocation());
+        double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, gameData.getPlayerShip().getLocation());
         //System.out.println(angleToPlayer + " " + faceAngle);
 
         //System.out.println(angleToPlayer);
-        others = (ArrayList<EnemyShip>) otherShips.clone();
+        others = (ArrayList<EnemyShip>) gameData.getEnemyShips().clone();
         others.remove(this);
 
         // this block sets movingAway
@@ -135,12 +142,12 @@ public class EnemyFighter extends EnemyShip
         if ((movingAway && Math.abs(faceAngle - targetingAngle) < 15) || (distanceToPlayer > 200 && !movingAway))
         {
             move(MovementState.Thrusting);
-            changeImage(StateChange.thrust);
+            changeImage(ImageMovementState.Thrusting, imageRotationState);
         } 
         else 
         {
             move(MovementState.Drifting);
-            changeImage(StateChange.stopThrust);
+            changeImage(ImageMovementState.Idle, imageRotationState);
         }
     }
 
@@ -209,65 +216,47 @@ public class EnemyFighter extends EnemyShip
     {
         return id;
     }
-
-    @Override
-    protected void changeImage(StateChange change) 
-    // remember that this is for the IMAGE not the action of the ship. An IDLE ship might or might not be drifting, the images are the same
+    
+    public void changeImage(ImageMovementState movementState, ImageRotationState rotationState) 
     {
-        switch (imageRotationState)
+        switch (movementState) 
         {
             case Idle:
-                switch (change)
+                imageMovementState = ImageMovementState.Idle;
+                switch (rotationState)
                 {
-                    case rotateLeft:
-                        changeImage(imageMovementState, ImageRotationState.rotatingLeft);
+                    case Idle:
+                        imageRotationState = ImageRotationState.Idle;
+                        activeImage = images.get(IDLE);
                         break;
-                    case rotateRight:
-                        changeImage(imageMovementState, ImageRotationState.rotatingRight);
+                    case rotatingLeft:
+                        imageRotationState = ImageRotationState.rotatingLeft;
+                        activeImage = images.get(TURNINGLEFT);
                         break;
-                    case stopRotating:
-                        changeImage(imageMovementState, ImageRotationState.Idle);
+                    case rotatingRight:
+                        imageRotationState = ImageRotationState.rotatingRight;
+                        activeImage = images.get(TURNINGRIGHT);
                         break;
-                }
-                break;
-            case rotatingLeft:
-                switch (change)
-                {
-                    case rotateRight:
-                        changeImage(imageMovementState, ImageRotationState.rotatingRight);
-                        break;
-                    case stopRotating:
-                        changeImage(imageMovementState, ImageRotationState.Idle);
-                        break;
-                }
-                break;
-            case rotatingRight:
-                switch (change)
-                {
-                    case rotateLeft:
-                        changeImage(imageMovementState, ImageRotationState.rotatingLeft);
-                        break;
-                    case stopRotating:
-                        changeImage(imageMovementState, imageRotationState.Idle);
-                        break;
-                }
-                break;   
-        }
-        
-        switch (imageMovementState)
-        {
-            case Idle:
-                if (change == StateChange.thrust)
-                {
-                    changeImage(ImageMovementState.Thrusting, imageRotationState);
                 }
                 break;
             case Thrusting:
-                if (change == StateChange.stopThrust)
+                imageMovementState = ImageMovementState.Thrusting;
+                switch (rotationState)
                 {
-                    changeImage(ImageMovementState.Idle, imageRotationState);
+                    case Idle:
+                        imageRotationState = ImageRotationState.Idle;
+                        activeImage = images.get(THRUSTING);
+                        break;
+                    case rotatingLeft:
+                        imageRotationState = ImageRotationState.rotatingLeft;
+                        activeImage = images.get(TURNINGLEFTTHRUSTING);
+                        break;
+                    case rotatingRight: 
+                        imageRotationState = ImageRotationState.rotatingRight;
+                        activeImage = images.get(TURNINGRIGHTTHRUSTING);
+                        break;
                 }
-                break;
+                break;         
         }
     }
 

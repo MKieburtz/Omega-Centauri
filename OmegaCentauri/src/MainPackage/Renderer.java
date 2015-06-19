@@ -87,8 +87,6 @@ public class Renderer
                 starChunk.draw(g2d, camera.getLocation());
             }
         }
-
-        
         
         // draw HUD
         headsUpDisplayPlayer.draw(g2d, camera, ships, mapSize, fps, ups, version, allShots.size());

@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class EnemyMediumFighter extends EnemyShip 
 {
-
     private int id;
 
     private Turret[] turrets = new Turret[2];
@@ -31,7 +30,7 @@ public class EnemyMediumFighter extends EnemyShip
     
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, int shootingDelayTurret, 
-            int shootingDelayMissile, int health, int id, Player player, Resources resources) 
+            int shootingDelayMissile, int health, int id, Resources resources) 
     {
         super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
 
@@ -50,8 +49,6 @@ public class EnemyMediumFighter extends EnemyShip
 
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
                 new Point2D.Double(95, 75), -65, faceAngle, this, resources);
-
-        this.targetShip = player;
         
         this.shootingDelayMissile = shootingDelayMissile;
         this.shootingDelayTurret = shootingDelayTurret;
@@ -144,18 +141,21 @@ public class EnemyMediumFighter extends EnemyShip
     }
 
     @Override
-    public void update(Player player, ArrayList<EnemyShip> otherShips) {
+    public void update() {
 
-        double distance = Calculator.getDistance(location, player.getLocation());
+        targetShip = (Ally)gameData.getPlayerShip();
+        
+        double distance = Calculator.getDistance(location, gameData.getPlayerShip().getLocation());
 
         double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
-                player.getLocation());
+                gameData.getPlayerShip().getLocation());
 
         rotateToAngle(angleToPlayer);
         
         for (Turret t : turrets) 
         {
-            t.update(Calculator.getGameLocationMiddle(player.getLocation(), player.getActiveImage().getWidth(), player.getActiveImage().getHeight()),
+            t.update(Calculator.getGameLocationMiddle(gameData.getPlayerShip().getLocation(),
+                    gameData.getPlayerShip().getActiveImage().getWidth(), gameData.getPlayerShip().getActiveImage().getWidth()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                     faceAngle);
 
@@ -189,7 +189,8 @@ public class EnemyMediumFighter extends EnemyShip
     }
 
     @Override
-    protected void changeImage(StateChange change) {
+    public void changeImage(ImageMovementState movementState, ImageRotationState rotationState) 
+    {
         // only one image so far
     }
 

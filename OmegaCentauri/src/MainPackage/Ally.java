@@ -1,12 +1,12 @@
 package MainPackage;
 
-import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 /**
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class Ally extends Ship {
+public abstract class Ally extends Ship implements Controllable {
 
     public Ally(int x, int y, Type shipType, double maxVel, double maxAngleVel,
             double angleIncrement, double acceleration, int shootingDelay, int health) 
@@ -20,4 +20,19 @@ public class Ally extends Ship {
     {
         
     }
+    
+    @Override
+    public void update()
+    {
+        
+    }
+
+    @Override
+    public void update(ArrayList<Command> commands) 
+    {
+        
+    }   
+
+    public abstract void changeImage(ImageMovementState movementState, ImageRotationState rotationState);
+
 }

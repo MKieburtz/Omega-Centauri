@@ -11,17 +11,8 @@ import java.util.concurrent.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public abstract class Ship
-{
-
-    // make sure image loading order is correct!
-    protected final int IDLE = 0;
-    protected final int THRUSTING = 1;
-    protected final int TURNINGLEFT = 2;
-    protected final int TURNINGRIGHT = 3;
-    protected final int TURNINGLEFTTHRUSTING = 4;
-    protected final int TURNINGRIGHTTHRUSTING = 5;
-    
+public abstract class Ship implements GameEntity
+{   
     protected int hullDurability;
     protected int maxhullDurabilty;
     protected int fuel;
@@ -59,8 +50,6 @@ public abstract class Ship
     protected Shield shield;
     protected boolean colliding = false;
     protected ScheduledExecutorService ex;
-        
-    protected Ship targetShip;
     
     protected Explosion explosion;
     
@@ -101,6 +90,7 @@ public abstract class Ship
         return this.images.get(index);
     }
     
+    @Override
     public void draw(Graphics2D g2d)
     {
         if (!exploding)
@@ -488,46 +478,25 @@ public abstract class Ship
         return exploding;
     }
     
-    public void changeImage(ImageMovementState movementState, ImageRotationState rotationState) 
+    public abstract void changeImage(ImageMovementState movementState, ImageRotationState rotationState);
+    
+    public boolean moving() 
     {
-        switch (movementState) 
-        {
-            case Idle:
-                imageMovementState = ImageMovementState.Idle;
-                switch (rotationState)
-                {
-                    case Idle:
-                        imageRotationState = ImageRotationState.Idle;
-                        activeImage = images.get(IDLE);
-                        break;
-                    case rotatingLeft:
-                        imageRotationState = ImageRotationState.rotatingLeft;
-                        activeImage = images.get(TURNINGLEFT);
-                        break;
-                    case rotatingRight:
-                        imageRotationState = ImageRotationState.rotatingRight;
-                        activeImage = images.get(TURNINGRIGHT);
-                        break;
-                }
-                break;
-            case Thrusting:
-                imageMovementState = ImageMovementState.Thrusting;
-                switch (rotationState)
-                {
-                    case Idle:
-                        imageRotationState = ImageRotationState.Idle;
-                        activeImage = images.get(THRUSTING);
-                        break;
-                    case rotatingLeft:
-                        imageRotationState = ImageRotationState.rotatingLeft;
-                        activeImage = images.get(TURNINGLEFTTHRUSTING);
-                        break;
-                    case rotatingRight: 
-                        imageRotationState = ImageRotationState.rotatingRight;
-                        activeImage = images.get(TURNINGRIGHTTHRUSTING);
-                        break;
-                }
-                break;         
-        }
+        return movementVelocity.x != 0 || movementVelocity.y != 0;
+    }
+    
+    public boolean rotating()
+    {
+        return angularVelocity != 0;
+    }
+    
+    public ImageRotationState getImageRotationState()
+    {
+        return imageRotationState;
+    }
+    
+    public ImageMovementState getImageMovementState()
+    {
+        return imageMovementState;
     }
 }

@@ -20,15 +20,29 @@ public class GameData {
         return cameraLocation;
     }
     
-    public static volatile ArrayList<Ship> allShips = new ArrayList<>();
+    public static volatile ArrayList<EnemyShip> enemyShips = new ArrayList<>();
     
-    public void updateShips(ArrayList<Ship> newShips)
+    public void updateShips(ArrayList<EnemyShip> newShips)
     {
-        allShips = newShips;
+        enemyShips = newShips;
     }
     
-    public ArrayList<Ship> getShips()
+    public ArrayList<EnemyShip> getEnemyShips()
     {
-        return allShips;
+        return enemyShips;
     }
+    
+    public static volatile Ship playerShip;
+    
+    public void updatePlayer(Ship controllingShip)
+    {
+        playerShip = controllingShip;
+    }
+    
+    public Ship getPlayerShip()
+    {
+        return playerShip;
+    }
+    
+    
 }

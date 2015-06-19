@@ -8,13 +8,16 @@ import java.util.ArrayList;
  */
 public abstract class EnemyShip extends Ship
 {
+    protected Ally targetShip;
+    
     public EnemyShip(int x, int y, Type shipType, double maxVel,
             double maxAngleVelocity, double angleIncrement, double acceleration, int shootingDelay, int health)
     {
         super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
     }
     
-    public abstract void update(Player player, ArrayList<EnemyShip> otherShips);
+    @Override
+    public abstract void update();
     
     public abstract int getID();
     
@@ -39,7 +42,7 @@ public abstract class EnemyShip extends Ship
             {
                 if (distances[0] > angleIcrement) 
                 {
-                    changeImage(StateChange.rotateLeft);
+                    changeImage(imageMovementState, ImageRotationState.rotatingLeft);
                     rotate(RotationState.TurningLeft);
                 }
             }
@@ -47,7 +50,7 @@ public abstract class EnemyShip extends Ship
             {
                 if (distances[1] > angleIcrement) 
                 {
-                    changeImage(StateChange.rotateRight);
+                    changeImage(imageMovementState, ImageRotationState.rotatingRight);
                     rotate(RotationState.TurningRight);
                 }
             }
@@ -56,16 +59,14 @@ public abstract class EnemyShip extends Ship
         {
             if (imageRotationState == ImageRotationState.rotatingRight)
             {
-                changeImage(StateChange.stopRotating); // just for the image
+                changeImage(imageMovementState, ImageRotationState.Idle);
                 rotate(RotationState.TurningRightDrifting);
             }
             else if (imageRotationState == ImageRotationState.rotatingLeft)
             {
-                changeImage(StateChange.stopRotating); // also just for the image
+                changeImage(imageMovementState, ImageRotationState.Idle);
                 rotate(RotationState.TurningLeftDrifting);
             }
         }
     }
-     
-     protected abstract void changeImage(StateChange change);
 }
