@@ -27,7 +27,8 @@ public abstract class Shot
     protected Explosion explosion;
     protected boolean outOfRange = false;
     protected boolean againstShield = false;
-    protected GameData gameData;
+    protected GameData gameData = new GameData();
+    protected Resources resources;
 
     protected Ship owner; // the ship that fired the shot
 
@@ -44,7 +45,7 @@ public abstract class Shot
 
         this.owner = owner;
         
-        gameData = new GameData();
+        resources = gameData.getResources();
     }
 
     public void draw(Graphics2D g2d) 

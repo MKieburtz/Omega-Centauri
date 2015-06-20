@@ -19,7 +19,8 @@ import java.util.*;
  */
 public class Shield 
 {
-
+    private GameData gameData = new GameData();
+    private Resources resources;
     private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
     private BufferedImage activeImage;
@@ -32,8 +33,9 @@ public class Shield
     private boolean circle;
 
     public Shield(Point2D.Double location, boolean enemy, Point size, int strength,
-            int energy, Resources resources, boolean circle)
+            int energy, boolean circle)
     {
+        resources = gameData.getResources();
         this.energy = energy;
         this.maxEnergy = energy; // start at max power
         this.strengh = strength;

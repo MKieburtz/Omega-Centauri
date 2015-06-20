@@ -66,9 +66,12 @@ public class MainMenu
     
     private boolean isMac;
     
-
-    public MainMenu(OmegaCentauri game, Resources resources, boolean isMac) 
+    private GameData gameData = new GameData();
+    private Resources resources;
+    
+    public MainMenu(OmegaCentauri game, boolean isMac) 
     {
+        resources = gameData.getResources();
         this.isMac = isMac;
         active = true;
         startListener = game;
@@ -88,7 +91,7 @@ public class MainMenu
 
         size = new Point(game.getWidth(), game.getHeight());
 
-        settings = new Settings(new Dimension(size.x, size.y), game, resources);
+        settings = new Settings(new Dimension(size.x, size.y), game);
         
         screenRect = new Rectangle(0, 0, size.x, size.y);
 

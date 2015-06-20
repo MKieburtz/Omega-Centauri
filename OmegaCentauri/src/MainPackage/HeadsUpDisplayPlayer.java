@@ -42,9 +42,13 @@ public class HeadsUpDisplayPlayer
     private Font dataFont;
     
     private GameData gameData = new GameData();
+    
+    private Resources resources;
 
-    public HeadsUpDisplayPlayer(Resources resources) 
+    public HeadsUpDisplayPlayer() 
     {
+        resources = gameData.getResources();
+        
         healthFont = resources.getFontForObject(new FontInfo("resources/Orbitron-Regular.ttf", 12f));
         dataFont = resources.getFontForObject(new FontInfo("resources/OCR A Std.ttf", 10f));
         

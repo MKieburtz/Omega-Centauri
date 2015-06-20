@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class Turret 
 {
-
     private BufferedImage activeImage;
 
     private int maxDurability;
@@ -46,13 +45,14 @@ public class Turret
     private ScheduledExecutorService ex = Executors.newSingleThreadScheduledExecutor();
     
     private Resources resources;
+    
+    private GameData gameData = new GameData();
 
     public Turret(int maxDurability, int maxRotation, int minRotation, Point2D.Double distanceFromCenter,
             Dimension imageDimensions, Point2D.Double distanceToShotSpawnPoint,
-            double angleFromCenter, double shipAngle, Ship owner, Resources resources)
+            double angleFromCenter, double shipAngle, Ship owner)
     {
-        
-        this.resources = resources;
+        resources = gameData.getResources();
         
         this.maxDurability = maxDurability;
         this.durability = maxDurability;
@@ -146,7 +146,7 @@ public class Turret
         Point2D.Double shotStartingVel = new Point2D.Double(velocity.x + 20 * Calculator.CalcAngleMoveX(shootingAngle),
                 velocity.y + 20 * Calculator.CalcAngleMoveY(shootingAngle));
         
-        return new TurretShot(10, shotStartingPos, shotStartingVel, shootingAngle, owner, resources);
+        return new TurretShot(10, shotStartingPos, shotStartingVel, shootingAngle, owner);
     }
     
 }

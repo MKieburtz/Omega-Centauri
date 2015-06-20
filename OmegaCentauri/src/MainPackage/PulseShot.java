@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class PulseShot extends LaserShot 
 {
     public PulseShot(int damage, Point2D.Double location,
-            Point2D.Double velocity, double angle, boolean enemy, Ship owner, Resources resources) 
+            Point2D.Double velocity, double angle, boolean enemy, Ship owner) 
     {
 
         super(damage, 1200, location, velocity, angle, owner);
@@ -29,6 +29,6 @@ public class PulseShot extends LaserShot
         
         setUpHitbox();
         
-        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
+        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
     }
 }

@@ -32,7 +32,8 @@ public class Explosion
     
     private Point2D.Double drawingManipulation = new Point2D.Double();
     
-    private GameData gameData;
+    private GameData gameData = new GameData();
+    private Resources resources;
    
     private int frame = 0;
 
@@ -49,9 +50,10 @@ public class Explosion
     private final String fighterExplosionPath = "resources/FighterExplosionSpritesheet.png";
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
     private final String rangeExplosionPath = "resources/RangeExplosionSpritesheet.png";
-        
-    public Explosion(Type type, Dimension imageSize, Resources resources) 
+            
+    public Explosion(Type type, Dimension imageSize) 
     {
+        resources = gameData.getResources();
         switch (type) 
         {
             case fighter:

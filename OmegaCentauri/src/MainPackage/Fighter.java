@@ -25,33 +25,32 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     private Resources resources;
     
     public Fighter(int x, int y, Type shipType, double maxVel, double maxAngleVel,
-            double angleIncrement, double acceleration, int shootingDelay, int health, Resources resources) {
+            double angleIncrement, double acceleration, int shootingDelay, int health) {
         
         super(x, y, shipType, maxVel, maxAngleVel, angleIncrement, acceleration, shootingDelay, health);
-                
+        resources = gameData.getResources();
         imagePaths.add("resources/FighterIdle.png");
         imagePaths.add("resources/FighterThrust.png");
         imagePaths.add("resources/FighterLeft.png");
         imagePaths.add("resources/FighterRight.png");
         imagePaths.add("resources/FighterThrustLeft.png");
         imagePaths.add("resources/FighterThrustRight.png");
-        
         images = resources.getImagesForObject(imagePaths);
 
         activeImage = images.get(0);
         shield = new Shield(location, false, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 500, resources, true);
+                10, 500, true);
         setUpHitbox();
 
         soundPaths.add("resources/Pulse.wav");
         
         sounds = resources.getSoundsForObject(soundPaths);
         
-        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
+        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
         
         faceAngle = 180;
         
-        this.resources = resources;
+        
     }
 
     @Override
@@ -73,7 +72,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
 
         canshoot = false;
 
-        shots.add(new PulseShot(5, ShotStartingPos, ShotStartingVel, angle, false, this, resources));
+        shots.add(new PulseShot(5, ShotStartingPos, ShotStartingVel, angle, false, this));
 
         ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
     }

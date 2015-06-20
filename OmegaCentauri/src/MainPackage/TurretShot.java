@@ -10,7 +10,7 @@ public class TurretShot extends LaserShot
 {
 
     public TurretShot(int damage, Point2D.Double location,
-            Point2D.Double velocity, double angle, Ship owner, Resources resources)
+            Point2D.Double velocity, double angle, Ship owner)
     {
         super(damage, 500, location, velocity, angle, owner);
         
@@ -18,6 +18,6 @@ public class TurretShot extends LaserShot
         
         setUpHitbox();
         
-        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
+        explosion = new Explosion(Explosion.Type.range, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
     }
 }

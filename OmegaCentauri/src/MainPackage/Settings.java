@@ -68,9 +68,13 @@ public class Settings
 
     private SettingsData settingsData;    
     private GameActionListener settingsChangedListener;
+    
+    private Resources resources;
+    private GameData gameData = new GameData();
 
-    public Settings(Dimension windowSize, GameActionListener actionListener, Resources resources)
+    public Settings(Dimension windowSize, GameActionListener actionListener)
     {
+        resources = gameData.getResources();
         this.windowResolution = windowSize;
         
         imagePaths.add("resources/RadioButtonEnabled.png");

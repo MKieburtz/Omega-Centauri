@@ -30,25 +30,25 @@ public class EnemyMediumFighter extends EnemyShip
     
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, int shootingDelayTurret, 
-            int shootingDelayMissile, int health, int id, Resources resources) 
+            int shootingDelayMissile, int health, int id) 
     {
         super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
 
         this.id = id;
-        this.resources = resources;
+        resources = gameData.getResources();
        
         activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
         shield = new Shield(location, true,
-                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 150, resources, false);
+                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 150, false);
 
         setUpHitbox();
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                new Point2D.Double(65, 70), 65,faceAngle, this, resources);
+                new Point2D.Double(65, 70), 65,faceAngle, this);
 
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
-                new Point2D.Double(95, 75), -65, faceAngle, this, resources);
+                new Point2D.Double(95, 75), -65, faceAngle, this);
         
         this.shootingDelayMissile = shootingDelayMissile;
         this.shootingDelayTurret = shootingDelayTurret;
@@ -111,7 +111,7 @@ public class EnemyMediumFighter extends EnemyShip
 
             Point2D.Double startingLocation = Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight());
             
-            shots.add(new Missile(60, startingLocation, null, 360 - angle, targetShip, this, resources));
+            shots.add(new Missile(60, startingLocation, null, 360 - angle, targetShip, this));
 
             canShootMissile = false;
 

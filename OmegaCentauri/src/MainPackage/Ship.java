@@ -55,8 +55,8 @@ public abstract class Ship implements GameEntity
     
     protected boolean exploding;
     
-    public Ship(int x, int y, Type shipType, double maxVel,
-            double maxAngularVelocity, double angleIncrement, double acceleration, int shootingDelay, int health)
+    public Ship(int x, int y, Type shipType, double maxVel, double maxAngularVelocity,
+            double angleIncrement, double acceleration, int shootingDelay, int health)
     {
         
         location = new Point2D.Double(x, y);

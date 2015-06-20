@@ -38,12 +38,11 @@ public class EnemyFighter extends EnemyShip
     private Resources resources;
 
     public EnemyFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
-            double angleIncrement, double acceleration,
-            int shootingDelay, int health, int id, Resources resources)
+            double angleIncrement, double acceleration, int shootingDelay, int health, int id)
     {
         super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
         
-        this.resources = resources;
+        this.resources = gameData.getResources();
         
         imagePaths.add("resources/EnemyFighterIdle.png");
         imagePaths.add("resources/EnemyFighterThrusting.png");
@@ -57,11 +56,11 @@ public class EnemyFighter extends EnemyShip
         
         setUpHitbox();
         shield = new Shield(location, true, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 10, 50, resources, activeImage.getWidth() == activeImage.getHeight());
+                activeImage.getHeight()), 10, 50, activeImage.getWidth() == activeImage.getHeight());
         
         this.id = id;
         
-        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
+        explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
         
     }
     
@@ -182,7 +181,7 @@ public class EnemyFighter extends EnemyShip
             
             canshoot = false;
 
-            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, this, resources));
+            shots.add(new PulseShot(5, shotStartingPos, shotStartingVel, angle, true, this));
 
             ex.schedule(new ShootingService(), shootingDelay, TimeUnit.MILLISECONDS);
         }

@@ -13,11 +13,6 @@ public class Player
 {   
     private Ally controllingShip;
     
-    public Player() 
-    {
-        
-    }
-    
     public void controlShip(Ally shipToControl)
     {
         controllingShip = shipToControl;

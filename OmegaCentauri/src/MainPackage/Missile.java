@@ -9,10 +9,9 @@ import java.util.ArrayList;
  * @author Kieburtz
  */
 public class Missile extends PhysicalShot 
-{
-    
+{    
     public Missile(int damage, Point2D.Double location,
-            Point2D.Double startingVel, double angle, Ship targetShip, Ship owner, Resources resources)
+            Point2D.Double startingVel, double angle, Ship targetShip, Ship owner)
     {
         super(damage, 2000, location, startingVel, angle, owner);
 
@@ -23,7 +22,7 @@ public class Missile extends PhysicalShot
         this.targetShip = targetShip;
         setUpHitbox();
         
-        explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()), resources);
+        explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
     }
     
     @Override

@@ -44,5 +44,15 @@ public class GameData {
         return playerShip;
     }
     
+    public static Resources resources;
     
+    public void updateResources(Resources r) // should only be called once!
+    {
+        resources = r;
+    }
+    
+    public Resources getResources()
+    {
+        return resources;
+    }
 }

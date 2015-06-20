@@ -33,6 +33,7 @@ public abstract class Ally extends Ship implements Controllable {
         
     }   
 
+    @Override
     public abstract void changeImage(ImageMovementState movementState, ImageRotationState rotationState);
 
 }

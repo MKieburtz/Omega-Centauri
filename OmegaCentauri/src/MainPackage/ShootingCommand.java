@@ -14,6 +14,7 @@ public class ShootingCommand implements Command
         this.value = value;
     }
     
+    @Override
     public int getValue()
     {
         return value;

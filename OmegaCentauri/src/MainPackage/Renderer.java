@@ -26,9 +26,15 @@ public class Renderer
 
     VolatileImage drawingImage = config.createCompatibleVolatileImage(1, 1);
     boolean isMac;
+    
+    private Resources resources;
 
-    public Renderer(Resources resources) 
+    private GameData gameData = new GameData();
+    
+    public Renderer() 
     {
+        
+        resources = gameData.getResources();
         
         fonts.add(resources.getFontForObject(new FontInfo("resources/OCR A Std.ttf", 10f)));
         
@@ -44,7 +50,7 @@ public class Renderer
 
         images = Calculator.toCompatibleImages(images);
         
-        headsUpDisplayPlayer = new HeadsUpDisplayPlayer(resources);
+        headsUpDisplayPlayer = new HeadsUpDisplayPlayer();
     }
 
     public void drawGameScreen(Graphics g, ArrayList<Ship> ships, double xRot, double yRot, int fps,
