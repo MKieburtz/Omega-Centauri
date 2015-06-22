@@ -12,7 +12,7 @@ import java.util.concurrent.*;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public class OmegaCentauri extends Game implements GameActionListener 
+public class OmegaCentauri extends JFrame implements GameActionListener 
 {
 
     private final String Version = "Dev 1.0.5";
@@ -40,6 +40,14 @@ public class OmegaCentauri extends Game implements GameActionListener
     private Point mouseLocation = new Point();
     private Dimension borderSize = null;
     private GameData gameData = new GameData();
+    private ArrayList<Ship> allShips = new ArrayList<>();
+    private ArrayList<EnemyShip> enemyShips = new ArrayList<>();
+    private ArrayList<Ally> allyShips = new ArrayList<>();
+    private HashSet<Shot> allShots = new HashSet<>();
+    private HashSet<Shot> enemyShots = new HashSet<>();
+    private HashSet<Shot> allyShots = new HashSet<>();
+    private HashSet<GameEntity> gameEntitys = new HashSet<>();
+    private Player player;
     // TIMERS
     private ScheduledExecutorService timingEx;
     private ScheduledExecutorService recordingEx;
@@ -68,6 +76,7 @@ public class OmegaCentauri extends Game implements GameActionListener
         addShips();
 
         setUpWindow();
+        gameData.updateCameraSize(camera.getSize());
     }
 
     private void addShips() 
@@ -376,6 +385,7 @@ public class OmegaCentauri extends Game implements GameActionListener
             if (camera.getSize().x != getWidth() || camera.getSize().y != getHeight())
             {
                 camera.setSize(getWidth(), getHeight());
+                gameData.updateCameraSize(camera.getSize());
             }
             // player has to decide if they need to drift. If no command is sent to move,
             // and they still have velocity of some kind, they need to drift.
@@ -399,11 +409,6 @@ public class OmegaCentauri extends Game implements GameActionListener
             
             updateCommands.clear();
             
-            for (EnemyShip enemyShip : enemyShips) 
-            {
-                enemyShip.update();
-            }
-            
             for (int i = deadShips.size() - 1; i > -1; i--)
             {
                 if (!deadShips.get(i).isExploding())
@@ -414,8 +419,9 @@ public class OmegaCentauri extends Game implements GameActionListener
                     {
                         enemyShips.remove(deadShips.get(i));
                     }
-                    shipsToDraw.remove(deadShips.get(i));
+                    allShips.remove(deadShips.get(i));
                     deadShips.remove(deadShips.get(i));
+                    gameEntitys.remove(deadShips.get(i));
                 }
             }
             for (int i = deadShots.size() - 1; i > -1; i--) 
@@ -425,28 +431,30 @@ public class OmegaCentauri extends Game implements GameActionListener
                 {
                     allShots.remove(deadShots.get(i));
                     deadShots.remove(deadShots.get(i));
+                    gameEntitys.remove(deadShots.get(i));
                 }
             }
-
-            for (Ship ship : shipsToDraw)
+            
+            for (Ship ship : allShips)
             {
-                ship.updateHitbox();
-
                 allShots.addAll(ship.getShots()); // should be fine because hashset doesn't allow dups
+                gameEntitys.addAll(ship.getShots());
             }
-
+            
+            for (GameEntity entity : gameEntitys)
+            {
+                entity.update();
+            }
+            
             for (Shot shot : allShots) 
             {
-                shot.updateHitbox();
-                shot.update();
-               
                 if (shot.outOfRange())
                 {
                     deadShots.add(shot);
                 }
             }
 
-            for (Ship ship : shipsToDraw) 
+            for (Ship ship : allShips) 
             {
 
                 if (ship.getShield().isActive()) 
@@ -468,12 +476,12 @@ public class OmegaCentauri extends Game implements GameActionListener
                                     if (ship.getShield().getEnergy() > 0)
                                     {
                                         EllipseHitbox hitbox = (EllipseHitbox)ship.returnHitbox();
-                                        removals = ship.CollisionEventWithShotWithShield(ship, shot, shipsToDraw,
+                                        removals = ship.CollisionEventWithShotWithShield(ship, shot, allShips,
                                                 hitbox.getAngleOnEllipse(shot.returnHitbox()), hitbox.getAngleToHitbox(shot.returnHitbox()));
                                     }
                                     else
                                     {
-                                         removals = ship.CollisionEventWithShotWithHull(ship, shot, shipsToDraw);
+                                         removals = ship.CollisionEventWithShotWithHull(ship, shot, allShips);
                                     }
                                    
                                     if (removals[0]) // ship 
@@ -508,8 +516,8 @@ public class OmegaCentauri extends Game implements GameActionListener
                                 if (shot.returnHitbox().collides(collisionShot.returnHitbox())) 
                                 {
                                     
-                                    boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, shipsToDraw);
-                                    boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, shipsToDraw);
+                                    boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, allShips);
+                                    boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, allShips);
 
                                     if (shotGotRemoved)
                                     {
@@ -728,7 +736,7 @@ public class OmegaCentauri extends Game implements GameActionListener
                             //System.out.println("update time: " + (System.nanoTime() - startUpdateTime));
 
                             //long startRenderTime = System.nanoTime();
-                            renderer.drawGameScreen(panel.getGraphics(), shipsToDraw, middleOfPlayer.x, middleOfPlayer.y,
+                            renderer.drawGameScreen(panel.getGraphics(), allShips, middleOfPlayer.x, middleOfPlayer.y,
                                     FPS, stars, camera, Version, UPS, paused, allShots, mapSize);
                             framesDrawn++;
                             //System.out.println("render time: " + (System.nanoTime() - startRenderTime));
@@ -801,9 +809,10 @@ public class OmegaCentauri extends Game implements GameActionListener
                         }
                         else 
                         {
-                            shipsToDraw.add(player.getControllingShip());
-                            shipsToDraw.addAll(enemyShips);
-                            shipsToDraw.addAll(allyShips);
+                            allShips.add(player.getControllingShip());
+                            allShips.addAll(enemyShips);
+                            allShips.addAll(allyShips);
+                            gameEntitys.addAll(allShips);
 
                             recordingEx.schedule(new RecordingService(), 1, TimeUnit.SECONDS);
                             timingEx.schedule(new UpdatingService(), 1, TimeUnit.NANOSECONDS);
@@ -884,7 +893,7 @@ public class OmegaCentauri extends Game implements GameActionListener
 
     private void resetGame() 
     {
-        shipsToDraw.clear();
+        allShips.clear();
         enemyShips.clear();
         allyShips.clear();
         addShips();

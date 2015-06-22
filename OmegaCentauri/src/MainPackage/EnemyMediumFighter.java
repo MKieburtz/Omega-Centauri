@@ -142,7 +142,8 @@ public class EnemyMediumFighter extends EnemyShip
 
     @Override
     public void update() {
-
+        super.update();
+        
         targetShip = (Ally)gameData.getPlayerShip();
         
         double distance = Calculator.getDistance(location, gameData.getPlayerShip().getLocation());

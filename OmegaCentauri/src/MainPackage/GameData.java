@@ -1,5 +1,6 @@
 package MainPackage;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -54,5 +55,17 @@ public class GameData {
     public Resources getResources()
     {
         return resources;
+    }
+    
+    public static volatile Point cameraSize;
+    
+    public void updateCameraSize(Point newSize)
+    {
+        cameraSize = newSize;
+    }
+    
+    public Point getCameraSize()
+    {
+        return cameraSize;
     }
 }

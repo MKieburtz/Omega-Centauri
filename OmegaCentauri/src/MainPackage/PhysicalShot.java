@@ -53,6 +53,7 @@ public abstract class PhysicalShot extends Shot
     @Override
     public void update()
     {
+        super.update();
         double targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
         
         rotateToAngle(360 - targetAngle);

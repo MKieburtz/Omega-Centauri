@@ -68,7 +68,7 @@ public class HeadsUpDisplayPlayer
         images = resources.getImagesForObject(imagePaths);
     }
 
-    public void draw(Graphics2D g2d, Camera camera, ArrayList<Ship> ships, Dimension mapSize, int fps, int ups, String version,
+    public void draw(Graphics2D g2d, ArrayList<Ship> ships, Dimension mapSize, int fps, int ups, String version,
             int numShots) 
     {
         //g2d.drawLine(HEALTHSTARTINGX, HEALTHSTARTINGY, HEALTHSTARTINGX, HEALTHSTARTINGY - 200);
@@ -131,8 +131,8 @@ public class HeadsUpDisplayPlayer
                 g2d.setColor(Color.YELLOW);
             }
 
-            Ellipse2D.Double minimapShip = new Ellipse2D.Double(camera.getSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
-                        camera.getSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
+            Ellipse2D.Double minimapShip = new Ellipse2D.Double(gameData.getCameraSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
+                        gameData.getCameraSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
                 g2d.draw(minimapShip);
         }
         
@@ -223,13 +223,13 @@ public class HeadsUpDisplayPlayer
         g2d.setColor(Color.WHITE);
             
         // draw the stats n stuff.
-        g2d.drawString("Version: " + version, camera.getSize().x - 150, 10);
+        g2d.drawString("Version: " + version, gameData.getCameraSize().x - 150, 10);
         //fps
-        g2d.drawString("FPS: " + fps, camera.getSize().x - 130, 20);
+        g2d.drawString("FPS: " + fps, gameData.getCameraSize().x - 130, 20);
         //ups
-        g2d.drawString("UPS: " + ups, camera.getSize().x - 130, 30);
+        g2d.drawString("UPS: " + ups, gameData.getCameraSize().x - 130, 30);
         //shots on screen
-        g2d.drawString("Shots: " + numShots, camera.getSize().x - 130, 40);
+        g2d.drawString("Shots: " + numShots, gameData.getCameraSize().x - 130, 40);
     }
 
     private int[] getAmounts(int amount) 

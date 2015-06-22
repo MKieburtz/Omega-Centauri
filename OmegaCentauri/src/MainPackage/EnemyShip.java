@@ -17,7 +17,10 @@ public abstract class EnemyShip extends Ship
     }
     
     @Override
-    public abstract void update();
+    public void update()
+    {
+        updateHitbox();
+    }
     
     public abstract int getID();
     

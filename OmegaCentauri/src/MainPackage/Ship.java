@@ -165,7 +165,6 @@ public abstract class Ship implements GameEntity
         }
         
         updatePosition();
-        
     }
     
     protected void updatePosition() 

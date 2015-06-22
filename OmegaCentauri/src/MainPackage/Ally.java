@@ -24,13 +24,13 @@ public abstract class Ally extends Ship implements Controllable {
     @Override
     public void update()
     {
-        
+        updateHitbox();
     }
 
     @Override
     public void update(ArrayList<Command> commands) 
     {
-        
+        updateHitbox();
     }   
 
     @Override

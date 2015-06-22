@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author Michael Kieburtz
  * @author Davis Freeman
  */
-public abstract class Shot 
+public abstract class Shot implements GameEntity
 {
     protected int range;
     protected double distanceTraveled = 0;
@@ -48,6 +48,7 @@ public abstract class Shot
         resources = gameData.getResources();
     }
 
+    @Override
     public void draw(Graphics2D g2d) 
     {
         if (!exploding)
@@ -81,11 +82,12 @@ public abstract class Shot
     
     public abstract void draw(Graphics2D g2d, AffineTransform transform);
 
-    public void update() 
+    @Override
+    public void update()
     {
-        
+        updateHitbox();
     }
-
+    
     protected void setUpHitbox() 
     {
         Point2D.Double[] hitboxPoints = new Point2D.Double[4]; 

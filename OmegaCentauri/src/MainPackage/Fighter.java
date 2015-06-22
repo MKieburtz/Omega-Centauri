@@ -3,6 +3,7 @@ package MainPackage;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     @Override
     public void update() 
     {
-        //A.I code
+        super.update();
     }
     
     @Override
@@ -105,6 +106,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     @Override
     public void update(ArrayList<Command> commands)
     {
+        super.update(commands);
         boolean noMovementCommand = true;
         boolean noRotationCommand = true;
         for (Command c : commands)

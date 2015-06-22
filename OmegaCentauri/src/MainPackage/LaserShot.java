@@ -42,6 +42,7 @@ public abstract class LaserShot extends Shot
     @Override
     public void update()
     {
+        super.update();
         if ((!outOfRange && !exploding) || outOfRange)
         {
             Point2D.Double lastLocation = new Point2D.Double(location.x, location.y);

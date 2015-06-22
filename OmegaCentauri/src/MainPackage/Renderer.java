@@ -95,7 +95,7 @@ public class Renderer
         }
         
         // draw HUD
-        headsUpDisplayPlayer.draw(g2d, camera, ships, mapSize, fps, ups, version, allShots.size());
+        headsUpDisplayPlayer.draw(g2d, ships, mapSize, fps, ups, version, allShots.size());
         
         // draw shots TODO: check if on screen.
         for (Shot shot : allShots)

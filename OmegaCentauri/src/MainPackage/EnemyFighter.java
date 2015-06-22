@@ -67,6 +67,7 @@ public class EnemyFighter extends EnemyShip
     @Override
     public void update() 
     {
+        super.update();
         // main AI goes here
         this.playerDimensions.x = gameData.getPlayerShip().getActiveImage().getWidth();
         this.playerDimensions.y = gameData.getPlayerShip().getActiveImage().getHeight();
