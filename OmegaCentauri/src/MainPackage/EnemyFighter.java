@@ -38,9 +38,10 @@ public class EnemyFighter extends EnemyShip
     private Resources resources;
 
     public EnemyFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
-            double angleIncrement, double acceleration, int shootingDelay, int health, int id)
+            double angleIncrement, double acceleration, int shootingDelay, int health, int id,
+            GameActionListener actionListener)
     {
-        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
+        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health, actionListener);
         
         this.resources = gameData.getResources();
         

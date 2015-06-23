@@ -29,6 +29,8 @@ public abstract class Shot implements GameEntity
     protected boolean againstShield = false;
     protected GameData gameData = new GameData();
     protected Resources resources;
+    protected GameActionListener actionListener = null;
+    protected boolean registered = false;
 
     protected Ship owner; // the ship that fired the shot
 
@@ -47,7 +49,18 @@ public abstract class Shot implements GameEntity
         
         resources = gameData.getResources();
     }
-
+    
+    public void registerListener(GameActionListener listener)
+    {
+        this.actionListener = listener;
+        registered = true;
+    }
+    
+    public boolean isRegistered()
+    {
+        return registered;
+    }
+    
     @Override
     public void draw(Graphics2D g2d) 
     {
@@ -74,6 +87,7 @@ public abstract class Shot implements GameEntity
             if (explosion.isDone())
             {
                 exploding = false;
+                actionListener.entityDoneExploding(this);
             }
         }
         

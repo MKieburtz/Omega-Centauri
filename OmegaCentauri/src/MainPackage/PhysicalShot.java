@@ -27,24 +27,6 @@ public abstract class PhysicalShot extends Shot
     }
     
     @Override
-    public void draw(Graphics2D g2d)
-    {
-        if (!exploding)
-        {
-            super.draw(g2d);
-        }
-        else
-        {
-            explosion.draw(g2d, location);
-            if (explosion.isDone())
-            {
-                exploding = false;
-            }
-        }
-    }
-
-    
-    @Override
     public void draw(Graphics2D g2d, AffineTransform transform)
     {
         // to do later

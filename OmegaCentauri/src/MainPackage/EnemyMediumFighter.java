@@ -30,9 +30,9 @@ public class EnemyMediumFighter extends EnemyShip
     
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, int shootingDelayTurret, 
-            int shootingDelayMissile, int health, int id) 
+            int shootingDelayMissile, int health, int id, GameActionListener actionListener) 
     {
-        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health);
+        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelayTurret, health, actionListener);
 
         this.id = id;
         resources = gameData.getResources();

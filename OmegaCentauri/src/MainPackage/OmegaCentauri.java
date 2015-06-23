@@ -14,7 +14,6 @@ import java.util.concurrent.*;
  */
 public class OmegaCentauri extends JFrame implements GameActionListener 
 {
-
     private final String Version = "Dev 1.0.5";
     // GAME STATE VARIBLES:
     private boolean forward, rotateRight, rotateLeft, shooting = false; // movement booleans
@@ -47,6 +46,8 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private HashSet<Shot> enemyShots = new HashSet<>();
     private HashSet<Shot> allyShots = new HashSet<>();
     private HashSet<GameEntity> gameEntitys = new HashSet<>();
+    private ArrayList<Ship> deadShips = new ArrayList<>();
+    private ArrayList<Shot> deadShots = new ArrayList<>();
     private Player player;
     // TIMERS
     private ScheduledExecutorService timingEx;
@@ -56,8 +57,6 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private int[] yPositions;
     private int starChunksLoaded = 0;
     private ArrayList<StarChunk> stars = new ArrayList<>();
-    private ArrayList<Ship> deadShips = new ArrayList<>();
-    private ArrayList<Shot> deadShots = new ArrayList<>();
     
     public OmegaCentauri() 
     {
@@ -82,32 +81,33 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private void addShips() 
     {
         player = new Player();
-        player.controlShip(new Fighter(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500));
+        allyShips.add(new Fighter(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500, this));
+        player.controlShip(allyShips.get(0));
         
-        enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 3, 5, 5, .15, 700, 20, 1));
-        enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 3, 5, 5, .15, 600, 20, 2));
-        enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3));
-        enemyShips.add(new EnemyFighter(4800, 4975, MainPackage.Type.Fighter, 3, 5, 5, .15, 800, 20, 4));
-        enemyShips.add(new EnemyFighter(4700, 4950, MainPackage.Type.Fighter, 3, 5, 5, .15, 750, 20, 5));
-        enemyShips.add(new EnemyFighter(4600, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 1000, 20, 6));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3));
-//        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 3, 5, 5, .15, 5000, 20, 4));
-//        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 5));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 6));
-//        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 7));
-//        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 8));
-//        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 9));
-//        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 10));
-//        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 11));
-//        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 12));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 13));
-//        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 14));
-//        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 15));
-//        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 16));
-//        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 17));
-//        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 19));
-//        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 20));
-         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 5));
+        enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 3, 5, 5, .15, 700, 20, 1, this));
+        enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 3, 5, 5, .15, 600, 20, 2, this));
+        enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3, this));
+        enemyShips.add(new EnemyFighter(4800, 4975, MainPackage.Type.Fighter, 3, 5, 5, .15, 800, 20, 4, this));
+        enemyShips.add(new EnemyFighter(4700, 4950, MainPackage.Type.Fighter, 3, 5, 5, .15, 750, 20, 5, this));
+        enemyShips.add(new EnemyFighter(4600, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 1000, 20, 6, this));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3, this));
+//        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 3, 5, 5, .15, 5000, 20, 4, this));
+//        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 5, this));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 6, this));
+//        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 7, this));
+//        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 8, this));
+//        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 9, this));
+//        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 10, this));
+//        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 11, this));
+//        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 12, this));
+//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 13, this));
+//        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 14, this));
+//        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 15, this));
+//        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 16, this));
+//        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 17, this));
+//        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 19, this));
+//        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 20, this));
+         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 5, this));
         
         syncGameStateVaribles();
     }
@@ -370,6 +370,21 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     {
         
     }
+    
+    @Override
+    public void entityDoneExploding(GameEntity entity)
+    {
+        if (entity instanceof Ship)
+        {
+            Ship e = (Ship)entity;
+            deadShips.add(e);
+        }
+        else if (entity instanceof Shot)
+        {
+            Shot s = (Shot)entity;
+            deadShots.add(s);
+        }
+    }
 
     private void startGame() 
     {
@@ -405,52 +420,47 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             {
                 updateCommands.add(new ShootingCommand(ShootingCommand.SHOOT));
             }
+            
+            for (Shot s : deadShots)
+            {
+                gameEntitys.remove(s);
+                allShots.remove(s);
+                enemyShots.remove(s);
+                s.getOwner().removeShot(s);
+            }
+            
+            for (Ship s : deadShips)
+            {
+                gameEntitys.remove(s);
+                allShips.remove(s);
+                enemyShips.remove(s);
+            }
+            
             player.update(updateCommands);
             
             updateCommands.clear();
-            
-            for (int i = deadShips.size() - 1; i > -1; i--)
-            {
-                if (!deadShips.get(i).isExploding())
-                {
-                    deadShots.addAll(deadShips.get(i).getShots());
-
-                    if (enemyShips.contains(deadShips.get(i)))
-                    {
-                        enemyShips.remove(deadShips.get(i));
-                    }
-                    allShips.remove(deadShips.get(i));
-                    deadShips.remove(deadShips.get(i));
-                    gameEntitys.remove(deadShips.get(i));
-                }
-            }
-            for (int i = deadShots.size() - 1; i > -1; i--) 
-            {
-                deadShots.get(i).getOwner().removeShot(deadShots.get(i));
-                if (!deadShots.get(i).isDying()) 
-                {
-                    allShots.remove(deadShots.get(i));
-                    deadShots.remove(deadShots.get(i));
-                    gameEntitys.remove(deadShots.get(i));
-                }
-            }
-            
-            for (Ship ship : allShips)
-            {
-                allShots.addAll(ship.getShots()); // should be fine because hashset doesn't allow dups
-                gameEntitys.addAll(ship.getShots());
-            }
             
             for (GameEntity entity : gameEntitys)
             {
                 entity.update();
             }
             
+            for (Ship ship : allShips)
+            {
+                allShots.addAll(ship.getShots()); // should be fine because hashset doesn't allow dups
+                gameEntitys.addAll(ship.getShots()); // same here
+            }
+                        
             for (Shot shot : allShots) 
             {
+                if (!shot.isRegistered())
+                {
+                    shot.registerListener(this); // makes sure the shot can tell OC if it is done exploding
+                }
+                
                 if (shot.outOfRange())
                 {
-                    deadShots.add(shot);
+                    shot.explode(false);
                 }
             }
 
@@ -486,19 +496,21 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                                    
                                     if (removals[0]) // ship 
                                     {
-                                        deadShips.add(ship);
+                                        if (enemyShips.contains(ship))
+                                        {
+                                            enemyShips.remove(ship);
+                                        }
                                     }
                                     if (removals[1]) // shot
                                     {
                                         shot.explode(ship.getShield().getEnergy() > 0);
-                                        deadShots.add(shot);
                                     }
                                 }
                             }
                         }
                     }
                 }
-                deadShots.addAll(ship.purgeShots(mapSize));
+                ship.purgeShots(mapSize);
             }
 
             for (Shot shot : allShots) 
@@ -521,11 +533,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
 
                                     if (shotGotRemoved)
                                     {
-                                        deadShots.add(shot);
+                                        shot.explode(false);
                                     }
                                     if (collisionShotGotRemoved) 
                                     {
-                                        deadShots.add(collisionShot);
+                                        collisionShot.explode(false);
                                     }
                                 }
                             }

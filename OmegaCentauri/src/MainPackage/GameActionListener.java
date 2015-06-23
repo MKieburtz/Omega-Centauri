@@ -11,4 +11,5 @@ public interface GameActionListener
     public void exitedFullScreen();
     public void settingsChangedToHigh();
     public void settingsChangedToLow();
+    public void entityDoneExploding(GameEntity entity);
 }

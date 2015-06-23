@@ -37,6 +37,7 @@ public abstract class Ship implements GameEntity
     protected RotationState rotationState;
     protected MovementState movementState;
     protected GameData gameData;
+    protected GameActionListener actionListener;
     
     protected ArrayList<String> imagePaths = new ArrayList<>();
     protected ArrayList<String> soundPaths = new ArrayList<>();
@@ -56,13 +57,12 @@ public abstract class Ship implements GameEntity
     protected boolean exploding;
     
     public Ship(int x, int y, Type shipType, double maxVel, double maxAngularVelocity,
-            double angleIncrement, double acceleration, int shootingDelay, int health)
+            double angleIncrement, double acceleration, int shootingDelay, int health,
+            MainPackage.GameActionListener actionListener)
     {
-        
         location = new Point2D.Double(x, y);
         nextLocation = new Point2D.Double();
         type = shipType;
-        
         this.maxVel = maxVel;
         this.angleIcrement = angleIncrement;
         this.maxAngularVel = maxAngularVelocity;
@@ -71,13 +71,12 @@ public abstract class Ship implements GameEntity
         this.hullDurability = health;
         this.maxhullDurabilty = health;
         ex = Executors.newSingleThreadScheduledExecutor();
-        
         imageRotationState = ImageRotationState.Idle;
         imageMovementState = ImageMovementState.Idle;
         rotationState = RotationState.Idle;
         movementState = MovementState.Idle;
-        
         gameData = new GameData();
+        this.actionListener = actionListener;
     }
     
     public BufferedImage getImage()
@@ -110,6 +109,7 @@ public abstract class Ship implements GameEntity
             if (explosion.isDone())
             {
                 exploding = false;
+                actionListener.entityDoneExploding(this);
             }
         }
     }
@@ -408,20 +408,15 @@ public abstract class Ship implements GameEntity
         }
     }
     
-    ArrayList<Shot> shotsToRemove = new ArrayList<>();
-    public ArrayList<Shot> purgeShots(Dimension screensize) 
+    public void purgeShots(Dimension screensize) 
     {
-        shotsToRemove.clear();
         for (int i = shots.size() - 1; i > -1; i--) 
         {
             if (shots.get(i).outsideScreen(screensize)) 
             {
-                shotsToRemove.add(shots.get(i));
                 shots.remove(i);
             }
         }
-        
-        return shotsToRemove;
     }
     
     public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle, int extra, Shot shot) 

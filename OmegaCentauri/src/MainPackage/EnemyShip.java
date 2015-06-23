@@ -11,9 +11,10 @@ public abstract class EnemyShip extends Ship
     protected Ally targetShip;
     
     public EnemyShip(int x, int y, Type shipType, double maxVel,
-            double maxAngleVelocity, double angleIncrement, double acceleration, int shootingDelay, int health)
+            double maxAngleVelocity, double angleIncrement, double acceleration,
+            int shootingDelay, int health, GameActionListener actionListener)
     {
-        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health);
+        super(x, y, shipType, maxVel, maxAngleVelocity, angleIncrement, acceleration, shootingDelay, health, actionListener);
     }
     
     @Override

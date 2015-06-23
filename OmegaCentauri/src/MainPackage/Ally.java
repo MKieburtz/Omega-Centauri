@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public abstract class Ally extends Ship implements Controllable {
 
     public Ally(int x, int y, Type shipType, double maxVel, double maxAngleVel,
-            double angleIncrement, double acceleration, int shootingDelay, int health) 
+            double angleIncrement, double acceleration, int shootingDelay, int health, GameActionListener actionListener) 
     {
         super(x, y, shipType, maxVel, maxAngleVel, angleIncrement, acceleration, shootingDelay, 
-             health);
+             health, actionListener);
     }
 
     @Override

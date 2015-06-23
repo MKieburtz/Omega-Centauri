@@ -29,6 +29,7 @@ public abstract class LaserShot extends Shot
         if (explosion.isDone())
         {
             exploding = false;
+            actionListener.entityDoneExploding(this);
         }
     }
     

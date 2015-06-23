@@ -26,9 +26,10 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     private Resources resources;
     
     public Fighter(int x, int y, Type shipType, double maxVel, double maxAngleVel,
-            double angleIncrement, double acceleration, int shootingDelay, int health) {
+            double angleIncrement, double acceleration, int shootingDelay, int health,
+            GameActionListener actionListener) {
         
-        super(x, y, shipType, maxVel, maxAngleVel, angleIncrement, acceleration, shootingDelay, health);
+        super(x, y, shipType, maxVel, maxAngleVel, angleIncrement, acceleration, shootingDelay, health, actionListener);
         resources = gameData.getResources();
         imagePaths.add("resources/FighterIdle.png");
         imagePaths.add("resources/FighterThrust.png");
