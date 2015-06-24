@@ -27,12 +27,6 @@ public abstract class PhysicalShot extends Shot
     }
     
     @Override
-    public void draw(Graphics2D g2d, AffineTransform transform)
-    {
-        // to do later
-    }
-    
-    @Override
     public void update()
     {
         super.update();

@@ -116,7 +116,7 @@ public class Shield
                 
                 if (circle)
                 {
-                    transform.translate(middle.x + size.x / 2, middle.y - activeImage.getHeight() / 2); // translation point is the center of the ship
+                    transform.translate(middle.x + size.x / 2, middle.y - activeImage.getHeight() / 2); // middle is the center of the ship
                 }
                 else
                 {

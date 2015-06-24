@@ -94,8 +94,6 @@ public abstract class Shot implements GameEntity
         //hitbox.draw(g2d, cameraLocation);
     }
     
-    public abstract void draw(Graphics2D g2d, AffineTransform transform);
-
     @Override
     public void update()
     {

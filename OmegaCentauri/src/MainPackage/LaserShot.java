@@ -15,18 +15,6 @@ public abstract class LaserShot extends Shot
     }
     
     @Override
-    public void draw(Graphics2D g2d, AffineTransform transform) 
-    {
-        explosion.draw(g2d, againstShield);
-
-        if (explosion.isDone())
-        {
-            exploding = false;
-            actionListener.entityDoneExploding(this);
-        }
-    }
-    
-    @Override
     protected void setUpHitbox()
     {
         super.setUpHitbox();
