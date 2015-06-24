@@ -1,7 +1,6 @@
 package MainPackage;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 /**
  * @author Michael Kieburtz
@@ -21,6 +20,10 @@ public abstract class EnemyShip extends Ship
     public void update()
     {
         updateHitbox();
+        if (explosion != null) // for the medium fighter
+        {
+            explosion.updateLocation(location);
+        }
     }
     
     public abstract int getID();

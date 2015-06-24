@@ -83,7 +83,7 @@ public abstract class Shot implements GameEntity
         }
         else
         {
-            explosion.draw(g2d, hitbox.getCollisionPoint());
+            explosion.draw(g2d, againstShield);
             if (explosion.isDone())
             {
                 exploding = false;

@@ -25,6 +25,7 @@ public abstract class Ally extends Ship implements Controllable {
     public void update()
     {
         updateHitbox();
+        explosion.updateLocation(location);
     }
 
     @Override

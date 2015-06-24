@@ -36,6 +36,8 @@ public class Explosion
     private Resources resources;
    
     private int frame = 0;
+    
+    private Point2D.Double location = new Point2D.Double();
 
     public static enum Type 
     {
@@ -144,31 +146,38 @@ public class Explosion
         }
     }
     
-    public void draw(Graphics2D g2d, AffineTransform transform)
+    public void draw(Graphics2D g2d, boolean againstShield) 
     {
-        AffineTransform original = g2d.getTransform();
+        if (!againstShield)
+        {
+            g2d.drawImage(images[frame],
+                    (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x - drawingManipulation.x),
+                    (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
+            frame++;
+        }
+        else
+        {
+            AffineTransform original = g2d.getTransform();
 
-        transform.rotate(Math.toRadians(360 - -1.73), 0, 0);
+            AffineTransform transform = (AffineTransform) original.clone();
+            
+            g2d.transform(transform); // this is the problem
         
-        g2d.transform(transform); // this is the problem
-        
-        g2d.drawImage(shieldImages[8], (int)-drawingManipulation.x - 1, (int)-drawingManipulation.y + 12, null); 
+            g2d.drawImage(shieldImages[8], (int)-drawingManipulation.x - 1, (int)-drawingManipulation.y + 12, null); 
 
-        g2d.setTransform(original); 
+            g2d.setTransform(original); 
 
-        frame++;
-    }
-    
-    public void draw(Graphics2D g2d, Point2D.Double location) 
-    {
-        g2d.drawImage(images[frame],
-                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x - drawingManipulation.x),
-                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
-        frame++;
+            frame++;
+        }
     }
 
     public boolean isDone() 
     {
         return frame == images.length;
+    }
+    
+    public void updateLocation(Point2D.Double newLocation)
+    {
+        location = newLocation;
     }
 }

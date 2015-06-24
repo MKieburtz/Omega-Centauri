@@ -54,14 +54,12 @@ public class Shield
         private double angleToTranslate;
         private int extraTranslation; // to add the the second translation to get over big wings
         private int opacity = 100;       
-        private Shot collisionShot;
         
-        public ShieldSegment(double drawingAngle, double translationAngle, int extra, Shot collisionShot)
+        public ShieldSegment(double drawingAngle, double translationAngle, int extra)
         {
             this.angleToDraw = drawingAngle;
             this.angleToTranslate = translationAngle;
             this.extraTranslation = extra;
-            this.collisionShot = collisionShot;
         }
 
         public double getTranslationAngle()
@@ -94,15 +92,10 @@ public class Shield
         {
             return extraTranslation;
         }
-        
-        public Shot getCollisionShot()
-        {
-            return collisionShot;
-        }
     }
     
     public void draw(Graphics2D g2d, Point2D.Double instanceLocation, Point2D.Double rotationPoint,
-            Point2D.Double translationPoint, double faceAngle) 
+            Point2D.Double middle, double faceAngle) 
     {      
             int rule = AlphaComposite.SRC_OVER;
             
@@ -120,17 +113,18 @@ public class Shield
                 transform.rotate(Math.toRadians(360 - segment.getTranslationAngle()), rotationPoint.x, rotationPoint.y);
                 double translationAngle = segment.getTranslationAngle() - faceAngle;
                 double distance = Calculator.getDistanceToEdgeOfEllipseAtAngle(size.x / 2, size.y / 2, translationAngle);
+                
                 if (circle)
                 {
-                    transform.translate(translationPoint.x + size.x / 2, translationPoint.y - activeImage.getHeight() / 2); // translation point is the center of the ship
+                    transform.translate(middle.x + size.x / 2, middle.y - activeImage.getHeight() / 2); // translation point is the center of the ship
                 }
                 else
                 {
-                    transform.translate(translationPoint.x + distance + segment.getExtra(), translationPoint.y - activeImage.getHeight() / 2);
+                    transform.translate(middle.x + distance + segment.getExtra(), middle.y - activeImage.getHeight() / 2);
                     //System.out.println(segment.getTranslationAngle() + " " + segment.getDrawingAngle() + " " + faceAngle);
                     transform.rotate(Math.toRadians(360 - -(segment.getTranslationAngle() - segment.getDrawingAngle())), 0, 0);
                 }
-
+                                
                 g2d.transform(transform);
                 
                 g2d.drawImage(activeImage, 0, 0, null);
@@ -140,20 +134,15 @@ public class Shield
 
                 g2d.setComposite(originalComposite);
                 g2d.setTransform(original);
-                
-                if (segment.getCollisionShot().isDying())
-                {   
-                    segment.getCollisionShot().draw(g2d, transform);
-                }
             }
     }
     // drawingAngle is the angle on the shield, translationAngle is the angle to the collision point on the shot
-    public void activate(double damage, double drawingAngle, double translationAngle, double faceAngle, int extra, Shot collisionShot)
+    public void activate(double damage, double drawingAngle, double translationAngle, double faceAngle, int extra)
     {        
         int damageToLose = (int)Math.ceil(damage * (strengh / 10));
         //System.out.println(shieldAngle + " " + collisionAngle);
         energy -= damageToLose;
-        shieldSegments.add(new ShieldSegment(drawingAngle, translationAngle, extra, collisionShot));
+        shieldSegments.add(new ShieldSegment(drawingAngle, translationAngle, extra));
     }
     
     public void updateSegments(double angleChange)

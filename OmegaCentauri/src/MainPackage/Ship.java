@@ -105,7 +105,7 @@ public abstract class Ship implements GameEntity
         }
         else
         {
-            explosion.draw(g2d, location);
+            explosion.draw(g2d, false);
             if (explosion.isDone())
             {
                 exploding = false;
@@ -309,11 +309,11 @@ public abstract class Ship implements GameEntity
             {
                 if (ship instanceof EnemyMediumFighter)
                 {
-                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 30, shot);
+                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 30);
                 }
                 else
                 {
-                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 0, shot);
+                    takeDamageShield(shot.getDamage(), collisionAngleShield, collisionAngle, 0);
                 }
                 if (hullDurability <= 0) 
                 {
@@ -419,11 +419,11 @@ public abstract class Ship implements GameEntity
         }
     }
     
-    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle, int extra, Shot shot) 
+    public void takeDamageShield(int damage, double collisionAngleShield, double collisionAngle, int extra) 
     {
         if (shield.getEnergy() - damage >= 0)
         {
-            shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle, extra, shot);
+            shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle, extra);
         }
         else
         {
@@ -432,7 +432,7 @@ public abstract class Ship implements GameEntity
             
             if (healthToLoseShield > 0) 
             {
-                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle, extra, shot);
+                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle, extra);
             }
             reduceHull(healthToLoseHull);
         }

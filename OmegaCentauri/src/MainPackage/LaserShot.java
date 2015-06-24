@@ -17,14 +17,7 @@ public abstract class LaserShot extends Shot
     @Override
     public void draw(Graphics2D g2d, AffineTransform transform) 
     {
-        if (againstShield)
-        {
-            explosion.draw(g2d, transform);
-        } 
-        else
-        {
-            explosion.draw(g2d, hitbox.getCollisionPoint());
-        }
+        explosion.draw(g2d, againstShield);
 
         if (explosion.isDone())
         {
@@ -57,5 +50,6 @@ public abstract class LaserShot extends Shot
                 checkForExceededRange();
             }
         }
+        explosion.updateLocation(hitbox.getCollisionPoint());
     }
 }
