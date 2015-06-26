@@ -126,7 +126,7 @@ public abstract class Shot implements GameEntity
         if (shot instanceof PhysicalShot ^ otherShot instanceof PhysicalShot) // ^ means one or the other but not both (exclusive OR) (XOR)
         { 
             // enemy ship's shots shouldn't destroy eachother
-            if (!(shot.getOwner() instanceof EnemyShip && otherShot.getOwner() instanceof EnemyShip)) 
+            if (!(shot.getOwner() instanceof Enemy && otherShot.getOwner() instanceof Enemy)) 
             {
                 for (Ship ship : allShips)
                 {

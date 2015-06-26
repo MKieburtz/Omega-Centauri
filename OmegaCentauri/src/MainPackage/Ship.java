@@ -294,7 +294,7 @@ public abstract class Ship implements GameEntity
         {
             if (shot.getOwner().equals(s) && !s.equals(ship)) // if s fired the shot and s isn't the ship that collided with the shot...
             {  
-                if (!(ship instanceof EnemyShip && s instanceof EnemyShip)) 
+                if (!(ship instanceof Enemy && s instanceof Enemy)) 
                 { 
                     shot.explode(true);
                     s.removeShot(shot); // removing because it collided
@@ -305,7 +305,7 @@ public abstract class Ship implements GameEntity
         
         if (!ship.getShots().contains(shot)) 
         {
-            if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
+            if (!(ship instanceof Enemy && shot.getOwner() instanceof Enemy))
             {
                 if (ship instanceof EnemyMediumFighter)
                 {
@@ -332,7 +332,7 @@ public abstract class Ship implements GameEntity
         {
             if (shot.getOwner().equals(s) && !s.equals(ship)) // if s fired the shot and s isn't the ship that collided with the shot...
             {  
-                if (!(ship instanceof EnemyShip && s instanceof EnemyShip))
+                if (!(ship instanceof Enemy && s instanceof Enemy))
                 { 
                     removed[1] = true;
                 } 
@@ -341,7 +341,7 @@ public abstract class Ship implements GameEntity
         
         if (!ship.getShots().contains(shot)) 
         {
-            if (!(ship instanceof EnemyShip && shot.getOwner() instanceof EnemyShip))
+            if (!(ship instanceof Enemy && shot.getOwner() instanceof Enemy))
             {
                 takeDamageHull(shot.getDamage());
                 if (hullDurability <= 0) 

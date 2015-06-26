@@ -5,11 +5,11 @@ import java.awt.geom.Point2D;
 /**
  * @author Michael Kieburtz
  */
-public abstract class EnemyShip extends Ship
+public abstract class Enemy extends Ship
 {
     protected Ally targetShip;
     
-    public EnemyShip(int x, int y, Type shipType, double maxVel,
+    public Enemy(int x, int y, Type shipType, double maxVel,
             double maxAngleVelocity, double angleIncrement, double acceleration,
             int shootingDelay, int health, GameActionListener actionListener)
     {

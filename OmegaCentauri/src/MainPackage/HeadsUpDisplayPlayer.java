@@ -122,7 +122,7 @@ public class HeadsUpDisplayPlayer
                     g2d.drawImage(images.get(RETURNTOBATTLEFIELD), null, 200, 200);
                 }
             } 
-            else if (ship instanceof EnemyShip)
+            else if (ship instanceof Enemy)
             {
                 g2d.setColor(Color.RED);
             } 

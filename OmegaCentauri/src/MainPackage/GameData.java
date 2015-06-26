@@ -21,14 +21,14 @@ public class GameData {
         return cameraLocation;
     }
     
-    public static volatile ArrayList<EnemyShip> enemyShips = new ArrayList<>();
+    public static volatile ArrayList<Enemy> enemyShips = new ArrayList<>();
     
-    public void updateShips(ArrayList<EnemyShip> newShips)
+    public void updateShips(ArrayList<Enemy> newShips)
     {
         enemyShips = newShips;
     }
     
-    public ArrayList<EnemyShip> getEnemyShips()
+    public ArrayList<Enemy> getEnemyShips()
     {
         return enemyShips;
     }

@@ -38,16 +38,16 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private Dimension mapSize;
     private Point mouseLocation = new Point();
     private Dimension borderSize = null;
-    private GameData gameData = new GameData();
-    private ArrayList<Ship> allShips = new ArrayList<>();
-    private ArrayList<EnemyShip> enemyShips = new ArrayList<>();
-    private ArrayList<Ally> allyShips = new ArrayList<>();
-    private HashSet<Shot> allShots = new HashSet<>();
-    private HashSet<Shot> enemyShots = new HashSet<>();
-    private HashSet<Shot> allyShots = new HashSet<>();
-    private HashSet<GameEntity> gameEntitys = new HashSet<>();
-    private ArrayList<Ship> deadShips = new ArrayList<>();
-    private ArrayList<Shot> deadShots = new ArrayList<>();
+    private final GameData gameData = new GameData();
+    private final ArrayList<Ship> allShips = new ArrayList<>();
+    private final ArrayList<Enemy> enemyShips = new ArrayList<>();
+    private final ArrayList<Ally> allyShips = new ArrayList<>();
+    private final HashSet<Shot> allShots = new HashSet<>();
+    private final HashSet<Shot> enemyShots = new HashSet<>();
+    private final HashSet<Shot> allyShots = new HashSet<>();
+    private final HashSet<GameEntity> gameEntitys = new HashSet<>();
+    private final ArrayList<Ship> deadShips = new ArrayList<>();
+    private final ArrayList<Shot> deadShots = new ArrayList<>();
     private Player player;
     // TIMERS
     private ScheduledExecutorService timingEx;
@@ -421,19 +421,23 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                 updateCommands.add(new ShootingCommand(ShootingCommand.SHOOT));
             }
             
-            for (Shot s : deadShots)
+            for (int i = deadShots.size() - 1; i > -1; i--)
             {
-                gameEntitys.remove(s);
-                allShots.remove(s);
-                enemyShots.remove(s);
-                s.getOwner().removeShot(s);
+                gameEntitys.remove(deadShots.get(i));
+                allShots.remove(deadShots.get(i));
+                enemyShots.remove(deadShots.get(i));
+                allyShots.remove(deadShots.get(i));
+                deadShots.get(i).getOwner().removeShot(deadShots.get(i));
+                deadShots.remove(deadShots.get(i));
             }
             
-            for (Ship s : deadShips)
+            for (int i = deadShips.size() -1; i > -1; i--)
             {
-                gameEntitys.remove(s);
-                allShips.remove(s);
-                enemyShips.remove(s);
+                gameEntitys.remove(deadShips.get(i));
+                allShips.remove(deadShips.get(i));
+                enemyShips.remove(deadShips.get(i));
+                allyShips.remove(deadShips.get(i));
+                deadShips.remove(deadShips.get(i));
             }
             
             player.update(updateCommands);
@@ -445,11 +449,19 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                 entity.update();
             }
             
-            for (Ship ship : allShips)
+            for (Enemy s : enemyShips)
             {
-                allShots.addAll(ship.getShots()); // should be fine because hashset doesn't allow dups
-                gameEntitys.addAll(ship.getShots()); // same here
+                enemyShots.addAll(s.getShots());
             }
+            
+            for (Ally s : allyShips)
+            {
+                allyShots.addAll(s.getShots());
+            }
+            
+            allShots.addAll(enemyShots);
+            allShots.addAll(allyShots);
+            gameEntitys.addAll(allShots);
                         
             for (Shot shot : allShots) 
             {
@@ -463,82 +475,53 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                     shot.explode(false);
                 }
             }
-
-            for (Ship ship : allShips) 
+            
+            for (Ship ship : allShips)
             {
-
                 if (ship.getShield().isActive()) 
                 {
                     ship.getShield().decay();
                 }
-
-                for (Shot shot : allShots) 
-                {
-                    if (!shot.isDying() && !ship.isExploding())
-                    {
-                        if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500)
-                        {
-                            if (!(shot.getOwner() instanceof EnemyShip && ship instanceof EnemyShip)) 
-                            {
-                                if (ship.returnHitbox().collides(shot.returnHitbox()))
-                                {
-                                    boolean[] removals;
-                                    if (ship.getShield().getEnergy() > 0)
-                                    {
-                                        EllipseHitbox hitbox = (EllipseHitbox)ship.returnHitbox();
-                                        removals = ship.CollisionEventWithShotWithShield(ship, shot, allShips,
-                                                hitbox.getAngleOnEllipse(shot.returnHitbox()), hitbox.getAngleToHitbox(shot.returnHitbox()));
-                                    }
-                                    else
-                                    {
-                                         removals = ship.CollisionEventWithShotWithHull(ship, shot, allShips);
-                                    }
-                                   
-                                    if (removals[0]) // ship 
-                                    {
-                                        if (enemyShips.contains(ship))
-                                        {
-                                            enemyShips.remove(ship);
-                                        }
-                                    }
-                                    if (removals[1]) // shot
-                                    {
-                                        shot.explode(ship.getShield().getEnergy() > 0);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                ship.purgeShots(mapSize);
             }
 
-            for (Shot shot : allShots) 
+            for (int i = allyShips.size() - 1; i > -1; i--) // to avoid ConcurrentModificationExeption 
             {
-                if (!shot.isDying()) 
+                for (Shot shot : enemyShots) 
                 {
-                    for (Shot collisionShot : allShots) 
+                    testForCollision(allyShips.get(i), shot);
+                }
+                allyShips.get(i).purgeShots(mapSize);
+            }
+            
+            for (int i = enemyShips.size() - 1; i > -1; i--) // to avoid ConcurrentModificationExeption
+            {
+                for (Shot shot : allyShots)
+                {
+                    testForCollision(enemyShips.get(i), shot);
+                }
+                enemyShips.get(i).purgeShots(mapSize);
+            }
+
+            for (Shot shot : allyShots) 
+            {
+                for (Shot collisionShot : enemyShots) 
+                {
+                    if (!shot.isDying() && !collisionShot.isDying())
                     {
                         if (Calculator.getDistance(shot.getLocation(), collisionShot.getLocation()) < 500) 
                         {   
-                            if (!shot.equals(collisionShot) && !(shot.getOwner().equals(collisionShot.getOwner()))
-                                    && !(shot.getOwner() instanceof EnemyShip && collisionShot.getOwner() instanceof EnemyShip))
+                            if (shot.returnHitbox().collides(collisionShot.returnHitbox())) 
                             {
-                                
-                                if (shot.returnHitbox().collides(collisionShot.returnHitbox())) 
-                                {
-                                    
-                                    boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, allShips);
-                                    boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, allShips);
+                                boolean shotGotRemoved = shot.collisionEventWithShot(shot, collisionShot, allShips);
+                                boolean collisionShotGotRemoved = collisionShot.collisionEventWithShot(collisionShot, shot, allShips);
 
-                                    if (shotGotRemoved)
-                                    {
-                                        shot.explode(false);
-                                    }
-                                    if (collisionShotGotRemoved) 
-                                    {
-                                        collisionShot.explode(false);
-                                    }
+                                if (shotGotRemoved)
+                                {
+                                    shot.explode(false);
+                                }
+                                if (collisionShotGotRemoved) 
+                                {
+                                    collisionShot.explode(false);
                                 }
                             }
                         }
@@ -551,7 +534,47 @@ public class OmegaCentauri extends JFrame implements GameActionListener
 //        long end = System.currentTimeMillis();
 //        System.out.println(end - start);
     }
+    
+    private void testForCollision(Ship ship, Shot shot)
+    {
+        if (!shot.isDying() && !ship.isExploding())
+        {
+            if (Calculator.getDistance(ship.getLocation(), shot.getLocation()) < 500)
+            {
+                if (ship.returnHitbox().collides(shot.returnHitbox()))
+                { 
+                    boolean[] removals;
+                    if (ship.getShield().getEnergy() > 0)
+                    {
+                        EllipseHitbox hitbox = (EllipseHitbox)ship.returnHitbox();
+                        removals = ship.CollisionEventWithShotWithShield(ship, shot, allShips,
+                                hitbox.getAngleOnEllipse(shot.returnHitbox()), hitbox.getAngleToHitbox(shot.returnHitbox()));
+                    }
+                    else
+                    {
+                         removals = ship.CollisionEventWithShotWithHull(ship, shot, allShips);
+                    }
 
+                    if (removals[0]) // ship
+                    {
+                        if (allyShips.contains(ship))
+                        {
+                            allyShips.remove(ship);
+                        }
+                        else if (enemyShips.contains(ship))
+                        {
+                            enemyShips.remove(ship);
+                        }
+                    }
+                    if (removals[1]) // shot
+                    {
+                        shot.explode(ship.getShield().getEnergy() > 0);
+                    }
+                }
+            }
+        }
+    }
+    
     private void handleInput(int keycode, boolean released)
     {
         switch (player.getImageRotationState())

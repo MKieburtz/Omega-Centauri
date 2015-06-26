@@ -15,7 +15,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class EnemyFighter extends EnemyShip 
+public class EnemyFighter extends Enemy 
 {
     // make sure image loading order is correct!
     private final int IDLE = 0;
@@ -26,7 +26,7 @@ public class EnemyFighter extends EnemyShip
     private final int TURNINGRIGHTTHRUSTING = 5;
     
     private Point playerDimensions = new Point(0, 0);
-    private ArrayList<EnemyShip> others = new ArrayList<>();
+    private ArrayList<Enemy> others = new ArrayList<>();
     //private boolean incorrectAngle = false;
     private boolean movingAway;
     private int id; // for use with formations
@@ -81,7 +81,7 @@ public class EnemyFighter extends EnemyShip
         //System.out.println(angleToPlayer + " " + faceAngle);
 
         //System.out.println(angleToPlayer);
-        others = (ArrayList<EnemyShip>) gameData.getEnemyShips().clone();
+        others = (ArrayList<Enemy>) gameData.getEnemyShips().clone();
         others.remove(this);
 
         // this block sets movingAway
@@ -117,7 +117,7 @@ public class EnemyFighter extends EnemyShip
         // this block performs logic based on movingAway
         if (!movingAway) 
         {
-            for (EnemyShip ship : others) 
+            for (Enemy ship : others) 
             {
                 if (Calculator.getDistance(location, ship.getLocation()) < 200) 
                 {

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Michael Kieburtz
  */
-public class EnemyMediumFighter extends EnemyShip 
+public class EnemyMediumFighter extends Enemy 
 {
     private int id;
 

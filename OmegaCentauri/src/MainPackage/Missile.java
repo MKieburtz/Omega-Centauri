@@ -25,21 +25,6 @@ public class Missile extends PhysicalShot
         explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
     }
     
-    @Override
-    public boolean collisionEventWithShot(Shot shot, Shot otherShot, ArrayList<Ship> allShips) // this will just make the missile explode
-    {
-        boolean removed = super.collisionEventWithShot(shot, otherShot, allShips);
-        
-        if (!exploding)
-        {
-            if (removed) 
-            {
-                exploding = true;
-            }
-        }
-        return removed;
-    }
-    
     public RectangularHitbox getHitbox()
     {
         return hitbox;
