@@ -24,19 +24,4 @@ public class Missile extends PhysicalShot
         
         explosion = new Explosion(Explosion.Type.missile, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
     }
-    
-    public RectangularHitbox getHitbox()
-    {
-        return hitbox;
-    }
-    
-    public boolean isExploding()
-    {
-        return exploding;
-    }
-    
-    public void explode()
-    {
-        exploding = true;
-    }
 }

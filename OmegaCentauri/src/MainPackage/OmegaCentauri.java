@@ -568,7 +568,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                     }
                     if (removals[1]) // shot
                     {
-                        shot.explode(ship.getShield().getEnergy() > 0);
+                        shot.explode(false);
                     }
                 }
             }

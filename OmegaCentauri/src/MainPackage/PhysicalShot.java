@@ -66,6 +66,7 @@ public abstract class PhysicalShot extends Shot
         location.x += Calculator.CalcAngleMoveX(faceAngle) * 6;
         location.y += Calculator.CalcAngleMoveY(faceAngle) * 6;
         distanceTraveled += Calculator.getDistance(location, lastLocation);
+        explosion.updateLocation(hitbox.getCollisionPoint());
     }
     
     @Override

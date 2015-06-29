@@ -76,19 +76,6 @@ public class Explosion
                 
                 explosionImageSize = missileExplosionImageSize;
                 
-//                for (int i = 0; i < images.length; i++)
-//                {
-//                    Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, rangeExplosionImageSize.width, rangeExplosionImageSize.height);
-//                    Ellipse2D.Double ellipse = new Ellipse2D.Double(-3, 100-50-(37/2), 53, 37); // magic numbers! This ellipse wraps around the shield segment
-//                    Area clipping = new Area(rect);
-//                    clipping.subtract(new Area(ellipse));
-//                    
-//                    Graphics2D g2d = shieldImages[i].createGraphics();
-//                    
-//                    g2d.clip(clipping);
-//                    g2d.drawImage(images[i], 0, 0, null);
-//                }
-                
                 break;
             
             case range:
@@ -99,24 +86,6 @@ public class Explosion
                 loadImages(rangeExplosionSize, spriteSheet, rangeExplosionImageSize);
                 
                 explosionImageSize = rangeExplosionImageSize;
-                
-                for (int i = 0; i < images.length; i++)
-                {
-                    Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, rangeExplosionImageSize.width, rangeExplosionImageSize.height);
-                    Ellipse2D.Double ellipse = new Ellipse2D.Double(-3, 100-50-(37/2), 53, 37); // magic numbers! This ellipse wraps around the shield segment
-                    Area clipping = new Area(rect);
-                    clipping.subtract(new Area(ellipse));
-                    
-                    Graphics2D g2d = shieldImages[i].createGraphics();
-                    
-                    g2d.clip(clipping);
-                    g2d.drawImage(images[i], 0, 0, null);
-                }
-                
-                for (int i = 0; i < shieldImages.length; i++)
-                {
-                    shieldImages[i] = Calculator.toCompatibleImage(shieldImages[i]);
-                }
                 
                 break;
         }

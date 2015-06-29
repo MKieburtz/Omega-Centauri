@@ -296,7 +296,6 @@ public abstract class Ship implements GameEntity
             {  
                 if (!(ship instanceof Enemy && s instanceof Enemy)) 
                 { 
-                    shot.explode(true);
                     s.removeShot(shot); // removing because it collided
                     removed[1] = true;
                 } 
