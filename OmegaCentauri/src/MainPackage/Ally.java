@@ -8,6 +8,8 @@ import java.util.ArrayList;
  */
 public abstract class Ally extends Ship implements Controllable {
 
+    protected boolean beingControlled = false;
+    
     public Ally(int x, int y, Type shipType, double maxVel, double maxAngleVel,
             double angleIncrement, double acceleration, int shootingDelay, int health, GameActionListener actionListener) 
     {
@@ -15,6 +17,16 @@ public abstract class Ally extends Ship implements Controllable {
              health, actionListener);
     }
 
+    public boolean isBeingControlled()
+    {
+        return beingControlled;
+    }
+    
+    public void setControllingShip(boolean beingControlled)
+    {
+        this.beingControlled = beingControlled;
+    }
+    
     @Override
     public void shoot() 
     {

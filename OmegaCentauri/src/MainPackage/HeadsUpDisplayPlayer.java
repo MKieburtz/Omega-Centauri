@@ -15,7 +15,6 @@ import java.util.ArrayList;
  */
 public class HeadsUpDisplayPlayer 
 {
-
     private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<BufferedImage> images = new ArrayList<>();
     private DecimalFormat format = new DecimalFormat("#.0");
@@ -79,7 +78,11 @@ public class HeadsUpDisplayPlayer
         {
             if (ship instanceof Ally)
             {
-                playerShip = (Ally)ship;
+                Ally testShip = (Ally)ship;
+                if (testShip.isBeingControlled())
+                {
+                    playerShip = testShip;
+                }
             }
         }
         
@@ -107,7 +110,6 @@ public class HeadsUpDisplayPlayer
 
         for (Ship ship : ships) 
         {
-            ship.draw(g2d);
             if (ship.equals(playerShip))
             {
                 g2d.setColor(Color.CYAN);

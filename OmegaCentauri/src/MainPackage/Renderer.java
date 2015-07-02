@@ -94,15 +94,20 @@ public class Renderer
             }
         }
         
-        // draw HUD
-        headsUpDisplayPlayer.draw(g2d, ships, mapSize, fps, ups, version, allShots.size());
+        for (Ship ship : ships)
+        {
+            ship.draw(g2d);
+        }
         
         // draw shots TODO: check if on screen.
         for (Shot shot : allShots)
         {
-            shot.draw(g2d);            
+            shot.draw(g2d);  
         }
-
+        
+        // draw HUD
+        headsUpDisplayPlayer.draw(g2d, ships, mapSize, fps, ups, version, allShots.size());
+        
         //draw pause menu
         if (paused) 
         {

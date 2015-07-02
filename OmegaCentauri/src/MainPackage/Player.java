@@ -15,7 +15,13 @@ public class Player
     
     public void controlShip(Ally shipToControl)
     {
+        if (controllingShip != null)
+        {
+            controllingShip.setControllingShip(false); // uncontrol the previous
+        }
+        
         controllingShip = shipToControl;
+        controllingShip.setControllingShip(true);
     }
     
     public void update(ArrayList<Command> commands)
