@@ -54,8 +54,9 @@ public class Resources {
         imagePaths.add("resources/ReturnToTheBattlefield.png");
         imagePaths.add("resources/RadioButtonEnabled.png");
         imagePaths.add("resources/RadioButtonDisabled.png");
-        imagePaths.add("resources/shield.png");
-        imagePaths.add("resources/EnemyShield.png");
+        imagePaths.add("resources/EnemyFighterShield.png");
+        imagePaths.add("resources/EnemyMediumFighterShield.png");
+        imagePaths.add("resources/FighterShield.png");
         imagePaths.add("resources/Level2Shot.png");
         imagePaths.add("resources/Missile.png");
         imagePaths.add("resources/FighterExplosionSpritesheet.png");

@@ -39,8 +39,8 @@ public class EnemyMediumFighter extends Enemy
        
         activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
-        shield = new Shield(location, true,
-                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 150, false);
+        shield = new Shield(location, Shield.Type.enemyMediumFighter,
+                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 150);
 
         setUpHitbox();
 
@@ -135,7 +135,10 @@ public class EnemyMediumFighter extends Enemy
         Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         
-        shield.draw(g2d, location, middle, middle, faceAngle);
+        if (shield.isActive())
+        {
+            shield.draw(g2d, middle, location, faceAngle);
+        }
 //        g2d.setColor(Color.red);
 //        hullHitbox.draw(g2d, camera.getLocation());
     }

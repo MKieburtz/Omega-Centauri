@@ -229,7 +229,6 @@ public abstract class Ship implements GameEntity
             {
                 change = distances[0] > distances[1] ? -distances[0] : -distances[1];
             }
-            shield.updateSegments(change);
         }
     }
     
@@ -422,7 +421,7 @@ public abstract class Ship implements GameEntity
     {
         if (shield.getEnergy() - damage >= 0)
         {
-            shield.activate(damage, collisionAngleShield, collisionAngle, faceAngle, extra);
+            shield.activate(damage);
         }
         else
         {
@@ -431,7 +430,7 @@ public abstract class Ship implements GameEntity
             
             if (healthToLoseShield > 0) 
             {
-                shield.activate(healthToLoseShield, collisionAngleShield, collisionAngle, faceAngle, extra);
+                shield.activate(healthToLoseShield);
             }
             reduceHull(healthToLoseHull);
         }

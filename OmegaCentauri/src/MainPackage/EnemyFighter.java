@@ -56,8 +56,8 @@ public class EnemyFighter extends Enemy
         activeImage = images.get(0);
         
         setUpHitbox();
-        shield = new Shield(location, true, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 10, 50, activeImage.getWidth() == activeImage.getHeight());
+        shield = new Shield(location, Shield.Type.enemyFighter, new Point(activeImage.getWidth(),
+                activeImage.getHeight()), 10, 50);
         
         this.id = id;
         
@@ -201,7 +201,10 @@ public class EnemyFighter extends Enemy
         Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         
-        shield.draw(g2d, location, middle, middle, faceAngle);
+        if (shield.isActive())
+        {
+            shield.draw(g2d, middle, location, faceAngle);
+        }
         
         g2d.setColor(Color.red);
         //hitbox.draw(g2d, camera.getLocation());

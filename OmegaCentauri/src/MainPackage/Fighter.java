@@ -40,8 +40,8 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         images = resources.getImagesForObject(imagePaths);
 
         activeImage = images.get(0);
-        shield = new Shield(location, false, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 500, true);
+        shield = new Shield(location, Shield.Type.fighter, new Point(activeImage.getWidth(), activeImage.getHeight()),
+                10, 500);
         setUpHitbox();
 
         soundPaths.add("resources/Pulse.wav");
@@ -96,11 +96,12 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         //g2d.setColor(Color.red);
         //hitbox.draw(g2d, camera.getLocation());
         
-        Point2D.Double shipMiddle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+        Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
+        
         if (shield.isActive())
         {
-            shield.draw(g2d, location, shipMiddle, shipMiddle, faceAngle);
+            shield.draw(g2d, middle, location, faceAngle);
         }
     }
     
