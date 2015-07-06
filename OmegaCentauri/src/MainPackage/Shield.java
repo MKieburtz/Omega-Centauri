@@ -26,6 +26,7 @@ public class Shield
     private int energy;
     private int maxEnergy;
     private int opacity = 0;
+    private Point imageExtra = null; // hardcoded for how much bigger the shield is than the ship
     
 
     public Shield(Point2D.Double location, Type type, Point size, int strength,
@@ -38,13 +39,17 @@ public class Shield
         switch (type)
         {
             case fighter:
-                activeImage = resources.getImageForObject("resources/FighterShield");
+                activeImage = resources.getImageForObject("resources/FighterShield.png");
+                imageExtra = new Point(14, 10);
                 break;
             case enemyFighter:
                 activeImage = resources.getImageForObject("resources/EnemyFighterShield.png");
+                imageExtra = new Point(20, 20);
                 break;
             case enemyMediumFighter:
                 activeImage = resources.getImageForObject("resources/EnemyMediumFighterShield.png");
+                imageExtra = new Point(70, 40);
+                break;
         }
     }
     
@@ -75,7 +80,7 @@ public class Shield
         g2d.transform(transform);
         g2d.setComposite(comp);
         
-        g2d.drawImage(activeImage, 300, 300, null);
+        g2d.drawImage(activeImage, -imageExtra.x / 2, -imageExtra.y / 2, null);
 
 //                g2d.setColor(Color.red);
 //                g2d.fillRect(0, 0, 2, 2);
