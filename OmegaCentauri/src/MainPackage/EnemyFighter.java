@@ -221,6 +221,7 @@ public class EnemyFighter extends Enemy
         return id;
     }
     
+    @Override
     public void changeImage(ImageMovementState movementState, ImageRotationState rotationState) 
     {
         switch (movementState) 

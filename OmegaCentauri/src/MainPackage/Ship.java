@@ -262,6 +262,43 @@ public abstract class Ship implements GameEntity
         updateAngle(state);
     }
     
+    protected void rotateToAngle(double angle) 
+     {
+        if (Math.abs(angle - faceAngle) >= 5) 
+        {
+            double[] distances = Calculator.getDistancesBetweenAngles(faceAngle, angle);
+            if (distances[0] < distances[1]) 
+            {
+                if (distances[0] > angleIcrement) 
+                {
+                    changeImage(imageMovementState, ImageRotationState.rotatingLeft);
+                    rotate(RotationState.TurningLeft);
+                }
+            }
+            else 
+            {
+                if (distances[1] > angleIcrement) 
+                {
+                    changeImage(imageMovementState, ImageRotationState.rotatingRight);
+                    rotate(RotationState.TurningRight);
+                }
+            }
+        }
+        else
+        {
+            if (imageRotationState == ImageRotationState.rotatingRight)
+            {
+                changeImage(imageMovementState, ImageRotationState.Idle);
+                rotate(RotationState.TurningRightDrifting);
+            }
+            else if (imageRotationState == ImageRotationState.rotatingLeft)
+            {
+                changeImage(imageMovementState, ImageRotationState.Idle);
+                rotate(RotationState.TurningLeftDrifting);
+            }
+        }
+    }
+    
     public void setUpHitbox() 
     {        
         try

@@ -41,7 +41,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
 
         activeImage = images.get(0);
         shield = new Shield(location, Shield.Type.fighter, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 500);
+                10, 20);
         setUpHitbox();
 
         soundPaths.add("resources/Pulse.wav");
@@ -83,6 +83,47 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     public void update() 
     {
         super.update();
+        
+        ArrayList<Enemy> enemyShips = gameData.getEnemyShips();
+        Enemy targetShip = null;
+        
+        double distanceToTarget = 100000; // just a big number
+        
+        double targetAngle = 0; // the angle to move towards
+        
+        for (Enemy enemyShip : enemyShips) // reevaluate the closest ship
+        {
+            double distance = Calculator.getDistance(location, enemyShip.getLocation());
+            if (distance < distanceToTarget)
+            {
+                distanceToTarget = distance;
+                targetShip = enemyShip;
+            }
+        }
+        
+        targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
+        
+        rotateToAngle(targetAngle);
+        
+        if (Math.abs(targetAngle - faceAngle) < 30)
+        {
+            if (canshoot)
+            {
+                shoot();
+            }
+        }
+        
+        if (distanceToTarget > 300)
+        {
+            changeImage(ImageMovementState.Thrusting, imageRotationState);
+            move(MovementState.Thrusting);
+        }
+        else
+        {
+            changeImage(ImageMovementState.Idle, imageRotationState);
+            move(moving() ? MovementState.Drifting : MovementState.Idle);
+        }
+        
     }
     
     @Override
