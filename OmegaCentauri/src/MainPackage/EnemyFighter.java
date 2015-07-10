@@ -25,7 +25,6 @@ public class EnemyFighter extends Enemy
     private final int TURNINGLEFTTHRUSTING = 4;
     private final int TURNINGRIGHTTHRUSTING = 5;
     
-    private Point playerDimensions = new Point(0, 0);
     private ArrayList<Enemy> others = new ArrayList<>();
     //private boolean incorrectAngle = false;
     private boolean movingAway;
@@ -70,48 +69,60 @@ public class EnemyFighter extends Enemy
     {
         super.update();
         // main AI goes here
-        this.playerDimensions.x = gameData.getPlayerShip().getActiveImage().getWidth();
-        this.playerDimensions.y = gameData.getPlayerShip().getActiveImage().getHeight();
 
         // move in the direction of the ship if it is far away
         // and shoot if it is in range.
-        double distanceToPlayer = Calculator.getDistance(location, gameData.getPlayerShip().getLocation());
-
-        double angleToPlayer = Calculator.getAngleBetweenTwoPoints(location, gameData.getPlayerShip().getLocation());
-        //System.out.println(angleToPlayer + " " + faceAngle);
-
-        //System.out.println(angleToPlayer);
+        double distanceToTarget = 1000000; // big number
+        
+        Ally targetShip = null;
+        
+        ArrayList<Ally> allyShips = gameData.getAllyShips();
+        
+        for (Ally allyShip : allyShips)
+        {
+            double distance = Calculator.getDistance(location, allyShip.getLocation());
+            if (distance < distanceToTarget)
+            {
+                targetShip = allyShip;
+                distanceToTarget = distance;
+            }
+        }
+        
+        double angleToTarget = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
+        
+        //find the closest ship
+        
         others = (ArrayList<Enemy>) gameData.getEnemyShips().clone();
         others.remove(this);
 
         // this block sets movingAway
         if (!movingAway) 
         {
-            targetingAngle = angleToPlayer;
+            targetingAngle = angleToTarget;
         }
         
-        if (!movingAway && distanceToPlayer < 200) 
+        if (!movingAway && distanceToTarget < 200) 
         {
             movingAway = true;
             if (hullDurability < 30) 
             {
-                targetingAngle = (angleToPlayer + 180) % 360;
+                targetingAngle = (angleToTarget + 180) % 360;
             } 
-            else if (distanceToPlayer < 200) 
+            else if (distanceToTarget < 200) 
             {
-                targetingAngle = (angleToPlayer + 90) % 360;
+                targetingAngle = (angleToTarget + 90) % 360;
             }
         } 
-        else if (distanceToPlayer > 400 && movingAway) 
+        else if (distanceToTarget > 400 && movingAway) 
         {
             movingAway = false;
-            targetingAngle = angleToPlayer;
+            targetingAngle = angleToTarget;
         }
-        else if (distanceToPlayer < 250 && movingAway)
+        else if (distanceToTarget < 250 && movingAway)
         {
-            if (Math.abs((angleToPlayer + 180) % 360 - faceAngle) > 5) 
+            if (Math.abs((angleToTarget + 180) % 360 - faceAngle) > 5) 
             {
-                targetingAngle = (angleToPlayer + 180) % 360;
+                targetingAngle = (angleToTarget + 180) % 360;
             }
         }
         // this block performs logic based on movingAway
@@ -130,7 +141,7 @@ public class EnemyFighter extends Enemy
             }
             rotateToAngle(targetingAngle); // calls changeImage
 
-            if (Math.abs(angleToPlayer - faceAngle) < 45) 
+            if (Math.abs(angleToTarget - faceAngle) < 45) 
             {
                 shoot();
             }
@@ -140,7 +151,7 @@ public class EnemyFighter extends Enemy
             rotateToAngle(targetingAngle); // calls changeImage
         }
 
-        if ((movingAway && Math.abs(faceAngle - targetingAngle) < 15) || (distanceToPlayer > 200 && !movingAway))
+        if ((movingAway && Math.abs(faceAngle - targetingAngle) < 15) || (distanceToTarget > 200 && !movingAway))
         {
             move(MovementState.Thrusting);
             changeImage(ImageMovementState.Thrusting, imageRotationState);

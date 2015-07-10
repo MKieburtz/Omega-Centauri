@@ -28,6 +28,8 @@ public class EnemyMediumFighter extends Enemy
     private boolean canShootMissile = true;
     private boolean canShootTurret = true;
     
+    private Ally targetShip;
+    
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, int shootingDelayTurret, 
             int shootingDelayMissile, int health, int id, GameActionListener actionListener) 
@@ -147,30 +149,40 @@ public class EnemyMediumFighter extends Enemy
     public void update() {
         super.update();
         
-        targetShip = (Ally)gameData.getPlayerShip();
+        double distanceToTarget = 1000000; // big number
+                
+        ArrayList<Ally> allyShips = gameData.getAllyShips();
         
-        double distance = Calculator.getDistance(location, gameData.getPlayerShip().getLocation());
+        for (Ally allyShip : allyShips)
+        {
+            double distance = Calculator.getDistance(location, allyShip.getLocation());
+            if (distance < distanceToTarget)
+            {
+                targetShip = allyShip;
+                distanceToTarget = distance;
+            }
+        }
+        
+        double angleToTarget = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location,
+                activeImage.getWidth(), activeImage.getHeight()), targetShip.getLocation());
 
-        double angleToPlayer = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
-                gameData.getPlayerShip().getLocation());
-
-        rotateToAngle(angleToPlayer);
+        rotateToAngle(angleToTarget);
         
         for (Turret t : turrets) 
         {
-            t.update(Calculator.getGameLocationMiddle(gameData.getPlayerShip().getLocation(),
-                    gameData.getPlayerShip().getActiveImage().getWidth(), gameData.getPlayerShip().getActiveImage().getWidth()),
+            t.update(Calculator.getGameLocationMiddle(targetShip.getLocation(),
+                    targetShip.getActiveImage().getWidth(), targetShip.getActiveImage().getWidth()),
                     Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
                     faceAngle);
 
         }
 
-        if (Math.abs(angleToPlayer - faceAngle) <= 45)
+        if (Math.abs(angleToTarget - faceAngle) <= 45)
         {
             shoot();
         }
 
-        if (distance > 500)
+        if (distanceToTarget > 500)
         {
             move(MovementState.Thrusting);
         } 

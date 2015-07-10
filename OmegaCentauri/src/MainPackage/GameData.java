@@ -23,7 +23,7 @@ public class GameData {
     
     public static volatile ArrayList<Enemy> enemyShips = new ArrayList<>();
     
-    public void updateShips(ArrayList<Enemy> newShips)
+    public void updateEnemyShips(ArrayList<Enemy> newShips)
     {
         enemyShips = newShips;
     }
@@ -31,6 +31,18 @@ public class GameData {
     public ArrayList<Enemy> getEnemyShips()
     {
         return enemyShips;
+    }
+    
+    public static volatile ArrayList<Ally> allyShips = new ArrayList<>();
+    
+    public void updateAllyShips(ArrayList<Ally> newShips)
+    {
+        allyShips = newShips;
+    }
+    
+    public ArrayList<Ally> getAllyShips()
+    {
+        return allyShips;
     }
     
     public static volatile Ship playerShip;

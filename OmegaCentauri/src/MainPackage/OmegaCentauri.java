@@ -719,7 +719,8 @@ public class OmegaCentauri extends JFrame implements GameActionListener
         
         gameData.updateCameraLocation(camera.getLocation().x, camera.getLocation().y);
         gameData.updatePlayer(player.getControllingShip());
-        gameData.updateShips(enemyShips);
+        gameData.updateEnemyShips(enemyShips);
+        gameData.updateAllyShips(allyShips);
     }
 
     class RecordingService implements Runnable

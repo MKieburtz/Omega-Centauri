@@ -80,7 +80,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     }
 
     @Override
-    public void update() 
+    public void update() // A.I
     {
         super.update();
         
@@ -89,7 +89,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         
         double distanceToTarget = 100000; // just a big number
         
-        double targetAngle = 0; // the angle to move towards
+        double targetAngle; // the angle to move towards
         
         for (Enemy enemyShip : enemyShips) // reevaluate the closest ship
         {
