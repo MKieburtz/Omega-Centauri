@@ -62,6 +62,7 @@ public class Resources {
         imagePaths.add("resources/FighterExplosionSpritesheet.png");
         imagePaths.add("resources/MissileExplosionSpritesheet.png");
         imagePaths.add("resources/RangeExplosionSpritesheet.png");
+        imagePaths.add("resources/EnemyMediumFighterBodyExplosion.png");
         imagePaths.add("resources/DangerBar.png");
         imagePaths.add("resources/HealthyBar.png");
         imagePaths.add("resources/HUDBackground.png");

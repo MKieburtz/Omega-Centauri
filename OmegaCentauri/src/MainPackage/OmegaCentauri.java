@@ -473,7 +473,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                 
                 if (shot.outOfRange())
                 {
-                    shot.explode(false);
+                    shot.explode();
                 }
             }
             
@@ -518,11 +518,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
 
                                 if (shotGotRemoved)
                                 {
-                                    shot.explode(false);
+                                    shot.explode();
                                 }
                                 if (collisionShotGotRemoved) 
                                 {
-                                    collisionShot.explode(false);
+                                    collisionShot.explode();
                                 }
                             }
                         }
@@ -555,21 +555,14 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                     {
                          removals = ship.CollisionEventWithShotWithHull(ship, shot, allShips);
                     }
-
                     if (removals[0]) // ship
                     {
-                        if (allyShips.contains(ship))
-                        {
-                            allyShips.remove(ship);
-                        }
-                        else if (enemyShips.contains(ship))
-                        {
-                            enemyShips.remove(ship);
-                        }
+                        ship.explode();
                     }
+                    
                     if (removals[1]) // shot
                     {
-                        shot.explode(false);
+                        shot.explode();
                     }
                 }
             }

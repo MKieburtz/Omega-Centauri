@@ -105,7 +105,7 @@ public abstract class Ship implements GameEntity
         }
         else
         {
-            explosion.draw(g2d, false);
+            explosion.draw(g2d);
             if (explosion.isDone())
             {
                 exploding = false;
@@ -436,11 +436,6 @@ public abstract class Ship implements GameEntity
     public void reduceHull(double damage) 
     {
         hullDurability -= damage;
-        
-        if (hullDurability <= 0)
-        {
-            exploding = true;
-        }
     }
     
     public void purgeShots(Dimension screensize) 
@@ -478,6 +473,11 @@ public abstract class Ship implements GameEntity
         double healthToLoseHull = Math.abs(shield.getEnergy() - damage);
             
         reduceHull(healthToLoseHull);
+    }
+    
+    public void explode()
+    {
+        exploding = true;
     }
     
     public double getMaxHull()

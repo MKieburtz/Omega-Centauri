@@ -51,8 +51,6 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
         
         faceAngle = 180;
-        
-        
     }
 
     @Override

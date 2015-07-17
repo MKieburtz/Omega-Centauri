@@ -26,7 +26,6 @@ public abstract class Shot implements GameEntity
     protected boolean exploding = false;
     protected Explosion explosion;
     protected boolean outOfRange = false;
-    protected boolean againstShield = false;
     protected GameData gameData = new GameData();
     protected Resources resources;
     protected GameActionListener actionListener = null;
@@ -83,7 +82,7 @@ public abstract class Shot implements GameEntity
         }
         else
         {
-            explosion.draw(g2d, againstShield);
+            explosion.draw(g2d);
             if (explosion.isDone())
             {
                 exploding = false;
@@ -199,10 +198,9 @@ public abstract class Shot implements GameEntity
         return exploding;
     }
     
-    public void explode(boolean againstShield)
+    public void explode()
     {
         exploding = true;
-        this.againstShield = againstShield;
     }
     
     protected void checkForExceededRange()
@@ -211,18 +209,12 @@ public abstract class Shot implements GameEntity
         {
             exploding = true;
             outOfRange = true;
-            againstShield = false;
         }
     }
     
     public boolean outOfRange()
     {
         return outOfRange;
-    }
-    
-    public boolean againstShield()
-    {
-        return againstShield;
     }
     
     public Explosion getExplosion()

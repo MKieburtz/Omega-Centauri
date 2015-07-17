@@ -168,7 +168,6 @@ public class EnemyFighter extends Enemy
     @Override
     public void shoot() 
     {
-
         if (canshoot) 
         {
             Random rand = new Random();

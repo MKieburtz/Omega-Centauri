@@ -25,6 +25,9 @@ public class Explosion
 
     private final Dimension rangeExplosionSize = new Dimension(700, 200);
     private final Dimension rangeExplosionImageSize = new Dimension(100, 100);
+    
+    private final Dimension enemyMediumFighterExplosionSize = new Dimension(2400, 3200);
+    private final Dimension enemyMediumFighterExplosionImageSize = new Dimension(400, 400);
 
     private final Dimension entityImageSize;
     
@@ -41,17 +44,17 @@ public class Explosion
 
     public static enum Type 
     {
-        fighter, missile, range
+        fighter, missile, range, mediumFighter
     };
 
     BufferedImage spriteSheet;
 
     BufferedImage[] images = null;
-    BufferedImage[] shieldImages = null;
     
     private final String fighterExplosionPath = "resources/FighterExplosionSpritesheet.png";
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
     private final String rangeExplosionPath = "resources/RangeExplosionSpritesheet.png";
+    private final String enemyMediumFighterExplosionPath = "resources/EnemyMediumFighterBodyExplosion.png";
             
     public Explosion(Type type, Dimension imageSize) 
     {
@@ -61,18 +64,16 @@ public class Explosion
             case fighter:
                 spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(fighterExplosionPath));
                 images = new BufferedImage[30];
-                shieldImages = new BufferedImage[30];
 
-                loadImages(fighterExplosionSize, spriteSheet, fighterExplosionImageSize);
+                loadImages(fighterExplosionSize, fighterExplosionImageSize);
                 explosionImageSize = fighterExplosionImageSize;
                 break;
 
             case missile:
                 spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(missileExplosionPath));
                 images = new BufferedImage[16];
-                shieldImages = new BufferedImage[16];
                 
-                loadImages(missileExplosionSize, spriteSheet, missileExplosionImageSize);
+                loadImages(missileExplosionSize, missileExplosionImageSize);
                 
                 explosionImageSize = missileExplosionImageSize;
                 
@@ -81,13 +82,23 @@ public class Explosion
             case range:
                 spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(rangeExplosionPath));
                 images = new BufferedImage[14];
-                shieldImages = new BufferedImage[14];
                 
-                loadImages(rangeExplosionSize, spriteSheet, rangeExplosionImageSize);
+                loadImages(rangeExplosionSize, rangeExplosionImageSize);
                 
                 explosionImageSize = rangeExplosionImageSize;
                 
                 break;
+                
+            case mediumFighter:
+                spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(enemyMediumFighterExplosionPath));
+                images = new BufferedImage[48];
+                
+                loadImages(enemyMediumFighterExplosionSize, enemyMediumFighterExplosionImageSize);
+                
+                explosionImageSize = enemyMediumFighterExplosionImageSize;
+                
+                break;
+                
         }
 
         this.entityImageSize = imageSize;
@@ -101,7 +112,7 @@ public class Explosion
         gameData = new GameData();
     }
 
-    private void loadImages(Dimension spriteSheetSize, BufferedImage spriteSheet, Dimension imageSize) 
+    private void loadImages(Dimension spriteSheetSize, Dimension imageSize) 
     {
         int index = 0;
         for (int y = 0; y < spriteSheetSize.height; y += imageSize.height) 
@@ -109,35 +120,17 @@ public class Explosion
             for (int x = 0; x < spriteSheetSize.width; x += imageSize.width) 
             {
                 images[index] = spriteSheet.getSubimage(x, y, imageSize.width, imageSize.height);
-                shieldImages[index] = new BufferedImage(imageSize.width, imageSize.height, BufferedImage.TYPE_INT_ARGB);
                 index++;
             }
         }
     }
     
-    public void draw(Graphics2D g2d, boolean againstShield) 
+    public void draw(Graphics2D g2d) 
     {
-        if (!againstShield)
-        {
-            g2d.drawImage(images[frame],
-                    (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x - drawingManipulation.x),
-                    (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
-            frame++;
-        }
-        else
-        {
-            AffineTransform original = g2d.getTransform();
-
-            AffineTransform transform = (AffineTransform) original.clone();
-            
-            g2d.transform(transform); // this is the problem
-        
-            g2d.drawImage(shieldImages[8], (int)-drawingManipulation.x - 1, (int)-drawingManipulation.y + 12, null); 
-
-            g2d.setTransform(original); 
-
-            frame++;
-        }
+        g2d.drawImage(images[frame],
+                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x - drawingManipulation.x),
+                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
+        frame++;
     }
 
     public boolean isDone() 

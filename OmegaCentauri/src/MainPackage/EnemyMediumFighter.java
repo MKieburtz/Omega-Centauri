@@ -42,9 +42,11 @@ public class EnemyMediumFighter extends Enemy
         activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
 
         shield = new Shield(location, Shield.Type.enemyMediumFighter,
-                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 150);
+                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 10);
 
         setUpHitbox();
+        
+        explosion = new Explosion(Explosion.Type.mediumFighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
 
         turrets[0] = new Turret(25, 335, 45, new Point2D.Double(93, 115), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
                 new Point2D.Double(65, 70), 65,faceAngle, this);
@@ -54,8 +56,16 @@ public class EnemyMediumFighter extends Enemy
         
         this.shootingDelayMissile = shootingDelayMissile;
         this.shootingDelayTurret = shootingDelayTurret;
-
+        
         ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
+    }
+    
+    class ExplodableWing
+    {
+        public ExplodableWing()
+        {
+            
+        }
     }
     
     @Override
