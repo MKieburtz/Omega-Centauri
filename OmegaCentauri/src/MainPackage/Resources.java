@@ -45,6 +45,8 @@ public class Resources {
         imagePaths.add("resources/EnemyFighterThrustingLeft.png");
         imagePaths.add("resources/EnemyFighterThrustingRight.png");
         imagePaths.add("resources/MediumEnemyFighter.png");
+        imagePaths.add("resources/EMFWingTop.png");
+        imagePaths.add("resources/EMFWingBottom.png");
         imagePaths.add("resources/Turret.png");
         imagePaths.add("resources/Pulse.png");
         imagePaths.add("resources/EnemyShot.png");
@@ -63,6 +65,7 @@ public class Resources {
         imagePaths.add("resources/MissileExplosionSpritesheet.png");
         imagePaths.add("resources/RangeExplosionSpritesheet.png");
         imagePaths.add("resources/EnemyMediumFighterBodyExplosion.png");
+        imagePaths.add("resources/EMFWingExplosion.png");
         imagePaths.add("resources/DangerBar.png");
         imagePaths.add("resources/HealthyBar.png");
         imagePaths.add("resources/HUDBackground.png");

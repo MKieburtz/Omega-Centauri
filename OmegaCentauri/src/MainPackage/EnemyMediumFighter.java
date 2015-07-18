@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +31,9 @@ public class EnemyMediumFighter extends Enemy
     
     private Ally targetShip;
     
+    private ExplodableWing topWing;
+    private ExplodableWing bottomWing;
+    
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, int shootingDelayTurret, 
             int shootingDelayMissile, int health, int id, GameActionListener actionListener) 
@@ -39,7 +43,7 @@ public class EnemyMediumFighter extends Enemy
         this.id = id;
         resources = gameData.getResources();
        
-        activeImage = resources.getImageForObject("resources/MediumEnemyFighter.png");
+        activeImage = Calculator.toCompatibleImage(resources.getImageForObject("resources/MediumEnemyFighter.png"));
 
         shield = new Shield(location, Shield.Type.enemyMediumFighter,
                 new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 10);
@@ -54,6 +58,9 @@ public class EnemyMediumFighter extends Enemy
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
                 new Point2D.Double(95, 75), -65, faceAngle, this);
         
+        topWing = new ExplodableWing(true);
+        bottomWing = new ExplodableWing(false);
+        
         this.shootingDelayMissile = shootingDelayMissile;
         this.shootingDelayTurret = shootingDelayTurret;
         
@@ -62,9 +69,35 @@ public class EnemyMediumFighter extends Enemy
     
     class ExplodableWing
     {
-        public ExplodableWing()
+        private String topWingPath = "resources/EMFWingTop.png";
+        private String bottomWingPath = "resources/EMFWingBottom.png";
+        private Explosion explosion;
+        private BufferedImage wingImage = null;
+        private boolean top;
+        public ExplodableWing(boolean top)
         {
-            
+            this.top = top;
+            if (top)
+            {
+                wingImage = Calculator.toCompatibleImage(resources.getImageForObject(topWingPath));
+            }
+            else
+            {
+                wingImage = Calculator.toCompatibleImage(resources.getImageForObject(bottomWingPath));
+            }
+            explosion = new Explosion(Explosion.Type.wingExplosion, new Dimension(wingImage.getWidth(), wingImage.getHeight()));
+        }
+        
+        public void update()
+        {
+            if (top)
+            {
+                
+            }
+            else
+            {
+                
+            }
         }
     }
     

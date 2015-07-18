@@ -28,6 +28,9 @@ public class Explosion
     
     private final Dimension enemyMediumFighterExplosionSize = new Dimension(2400, 3200);
     private final Dimension enemyMediumFighterExplosionImageSize = new Dimension(400, 400);
+    
+    private final Dimension EMFWingExplosionSize = new Dimension(2100, 2800);
+    private final Dimension EMFWingExplosionImageSize = new Dimension(350, 350);
 
     private final Dimension entityImageSize;
     
@@ -44,7 +47,7 @@ public class Explosion
 
     public static enum Type 
     {
-        fighter, missile, range, mediumFighter
+        fighter, missile, range, mediumFighter, wingExplosion
     };
 
     BufferedImage spriteSheet;
@@ -55,6 +58,7 @@ public class Explosion
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
     private final String rangeExplosionPath = "resources/RangeExplosionSpritesheet.png";
     private final String enemyMediumFighterExplosionPath = "resources/EnemyMediumFighterBodyExplosion.png";
+    private final String EMFWingExplosionPath = "resources/EMFWingExplosion";
             
     public Explosion(Type type, Dimension imageSize) 
     {
@@ -76,7 +80,6 @@ public class Explosion
                 loadImages(missileExplosionSize, missileExplosionImageSize);
                 
                 explosionImageSize = missileExplosionImageSize;
-                
                 break;
             
             case range:
@@ -86,7 +89,6 @@ public class Explosion
                 loadImages(rangeExplosionSize, rangeExplosionImageSize);
                 
                 explosionImageSize = rangeExplosionImageSize;
-                
                 break;
                 
             case mediumFighter:
@@ -96,7 +98,15 @@ public class Explosion
                 loadImages(enemyMediumFighterExplosionSize, enemyMediumFighterExplosionImageSize);
                 
                 explosionImageSize = enemyMediumFighterExplosionImageSize;
+                break;
+             
+            case wingExplosion:
+                spriteSheet = Calculator.toCompatibleImage(resources.getImageForObject(EMFWingExplosionPath));
+                images = new BufferedImage[48];
                 
+                loadImages(EMFWingExplosionSize, EMFWingExplosionImageSize);
+                
+                explosionImageSize = EMFWingExplosionImageSize;
                 break;
                 
         }
