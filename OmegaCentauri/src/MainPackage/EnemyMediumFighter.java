@@ -58,9 +58,6 @@ public class EnemyMediumFighter extends Enemy
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
                 new Point2D.Double(95, 75), -65, faceAngle, this);
         
-        topWing = new ExplodableWing(true);
-        bottomWing = new ExplodableWing(false);
-        
         this.shootingDelayMissile = shootingDelayMissile;
         this.shootingDelayTurret = shootingDelayTurret;
         
@@ -74,31 +71,87 @@ public class EnemyMediumFighter extends Enemy
         private Explosion explosion;
         private BufferedImage wingImage = null;
         private boolean top;
-        public ExplodableWing(boolean top)
+        private Point2D.Double location = new Point2D.Double();
+        private double angle;
+        private int steps; // time until explosion
+        private boolean exploding;
+        
+        public ExplodableWing(boolean top, Point2D.Double shipLocation, double angle)
         {
+            this.angle = angle;
             this.top = top;
             if (top)
             {
                 wingImage = Calculator.toCompatibleImage(resources.getImageForObject(topWingPath));
+                location = shipLocation;
             }
             else
             {
                 wingImage = Calculator.toCompatibleImage(resources.getImageForObject(bottomWingPath));
+                location.x = shipLocation.x;
+                location.y = shipLocation.y - activeImage.getHeight() + wingImage.getHeight(); // top left, bottom left to the right location
             }
             explosion = new Explosion(Explosion.Type.wingExplosion, new Dimension(wingImage.getWidth(), wingImage.getHeight()));
+            
+            steps = 20; // make random
         }
         
         public void update()
         {
+            double movementAngle;
             if (top)
             {
-                
+                movementAngle = Calculator.confineAngleToRange(angle + 90);
+                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
+                location.y += Calculator.CalcAngleMoveY(360 - movementAngle);
+                angle += 2;
             }
             else
             {
-                
+                movementAngle = Calculator.confineAngleToRange(angle - 90);
+                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
+                location.y += Calculator.CalcAngleMoveX(360 - movementAngle);
+                angle -= 2;
+            }
+            steps--;
+            
+            if (steps == 0)
+            {
+                exploding = true;
             }
         }
+        
+        public void draw(Graphics2D g2d)
+        {
+            if (!exploding)
+            {
+                g2d.rotate(Math.toRadians(360 - angle),
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).y);
+            
+                g2d.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
+                    Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
+            
+                g2d.drawImage(wingImage, 0, 0, null);
+            }
+            else
+            {
+                explosion.draw(g2d);
+                if (explosion.isDone())
+                {
+                    exploding = false;
+                    actionListener.entityDoneExploding(EnemyMediumFighter.this); // the ship, not the wing
+                }
+            }
+        }
+    }
+    
+    @Override
+    public void explode()
+    {
+        super.explode();
+        topWing = new ExplodableWing(true, location, faceAngle);
+        bottomWing = new ExplodableWing(false, location, faceAngle);
     }
     
     @Override
