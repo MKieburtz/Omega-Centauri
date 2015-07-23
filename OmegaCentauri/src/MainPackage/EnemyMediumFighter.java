@@ -34,6 +34,9 @@ public class EnemyMediumFighter extends Enemy
     private ExplodableWing topWing;
     private ExplodableWing bottomWing;
     
+    private boolean bodyExploding = false;
+    private boolean wingsExploding = false;
+    
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, int shootingDelayTurret, 
             int shootingDelayMissile, int health, int id, GameActionListener actionListener) 
@@ -99,39 +102,44 @@ public class EnemyMediumFighter extends Enemy
         public void update()
         {
             double movementAngle;
-            if (top)
-            {
-                movementAngle = Calculator.confineAngleToRange(angle + 90);
-                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
-                location.y += Calculator.CalcAngleMoveY(360 - movementAngle);
-                angle += 2;
-            }
-            else
-            {
-                movementAngle = Calculator.confineAngleToRange(angle - 90);
-                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
-                location.y += Calculator.CalcAngleMoveX(360 - movementAngle);
-                angle -= 2;
-            }
+//            if (top)
+//            {
+//                movementAngle = Calculator.confineAngleToRange(angle + 90);
+//                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
+//                location.y += Calculator.CalcAngleMoveY(360 - movementAngle);
+//                angle += 2;
+//            }
+//            else
+//            {
+//                movementAngle = Calculator.confineAngleToRange(angle - 90);
+//                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
+//                location.y += Calculator.CalcAngleMoveX(360 - movementAngle);
+//                angle -= 2;
+//            }
             steps--;
             
             if (steps == 0)
             {
                 exploding = true;
+                wingExploding(this);
             }
         }
         
         public void draw(Graphics2D g2d)
         {
+            AffineTransform transform = g2d.getTransform();
+            
             if (!exploding)
             {
-                g2d.rotate(Math.toRadians(360 - angle),
+                transform.rotate(Math.toRadians(360 - angle),
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).y);
             
-                g2d.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
+                transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
                     Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
             
+                g2d.transform(transform);
+                
                 g2d.drawImage(wingImage, 0, 0, null);
             }
             else
@@ -140,10 +148,19 @@ public class EnemyMediumFighter extends Enemy
                 if (explosion.isDone())
                 {
                     exploding = false;
-                    actionListener.entityDoneExploding(EnemyMediumFighter.this); // the ship, not the wing
                 }
             }
         }
+        
+        public boolean exploding()
+        {
+            return exploding;
+        }
+    }
+    
+    private void wingExploding(ExplodableWing wing)
+    {
+        wingsExploding = true;
     }
     
     @Override
@@ -152,37 +169,7 @@ public class EnemyMediumFighter extends Enemy
         super.explode();
         topWing = new ExplodableWing(true, location, faceAngle);
         bottomWing = new ExplodableWing(false, location, faceAngle);
-    }
-    
-    @Override
-    public void setUpHitbox()
-    {
-        try 
-        {
-            shieldHitbox = new EllipseHitbox(activeImage.getWidth() + 50, activeImage.getHeight() + 50); // constants added to the end compensate for the wings
-            Point2D.Double points[] = new Point2D.Double[8];
-            points[0] = new Point2D.Double(27, 0);
-            points[1] = new Point2D.Double(activeImage.getWidth(), 0);
-            points[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
-            points[3] = new Point2D.Double(27, activeImage.getHeight());
-            points[4] = new Point2D.Double(27, activeImage.getHeight() - 172);
-            points[5] = new Point2D.Double(0, activeImage.getHeight() - 172);
-            points[6] = new Point2D.Double(0, activeImage.getHeight() - 202);
-            points[7] = new Point2D.Double(27, activeImage.getHeight() - 202);
-            hullHitbox = new ShapeHitbox(points, new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2));
-        } 
-        catch (NullPointerException ex) 
-        {
-            System.err.println("active image not initialized!");
-        }
-    }
-    
-    @Override
-    protected void updateHitbox()
-    {
-        super.updateHitbox();
-        hullHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
-        hullHitbox.rotateToAngle(faceAngle);
+        bodyExploding = true;
     }
 
     @Override
@@ -220,14 +207,50 @@ public class EnemyMediumFighter extends Enemy
     @Override
     public void draw(Graphics2D g2d) {
         AffineTransform original = g2d.getTransform();
-
-        super.draw(g2d);
-
-        for (Turret t : turrets) 
+        AffineTransform transform = (AffineTransform)original.clone();
+        
+        if (!bodyExploding && !wingsExploding)
         {
-            t.draw(g2d, location);
+            transform.rotate(Math.toRadians(360 - faceAngle),
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
+            
+            transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
+                    Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
+            
+            g2d.transform(transform);
+            
+            g2d.drawImage(activeImage, 0, 0, null);
+            
+            for (Turret t : turrets) 
+            {
+                t.draw(g2d, location);
+            }
         }
-
+        else if (bodyExploding)
+        {
+            explosion.draw(g2d);
+            if (explosion.isDone())
+            {
+                bodyExploding = false;
+            }
+            
+            topWing.draw(g2d);
+            bottomWing.draw(g2d);
+        }
+        else if (wingsExploding)
+        {
+            topWing.draw(g2d);
+            bottomWing.draw(g2d);
+            
+            if (!topWing.exploding() && !bottomWing.exploding())
+            {
+                wingsExploding = false;
+                exploding = false;
+                actionListener.entityDoneExploding(this);
+            }
+        }
+        
         g2d.setTransform(original);
 
         Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
@@ -243,49 +266,91 @@ public class EnemyMediumFighter extends Enemy
 
     @Override
     public void update() {
-        super.update();
-        
-        double distanceToTarget = 1000000; // big number
-                
-        ArrayList<Ally> allyShips = gameData.getAllyShips();
-        
-        for (Ally allyShip : allyShips)
+        if (!exploding)
         {
-            double distance = Calculator.getDistance(location, allyShip.getLocation());
-            if (distance < distanceToTarget)
+            super.update();
+
+            double distanceToTarget = 1000000; // big number
+
+            ArrayList<Ally> allyShips = gameData.getAllyShips();
+
+            for (Ally allyShip : allyShips)
             {
-                targetShip = allyShip;
-                distanceToTarget = distance;
+                double distance = Calculator.getDistance(location, allyShip.getLocation());
+                if (distance < distanceToTarget)
+                {
+                    targetShip = allyShip;
+                    distanceToTarget = distance;
+                }
+            }
+
+            double angleToTarget = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location,
+                    activeImage.getWidth(), activeImage.getHeight()), targetShip.getLocation());
+
+            rotateToAngle(angleToTarget);
+
+            for (Turret t : turrets) 
+            {
+                t.update(Calculator.getGameLocationMiddle(targetShip.getLocation(),
+                        targetShip.getActiveImage().getWidth(), targetShip.getActiveImage().getWidth()),
+                        Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
+                        faceAngle);
+
+            }
+
+            if (Math.abs(angleToTarget - faceAngle) <= 45)
+            {
+                shoot();
+            }
+
+            if (distanceToTarget > 500)
+            {
+                move(MovementState.Thrusting);
+            } 
+            else
+            {
+                move(MovementState.Drifting);
             }
         }
-        
-        double angleToTarget = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location,
-                activeImage.getWidth(), activeImage.getHeight()), targetShip.getLocation());
-
-        rotateToAngle(angleToTarget);
-        
-        for (Turret t : turrets) 
-        {
-            t.update(Calculator.getGameLocationMiddle(targetShip.getLocation(),
-                    targetShip.getActiveImage().getWidth(), targetShip.getActiveImage().getWidth()),
-                    Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
-                    faceAngle);
-
-        }
-
-        if (Math.abs(angleToTarget - faceAngle) <= 45)
-        {
-            shoot();
-        }
-
-        if (distanceToTarget > 500)
-        {
-            move(MovementState.Thrusting);
-        } 
         else
         {
-            move(MovementState.Drifting);
+            if (!wingsExploding)
+            {
+                topWing.update();
+                bottomWing.update();
+            }
         }
+    }
+    
+    @Override
+    public void setUpHitbox()
+    {
+        try 
+        {
+            shieldHitbox = new EllipseHitbox(activeImage.getWidth() + 50, activeImage.getHeight() + 50); // constants added to the end compensate for the wings
+            Point2D.Double points[] = new Point2D.Double[8];
+            points[0] = new Point2D.Double(27, 0);
+            points[1] = new Point2D.Double(activeImage.getWidth(), 0);
+            points[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
+            points[3] = new Point2D.Double(27, activeImage.getHeight());
+            points[4] = new Point2D.Double(27, activeImage.getHeight() - 172);
+            points[5] = new Point2D.Double(0, activeImage.getHeight() - 172);
+            points[6] = new Point2D.Double(0, activeImage.getHeight() - 202);
+            points[7] = new Point2D.Double(27, activeImage.getHeight() - 202);
+            hullHitbox = new ShapeHitbox(points, new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2));
+        } 
+        catch (NullPointerException ex) 
+        {
+            System.err.println("active image not initialized!");
+        }
+    }
+    
+    @Override
+    protected void updateHitbox()
+    {
+        super.updateHitbox();
+        hullHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
+        hullHitbox.rotateToAngle(faceAngle);
     }
 
     @Override

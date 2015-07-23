@@ -58,7 +58,7 @@ public class Explosion
     private final String missileExplosionPath = "resources/MissileExplosionSpritesheet.png";
     private final String rangeExplosionPath = "resources/RangeExplosionSpritesheet.png";
     private final String enemyMediumFighterExplosionPath = "resources/EnemyMediumFighterBodyExplosion.png";
-    private final String EMFWingExplosionPath = "resources/EMFWingExplosion";
+    private final String EMFWingExplosionPath = "resources/EMFWingExplosion.png";
             
     public Explosion(Type type, Dimension imageSize) 
     {
