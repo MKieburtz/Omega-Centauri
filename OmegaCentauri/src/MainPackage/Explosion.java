@@ -142,7 +142,7 @@ public class Explosion
                 (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
         frame++;
     }
-
+    
     public boolean isDone() 
     {
         return frame == images.length;

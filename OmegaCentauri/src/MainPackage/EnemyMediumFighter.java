@@ -78,6 +78,7 @@ public class EnemyMediumFighter extends Enemy
         private double angle;
         private int steps; // time until explosion
         private boolean exploding;
+        private Point2D.Double shipMiddle;
         
         public ExplodableWing(boolean top, Point2D.Double shipLocation, double angle)
         {
@@ -92,30 +93,34 @@ public class EnemyMediumFighter extends Enemy
             {
                 wingImage = Calculator.toCompatibleImage(resources.getImageForObject(bottomWingPath));
                 location.x = shipLocation.x;
-                location.y = shipLocation.y - activeImage.getHeight() + wingImage.getHeight(); // top left, bottom left to the right location
+                location.y = shipLocation.y + activeImage.getHeight() - wingImage.getHeight(); // remember these are game coordinates not screen
             }
             explosion = new Explosion(Explosion.Type.wingExplosion, new Dimension(wingImage.getWidth(), wingImage.getHeight()));
             
             steps = 20; // make random
+            
+            shipMiddle = Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), shipLocation, activeImage.getWidth(), activeImage.getHeight());
         }
         
         public void update()
         {
             double movementAngle;
-//            if (top)
-//            {
-//                movementAngle = Calculator.confineAngleToRange(angle + 90);
-//                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
-//                location.y += Calculator.CalcAngleMoveY(360 - movementAngle);
-//                angle += 2;
-//            }
-//            else
-//            {
-//                movementAngle = Calculator.confineAngleToRange(angle - 90);
-//                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
-//                location.y += Calculator.CalcAngleMoveX(360 - movementAngle);
-//                angle -= 2;
-//            }
+            if (top)
+            {
+                movementAngle = Calculator.confineAngleToRange(angle + 90);
+                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
+                location.y += Calculator.CalcAngleMoveY(360 - movementAngle);
+                angle += .5;
+            }
+            else
+            {
+                movementAngle = Calculator.confineAngleToRange(angle - 90);
+                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
+                location.y += Calculator.CalcAngleMoveX(360 - movementAngle);
+                angle -= .5;
+            }
+            location = Calculator.rotatePointAroundPoint(location, shipMiddle, angle);
+            explosion.updateLocation(location);
             steps--;
             
             if (steps == 0)
@@ -131,9 +136,8 @@ public class EnemyMediumFighter extends Enemy
             
             if (!exploding)
             {
-                transform.rotate(Math.toRadians(360 - angle),
-                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).y);
+                g2d.fillRect((int)shipMiddle.x, (int)shipMiddle.y, 3, 3);
+                transform.rotate(Math.toRadians(360 - angle), shipMiddle.x, shipMiddle.y);
             
                 transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
                     Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
@@ -236,11 +240,13 @@ public class EnemyMediumFighter extends Enemy
             }
             
             topWing.draw(g2d);
+            g2d.setTransform(original);
             bottomWing.draw(g2d);
         }
         else if (wingsExploding)
         {
             topWing.draw(g2d);
+            g2d.setTransform(original);
             bottomWing.draw(g2d);
             
             if (!topWing.exploding() && !bottomWing.exploding())
