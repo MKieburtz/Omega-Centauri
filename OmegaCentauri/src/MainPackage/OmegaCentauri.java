@@ -82,7 +82,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     {
         player = new Player();
         allyShips.add(new Fighter(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500, this));
-        allyShips.add(new Fighter(5600, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500, this));
+        //allyShips.add(new Fighter(5600, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500, this));
         player.controlShip(allyShips.get(0));
         
         enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 3, 5, 5, .15, 700, 20, 1, this));

@@ -119,7 +119,6 @@ public class EnemyMediumFighter extends Enemy
                 location.y += Calculator.CalcAngleMoveX(360 - movementAngle);
                 angle -= .5;
             }
-            location = Calculator.rotatePointAroundPoint(location, shipMiddle, angle);
             explosion.updateLocation(location);
             steps--;
             
@@ -136,8 +135,9 @@ public class EnemyMediumFighter extends Enemy
             
             if (!exploding)
             {
-                g2d.fillRect((int)shipMiddle.x, (int)shipMiddle.y, 3, 3);
-                transform.rotate(Math.toRadians(360 - angle), shipMiddle.x, shipMiddle.y);
+                transform.rotate(Math.toRadians(360 - angle),
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).y);
             
                 transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
                     Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
@@ -232,7 +232,7 @@ public class EnemyMediumFighter extends Enemy
             }
         }
         else if (bodyExploding)
-        {
+        {  
             explosion.draw(g2d);
             if (explosion.isDone())
             {
@@ -258,7 +258,7 @@ public class EnemyMediumFighter extends Enemy
         }
         
         g2d.setTransform(original);
-
+        
         Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         
