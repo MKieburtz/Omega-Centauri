@@ -97,7 +97,7 @@ public class EnemyMediumFighter extends Enemy
             }
             explosion = new Explosion(Explosion.Type.wingExplosion, new Dimension(wingImage.getWidth(), wingImage.getHeight()));
             
-            steps = 20; // make random
+            steps = 30; // make random
             
             shipMiddle = Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), shipLocation, activeImage.getWidth(), activeImage.getHeight());
         }
@@ -132,12 +132,9 @@ public class EnemyMediumFighter extends Enemy
         public void draw(Graphics2D g2d)
         {
             AffineTransform transform = g2d.getTransform();
-            
             if (!exploding)
             {
-                transform.rotate(Math.toRadians(360 - angle),
-                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).y);
+                transform.rotate(Math.toRadians(360 - angle), shipMiddle.x, shipMiddle.y);
             
                 transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
                     Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
