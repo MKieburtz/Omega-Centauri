@@ -79,9 +79,11 @@ public class EnemyMediumFighter extends Enemy
         private int steps; // time until explosion
         private boolean exploding;
         private Point2D.Double shipMiddle;
+        private double shipAngle;
         
         public ExplodableWing(boolean top, Point2D.Double shipLocation, double angle)
         {
+            this.shipAngle = angle;
             this.angle = angle;
             this.top = top;
             if (top)
@@ -134,7 +136,10 @@ public class EnemyMediumFighter extends Enemy
             AffineTransform transform = g2d.getTransform();
             if (!exploding)
             {
-                transform.rotate(Math.toRadians(360 - angle), shipMiddle.x, shipMiddle.y);
+                transform.rotate(Math.toRadians(360 - shipAngle), shipMiddle.x, shipMiddle.y);
+                transform.rotate(Math.toRadians(360 - (angle - shipAngle)), 
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).x,
+                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).y);
             
                 transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
                     Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
