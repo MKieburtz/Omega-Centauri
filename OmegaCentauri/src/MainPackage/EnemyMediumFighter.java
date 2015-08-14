@@ -34,9 +34,6 @@ public class EnemyMediumFighter extends Enemy
     private ExplodableWing topWing;
     private ExplodableWing bottomWing;
     
-    private boolean bodyExploding = false;
-    private boolean wingsExploding = false;
-    
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, int shootingDelayTurret, 
             int shootingDelayMissile, int health, int id, GameActionListener actionListener) 
@@ -61,6 +58,9 @@ public class EnemyMediumFighter extends Enemy
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
                 new Point2D.Double(95, 75), -65, faceAngle, this);
         
+        topWing = new ExplodableWing(true);
+        bottomWing = new ExplodableWing(false);
+        
         this.shootingDelayMissile = shootingDelayMissile;
         this.shootingDelayTurret = shootingDelayTurret;
         
@@ -74,108 +74,62 @@ public class EnemyMediumFighter extends Enemy
         private Explosion explosion;
         private BufferedImage wingImage = null;
         private boolean top;
-        private Point2D.Double location = new Point2D.Double();
-        private double angle;
-        private int steps; // time until explosion
-        private boolean exploding;
-        private Point2D.Double shipMiddle;
-        private double shipAngle;
-        
-        public ExplodableWing(boolean top, Point2D.Double shipLocation, double angle)
+        public ExplodableWing(boolean top)
         {
-            this.shipAngle = angle;
-            this.angle = angle;
             this.top = top;
             if (top)
             {
                 wingImage = Calculator.toCompatibleImage(resources.getImageForObject(topWingPath));
-                location = shipLocation;
             }
             else
             {
                 wingImage = Calculator.toCompatibleImage(resources.getImageForObject(bottomWingPath));
-                location.x = shipLocation.x;
-                location.y = shipLocation.y + activeImage.getHeight() - wingImage.getHeight(); // remember these are game coordinates not screen
             }
             explosion = new Explosion(Explosion.Type.wingExplosion, new Dimension(wingImage.getWidth(), wingImage.getHeight()));
-            
-            steps = 30; // make random
-            
-            shipMiddle = Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), shipLocation, activeImage.getWidth(), activeImage.getHeight());
         }
         
         public void update()
         {
-            double movementAngle;
             if (top)
             {
-                movementAngle = Calculator.confineAngleToRange(angle + 90);
-                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
-                location.y += Calculator.CalcAngleMoveY(360 - movementAngle);
-                angle += .5;
-            }
-            else
-            {
-                movementAngle = Calculator.confineAngleToRange(angle - 90);
-                location.x += Calculator.CalcAngleMoveX(360 - movementAngle);
-                location.y += Calculator.CalcAngleMoveX(360 - movementAngle);
-                angle -= .5;
-            }
-            explosion.updateLocation(location);
-            steps--;
-            
-            if (steps == 0)
-            {
-                exploding = true;
-                wingExploding(this);
-            }
-        }
-        
-        public void draw(Graphics2D g2d)
-        {
-            AffineTransform transform = g2d.getTransform();
-            if (!exploding)
-            {
-                transform.rotate(Math.toRadians(360 - shipAngle), shipMiddle.x, shipMiddle.y);
-                transform.rotate(Math.toRadians(360 - (angle - shipAngle)), 
-                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, wingImage.getWidth(), wingImage.getHeight()).y);
-            
-                transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
-                    Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
-            
-                g2d.transform(transform);
                 
-                g2d.drawImage(wingImage, 0, 0, null);
             }
             else
             {
-                explosion.draw(g2d);
-                if (explosion.isDone())
-                {
-                    exploding = false;
-                }
+                
             }
         }
-        
-        public boolean exploding()
-        {
-            return exploding;
-        }
-    }
-    
-    private void wingExploding(ExplodableWing wing)
-    {
-        wingsExploding = true;
     }
     
     @Override
-    public void explode()
+    public void setUpHitbox()
     {
-        super.explode();
-        topWing = new ExplodableWing(true, location, faceAngle);
-        bottomWing = new ExplodableWing(false, location, faceAngle);
-        bodyExploding = true;
+        try 
+        {
+            shieldHitbox = new EllipseHitbox(activeImage.getWidth() + 50, activeImage.getHeight() + 50); // constants added to the end compensate for the wings
+            Point2D.Double points[] = new Point2D.Double[8];
+            points[0] = new Point2D.Double(27, 0);
+            points[1] = new Point2D.Double(activeImage.getWidth(), 0);
+            points[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
+            points[3] = new Point2D.Double(27, activeImage.getHeight());
+            points[4] = new Point2D.Double(27, activeImage.getHeight() - 172);
+            points[5] = new Point2D.Double(0, activeImage.getHeight() - 172);
+            points[6] = new Point2D.Double(0, activeImage.getHeight() - 202);
+            points[7] = new Point2D.Double(27, activeImage.getHeight() - 202);
+            hullHitbox = new ShapeHitbox(points, new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2));
+        } 
+        catch (NullPointerException ex) 
+        {
+            System.err.println("active image not initialized!");
+        }
+    }
+    
+    @Override
+    protected void updateHitbox()
+    {
+        super.updateHitbox();
+        hullHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
+        hullHitbox.rotateToAngle(faceAngle);
     }
 
     @Override
@@ -213,54 +167,16 @@ public class EnemyMediumFighter extends Enemy
     @Override
     public void draw(Graphics2D g2d) {
         AffineTransform original = g2d.getTransform();
-        AffineTransform transform = (AffineTransform)original.clone();
-        
-        if (!bodyExploding && !wingsExploding)
+
+        super.draw(g2d);
+
+        for (Turret t : turrets) 
         {
-            transform.rotate(Math.toRadians(360 - faceAngle),
-                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
-                    Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
-            
-            transform.translate(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x,
-                    Calculator.getScreenLocation(gameData.getCameraLocation(), location).y);
-            
-            g2d.transform(transform);
-            
-            g2d.drawImage(activeImage, 0, 0, null);
-            
-            for (Turret t : turrets) 
-            {
-                t.draw(g2d, location);
-            }
+            t.draw(g2d, location);
         }
-        else if (bodyExploding)
-        {  
-            explosion.draw(g2d);
-            if (explosion.isDone())
-            {
-                bodyExploding = false;
-            }
-            
-            topWing.draw(g2d);
-            g2d.setTransform(original);
-            bottomWing.draw(g2d);
-        }
-        else if (wingsExploding)
-        {
-            topWing.draw(g2d);
-            g2d.setTransform(original);
-            bottomWing.draw(g2d);
-            
-            if (!topWing.exploding() && !bottomWing.exploding())
-            {
-                wingsExploding = false;
-                exploding = false;
-                actionListener.entityDoneExploding(this);
-            }
-        }
-        
+
         g2d.setTransform(original);
-        
+
         Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         
@@ -274,91 +190,49 @@ public class EnemyMediumFighter extends Enemy
 
     @Override
     public void update() {
-        if (!exploding)
+        super.update();
+        
+        double distanceToTarget = 1000000; // big number
+                
+        ArrayList<Ally> allyShips = gameData.getAllyShips();
+        
+        for (Ally allyShip : allyShips)
         {
-            super.update();
-
-            double distanceToTarget = 1000000; // big number
-
-            ArrayList<Ally> allyShips = gameData.getAllyShips();
-
-            for (Ally allyShip : allyShips)
+            double distance = Calculator.getDistance(location, allyShip.getLocation());
+            if (distance < distanceToTarget)
             {
-                double distance = Calculator.getDistance(location, allyShip.getLocation());
-                if (distance < distanceToTarget)
-                {
-                    targetShip = allyShip;
-                    distanceToTarget = distance;
-                }
-            }
-
-            double angleToTarget = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location,
-                    activeImage.getWidth(), activeImage.getHeight()), targetShip.getLocation());
-
-            rotateToAngle(angleToTarget);
-
-            for (Turret t : turrets) 
-            {
-                t.update(Calculator.getGameLocationMiddle(targetShip.getLocation(),
-                        targetShip.getActiveImage().getWidth(), targetShip.getActiveImage().getWidth()),
-                        Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
-                        faceAngle);
-
-            }
-
-            if (Math.abs(angleToTarget - faceAngle) <= 45)
-            {
-                shoot();
-            }
-
-            if (distanceToTarget > 500)
-            {
-                move(MovementState.Thrusting);
-            } 
-            else
-            {
-                move(MovementState.Drifting);
+                targetShip = allyShip;
+                distanceToTarget = distance;
             }
         }
+        
+        double angleToTarget = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location,
+                activeImage.getWidth(), activeImage.getHeight()), targetShip.getLocation());
+
+        rotateToAngle(angleToTarget);
+        
+        for (Turret t : turrets) 
+        {
+            t.update(Calculator.getGameLocationMiddle(targetShip.getLocation(),
+                    targetShip.getActiveImage().getWidth(), targetShip.getActiveImage().getWidth()),
+                    Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
+                    faceAngle);
+
+        }
+
+        if (Math.abs(angleToTarget - faceAngle) <= 45)
+        {
+            shoot();
+        }
+
+        if (distanceToTarget > 500)
+        {
+            move(MovementState.Thrusting);
+        } 
         else
         {
-            if (!wingsExploding)
-            {
-                topWing.update();
-                bottomWing.update();
-            }
+            move(MovementState.Drifting);
         }
-    }
-    
-    @Override
-    public void setUpHitbox()
-    {
-        try 
-        {
-            shieldHitbox = new EllipseHitbox(activeImage.getWidth() + 50, activeImage.getHeight() + 50); // constants added to the end compensate for the wings
-            Point2D.Double points[] = new Point2D.Double[8];
-            points[0] = new Point2D.Double(27, 0);
-            points[1] = new Point2D.Double(activeImage.getWidth(), 0);
-            points[2] = new Point2D.Double(activeImage.getWidth(), activeImage.getHeight());
-            points[3] = new Point2D.Double(27, activeImage.getHeight());
-            points[4] = new Point2D.Double(27, activeImage.getHeight() - 172);
-            points[5] = new Point2D.Double(0, activeImage.getHeight() - 172);
-            points[6] = new Point2D.Double(0, activeImage.getHeight() - 202);
-            points[7] = new Point2D.Double(27, activeImage.getHeight() - 202);
-            hullHitbox = new ShapeHitbox(points, new Point2D.Double(activeImage.getWidth() / 2, activeImage.getHeight() / 2));
-        } 
-        catch (NullPointerException ex) 
-        {
-            System.err.println("active image not initialized!");
-        }
-    }
-    
-    @Override
-    protected void updateHitbox()
-    {
-        super.updateHitbox();
-        hullHitbox.moveToLocation(Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()));
-        hullHitbox.rotateToAngle(faceAngle);
     }
 
     @Override
