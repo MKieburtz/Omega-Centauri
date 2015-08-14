@@ -130,11 +130,14 @@ public class EnemyMediumFighter extends Enemy
 
         super.draw(g2d);
 
-        for (Turret t : turrets) 
+        if (!exploding)
         {
-            t.draw(g2d, location);
+            for (Turret t : turrets) 
+            {
+                t.draw(g2d, location);
+            }  
         }
-
+        
         g2d.setTransform(original);
 
         Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
