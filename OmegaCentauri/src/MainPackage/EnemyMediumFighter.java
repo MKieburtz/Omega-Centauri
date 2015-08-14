@@ -31,9 +31,6 @@ public class EnemyMediumFighter extends Enemy
     
     private Ally targetShip;
     
-    private ExplodableWing topWing;
-    private ExplodableWing bottomWing;
-    
     public EnemyMediumFighter(int x, int y, Type shipType, double maxVel, double maxAngleVelocity,
             double angleIncrement, double acceleration, int shootingDelayTurret, 
             int shootingDelayMissile, int health, int id, GameActionListener actionListener) 
@@ -58,47 +55,10 @@ public class EnemyMediumFighter extends Enemy
         turrets[1] = new Turret(25, 315, 35, new Point2D.Double(93, 240), new Dimension(activeImage.getWidth(), activeImage.getHeight()),
                 new Point2D.Double(95, 75), -65, faceAngle, this);
         
-        topWing = new ExplodableWing(true);
-        bottomWing = new ExplodableWing(false);
-        
         this.shootingDelayMissile = shootingDelayMissile;
         this.shootingDelayTurret = shootingDelayTurret;
         
         ex.schedule(new ShootingService(), shootingDelayMissile, TimeUnit.MILLISECONDS);
-    }
-    
-    class ExplodableWing
-    {
-        private String topWingPath = "resources/EMFWingTop.png";
-        private String bottomWingPath = "resources/EMFWingBottom.png";
-        private Explosion explosion;
-        private BufferedImage wingImage = null;
-        private boolean top;
-        public ExplodableWing(boolean top)
-        {
-            this.top = top;
-            if (top)
-            {
-                wingImage = Calculator.toCompatibleImage(resources.getImageForObject(topWingPath));
-            }
-            else
-            {
-                wingImage = Calculator.toCompatibleImage(resources.getImageForObject(bottomWingPath));
-            }
-            explosion = new Explosion(Explosion.Type.wingExplosion, new Dimension(wingImage.getWidth(), wingImage.getHeight()));
-        }
-        
-        public void update()
-        {
-            if (top)
-            {
-                
-            }
-            else
-            {
-                
-            }
-        }
     }
     
     @Override
