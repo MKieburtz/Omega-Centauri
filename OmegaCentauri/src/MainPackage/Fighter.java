@@ -23,6 +23,8 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     private final int TURNINGLEFTTHRUSTING = 4;
     private final int TURNINGRIGHTTHRUSTING = 5;
     
+    private final Dimension EMFDimensions = new Dimension(160, 378);
+    
     private Resources resources;
     
     public Fighter(int x, int y, Type shipType, double maxVel, double maxAngleVel,
@@ -98,8 +100,19 @@ public class Fighter extends Ally implements GameEntity, Controllable {
                 targetShip = enemyShip;
             }
         }
-        
-        targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
+        if (targetShip instanceof EnemyFighter)
+        {
+            targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
+        }
+        else if (targetShip instanceof EnemyMediumFighter)
+        {
+            Point2D.Double shipLocation = Calculator.getGameLocationMiddle(targetShip.getLocation(), EMFDimensions.width, EMFDimensions.height);
+            targetAngle = Calculator.getAngleBetweenTwoPoints(location, shipLocation);
+        }
+        else
+        {
+            targetAngle = 0;
+        }
         
         rotateToAngle(targetAngle);
         
@@ -111,7 +124,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
             }
         }
         
-        if (distanceToTarget > 300)
+        if (distanceToTarget > 100)
         {
             changeImage(ImageMovementState.Thrusting, imageRotationState);
             move(MovementState.Thrusting);
