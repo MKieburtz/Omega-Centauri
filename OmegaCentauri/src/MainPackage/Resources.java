@@ -38,6 +38,7 @@ public class Resources {
         imagePaths.add("resources/FighterRight.png");
         imagePaths.add("resources/FighterThrustLeft.png");
         imagePaths.add("resources/FighterThrustRight.png");
+        imagePaths.add("resources/FighterHighlight.png");
         imagePaths.add("resources/EnemyFighterIdle.png");
         imagePaths.add("resources/EnemyFighterThrusting.png");
         imagePaths.add("resources/EnemyFighterTurningLeft.png");
