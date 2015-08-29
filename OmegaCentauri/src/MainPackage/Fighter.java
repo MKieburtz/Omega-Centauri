@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -27,6 +28,9 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     
     private Resources resources;
     
+    private BufferedImage highlightImage;
+    private boolean highlighted;
+    
     public Fighter(int x, int y, Type shipType, double maxVel, double maxAngleVel,
             double angleIncrement, double acceleration, int shootingDelay, int health,
             GameActionListener actionListener) {
@@ -41,6 +45,8 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         imagePaths.add("resources/FighterThrustRight.png");
         images = resources.getImagesForObject(imagePaths);
 
+        highlightImage = resources.getImageForObject("resources/FighterHighlight.png");
+        
         activeImage = images.get(0);
         shield = new Shield(location, Shield.Type.fighter, new Point(activeImage.getWidth(), activeImage.getHeight()),
                 10, 20);
@@ -263,5 +269,11 @@ public class Fighter extends Ally implements GameEntity, Controllable {
                 }
                 break;         
         }
+    }
+    
+    @Override
+    public void setHighlighted(boolean highlighted)
+    {
+        this.highlighted = highlighted;
     }
 }
