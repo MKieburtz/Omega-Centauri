@@ -230,6 +230,11 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     @Override
     public void changeImage(ImageMovementState movementState, ImageRotationState rotationState) 
     {
+        if (movementState == imageMovementState && rotationState == imageRotationState)
+        {
+            return;
+        }
+        System.out.println("called");
         switch (movementState) 
         {
             case Idle:
