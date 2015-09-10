@@ -21,6 +21,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private boolean loading = false;
     private Point2D.Double middleOfPlayer = new Point2D.Double(); // SCREEN LOCATION of the middle of the player
     private ArrayList<Command> updateCommands = new ArrayList<>();
+    private HashMap<Integer, Boolean> keysDown = new HashMap<>();
     // TIMING STUFF
     private int FPS = 0;
     private int UPS = 0;
@@ -192,6 +193,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                 requestFocusInWindow();
             }
         });
+        
+        keysDown.put(KeyEvent.VK_W, false);
+        keysDown.put(KeyEvent.VK_A, false);
+        keysDown.put(KeyEvent.VK_S, false);
+        keysDown.put(KeyEvent.VK_D, false);
 
         timingEx = Executors.newScheduledThreadPool(4);
         recordingEx = Executors.newSingleThreadScheduledExecutor();
@@ -571,6 +577,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     
     private void handleInput(int keycode, boolean released)
     {
+        System.out.println("called");
         switch (player.getImageRotationState())
         {
             case Idle: // either both keys or niether key

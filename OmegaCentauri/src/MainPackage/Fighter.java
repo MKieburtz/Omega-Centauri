@@ -234,7 +234,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         {
             return;
         }
-        System.out.println("called");
+        //System.out.println("called");
         switch (movementState) 
         {
             case Idle:
