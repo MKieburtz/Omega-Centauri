@@ -196,7 +196,6 @@ public class OmegaCentauri extends JFrame implements GameActionListener
         
         keysDown.put(KeyEvent.VK_W, false);
         keysDown.put(KeyEvent.VK_A, false);
-        keysDown.put(KeyEvent.VK_S, false);
         keysDown.put(KeyEvent.VK_D, false);
 
         timingEx = Executors.newScheduledThreadPool(4);
@@ -221,8 +220,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                
-                handleInput(KeyEvent.VK_W, false);
+                if (keysDown.get(KeyEvent.VK_W) != true) // so if it's not down, we need to change it
+                {
+                    setKeyPressedOrReleased(KeyEvent.VK_W, true);
+                    handleInput(KeyEvent.VK_W, true);
+                }
             }
         });
 
@@ -234,7 +236,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                handleInput(KeyEvent.VK_W, true);
+                if (keysDown.get(KeyEvent.VK_W) != false)
+                {
+                    setKeyPressedOrReleased(KeyEvent.VK_W, false);
+                    handleInput(KeyEvent.VK_W, false);
+                }
             }
         });
 
@@ -246,7 +252,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                handleInput(KeyEvent.VK_D, false);
+                if (keysDown.get(KeyEvent.VK_D) != true)
+                {   
+                    setKeyPressedOrReleased(KeyEvent.VK_D, true);
+                    handleInput(KeyEvent.VK_D, true);
+                }
             }
         });
 
@@ -258,7 +268,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                handleInput(KeyEvent.VK_D, true);
+                if (keysDown.get(KeyEvent.VK_D) != false)
+                {
+                    setKeyPressedOrReleased(KeyEvent.VK_D, false);
+                    handleInput(KeyEvent.VK_D, false);
+                }
             }
         });
 
@@ -270,7 +284,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                handleInput(KeyEvent.VK_A, false);
+                if (keysDown.get(KeyEvent.VK_A) != true)
+                {
+                    setKeyPressedOrReleased(KeyEvent.VK_A, true);
+                    handleInput(KeyEvent.VK_A, true);
+                }
             }
         });
 
@@ -282,7 +300,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                handleInput(KeyEvent.VK_A, true);
+                if (keysDown.get(KeyEvent.VK_A) != false)
+                {
+                    setKeyPressedOrReleased(KeyEvent.VK_A, false);
+                    handleInput(KeyEvent.VK_A, false);
+                }
             }
         });
 
@@ -294,7 +316,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e) 
             {
-                handleInput(KeyEvent.VK_SPACE, false);
+                handleInput(KeyEvent.VK_SPACE, true);
             }
         });
 
@@ -306,7 +328,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                handleInput(KeyEvent.VK_SPACE, true);
+                handleInput(KeyEvent.VK_SPACE, false);
             }
         });
 
@@ -318,7 +340,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                handleInput(KeyEvent.VK_Q, false);
+                handleInput(KeyEvent.VK_Q, true);
             }
         });
 
@@ -330,11 +352,16 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                handleInput(KeyEvent.VK_ESCAPE, false);
+                handleInput(KeyEvent.VK_ESCAPE, true);
             }
         });
     }
 //</editor-fold>
+    
+    private void setKeyPressedOrReleased(int keycode, boolean down)
+    {
+         keysDown.put(keycode, down);
+    }
     
     @Override
     public void gameStart() 
@@ -575,48 +602,48 @@ public class OmegaCentauri extends JFrame implements GameActionListener
         }
     }
     
-    private void handleInput(int keycode, boolean released)
+    private void handleInput(int keycode, boolean down)
     {
-        System.out.println("called");
+        //System.out.println("called");
         switch (player.getImageRotationState())
         {
             case Idle: // either both keys or niether key
-                if (!released && keycode == KeyEvent.VK_A)
+                if (down && keycode == KeyEvent.VK_A)
                 {
                     rotateLeft = true;
                 }
-                else if (released && keycode == KeyEvent.VK_A) // both keys were down and a was released so we go right
+                else if (!down && keycode == KeyEvent.VK_A) // both keys were down and a was released so we go right
                 {
                     rotateLeft = false;
                     rotateRight = true;
                 }
-                if (!released && keycode == KeyEvent.VK_D) 
+                if (down && keycode == KeyEvent.VK_D) 
                 {
                     rotateRight = true; 
                 }
-                else if (released && keycode == KeyEvent.VK_D) // both keys were down and d was released so we go left
+                else if (!down && keycode == KeyEvent.VK_D) // both keys were down and d was released so we go left
                 {
                     rotateRight = false;
                     rotateLeft = true;
                 }
                 break;
             case rotatingRight: // d has to be down
-                if (!released && keycode == KeyEvent.VK_A)
+                if (down && keycode == KeyEvent.VK_A)
                 {
                     rotateRight = false;
                 }
-                else if (released && keycode == KeyEvent.VK_D)
+                else if (!down && keycode == KeyEvent.VK_D)
                 {
                     // may have to check for a, but I don't think so
                     rotateRight = false;
                 }
                 break;
             case rotatingLeft: // a has to be down
-                if (!released && keycode == KeyEvent.VK_D)
+                if (down && keycode == KeyEvent.VK_D)
                 {
                     rotateLeft = false;
                 }
-                else if (released && keycode == KeyEvent.VK_A)
+                else if (!down && keycode == KeyEvent.VK_A)
                 {
                     // may have to check for d, but I don't think so
                     rotateLeft = false;
@@ -627,34 +654,34 @@ public class OmegaCentauri extends JFrame implements GameActionListener
         switch(player.getImageMovementState())
         {
             case Idle: // w isn't down
-                if (!released && keycode == KeyEvent.VK_W)
+                if (down && keycode == KeyEvent.VK_W)
                 {
                     forward = true;
                 }
                 break;
             case Thrusting:
-                if (released && keycode == KeyEvent.VK_W)
+                if (!down && keycode == KeyEvent.VK_W)
                 {
                     forward = false;
                 }
                 break;
         }
         
-        if (!released && keycode == KeyEvent.VK_SPACE)
+        if (down && keycode == KeyEvent.VK_SPACE)
         {
             shooting = true;
         }
-        else if (released && keycode == KeyEvent.VK_SPACE)
+        else if (!down && keycode == KeyEvent.VK_SPACE)
         {
             shooting = false;
         }
         
-        if (!released && keycode == KeyEvent.VK_Q)
+        if (down && keycode == KeyEvent.VK_Q)
         {
             System.exit(0);
         }
         
-        if (!released && keycode == KeyEvent.VK_ESCAPE)
+        if (down && keycode == KeyEvent.VK_ESCAPE)
         {
             paused = !paused;
         }
