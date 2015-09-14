@@ -220,7 +220,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (keysDown.get(KeyEvent.VK_W) != true) // so if it's not down, we need to change it
+                if (!keysDown.get(KeyEvent.VK_W)) // so if it's not down, we need to change it
                 {
                     setKeyPressedOrReleased(KeyEvent.VK_W, true);
                     handleInput(KeyEvent.VK_W, true);
@@ -236,7 +236,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (keysDown.get(KeyEvent.VK_W) != false)
+                if (keysDown.get(KeyEvent.VK_W))
                 {
                     setKeyPressedOrReleased(KeyEvent.VK_W, false);
                     handleInput(KeyEvent.VK_W, false);
@@ -252,7 +252,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (keysDown.get(KeyEvent.VK_D) != true)
+                if (!keysDown.get(KeyEvent.VK_D))
                 {   
                     setKeyPressedOrReleased(KeyEvent.VK_D, true);
                     handleInput(KeyEvent.VK_D, true);
@@ -268,7 +268,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (keysDown.get(KeyEvent.VK_D) != false)
+                if (keysDown.get(KeyEvent.VK_D))
                 {
                     setKeyPressedOrReleased(KeyEvent.VK_D, false);
                     handleInput(KeyEvent.VK_D, false);
@@ -284,7 +284,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (keysDown.get(KeyEvent.VK_A) != true)
+                if (!keysDown.get(KeyEvent.VK_A))
                 {
                     setKeyPressedOrReleased(KeyEvent.VK_A, true);
                     handleInput(KeyEvent.VK_A, true);
@@ -300,7 +300,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (keysDown.get(KeyEvent.VK_A) != false)
+                if (keysDown.get(KeyEvent.VK_A))
                 {
                     setKeyPressedOrReleased(KeyEvent.VK_A, false);
                     handleInput(KeyEvent.VK_A, false);
@@ -612,41 +612,39 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                 {
                     rotateLeft = true;
                 }
-                else if (!down && keycode == KeyEvent.VK_A) // both keys were down and a was released so we go right
-                {
-                    rotateLeft = false;
-                    rotateRight = true;
-                }
                 if (down && keycode == KeyEvent.VK_D) 
                 {
                     rotateRight = true; 
                 }
-                else if (!down && keycode == KeyEvent.VK_D) // both keys were down and d was released so we go left
+                break;
+            case rotatingRight: // d has to be down
+                if (down && keycode == KeyEvent.VK_A) // start going left
                 {
                     rotateRight = false;
                     rotateLeft = true;
                 }
-                break;
-            case rotatingRight: // d has to be down
-                if (down && keycode == KeyEvent.VK_A)
-                {
-                    rotateRight = false;
-                }
                 else if (!down && keycode == KeyEvent.VK_D)
                 {
-                    // may have to check for a, but I don't think so
                     rotateRight = false;
+                    if (keysDown.get(KeyEvent.VK_A))
+                    {
+                        rotateLeft = true;
+                    }
                 }
                 break;
             case rotatingLeft: // a has to be down
                 if (down && keycode == KeyEvent.VK_D)
                 {
                     rotateLeft = false;
+                    rotateRight = true;
                 }
                 else if (!down && keycode == KeyEvent.VK_A)
                 {
-                    // may have to check for d, but I don't think so
                     rotateLeft = false;
+                    if (keysDown.get(KeyEvent.VK_D))
+                    {
+                        rotateRight = true;
+                    }
                 }
                 break;
         }
