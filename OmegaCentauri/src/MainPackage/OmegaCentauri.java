@@ -607,7 +607,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
         //System.out.println("called");
         switch (player.getImageRotationState())
         {
-            case Idle: // either both keys or niether key
+            case Idle: //neither
                 if (down && keycode == KeyEvent.VK_A)
                 {
                     rotateLeft = true;
