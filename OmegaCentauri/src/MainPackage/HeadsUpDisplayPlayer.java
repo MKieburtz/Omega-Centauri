@@ -133,8 +133,8 @@ public class HeadsUpDisplayPlayer
                 g2d.setColor(Color.YELLOW);
             }
 
-            Ellipse2D.Double minimapShip = new Ellipse2D.Double(gameData.getCameraSize().x - 201 + ship.getLocation().x / (mapSize.width / 200),
-                        gameData.getCameraSize().y - 225 + ship.getLocation().y / (mapSize.height / 200), 1, 1);
+            Ellipse2D.Double minimapShip = new Ellipse2D.Double(gameData.getCameraSize().x - 201 + ship.getLocation().x / (mapSize.width / 200) - 10,
+                        gameData.getCameraSize().y - 225 + ship.getLocation().y / (mapSize.height / 200) - 10, 1, 1);
                 g2d.draw(minimapShip);
         }
         

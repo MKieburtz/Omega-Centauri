@@ -82,40 +82,59 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private void addShips() 
     {
         player = new Player();
-        allyShips.add(new Fighter(5500, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 5000, this));
-        //allyShips.add(new Fighter(5600, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 500, this));
+        allyShips.add(new Fighter(800, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 5000, this));
         player.controlShip(allyShips.get(0));
+        // below
+        allyShips.add(new Fighter(2200, 5300, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(2200, 5600, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(2200, 5900, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(2200, 6200, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        // above
+        allyShips.add(new Fighter(2200, 4700, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(2200, 4400, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(2200, 4100, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(2200, 3800, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        // behind
+        allyShips.add(new Fighter(1400, 5300, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(1400, 5600, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(1400, 5900, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(1400, 6200, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
         
-        enemyShips.add(new EnemyFighter(4700, 5050, MainPackage.Type.Fighter, 3, 5, 5, .15, 700, 20, 1, this));
-        enemyShips.add(new EnemyFighter(4800, 5025, MainPackage.Type.Fighter, 3, 5, 5, .15, 600, 20, 2, this));
-        enemyShips.add(new EnemyFighter(4900, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3, this));
-        enemyShips.add(new EnemyFighter(4800, 4975, MainPackage.Type.Fighter, 3, 5, 5, .15, 800, 20, 4, this));
-        enemyShips.add(new EnemyFighter(4700, 4950, MainPackage.Type.Fighter, 3, 5, 5, .15, 750, 20, 5, this));
-        enemyShips.add(new EnemyFighter(4600, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 1000, 20, 6, this));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 3, this));
-//        enemyShips.add(new EnemyFighter(3000, 2200, MainPackage.Type.Fighter, 3, 5, 5, .15, 5000, 20, 4, this));
-//        enemyShips.add(new EnemyFighter(3000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 5, this));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 6, this));
-//        enemyShips.add(new EnemyFighter(3000, 4000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 7, this));
-//        enemyShips.add(new EnemyFighter(4000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 8, this));
-//        enemyShips.add(new EnemyFighter(2000, 9000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 9, this));
-//        enemyShips.add(new EnemyFighter(2000, 5000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 10, this));
-//        enemyShips.add(new EnemyFighter(250, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 11, this));
-//        enemyShips.add(new EnemyFighter(5000, 290, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 12, this));
-//        enemyShips.add(new EnemyFighter(2000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 13, this));
-//        enemyShips.add(new EnemyFighter(2000, 980, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 14, this));
-//        enemyShips.add(new EnemyFighter(2000, 230, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 15, this));
-//        enemyShips.add(new EnemyFighter(530, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 16, this));
-//        enemyShips.add(new EnemyFighter(210, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 17, this));
-//        enemyShips.add(new EnemyFighter(20, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 19, this));
-//        enemyShips.add(new EnemyFighter(7000, 2000, MainPackage.Type.Fighter, 3, 5, 5, .15, 500, 20, 20, this));
-         enemyShips.add(new EnemyMediumFighter(4500, 4850, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 5, this));
+        allyShips.add(new Fighter(1400, 4700, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(1400, 4400, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(1400, 4100, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(1400, 3800, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        
+        //enemies
+        enemyShips.add(new EnemyMediumFighter(8200, 5000, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 1, this));
+        enemyShips.add(new EnemyMediumFighter(8200, 5500, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 2, this));
+        enemyShips.add(new EnemyMediumFighter(8200, 4500, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 3, this));
+        // below
+        enemyShips.add(new EnemyFighter(7800, 5300, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 1, this));
+        enemyShips.add(new EnemyFighter(7800, 5600, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 2, this));
+        enemyShips.add(new EnemyFighter(7800, 5900, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 3, this));
+        enemyShips.add(new EnemyFighter(7800, 6200, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 4, this));
+         // above
+        enemyShips.add(new EnemyFighter(7800, 4700, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 5, this));
+        enemyShips.add(new EnemyFighter(7800, 4400, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 6, this));
+        enemyShips.add(new EnemyFighter(7800, 4100, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 7, this));
+        enemyShips.add(new EnemyFighter(7800, 3800, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 8, this));
+        // behind
+        enemyShips.add(new EnemyFighter(8600, 5300, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 9, this));
+        enemyShips.add(new EnemyFighter(8600, 5600, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 10, this));
+        enemyShips.add(new EnemyFighter(8600, 5900, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 11, this));
+        enemyShips.add(new EnemyFighter(8600, 6200, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 12, this));
+
+        enemyShips.add(new EnemyFighter(8600, 4700, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 13, this));
+        enemyShips.add(new EnemyFighter(8600, 4400, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 14, this));
+        enemyShips.add(new EnemyFighter(8600, 4100, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 15, this));
+        enemyShips.add(new EnemyFighter(8600, 3800, MainPackage.Type.Fighter, 3, 5, 5, .15, 400, 150, 16, this));
         
         syncGameStateVaribles();
     }
 
     private void setUpWindow() 
-    {
+    {  
         BufferedImage logo =  resources.getImageForObject("resources/LogoWindows.png");
         setIconImage(logo);
         
@@ -467,6 +486,14 @@ public class OmegaCentauri extends JFrame implements GameActionListener
             
             for (int i = deadShips.size() -1; i > -1; i--)
             {
+                if (deadShips.get(i) instanceof Enemy)
+                {
+                    System.out.println("enemy died");
+                }
+                else if (deadShips.get(i) instanceof Ally)
+                {
+                    System.out.println("ally died");
+                }
                 gameEntitys.remove(deadShips.get(i));
                 allShips.remove(deadShips.get(i));
                 enemyShips.remove(deadShips.get(i));

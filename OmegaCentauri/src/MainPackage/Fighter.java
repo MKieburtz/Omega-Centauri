@@ -49,7 +49,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         
         activeImage = images.get(0);
         shield = new Shield(location, Shield.Type.fighter, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 20);
+                10, 40);
         setUpHitbox();
 
         soundPaths.add("resources/Pulse.wav");
@@ -57,8 +57,6 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         sounds = resources.getSoundsForObject(soundPaths);
         
         explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
-        
-        faceAngle = 180;
     }
 
     @Override

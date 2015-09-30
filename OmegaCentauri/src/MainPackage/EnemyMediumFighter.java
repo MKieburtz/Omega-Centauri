@@ -43,7 +43,7 @@ public class EnemyMediumFighter extends Enemy
         activeImage = Calculator.toCompatibleImage(resources.getImageForObject("resources/MediumEnemyFighter.png"));
 
         shield = new Shield(location, Shield.Type.enemyMediumFighter,
-                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 10);
+                new Point(activeImage.getWidth(), activeImage.getHeight()), 15, 150);
 
         setUpHitbox();
         
@@ -188,7 +188,7 @@ public class EnemyMediumFighter extends Enemy
             shoot();
         }
 
-        if (distanceToTarget > 500)
+        if (distanceToTarget > 200)
         {
             move(MovementState.Thrusting);
         } 

@@ -56,7 +56,7 @@ public class EnemyFighter extends Enemy
         
         setUpHitbox();
         shield = new Shield(location, Shield.Type.enemyFighter, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 10, 50);
+                activeImage.getHeight()), 10, 100);
         
         this.id = id;
         
