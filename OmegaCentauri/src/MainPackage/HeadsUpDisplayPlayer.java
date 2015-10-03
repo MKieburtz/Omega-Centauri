@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * @author Michael Kieburtz
  */
-public class HeadsUpDisplayPlayer 
+public class HeadsUpDisplayPlayer implements GameOverListener
 {
     private ArrayList<String> imagePaths = new ArrayList<>();
     private ArrayList<BufferedImage> images = new ArrayList<>();
@@ -43,6 +43,8 @@ public class HeadsUpDisplayPlayer
     private GameData gameData = new GameData();
     
     private Resources resources;
+    
+    private boolean gameOver = false;
 
     public HeadsUpDisplayPlayer() 
     {
@@ -114,7 +116,7 @@ public class HeadsUpDisplayPlayer
             {
                 g2d.setColor(Color.CYAN);
 
-                if (ship.getHullHealth() <= 0)
+                if (gameOver)
                 {
                     g2d.drawImage(images.get(GAMEOVER), null, 250, 125);
                 } 
@@ -242,5 +244,10 @@ public class HeadsUpDisplayPlayer
         values[2] = values[1] > 0 ? 2 : amount;
 
         return values;
+    }
+
+    @Override
+    public void gameOver() {
+        gameOver = true;
     }
 }

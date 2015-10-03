@@ -149,4 +149,9 @@ public class Renderer
         g2d.dispose();
         g.dispose();
     }
+    
+    public HeadsUpDisplayPlayer getHUD()
+    {
+        return headsUpDisplayPlayer;
+    }
 }

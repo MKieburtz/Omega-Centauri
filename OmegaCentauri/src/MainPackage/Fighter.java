@@ -57,6 +57,8 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         sounds = resources.getSoundsForObject(soundPaths);
         
         explosion = new Explosion(Explosion.Type.fighter, new Dimension(activeImage.getWidth(), activeImage.getHeight()));
+        
+        faceAngle = 0;
     }
 
     @Override

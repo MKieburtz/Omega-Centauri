@@ -49,6 +49,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private final HashSet<GameEntity> gameEntitys = new HashSet<>();
     private final ArrayList<Ship> deadShips = new ArrayList<>();
     private final ArrayList<Shot> deadShots = new ArrayList<>();
+    private GameOverListener gameOverListener;
     private Player player;
     // TIMERS
     private ScheduledExecutorService timingEx;
@@ -69,6 +70,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
         gameData.updateResources(resources);
         gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         renderer = new Renderer();
+        gameOverListener = renderer.getHUD();
 
         camera = new Camera(1000, 600);
         loading = true;
@@ -498,6 +500,18 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                 allShips.remove(deadShips.get(i));
                 enemyShips.remove(deadShips.get(i));
                 allyShips.remove(deadShips.get(i));
+                if (player.getControllingShip().equals(deadShips.get(i)))
+                {
+                    if (!allyShips.isEmpty())
+                    {
+                        player.controlShip(allyShips.get(0));
+                        gameEntitys.remove(player.getControllingShip());
+                    }
+                    else
+                    {
+                        gameOverListener.gameOver();
+                    }
+                }
                 deadShips.remove(deadShips.get(i));
             }
             
