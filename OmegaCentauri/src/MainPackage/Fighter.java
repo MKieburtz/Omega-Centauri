@@ -49,7 +49,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         
         activeImage = images.get(0);
         shield = new Shield(location, Shield.Type.fighter, new Point(activeImage.getWidth(), activeImage.getHeight()),
-                10, 40);
+                10, 100);
         setUpHitbox();
 
         soundPaths.add("resources/Pulse.wav");
@@ -122,7 +122,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         
         rotateToAngle(targetAngle);
         
-        if (Math.abs(targetAngle - faceAngle) < 30)
+        if (Math.abs(targetAngle - faceAngle) < 30 && distanceToTarget < 700)
         {
             if (canshoot)
             {

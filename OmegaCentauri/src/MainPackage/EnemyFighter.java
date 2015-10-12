@@ -56,7 +56,7 @@ public class EnemyFighter extends Enemy
         
         setUpHitbox();
         shield = new Shield(location, Shield.Type.enemyFighter, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 10, 100);
+                activeImage.getHeight()), 10, 200);
         
         this.id = id;
         
@@ -101,24 +101,20 @@ public class EnemyFighter extends Enemy
             targetingAngle = angleToTarget;
         }
         
-        if (!movingAway && distanceToTarget < 200) 
+        if (!movingAway && distanceToTarget < 100) 
         {
             movingAway = true;
-            if (hullDurability < 30) 
-            {
-                targetingAngle = (angleToTarget + 180) % 360;
-            } 
-            else if (distanceToTarget < 200) 
+            if (distanceToTarget < 200) 
             {
                 targetingAngle = (angleToTarget + 90) % 360;
             }
         } 
-        else if (distanceToTarget > 400 && movingAway) 
+        else if (movingAway && distanceToTarget > 400) 
         {
             movingAway = false;
             targetingAngle = angleToTarget;
         }
-        else if (distanceToTarget < 250 && movingAway)
+        else if (movingAway && distanceToTarget < 250)
         {
             if (Math.abs((angleToTarget + 180) % 360 - faceAngle) > 5) 
             {
@@ -141,7 +137,7 @@ public class EnemyFighter extends Enemy
             }
             rotateToAngle(targetingAngle); // calls changeImage
 
-            if (Math.abs(angleToTarget - faceAngle) < 45) 
+            if (Math.abs(angleToTarget - faceAngle) < 45 && distanceToTarget < 700) 
             {
                 shoot();
             }
