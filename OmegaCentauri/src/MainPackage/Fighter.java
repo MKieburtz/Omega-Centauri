@@ -24,6 +24,11 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     private final int TURNINGLEFTTHRUSTING = 4;
     private final int TURNINGRIGHTTHRUSTING = 5;
     
+    private int shotsFired = 0;
+    private boolean movingAway = false;
+    private double distanceToTarget = 1000000;
+    private double targetAngle = 0;
+    
     private final Dimension EMFDimensions = new Dimension(160, 378);
     
     private Resources resources;
@@ -89,14 +94,9 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     public void update() // A.I
     {
         super.update();
-        
         ArrayList<Enemy> enemyShips = gameData.getEnemyShips();
         Enemy targetShip = null;
-        
-        double distanceToTarget = 100000; // just a big number
-        
-        double targetAngle; // the angle to move towards
-        
+        distanceToTarget = 100000;
         for (Enemy enemyShip : enemyShips) // reevaluate the closest ship
         {
             double distance = Calculator.getDistance(location, enemyShip.getLocation());
@@ -106,39 +106,42 @@ public class Fighter extends Ally implements GameEntity, Controllable {
                 targetShip = enemyShip;
             }
         }
-        if (targetShip instanceof EnemyFighter)
+        if (targetShip instanceof EnemyFighter && !movingAway)
         {
             targetAngle = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
         }
-        else if (targetShip instanceof EnemyMediumFighter)
+        else if (targetShip instanceof EnemyMediumFighter && !movingAway)
         {
             Point2D.Double shipLocation = Calculator.getGameLocationMiddle(targetShip.getLocation(), EMFDimensions.width, EMFDimensions.height);
             targetAngle = Calculator.getAngleBetweenTwoPoints(location, shipLocation);
         }
-        else
-        {
-            targetAngle = 0;
-        }
         
         rotateToAngle(targetAngle);
         
-        if (Math.abs(targetAngle - faceAngle) < 30 && distanceToTarget < 700)
+        if (Math.abs(targetAngle - faceAngle) < 30 && distanceToTarget < 500 && !movingAway)
         {
             if (canshoot)
             {
                 shoot();
+                shotsFired++;
             }
         }
+       
+        movingAway = shotsFired > 5;
         
-        if (distanceToTarget > 100)
+        if (movingAway)
         {
-            changeImage(ImageMovementState.Thrusting, imageRotationState);
+            targetAngle = Calculator.confineAngleToRange(targetAngle + 180);
+            if (distanceToTarget > 300)
+            {
+                movingAway = false;
+                shotsFired = 0;
+            }
             move(MovementState.Thrusting);
         }
         else
         {
-            changeImage(ImageMovementState.Idle, imageRotationState);
-            move(moving() ? MovementState.Drifting : MovementState.Idle);
+            move(MovementState.Thrusting);
         }
         
     }
