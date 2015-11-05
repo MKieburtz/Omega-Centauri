@@ -24,7 +24,7 @@ public class Fighter extends Ally implements GameEntity, Controllable {
     private final int TURNINGLEFTTHRUSTING = 4;
     private final int TURNINGRIGHTTHRUSTING = 5;
     
-    private int shotsFired = 0;
+    private int ticksToRetreat;
     private boolean movingAway = false;
     private double distanceToTarget = 1000000;
     private double targetAngle = 0;
@@ -123,11 +123,10 @@ public class Fighter extends Ally implements GameEntity, Controllable {
             if (canshoot)
             {
                 shoot();
-                shotsFired++;
             }
         }
        
-        movingAway = shotsFired > 5;
+        
         
         if (movingAway)
         {
@@ -135,7 +134,6 @@ public class Fighter extends Ally implements GameEntity, Controllable {
             if (distanceToTarget > 300)
             {
                 movingAway = false;
-                shotsFired = 0;
             }
             move(MovementState.Thrusting);
         }

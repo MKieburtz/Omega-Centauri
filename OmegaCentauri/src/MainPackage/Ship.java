@@ -143,8 +143,8 @@ public abstract class Ship implements GameEntity
             }
         }
         
-        movementVelocity.x *= .99;
-        movementVelocity.y *= .99;
+        movementVelocity.x *= .995;
+        movementVelocity.y *= .995;
         
         if (state == MovementState.Drifting)
         {

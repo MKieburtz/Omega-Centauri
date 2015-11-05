@@ -81,7 +81,7 @@ public class EnemyFighter extends Enemy
         for (Ally allyShip : allyShips)
         {
             double distance = Calculator.getDistance(location, allyShip.getLocation());
-            if (distance < distanceToTarget)
+            if (distance < distanceToTarget && !allyShip.beingControlled)
             {
                 targetShip = allyShip;
                 distanceToTarget = distance;
@@ -104,12 +104,9 @@ public class EnemyFighter extends Enemy
         if (!movingAway && distanceToTarget < 100) 
         {
             movingAway = true;
-            if (distanceToTarget < 200) 
-            {
-                targetingAngle = (angleToTarget + 90) % 360;
-            }
+            targetingAngle = (angleToTarget + 90) % 360;
         } 
-        else if (movingAway && distanceToTarget > 400) 
+        else if (movingAway && distanceToTarget > 300) 
         {
             movingAway = false;
             targetingAngle = angleToTarget;
@@ -168,11 +165,11 @@ public class EnemyFighter extends Enemy
         {
             Random rand = new Random();
 
-            double angle = 360 - faceAngle + rand.nextInt(5) - 5;
+            double angle = 360 - faceAngle + rand.nextInt(3) - 3;
 
             Point2D.Double shotStartingVel
-                    = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 10,
-                            movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 10);
+                    = new Point2D.Double(movementVelocity.x + Calculator.CalcAngleMoveX(angle) * 15,
+                            movementVelocity.y + Calculator.CalcAngleMoveY(angle) * 15);
 
             Point2D.Double shotStartingPos = new Point2D.Double();
                                                                                                          
