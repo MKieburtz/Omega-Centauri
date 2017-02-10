@@ -88,14 +88,14 @@ public class OmegaCentauri extends JFrame implements GameActionListener
         player.controlShip(allyShips.get(0));
         // below
         allyShips.add(new Fighter(3200, 5300, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-//        allyShips.add(new Fighter(3200, 5600, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-//        allyShips.add(new Fighter(3200, 5900, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-       // allyShips.add(new Fighter(3200, 6200, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-//        // above
-//        allyShips.add(new Fighter(3200, 4700, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-//        allyShips.add(new Fighter(3200, 4400, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-//        allyShips.add(new Fighter(3200, 4100, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-//        allyShips.add(new Fighter(3200, 3800, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(3200, 5600, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(3200, 5900, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(3200, 6200, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        // above
+        allyShips.add(new Fighter(3200, 4700, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(3200, 4400, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(3200, 4100, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(3200, 3800, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
         // behind
 //        allyShips.add(new Fighter(2400, 5300, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
 //        allyShips.add(new Fighter(2400, 5600, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
@@ -106,31 +106,31 @@ public class OmegaCentauri extends JFrame implements GameActionListener
 //        allyShips.add(new Fighter(2400, 4400, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
 //        allyShips.add(new Fighter(2400, 4100, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
 //        allyShips.add(new Fighter(2400, 3800, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-        enemyShips.add(new EnemyFighter(3500, 5000, MainPackage.Type.Fighter, 5, 5, 5, .15, 200, 25, 1, this));
+        //enemyShips.add(new EnemyFighter(3500, 5000, MainPackage.Type.Fighter, 5, 5, 5, .15, 200, 25, 1, this));
         //enemies
-//        enemyShips.add(new EnemyMediumFighter(7200, 5000, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 1, this));
-//        enemyShips.add(new EnemyMediumFighter(7200, 5500, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 2, this));
-//        enemyShips.add(new EnemyMediumFighter(7200, 4500, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 3, this));
+        enemyShips.add(new EnemyMediumFighter(7200, 5000, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 1, this));
+        enemyShips.add(new EnemyMediumFighter(7200, 5500, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 2, this));
+        enemyShips.add(new EnemyMediumFighter(7200, 4500, MainPackage.Type.Cruiser, 3, 2, 1, .15, 300, 4000, 200, 3, this));
          //below
-//        enemyShips.add(new EnemyFighter(6800, 5300, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 1, this));
-//        enemyShips.add(new EnemyFighter(6800, 5600, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 2, this));
-//        enemyShips.add(new EnemyFighter(6800, 5900, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 3, this));
-//        enemyShips.add(new EnemyFighter(6800, 6200, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 4, this));
-//        //above
-//        enemyShips.add(new EnemyFighter(6800, 4700, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 5, this));
-//        enemyShips.add(new EnemyFighter(6800, 4400, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 6, this));
-//        enemyShips.add(new EnemyFighter(6800, 4100, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 7, this));
-//        enemyShips.add(new EnemyFighter(6800, 3800, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 8, this));
-//         //behind
-//        enemyShips.add(new EnemyFighter(7600, 5300, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 9, this));
-//        enemyShips.add(new EnemyFighter(7600, 5600, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 10, this));
-//        enemyShips.add(new EnemyFighter(7600, 5900, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 11, this));
-//        enemyShips.add(new EnemyFighter(7600, 6200, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 12, this));
-//
-//        enemyShips.add(new EnemyFighter(7600, 4700, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 13, this));
-//        enemyShips.add(new EnemyFighter(7600, 4400, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 14, this));
-//        enemyShips.add(new EnemyFighter(7600, 4100, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 15, this));
-//        enemyShips.add(new EnemyFighter(7600, 3800, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 16, this));
+        enemyShips.add(new EnemyFighter(6800, 5300, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 1, this));
+        enemyShips.add(new EnemyFighter(6800, 5600, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 2, this));
+        enemyShips.add(new EnemyFighter(6800, 5900, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 3, this));
+        enemyShips.add(new EnemyFighter(6800, 6200, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 4, this));
+        //above
+        enemyShips.add(new EnemyFighter(6800, 4700, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 5, this));
+        enemyShips.add(new EnemyFighter(6800, 4400, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 6, this));
+        enemyShips.add(new EnemyFighter(6800, 4100, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 7, this));
+        enemyShips.add(new EnemyFighter(6800, 3800, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 8, this));
+         //behind
+        enemyShips.add(new EnemyFighter(7600, 5300, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 9, this));
+        enemyShips.add(new EnemyFighter(7600, 5600, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 10, this));
+        enemyShips.add(new EnemyFighter(7600, 5900, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 11, this));
+        enemyShips.add(new EnemyFighter(7600, 6200, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 12, this));
+
+        enemyShips.add(new EnemyFighter(7600, 4700, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 13, this));
+        enemyShips.add(new EnemyFighter(7600, 4400, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 14, this));
+        enemyShips.add(new EnemyFighter(7600, 4100, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 15, this));
+        enemyShips.add(new EnemyFighter(7600, 3800, MainPackage.Type.Fighter, 3, 5, 5, .15, 300, 50, 16, this));
         
         syncGameStateVaribles();
     }
@@ -231,151 +231,62 @@ public class OmegaCentauri extends JFrame implements GameActionListener
         mouseRecordingEx.schedule(new MouseChecker(), 1, TimeUnit.MILLISECONDS);
     }
     
-    //<editor-fold defaultstate="collapsed" desc="Key bindings">
-    private void setInputMaps() 
+    private void setInputKey(int keyCode, String key, boolean up, boolean checkList)
     {
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "W");
-        panel.getActionMap().put("W", new AbstractAction()
+                KeyStroke.getKeyStroke(keyCode, 0, up), key);
+        panel.getActionMap().put(key, new KeyActionListener(keyCode, up, checkList)
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (!keysDown.get(KeyEvent.VK_W)) // so if it's not down, we need to change it
-                {
-                    setKeyPressedOrReleased(KeyEvent.VK_W, true);
-                    handleInput(KeyEvent.VK_W, true);
-                }
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "Wr");
-        panel.getActionMap().put("Wr", new AbstractAction() 
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (keysDown.get(KeyEvent.VK_W))
-                {
-                    setKeyPressedOrReleased(KeyEvent.VK_W, false);
-                    handleInput(KeyEvent.VK_W, false);
-                }
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false), "D");
-        panel.getActionMap().put("D", new AbstractAction()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (!keysDown.get(KeyEvent.VK_D))
-                {   
-                    setKeyPressedOrReleased(KeyEvent.VK_D, true);
-                    handleInput(KeyEvent.VK_D, true);
-                }
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "Dr");
-        panel.getActionMap().put("Dr", new AbstractAction() 
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (keysDown.get(KeyEvent.VK_D))
-                {
-                    setKeyPressedOrReleased(KeyEvent.VK_D, false);
-                    handleInput(KeyEvent.VK_D, false);
-                }
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "A");
-        panel.getActionMap().put("A", new AbstractAction()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (!keysDown.get(KeyEvent.VK_A))
-                {
-                    setKeyPressedOrReleased(KeyEvent.VK_A, true);
-                    handleInput(KeyEvent.VK_A, true);
-                }
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "Ar");
-        panel.getActionMap().put("Ar", new AbstractAction()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (keysDown.get(KeyEvent.VK_A))
-                {
-                    setKeyPressedOrReleased(KeyEvent.VK_A, false);
-                    handleInput(KeyEvent.VK_A, false);
-                }
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false), "Space");
-        panel.getActionMap().put("Space", new AbstractAction()
-        {
-
             @Override
             public void actionPerformed(ActionEvent e) 
             {
-                handleInput(KeyEvent.VK_SPACE, true);
+                
+                if (up)
+                {
+                    if (keysDown.get(keycode))
+                    {
+                        setKeyPressedOrReleased(keycode, !up);
+                        handleInput(keycode, !up);
+                    }
+                }
+                else
+                {
+                    if (checkList)
+                    {
+                        if (!keysDown.get(keycode))
+                        {
+                        setKeyPressedOrReleased(keycode, !up);
+                        handleInput(keycode, !up);
+                        }
+                    }
+                    else
+                    {
+                        setKeyPressedOrReleased(keycode, !up);
+                        handleInput(keycode, !up);
+                    }
+                }                
             }
         });
+    }
+    
+    //<editor-fold defaultstate="collapsed" desc="Key bindings">
+    private void setInputMaps() 
+    {
+        setInputKey(KeyEvent.VK_W, "W", false, true);
+        setInputKey(KeyEvent.VK_W, "Wr", true, true);
 
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "Spacer");
-        panel.getActionMap().put("Spacer", new AbstractAction()
-        {
+        setInputKey(KeyEvent.VK_D, "D", false, true);
+        setInputKey(KeyEvent.VK_D, "Dr", true, true);
 
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                handleInput(KeyEvent.VK_SPACE, false);
-            }
-        });
+        setInputKey(KeyEvent.VK_A, "A", false, true);
+        setInputKey(KeyEvent.VK_A, "Ar", true, true);
+        
+        setInputKey(KeyEvent.VK_SPACE, "Space", false, false);
+        setInputKey(KeyEvent.VK_SPACE, "Spacer", true, false);
 
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0, false), "Q");
-        panel.getActionMap().put("Q", new AbstractAction()
-        {
+        setInputKey(KeyEvent.VK_Q, "Q", false, false);
 
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                handleInput(KeyEvent.VK_Q, true);
-            }
-        });
-
-        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "Esc");
-        panel.getActionMap().put("Esc", new AbstractAction()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                handleInput(KeyEvent.VK_ESCAPE, true);
-            }
-        });
+        setInputKey(KeyEvent.VK_ESCAPE, "Esc", false, false);
     }
 //</editor-fold>
     

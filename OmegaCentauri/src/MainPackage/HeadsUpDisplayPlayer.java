@@ -1,6 +1,8 @@
 package MainPackage;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -70,7 +72,7 @@ public class HeadsUpDisplayPlayer implements GameOverListener
     }
 
     public void draw(Graphics2D g2d, ArrayList<Ship> ships, Dimension mapSize, int fps, int ups, String version,
-            int numShots) 
+            int numShots, Camera camera) 
     {
         //g2d.drawLine(HEALTHSTARTINGX, HEALTHSTARTINGY, HEALTHSTARTINGX, HEALTHSTARTINGY - 200);
         g2d.drawImage(images.get(TOPLEFTHUD), -10, -35, null); // wierd coords. I know
@@ -140,6 +142,14 @@ public class HeadsUpDisplayPlayer implements GameOverListener
                 g2d.draw(minimapShip);
         }
         
+        int rule = AlphaComposite.SRC_OVER;
+        Composite originalComposite = g2d.getComposite();
+        Composite comp = AlphaComposite.getInstance(rule, (float).2);
+        
+        g2d.setComposite(comp);
+        g2d.setColor(Color.green);
+        g2d.fillRect(camera.getSize().x - 250, camera.getSize().y - 250,250,250);
+        g2d.setComposite(originalComposite);
         // draw the hull bars
         for (int i = 0; i < amountGreenHull; i++) 
         {

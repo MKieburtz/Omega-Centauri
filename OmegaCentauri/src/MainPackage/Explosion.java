@@ -137,9 +137,9 @@ public class Explosion
     
     public void draw(Graphics2D g2d) 
     {
-//        g2d.drawImage(images[frame],
-//                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x - drawingManipulation.x),
-//                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
+        g2d.drawImage(images[frame],
+                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).x - drawingManipulation.x),
+                (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
         frame++;
     }
 
