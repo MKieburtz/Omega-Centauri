@@ -49,6 +49,8 @@ public class Explosion
     {
         fighter, missile, range, mediumFighter, wingExplosion
     };
+    
+    private Type type;
 
     BufferedImage spriteSheet;
 
@@ -63,6 +65,7 @@ public class Explosion
     public Explosion(Type type, Dimension imageSize) 
     {
         resources = gameData.getResources();
+        this.type = type;
         switch (type) 
         {
             case fighter:
@@ -142,7 +145,8 @@ public class Explosion
                 (int)(Calculator.getScreenLocation(gameData.getCameraLocation(), location).y - drawingManipulation.y), null);
         frame++;
     }
-
+    
+    
     public boolean isDone() 
     {
         return frame == images.length;

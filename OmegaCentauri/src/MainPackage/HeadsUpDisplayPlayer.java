@@ -89,9 +89,17 @@ public class HeadsUpDisplayPlayer implements GameOverListener
                 }
             }
         }
-        
-        double shieldPercent = (playerShip.getShieldHealth() / playerShip.getMaxShield()) * 100;
-        double hullPercent = (playerShip.getHullHealth() / playerShip.getMaxHull()) * 100;
+        double shieldPercent; 
+        double hullPercent;
+        if (playerShip == null) {
+            shieldPercent = 0;
+            hullPercent = 0;
+        }
+        else
+        {
+            shieldPercent = (playerShip.getShieldHealth() / playerShip.getMaxShield()) * 100;
+            hullPercent = (playerShip.getHullHealth() / playerShip.getMaxHull()) * 100;
+        }
         
         int amountShield = (int) (10 * Math.ceil(shieldPercent / 10)) / 10; // rounding up to 10's
         int amountHull = (int) (10 * Math.ceil(hullPercent / 10)) / 10;
@@ -257,7 +265,7 @@ public class HeadsUpDisplayPlayer implements GameOverListener
     }
 
     @Override
-    public void gameOver() {
+    public void gameOver(boolean allyWin) {
         gameOver = true;
     }
 }

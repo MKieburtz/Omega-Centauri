@@ -56,7 +56,7 @@ public class EnemyFighter extends Enemy
         
         setUpHitbox();
         shield = new Shield(location, Shield.Type.enemyFighter, new Point(activeImage.getWidth(),
-                activeImage.getHeight()), 10, 100);
+                activeImage.getHeight()), 10, 10);
         
         this.id = id;
         
@@ -81,14 +81,35 @@ public class EnemyFighter extends Enemy
         for (Ally allyShip : allyShips)
         {
             double distance = Calculator.getDistance(location, allyShip.getLocation());
-            if (distance < distanceToTarget && !allyShip.beingControlled)
+            if (allyShips.size() > 1)
             {
-                targetShip = allyShip;
+                if (distance < distanceToTarget && !allyShip.beingControlled)
+                {
+                    targetShip = allyShip;
+                    distanceToTarget = distance;
+                }
+            }
+            else if (allyShips.size() == 1)
+            {
+                targetShip = allyShips.get(0);
                 distanceToTarget = distance;
             }
+            else
+            {
+                targetShip = null;
+                distanceToTarget = 10000;
+            }
+        }  
+        double angleToTarget;
+        if (targetShip == null)
+        {
+            Random r = new Random();
+            angleToTarget = r.nextInt(360);
         }
-        
-        double angleToTarget = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
+        else
+        {
+            angleToTarget = Calculator.getAngleBetweenTwoPoints(location, targetShip.getLocation());
+        }
         
         //find the closest ship
         

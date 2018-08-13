@@ -84,18 +84,19 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private void addShips() 
     {
         player = new Player();
-        allyShips.add(new Fighter(2800, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(6900, 5000, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
         player.controlShip(allyShips.get(0));
+        
         // below
-        allyShips.add(new Fighter(3200, 5300, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-        allyShips.add(new Fighter(3200, 5600, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-        allyShips.add(new Fighter(3200, 5900, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-        allyShips.add(new Fighter(3200, 6200, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-        // above
-        allyShips.add(new Fighter(3200, 4700, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-        allyShips.add(new Fighter(3200, 4400, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-        allyShips.add(new Fighter(3200, 4100, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
-        allyShips.add(new Fighter(3200, 3800, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
+        allyShips.add(new Fighter(3200, 5300, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
+        allyShips.add(new Fighter(2200, 5600, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
+//        allyShips.add(new Fighter(3200, 5900, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
+//        allyShips.add(new Fighter(3200, 6200, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
+//        // above
+//        allyShips.add(new Fighter(3200, 4700, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
+//        allyShips.add(new Fighter(3200, 4400, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
+//        allyShips.add(new Fighter(3200, 4100, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
+//        allyShips.add(new Fighter(3200, 3800, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 20, this));
         // behind
 //        allyShips.add(new Fighter(2400, 5300, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
 //        allyShips.add(new Fighter(2400, 5600, MainPackage.Type.Fighter, 8, 4, 4, .15, 150, 100, this));
@@ -340,6 +341,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     @Override
     public void entityDoneExploding(GameEntity entity)
     {
+        
         if (entity instanceof Ship)
         {
             Ship e = (Ship)entity;
@@ -402,15 +404,18 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                 if (deadShips.get(i) instanceof Enemy)
                 {
                     System.out.println("enemy died");
+                    Enemy deadship = (Enemy)deadShips.get(i);
+                    enemyShips.remove(deadship);
                 }
                 else if (deadShips.get(i) instanceof Ally)
                 {
                     System.out.println("ally died");
+                    Ally deadship = (Ally)deadShips.get(i);
+                    allyShips.remove(deadship);
                 }
                 gameEntitys.remove(deadShips.get(i));
                 allShips.remove(deadShips.get(i));
-                enemyShips.remove(deadShips.get(i));
-                allyShips.remove(deadShips.get(i));
+                
                 if (player.getControllingShip().equals(deadShips.get(i)))
                 {
                     if (!allyShips.isEmpty())
@@ -420,12 +425,11 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                     }
                     else
                     {
-                        gameOverListener.gameOver();
+                        gameOverListener.gameOver(false);
                     }
                 }
                 deadShips.remove(deadShips.get(i));
             }
-            
             player.update(updateCommands);
             
             updateCommands.clear();
@@ -823,7 +827,6 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                         }
                         else 
                         {
-                            allShips.add(player.getControllingShip());
                             allShips.addAll(enemyShips);
                             allShips.addAll(allyShips);
                             gameEntitys.addAll(allShips);
@@ -923,6 +926,7 @@ public class OmegaCentauri extends JFrame implements GameActionListener
 
     public static void main(String[] args) 
     {
+        System.out.println(System.getProperty("java.version"));
         try 
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

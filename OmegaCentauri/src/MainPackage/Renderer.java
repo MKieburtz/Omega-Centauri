@@ -96,6 +96,8 @@ public class Renderer
         
         for (Ship ship : ships)
         {
+            if (ship.isExploding())
+                System.err.println("ship is exploding " + (ship instanceof Fighter));
             ship.draw(g2d);
         }
         

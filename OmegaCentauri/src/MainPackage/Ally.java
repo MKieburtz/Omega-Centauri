@@ -44,11 +44,11 @@ public abstract class Ally extends Ship implements Controllable {
     public void update(ArrayList<Command> commands) 
     {
         updateHitbox();
+        explosion.updateLocation(location);
     }   
 
     @Override
     public abstract void changeImage(ImageMovementState movementState, ImageRotationState rotationState);
     
     public abstract void setHighlighted(boolean highlighted);
-
 }

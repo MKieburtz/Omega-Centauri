@@ -42,6 +42,11 @@ public class Player
 //        closest.setHighlighted(true);
 //    }
     
+    public void update()
+    {
+        controllingShip.update();
+    }
+    
     public void update(ArrayList<Command> commands)
     {
         controllingShip.update(commands);
