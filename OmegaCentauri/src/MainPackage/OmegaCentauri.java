@@ -425,12 +425,16 @@ public class OmegaCentauri extends JFrame implements GameActionListener
                     }
                     else
                     {
+                        player.controlShip(null);
                         gameOverListener.gameOver(false);
                     }
                 }
                 deadShips.remove(deadShips.get(i));
             }
-            player.update(updateCommands);
+            if (player.isControllingShip())
+            {
+                player.update(updateCommands);
+            }
             
             updateCommands.clear();
             
@@ -561,83 +565,86 @@ public class OmegaCentauri extends JFrame implements GameActionListener
     private void handleInput(int keycode, boolean down)
     {
         //System.out.println("called");
-        switch (player.getImageRotationState())
+        if (player.isControllingShip())
         {
-            case Idle: //neither
-                if (down && keycode == KeyEvent.VK_A)
-                {
-                    rotateLeft = true;
-                }
-                if (down && keycode == KeyEvent.VK_D) 
-                {
-                    rotateRight = true; 
-                }
-                break;
-            case rotatingRight: // d has to be down
-                if (down && keycode == KeyEvent.VK_A) // start going left
-                {
-                    rotateRight = false;
-                    rotateLeft = true;
-                }
-                else if (!down && keycode == KeyEvent.VK_D)
-                {
-                    rotateRight = false;
-                    if (keysDown.get(KeyEvent.VK_A))
+            switch (player.getImageRotationState())
+            {
+                case Idle: //neither
+                    if (down && keycode == KeyEvent.VK_A)
                     {
                         rotateLeft = true;
                     }
-                }
-                break;
-            case rotatingLeft: // a has to be down
-                if (down && keycode == KeyEvent.VK_D)
-                {
-                    rotateLeft = false;
-                    rotateRight = true;
-                }
-                else if (!down && keycode == KeyEvent.VK_A)
-                {
-                    rotateLeft = false;
-                    if (keysDown.get(KeyEvent.VK_D))
+                    if (down && keycode == KeyEvent.VK_D) 
                     {
+                        rotateRight = true; 
+                    }
+                    break;
+                case rotatingRight: // d has to be down
+                    if (down && keycode == KeyEvent.VK_A) // start going left
+                    {
+                        rotateRight = false;
+                        rotateLeft = true;
+                    }
+                    else if (!down && keycode == KeyEvent.VK_D)
+                    {
+                        rotateRight = false;
+                        if (keysDown.get(KeyEvent.VK_A))
+                        {
+                            rotateLeft = true;
+                        }
+                    }
+                    break;
+                case rotatingLeft: // a has to be down
+                    if (down && keycode == KeyEvent.VK_D)
+                    {
+                        rotateLeft = false;
                         rotateRight = true;
                     }
-                }
-                break;
-        }
-        
-        switch(player.getImageMovementState())
-        {
-            case Idle: // w isn't down
-                if (down && keycode == KeyEvent.VK_W)
-                {
-                    forward = true;
-                }
-                break;
-            case Thrusting:
-                if (!down && keycode == KeyEvent.VK_W)
-                {
-                    forward = false;
-                }
-                break;
-        }
-        
-        if (down && keycode == KeyEvent.VK_SPACE)
-        {
-            shooting = true;
-        }
-        else if (!down && keycode == KeyEvent.VK_SPACE)
-        {
-            shooting = false;
-        }
-        
-        if (down && keycode == KeyEvent.VK_Q)
-        {
-            System.exit(0);
-        }
-        
-        if (down && keycode == KeyEvent.VK_ESCAPE)
-        {
-            paused = !paused;
+                    else if (!down && keycode == KeyEvent.VK_A)
+                    {
+                        rotateLeft = false;
+                        if (keysDown.get(KeyEvent.VK_D))
+                        {
+                            rotateRight = true;
+                        }
+                    }
+                    break;
+            }
+
+            switch(player.getImageMovementState())
+            {
+                case Idle: // w isn't down
+                    if (down && keycode == KeyEvent.VK_W)
+                    {
+                        forward = true;
+                    }
+                    break;
+                case Thrusting:
+                    if (!down && keycode == KeyEvent.VK_W)
+                    {
+                        forward = false;
+                    }
+                    break;
+            }
+
+            if (down && keycode == KeyEvent.VK_SPACE)
+            {
+                shooting = true;
+            }
+            else if (!down && keycode == KeyEvent.VK_SPACE)
+            {
+                shooting = false;
+            }
+
+            if (down && keycode == KeyEvent.VK_Q)
+            {
+                System.exit(0);
+            }
+
+            if (down && keycode == KeyEvent.VK_ESCAPE)
+            {
+                paused = !paused;
+            }
         }
     }
     
@@ -693,13 +700,16 @@ public class OmegaCentauri extends JFrame implements GameActionListener
 
     private void syncGameStateVaribles() 
     {
-        camera.move(player.getShipLocation().x - (getWidth() / 2), player.getShipLocation().y - (getHeight() / 2));
+        if (player.isControllingShip())
+        {
+            camera.move(player.getShipLocation().x - (getWidth() / 2), player.getShipLocation().y - (getHeight() / 2));
 
-        middleOfPlayer = Calculator.getScreenLocationMiddle(player.getShipLocation(),
-                camera.getLocation(), player.getShipActiveImage().getWidth(), player.getShipActiveImage().getHeight());
-        
-        gameData.updateCameraLocation(camera.getLocation().x, camera.getLocation().y);
-        gameData.updatePlayer(player.getControllingShip());
+            middleOfPlayer = Calculator.getScreenLocationMiddle(player.getShipLocation(),
+                    camera.getLocation(), player.getShipActiveImage().getWidth(), player.getShipActiveImage().getHeight());
+
+            gameData.updateCameraLocation(camera.getLocation().x, camera.getLocation().y);
+            gameData.updatePlayer(player.getControllingShip());
+        }
         gameData.updateEnemyShips(enemyShips);
         gameData.updateAllyShips(allyShips);
     }

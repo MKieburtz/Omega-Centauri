@@ -15,13 +15,20 @@ public class Player
     
     public void controlShip(Ally shipToControl)
     {
-        if (controllingShip != null)
+        if (shipToControl != null)
         {
-            controllingShip.setControllingShip(false); // uncontrol the previous
+            if (controllingShip != null)
+            {
+                controllingShip.setControllingShip(false); // uncontrol the previous
+            }
+
+            controllingShip = shipToControl;
+            controllingShip.setControllingShip(true);
         }
-        
-        controllingShip = shipToControl;
-        controllingShip.setControllingShip(true);
+        else
+        {
+            controllingShip = null;
+        }
     }
     
 //    public void highLightShips(ArrayList<Ally> allyShips)
@@ -42,43 +49,61 @@ public class Player
 //        closest.setHighlighted(true);
 //    }
     
+    public boolean isControllingShip()
+    {
+        return controllingShip != null;
+    }
+    
     public void update()
     {
-        controllingShip.update();
+        if (isControllingShip())
+            controllingShip.update();
     }
     
     public void update(ArrayList<Command> commands)
     {
-        controllingShip.update(commands);
+        if (isControllingShip())
+            controllingShip.update(commands);
     }
     
     public void draw(Graphics2D g2d) 
     {
-        controllingShip.draw(g2d);
+        if (isControllingShip())
+            controllingShip.draw(g2d);
     }
     
     public Point2D.Double getShipLocation()
     {
-        return controllingShip.getLocation();
+        if (isControllingShip())
+            return controllingShip.getLocation();
+        return null;
     }
     
     public BufferedImage getShipActiveImage()
     {
-        return controllingShip.getActiveImage();
+        if (isControllingShip())
+            return controllingShip.getActiveImage();
+        return null;
     }
     
     public Ship getControllingShip()
     {
-        return controllingShip;
+        if (isControllingShip())
+            return controllingShip;
+        return null;
     }
     
     public ImageRotationState getImageRotationState()
     {
-        return controllingShip.getImageRotationState();
+        if (isControllingShip())
+            return controllingShip.getImageRotationState();
+        return null;
     }
     
     public ImageMovementState getImageMovementState()
     {
-        return controllingShip.getImageMovementState();
+        if (isControllingShip())
+            return controllingShip.getImageMovementState();
+        return null;
     }
 }
