@@ -1,10 +1,13 @@
 package MainPackage;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -150,18 +153,25 @@ public class Fighter extends Ally implements GameEntity, Controllable {
         AffineTransform original = g2d.getTransform();
         
         super.draw(g2d);
-
+        
         g2d.setTransform(original);
+        
         //g2d.setColor(Color.red);
         //hitbox.draw(g2d, camera.getLocation());
         
         Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
-        
+//        g2d.setColor(Color.red);
+//        Shape velLine = new Line2D.Double(middle.x, middle.y, (middle.x + 5 * movementVelocity.x),(middle.y + 5 * movementVelocity.y));
+//        Shape accLine = new Line2D.Double(middle.x, middle.y, 1.1 * (middle.x + 5 * acceleration.x), 1.1 * (middle.y + 5 * acceleration.y));
+//        g2d.draw(velLine);
+//        g2d.setColor(Color.yellow);
+//        g2d.draw(accLine);
         if (shield.isActive())
         {
             shield.draw(g2d, middle, location, faceAngle);
         }
+        
     }
     
     @Override

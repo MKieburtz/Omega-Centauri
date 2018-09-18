@@ -31,7 +31,8 @@ public abstract class Ship implements GameEntity
     protected String name;
     protected double maxVel;
     protected double angleIcrement;
-    protected double acceleration = .15;
+    protected double thrust = .15;
+    protected Point2D.Double acceleration = new Point2D.Double(0, 0);
     protected ImageRotationState imageRotationState; 
     protected ImageMovementState imageMovementState;  
     protected RotationState rotationState;
@@ -57,7 +58,7 @@ public abstract class Ship implements GameEntity
     protected boolean exploding;
     
     public Ship(int x, int y, Type shipType, double maxVel, double maxAngularVelocity,
-            double angleIncrement, double acceleration, int shootingDelay, int health,
+            double angleIncrement, double thrust, int shootingDelay, int health,
             MainPackage.GameActionListener actionListener)
     {
         location = new Point2D.Double(x, y);
@@ -66,7 +67,7 @@ public abstract class Ship implements GameEntity
         this.maxVel = maxVel;
         this.angleIcrement = angleIncrement;
         this.maxAngularVel = maxAngularVelocity;
-        this.acceleration = acceleration;
+        this.thrust = thrust;
         this.shootingDelay = shootingDelay;
         this.hullDurability = health;
         this.maxhullDurabilty = health;
@@ -116,12 +117,14 @@ public abstract class Ship implements GameEntity
     
     protected void move(MovementState state)
     {
-        
         if (state == MovementState.Thrusting)
         {
             movementState = MovementState.Thrusting;
-            movementVelocity.x += Calculator.CalcAngleMoveX(360 - faceAngle) * acceleration;
-            
+
+//          System.out.println(movementVelocity);
+            double dx = movementVelocity.x - (Calculator.CalcAngleMoveX(360 - faceAngle) * 7);
+            movementVelocity.x -= dx;
+           
             if (movementVelocity.x > maxVel)
             {
                 movementVelocity.x = maxVel;
@@ -131,8 +134,9 @@ public abstract class Ship implements GameEntity
                 movementVelocity.x = -maxVel;
             }
             
-            movementVelocity.y += Calculator.CalcAngleMoveY(360 - faceAngle) * acceleration;
-            
+            double dy = movementVelocity.y - Calculator.CalcAngleMoveY(360 - faceAngle) * 7;
+            movementVelocity.y -= dy;
+
             if (movementVelocity.y > maxVel) 
             {
                 movementVelocity.y = maxVel;
@@ -143,11 +147,11 @@ public abstract class Ship implements GameEntity
             }
         }
         
-        movementVelocity.x *= .995;
-        movementVelocity.y *= .995;
-        
         if (state == MovementState.Drifting)
         {
+            movementVelocity.x *= .995;
+            movementVelocity.y *= .995;
+            
             movementState = MovementState.Drifting;
             if (Math.abs(movementVelocity.x) < .1)
             {

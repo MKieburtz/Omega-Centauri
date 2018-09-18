@@ -9,6 +9,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -129,7 +130,8 @@ public class EnemyMediumFighter extends Enemy
         AffineTransform original = g2d.getTransform();
 
         super.draw(g2d);
-
+        g2d.setColor(Color.red);
+        
         if (!exploding)
         {
             for (Turret t : turrets) 
@@ -137,12 +139,17 @@ public class EnemyMediumFighter extends Enemy
                 t.draw(g2d, location);
             }  
         }
-        
         g2d.setTransform(original);
-
+        
         Point2D.Double middle = new Point2D.Double(Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).x,
                     Calculator.getScreenLocationMiddle(gameData.getCameraLocation(), location, activeImage.getWidth(), activeImage.getHeight()).y);
         
+//        g2d.drawLine((int)middle.x - 100, (int)middle.y - 100, (int)middle.x + 100, (int)middle.y + 100);
+//        g2d.drawLine((int)middle.x - 100, (int)middle.y + 100, (int)middle.x + 100, (int)middle.y - 100);
+        //g2d.drawLine((int)middle.x, (int)middle.y, (int)Calculator.rotatePointAroundPoint(new Point2D.Double(middle.x + 200, middle.y), middle, faceAngle).x,
+        //      (int)Calculator.rotatePointAroundPoint(new Point2D.Double(middle.x + 200, middle.y), middle, faceAngle).y);
+        
+        //g2d.drawLine((int)middle.x, (int)middle.y, 3 * (int)(middle.x + movementVelocity.x), 3 * (int)(middle.y + movementVelocity.y));
         if (shield.isActive())
         {
             shield.draw(g2d, middle, location, faceAngle);
@@ -158,43 +165,51 @@ public class EnemyMediumFighter extends Enemy
         double distanceToTarget = 1000000; // big number
                 
         ArrayList<Ally> allyShips = gameData.getAllyShips();
-        
-        for (Ally allyShip : allyShips)
+        if (allyShips.isEmpty())
         {
-            double distance = Calculator.getDistance(location, allyShip.getLocation());
-            if (distance < distanceToTarget)
-            {
-                targetShip = allyShip;
-                distanceToTarget = distance;
-            }
+            if (id == 1)
+            System.out.println(movementVelocity);
+            move(movementState.Thrusting);
         }
-        
-        double angleToTarget = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location,
-                activeImage.getWidth(), activeImage.getHeight()), targetShip.getLocation());
-
-        rotateToAngle(angleToTarget);
-        
-        for (Turret t : turrets) 
-        {
-            t.update(Calculator.getGameLocationMiddle(targetShip.getLocation(),
-                    targetShip.getActiveImage().getWidth(), targetShip.getActiveImage().getWidth()),
-                    Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
-                    faceAngle);
-
-        }
-
-        if (Math.abs(angleToTarget - faceAngle) <= 45)
-        {
-            shoot();
-        }
-
-        if (distanceToTarget > 200)
-        {
-            move(MovementState.Thrusting);
-        } 
         else
         {
-            move(MovementState.Drifting);
+            for (Ally allyShip : allyShips)
+            {
+                double distance = Calculator.getDistance(location, allyShip.getLocation());
+                if (distance < distanceToTarget)
+                {
+                    targetShip = allyShip;
+                    distanceToTarget = distance;
+                }
+            }
+
+            double angleToTarget = Calculator.getAngleBetweenTwoPoints(Calculator.getGameLocationMiddle(location,
+                    activeImage.getWidth(), activeImage.getHeight()), targetShip.getLocation());
+
+            rotateToAngle(angleToTarget);
+
+            for (Turret t : turrets) 
+            {
+                t.update(Calculator.getGameLocationMiddle(targetShip.getLocation(),
+                        targetShip.getActiveImage().getWidth(), targetShip.getActiveImage().getWidth()),
+                        Calculator.getGameLocationMiddle(location, activeImage.getWidth(), activeImage.getHeight()),
+                        faceAngle);
+
+            }
+
+            if (Math.abs(angleToTarget - faceAngle) <= 45)
+            {
+                shoot();
+            }
+
+            if (distanceToTarget > 200)
+            {
+                move(MovementState.Thrusting);
+            } 
+            else
+            {
+                move(MovementState.Drifting);
+            }
         }
     }
 
